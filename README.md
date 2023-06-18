@@ -3,3 +3,13 @@
 ## Project Code: 23-2-D-9
 
 ProConnect - Final project for our software engineering degree at Braude College of Engineering, by Hadi and Aziz.
+
+ProConnect is a job platform where professionals can showcase their skills and clients can publish different jobs for their properties and search for relevant skilled professionals to find the correct person for the job. 
+
+Our application aims to revolutionize the way homeowners and professionals connect with each other. It streamlines the process of finding and hiring skilled professionals for various projects, helping professionals find job opportunities that match their skills and preferences, while enabling homeowners to find reliable professionals with the necessary expertise.
+
+For professionals, the app features a comprehensive job search engine, allowing them to search for job openings based on location, job type, and other criteria. Professionals can create profiles highlighting their skills and experience and apply to job openings directly through the platform.
+
+Homeowners benefit from an easy-to-use interface for finding and hiring skilled professionals. They can search for professionals based on job type, location, and other criteria, and view professional profiles and reviews before making a hiring decision.
+
+Our application provides a simple, user-friendly solution for connecting homeowners and professionals, aiming to create a more efficient, effective, and profitable industry.
