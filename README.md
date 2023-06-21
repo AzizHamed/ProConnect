@@ -1,6 +1,13 @@
 # ProConnect
 
-## Project Code: 23-2-D-9
+## Links
+
+[Project Book](https://docs.google.com/document/d/e/2PACX-1vTw8gmbY5O7UTnwApPHqGgHrEaODn19NHAIfjJUaqGLbIf0lUPpZU_eH7TF3-wf84EBjkyuLS4HmNHl/pub)
+[Presentation](https://1drv.ms/p/s!AoLVRGF92BcTg-dnYPoIA4lQRiqkLg?e=ktySIR)
+
+## About
+
+### Project Code: 23-2-D-9
 
 ProConnect - Final project for our software engineering degree at Braude College of Engineering, by Hadi and Aziz.
 
