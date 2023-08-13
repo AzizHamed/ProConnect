@@ -12,4 +12,10 @@ public class TestController {
     {
         return "HELLO WORLD!!!";
     }
+
+    @GetMapping("hello2")
+    public String myTest2(String name)
+    {
+        return "HELLO " + name + "!!!";
+    }
 }
