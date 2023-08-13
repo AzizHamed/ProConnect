@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { GetData } from '../services/Requests';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -32,6 +33,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      test();
     }
   }, [loaded]);
 
@@ -42,6 +44,10 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+async function test(){
+    GetData();
+  }
+  
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
