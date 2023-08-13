@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProConnectApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Test");
 		SpringApplication.run(ProConnectApplication.class, args);
 	}
 
