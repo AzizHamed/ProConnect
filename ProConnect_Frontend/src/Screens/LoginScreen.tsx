@@ -6,7 +6,6 @@ import getColors from "../Constants/Colors";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   function printDetails() {
     console.log(`Your email is ${email}, your password is ${password}`);
   }
@@ -26,7 +25,7 @@ const LoginScreen = () => {
   return (
     <View style={styles.background}>
       <View style={styles.container}>
-        <Text>
+        <Text style={styles.text}>
           Hello! Your email is: {email} | Password = {password}
         </Text>
         <TextInput
@@ -43,12 +42,13 @@ const LoginScreen = () => {
           placeholder="Password"
           style={styles.input}
         ></TextInput>
-        <Button title="Click Me" onPress={printDetails} />
+        <Button title="Click Me" onPress={printDetails} color={colors.highlight} />
       </View>
     </View>
   );
 };
 
+// const colors = getColors('Dark');
 const colors = getColors();
 const styles = StyleSheet.create({
   input: {
@@ -56,10 +56,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 5,
+    color: colors.textColor,
+    borderColor: colors.textColor
   },
   container: {
     width: "50%",
     backgroundColor: colors.container,
+    color: colors.textColor,
     padding: 20,
     margin: "auto",
   },
@@ -69,5 +72,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  text: {
+    color: colors.textColor
+  }
 });
 export default LoginScreen;
