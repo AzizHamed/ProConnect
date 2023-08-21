@@ -1,8 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
+import { Button, Text, View } from "react-native";
 
 const Test = () => {
     return (
-        <Text>Hello!</Text>
+        <View>
+            <Text>Hello!</Text>
+            <Button title="Click Me" onPress={()=>console.log("CLICK!")}/>
+        </View>
     )
 }
+
+export default Test
