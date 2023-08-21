@@ -1,15 +1,16 @@
 package com.braude.ProConnect.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.braude.ProConnect.entities.User;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("test")
+@CrossOrigin
 public class TestController {
     @GetMapping("hello")
     public String myTest()
     {
+        System.out.print("Hello!");
         return "HELLO WORLD!!!";
     }
 
@@ -17,5 +18,18 @@ public class TestController {
     public String myTest2(String name)
     {
         return "HELLO " + name + "!!!";
+    }
+
+
+    @PostMapping("postBody")
+    public String postTest(@RequestBody String data, @RequestParam(value = "name") String name){
+        System.out.println(data);
+        return name + " requested DATA: " + data;
+    }
+
+    @PostMapping("postUser")
+    public String postUserTest(@RequestBody User user, @RequestParam(value = "name") String name){
+        System.out.println(user.toString() + user.getName());
+        return name + " requested DATA about: " + user;
     }
 }
