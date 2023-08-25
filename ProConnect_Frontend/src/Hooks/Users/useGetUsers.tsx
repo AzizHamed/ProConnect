@@ -15,11 +15,31 @@ export function useGetUsers()
       {
         setUsers(response.data);
       })
+      .catch((error : Error) =>
+      {
+        alert(error.message);
+      });
+  },[]);
+
+  return users;
+}
+
+export function useGetUsersWithParams(params: Map<string,any>)
+{
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() =>
+  {
+    get(URI, params)
+      .then((response) =>
+      {
+        setUsers(response.data);
+      })
       .catch((error) =>
       {
         alert(error.message);
       });
-  });
+  },[]);
 
   return users;
 }
