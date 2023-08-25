@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { get, post } from "../Services/Requests";
 import getColors from "../Constants/Colors";
+import { useGetUsers } from "../Hooks/Users/useGetUsers";
+import { User } from "../Models/User";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const users: User[] = useGetUsers();
+
   function printDetails() {
     console.log(`Your email is ${email}, your password is ${password}`);
   }
@@ -20,7 +24,7 @@ const LoginScreen = () => {
       .catch((error) => {
         console.log(error.message);
       });
-  });
+  },[]);
 
   return (
     <View style={styles.background}>
@@ -43,6 +47,9 @@ const LoginScreen = () => {
           style={styles.input}
         ></TextInput>
         <Button title="Click Me" onPress={printDetails} color={colors.highlight} />
+        <View>
+          {users.map(user =>{return <Text key={user.name}>{user.name}</Text>})}
+        </View>
       </View>
     </View>
   );
