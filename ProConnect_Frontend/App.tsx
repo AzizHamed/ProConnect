@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './src/Screens/LoginScreen';
+import React from 'react';
+import Profile from './src/Screens/Profile';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <LoginScreen></LoginScreen>
-    </View>
+    //<View style={styles.container}>
+      <Profile></Profile>
+    //</View>
   );
 }
 
