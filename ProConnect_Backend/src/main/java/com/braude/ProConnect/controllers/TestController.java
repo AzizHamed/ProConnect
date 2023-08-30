@@ -31,15 +31,14 @@ public class TestController {
 
     @PostMapping("postUser")
     public String postUserTest(@RequestBody User user, @RequestParam(value = "name") String name){
-        System.out.println(user.toString() + user.getName());
+        System.out.println(user.toString() + user.getFirstName());
         return name + " requested DATA about: " + user;
     }
 
     @GetMapping("getUsers")
     public ArrayList<User> getUsers(){
         ArrayList<User> users = new ArrayList<User>();
-        users.add(new User("Hadi", "hadi@gmail.com"));
-        users.add(new User("Aziz", "aziz@gmail.com"));
+
         return users;
     }
 }
