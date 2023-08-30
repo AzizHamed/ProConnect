@@ -30,7 +30,7 @@ const GalleryAbrief: React.FC<GalleryAbriefProps> = (props) =>{
 
 
         </View>
-       
+      
         
       
         

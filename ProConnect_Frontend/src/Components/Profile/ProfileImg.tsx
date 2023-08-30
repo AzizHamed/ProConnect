@@ -5,8 +5,8 @@ import getColors from "../../Constants/Colors";
 interface ProfileImgProps{
     img:string;
 }
-const ProfileImg: React.FC<ProfileImgProps> =  (props) => {
-    const location = "../../../assets/" + props.img
+const ProfileImg: React.FC<ProfileImgProps> = (props) => {
+    const location :string = "../../../assets/" + props.img
     console.log(location)
     return (
         <View>
