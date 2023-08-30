@@ -1,11 +1,6 @@
-package com.braude.ProConnect.entities;
+package com.braude.ProConnect.models.entities;
 
-import com.braude.ProConnect.embeddables.Availability;
-import jdk.javadoc.doclet.Taglet;
-import org.hibernate.grammars.hql.HqlParser;
-
-import javax.xml.stream.Location;
-import java.util.TimeZone;
+import com.braude.ProConnect.models.embeddables.Availability;
 
 public class Professional extends User {
 

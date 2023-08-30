@@ -1,4 +1,4 @@
-package com.braude.ProConnect.embeddables;
+package com.braude.ProConnect.models.embeddables;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;

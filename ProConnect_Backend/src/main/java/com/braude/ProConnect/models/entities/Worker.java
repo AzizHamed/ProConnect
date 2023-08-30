@@ -1,4 +1,4 @@
-package com.braude.ProConnect.entities;
+package com.braude.ProConnect.models.entities;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class Worker extends User {
     private int yeareOfExperience;
 
     public Worker(String name, String email, List<Professional> professionals, String telephone, int yeareOfExperience) {
-        super(name, email);
+        //super(name, email);
         this.professionals = professionals;
         this.telephone = telephone;
         this.yeareOfExperience = yeareOfExperience;
