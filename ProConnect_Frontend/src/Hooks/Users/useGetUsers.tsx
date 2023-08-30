@@ -17,7 +17,7 @@ export function useGetUsers()
       })
       .catch((error : Error) =>
       {
-        alert(error.message);
+        console.log(error.message);
       });
   },[]);
 
