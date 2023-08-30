@@ -11,7 +11,7 @@ const ProfileImg: React.FC<ProfileImgProps> =  (props) => {
     return (
         <View>
            <Image 
-           source={require(location)}
+           source={require( "../../../assets/Borjomi.jpg")}
            style={styles.img}
            />
 
