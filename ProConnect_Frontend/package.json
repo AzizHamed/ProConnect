@@ -9,6 +9,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-community/blur": "^4.3.2",
+    "@react-native-community/datetimepicker": "^7.5.0",
+    "@react-native-community/netinfo": "^9.4.1",
+    "@react-native-picker/picker": "^2.5.0",
     "@react-navigation/native": "^6.1.7",
     "axios": "^1.4.0",
     "expo": "~49.0.7",
@@ -16,10 +20,13 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.3",
-    "react-native-vector-icons": "^10.0.0",
-    "react-native-web": "~0.19.6",
+    "react-native-gesture-handler": "^2.12.1",
+    "react-native-reanimated": "^3.4.2",
+    "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
-    "react-native-safe-area-context": "4.6.3"
+    "react-native-ui-lib": "^7.8.0",
+    "react-native-vector-icons": "^10.0.0",
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
