@@ -16,12 +16,16 @@ public class RoleService {
     }
 
     public void generateRoles(){
-        if(roleRepository.findAll().isEmpty())
-            roleRepository.saveAll(Role.getAllRoles());
+        if(roleRepository.count() == 0)
+            roleRepository.saveAll(Role.getDefaultRoles());
     }
 
     public List<Role> getRoles() {
         generateRoles();
         return roleRepository.findAll();
+    }
+
+    public Role addRole(Role role) {
+        return roleRepository.save(role);
     }
 }
