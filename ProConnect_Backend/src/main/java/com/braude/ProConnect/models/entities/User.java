@@ -1,13 +1,14 @@
 package com.braude.ProConnect.models.entities;
 
 import com.braude.ProConnect.models.embeddables.Name;
-import com.braude.ProConnect.models.entities.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,8 @@ public class User {
     @Embedded
     private Name name;
     @NotNull
-    @Email
+    @Email(message = "Email is not valid.", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotEmpty(message = "Email cannot be empty.")
     @Column(unique = true)
     private String email;
     private String phoneNumber;
@@ -34,6 +36,10 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
+    @OneToMany(mappedBy = "user")
+    List<UserSkill> userSkills;
+
+
     @ManyToMany()
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "role_id"),
@@ -44,13 +50,17 @@ public class User {
     public User() {
     }
 
-
-    public User(long id, Name name, String email, String phoneNumber, Date dateOfBirth){//, List<User> workers) {
+    public User(long id, Name name, String email, String phoneNumber, Date dateOfBirth, List<Review> reviewsGiven,
+                List<Review> reviewsReceived, List<UserSkill> userSkills, Set<Role> roles) {//, List<User> workers) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
+        this.reviewsGiven = reviewsGiven;
+        this.reviewsReceived = reviewsReceived;
+        this.userSkills = userSkills;
+        this.roles = roles;
         //this.workers = workers;
     }
 
@@ -94,13 +104,48 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-//    public List<User> getWorkers() {
-//        return workers;
-//    }
-//
-//    public void setWorkers(List<User> workers) {
-//        this.workers = workers;
-//    }
+    public List<Review> getReviewsGiven() {
+        return reviewsGiven;
+    }
 
+    public void setReviewsGiven(List<Review> reviewsGiven) {
+        this.reviewsGiven = reviewsGiven;
+    }
 
+    public List<Review> getReviewsReceived() {
+        return reviewsReceived;
+    }
+
+    public void setReviewsReceived(List<Review> reviewsReceived) {
+        this.reviewsReceived = reviewsReceived;
+    }
+
+    public List<UserSkill> getUserSkills() {
+        return userSkills;
+    }
+
+    public void setUserSkills(List<UserSkill> userSkills) {
+        this.userSkills = userSkills;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && name.equals(user.name) && email.equals(user.email) && phoneNumber.equals(user.phoneNumber) && dateOfBirth.equals(user.dateOfBirth) && Objects.equals(reviewsGiven, user.reviewsGiven) && Objects.equals(reviewsReceived, user.reviewsReceived) && Objects.equals(userSkills, user.userSkills) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, phoneNumber, dateOfBirth, reviewsGiven, reviewsReceived, userSkills, roles);
+    }
 }
