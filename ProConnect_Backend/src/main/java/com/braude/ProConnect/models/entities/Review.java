@@ -22,6 +22,7 @@ public class Review {
     private int score;
 
     @Size(min = 10, max = 2000)
+    @Column(length = 2000)
     private String reviewText;
 
     @ManyToOne
