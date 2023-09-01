@@ -19,8 +19,7 @@ public class Property {
     @NotEmpty(message = "Property name can't be empty.")
     private String name;
 
-    @ManyToOne
-    @MapsId("id")
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User owner;
     @Embedded
