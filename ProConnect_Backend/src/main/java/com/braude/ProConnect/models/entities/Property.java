@@ -1,6 +1,11 @@
 package com.braude.ProConnect.models.entities;
 
+import com.braude.ProConnect.models.embeddables.Location;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "properties")
@@ -10,20 +15,23 @@ public class Property {
     @Column(name = "property_id", updatable = false)
     private long id;
 
+    @NotNull(message = "Property name can't be null.")
+    @NotEmpty(message = "Property name can't be empty.")
+    private String name;
+
     @ManyToOne
     @MapsId("id")
     @JoinColumn(name = "user_id")
     private User owner;
-    @OneToOne
-    @MapsId("id")
-    @JoinColumn(name = "location_id")
+    @Embedded
     private Location location;
 
     public Property() {
     }
 
-    public Property(long id, User owner, Location location) {
+    public Property(long id, String name, User owner, Location location) {
         this.id = id;
+        this.name = name;
         this.owner = owner;
         this.location = location;
     }
@@ -50,5 +58,31 @@ public class Property {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Property property = (Property) o;
+        return id == property.id && name.equals(property.name) && owner.equals(property.owner) && location.equals(property.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, owner, location);
+    }
+
+    @Override
+    public String toString() {
+        return name + ", owned by " + owner.getName();
     }
 }
