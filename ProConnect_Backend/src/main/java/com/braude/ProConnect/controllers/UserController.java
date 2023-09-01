@@ -1,5 +1,6 @@
 package com.braude.ProConnect.controllers;
 
+import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.services.UserService;
 import jakarta.validation.Valid;
@@ -42,10 +43,17 @@ public class UserController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user, BindingResult bindingResult){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
         User newUser = userService.createUser(user);
         if(newUser != null)
-            return new ResponseEntity<>(newUser, HttpStatus.OK);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping(value = "addRole")
+    public ResponseEntity<Boolean> addRole(@RequestParam long userId, @RequestParam long roleId){
+        if(userService.addRole(userId, roleId))
+            return ResponseEntity.ok(true);
+        throw new ProConnectException("Failed to add role to user.");
     }
 }

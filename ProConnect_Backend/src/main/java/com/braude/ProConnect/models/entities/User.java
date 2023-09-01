@@ -148,4 +148,11 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, name, email, phoneNumber, dateOfBirth, reviewsGiven, reviewsReceived, userSkills, roles);
     }
+
+    public boolean addRole(Role role) {
+        return roles.add(role);
+    }
+    public boolean removeRole(Role role) {
+        return roles.remove(role);
+    }
 }
