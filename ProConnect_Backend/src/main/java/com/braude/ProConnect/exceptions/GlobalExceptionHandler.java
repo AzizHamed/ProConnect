@@ -14,7 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class ValidationExceptionHandler {
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProConnectException.class)
+    public ResponseEntity<Object> handleProConnectException(ProConnectException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
