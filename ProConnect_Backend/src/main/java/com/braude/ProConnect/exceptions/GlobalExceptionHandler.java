@@ -45,6 +45,18 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage();
         if (message.toLowerCase().contains("duplicate"))
             return ResponseEntity.badRequest().body("Data already exists!");
+        if (message.toLowerCase().contains("foreign key constraint fails")) {
+            String ref = "REFERENCES `";
+            if (message.contains(ref)) {
+                String sub = message.substring(message.indexOf(ref) + ref.length());
+                sub = sub.substring(0, sub.indexOf("`") - 1);
+
+                return ResponseEntity.badRequest().body("Unable to update data - " + sub + " does not exist.");
+            }
+            else
+                return ResponseEntity.badRequest().body("Unable to update data - chosen item does not exist.");
+
+        }
         return ResponseEntity.badRequest().body(message);
 
     }
