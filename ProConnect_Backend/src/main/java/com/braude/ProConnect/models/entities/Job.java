@@ -117,11 +117,11 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Job job = (Job) o;
-        return id == job.id && Double.compare(job.budget, budget) == 0 && owner.equals(job.owner) && property.equals(job.property) && datePosted.equals(job.datePosted) && jobStatus == job.jobStatus && title.equals(job.title) && description.equals(job.description);
+        return Double.compare(job.budget, budget) == 0 && owner.equals(job.owner) && property.equals(job.property) && datePosted.equals(job.datePosted) && jobStatus == job.jobStatus && title.equals(job.title) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, budget, owner, property, datePosted, jobStatus, title, description);
+        return Objects.hash(budget, owner, property, datePosted, jobStatus, title);
     }
 }

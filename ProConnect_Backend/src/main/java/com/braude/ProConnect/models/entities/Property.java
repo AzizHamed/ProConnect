@@ -72,12 +72,12 @@ public class Property {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Property property = (Property) o;
-        return id == property.id && name.equals(property.name) && owner.equals(property.owner) && location.equals(property.location);
+        return name.equals(property.name) && owner.equals(property.owner) && location.equals(property.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, owner, location);
+        return Objects.hash(name, owner, location);
     }
 
     @Override

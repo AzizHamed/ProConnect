@@ -106,11 +106,11 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return id == review.id && score == review.score && Objects.equals(reviewText, review.reviewText) && Objects.equals(reviewer, review.reviewer) && Objects.equals(reviewedUser, review.reviewedUser) && Objects.equals(roleReviewed, review.roleReviewed);
+        return score == review.score && Objects.equals(reviewText, review.reviewText) && Objects.equals(reviewer, review.reviewer) && Objects.equals(reviewedUser, review.reviewedUser) && Objects.equals(roleReviewed, review.roleReviewed);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, score, reviewText, reviewer, reviewedUser, roleReviewed);
+        return Objects.hash(score, reviewText, reviewer, reviewedUser, roleReviewed);
     }
 }
