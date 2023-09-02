@@ -36,8 +36,11 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
-    @OneToMany(mappedBy = "user")
-    List<UserSkill> userSkills;
+    @ManyToMany
+    @JoinTable(name = "user_professions",
+            joinColumns = @JoinColumn(name = "profession_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    List<Profession> professions;
 
 
     @ManyToMany()
@@ -51,7 +54,7 @@ public class User {
     }
 
     public User(long id, Name name, String email, String phoneNumber, Date dateOfBirth, List<Review> reviewsGiven,
-                List<Review> reviewsReceived, List<UserSkill> userSkills, Set<Role> roles) {//, List<User> workers) {
+                List<Review> reviewsReceived, List<Profession> professions, Set<Role> roles) {//, List<User> workers) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -59,7 +62,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.reviewsGiven = reviewsGiven;
         this.reviewsReceived = reviewsReceived;
-        this.userSkills = userSkills;
+        this.professions = professions;
         this.roles = roles;
         //this.workers = workers;
     }
@@ -120,12 +123,12 @@ public class User {
         this.reviewsReceived = reviewsReceived;
     }
 
-    public List<UserSkill> getUserSkills() {
-        return userSkills;
+    public List<Profession> getProfessions() {
+        return professions;
     }
 
-    public void setUserSkills(List<UserSkill> userSkills) {
-        this.userSkills = userSkills;
+    public void setProfessions(List<Profession> userSkills) {
+        this.professions = userSkills;
     }
 
     public Set<Role> getRoles() {
@@ -141,12 +144,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && name.equals(user.name) && email.equals(user.email) && phoneNumber.equals(user.phoneNumber) && dateOfBirth.equals(user.dateOfBirth) && Objects.equals(reviewsGiven, user.reviewsGiven) && Objects.equals(reviewsReceived, user.reviewsReceived) && Objects.equals(userSkills, user.userSkills) && Objects.equals(roles, user.roles);
+        return name.equals(user.name) && email.equals(user.email) && dateOfBirth.equals(user.dateOfBirth) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, phoneNumber, dateOfBirth, reviewsGiven, reviewsReceived, userSkills, roles);
+        return Objects.hash(name, email, dateOfBirth, roles);
     }
 
     public boolean addRole(Role role) {
