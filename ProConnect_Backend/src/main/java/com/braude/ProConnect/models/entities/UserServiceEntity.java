@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user_services")
-public class UserService {
+public class UserServiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_service_id", updatable = false)
@@ -33,17 +33,17 @@ public class UserService {
 
     private double cost;
 
-    public UserService() {
+    public UserServiceEntity() {
     }
 
-    public UserService(String description, Service service, User user, double cost) {
+    public UserServiceEntity(String description, Service service, User user, double cost) {
         this.description = description;
         this.service = service;
         this.user = user;
         this.cost = cost;
     }
 
-    public UserService(long id, String description, Service service, User user, double cost) {
+    public UserServiceEntity(long id, String description, Service service, User user, double cost) {
         this.id = id;
         this.description = description;
         this.service = service;
@@ -95,7 +95,7 @@ public class UserService {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserService that = (UserService) o;
+        UserServiceEntity that = (UserServiceEntity) o;
         return Double.compare(that.cost, cost) == 0 && description.equals(that.description) && service.equals(that.service) && user.equals(that.user);
     }
 
