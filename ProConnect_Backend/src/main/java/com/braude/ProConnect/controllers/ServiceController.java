@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("services")
 @CrossOrigin()
@@ -31,5 +33,10 @@ public class ServiceController {
     public ResponseEntity<UserService> createUserService(@RequestBody UserService userService) {
         UserService newService = servicesService.addUserService(userService);
         return new ResponseEntity<>(newService, HttpStatus.OK);
+    }
+    @PostMapping(value = "/create-user-services")
+    public ResponseEntity<List<UserService>> createUserServices(@RequestBody List<UserService> userServices) {
+        List<UserService> newServices = servicesService.addUserServices(userServices);
+        return new ResponseEntity<>(newServices, HttpStatus.OK);
     }
 }

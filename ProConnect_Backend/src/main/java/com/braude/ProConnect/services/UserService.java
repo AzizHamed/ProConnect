@@ -8,6 +8,7 @@ import com.braude.ProConnect.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,9 @@ public class UserService {
     }
 
     public User createUser(User user){
-        return userRepository.save(user);
+        if(!userRepository.existsById(user.getId()))
+            return userRepository.save(user);
+        return null;
     }
 
     public User getUser(long id) {
@@ -48,5 +51,13 @@ public class UserService {
             throw new ProConnectException("User already has this role.");
         userRepository.save(user);
         return true;
+    }
+
+    public List<User> createUsers(List<User> users) {
+        List<User> newUsers = new ArrayList<>();
+        for (User user : users) {
+            newUsers.add(createUser(user));
+        }
+        return newUsers;
     }
 }

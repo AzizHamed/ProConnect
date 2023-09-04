@@ -50,6 +50,14 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value = "/create-users")
+    public ResponseEntity<List<User>> createUsers(@Valid @RequestBody List<User> users){
+        List<User> newUsers = userService.createUsers(users);
+        if(newUsers != null)
+            return new ResponseEntity<>(newUsers, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping(value = "addRole")
     public ResponseEntity<Boolean> addRole(@RequestParam long userId, @RequestParam long roleId){
         if(userService.addRole(userId, roleId))
