@@ -32,7 +32,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/getAll")
+    @GetMapping(value = "/get-all")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userServicesService.getAllUsers();
         if(users != null)
@@ -56,7 +56,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value = "addRole")
+    @PostMapping(value = "add-role")
     public ResponseEntity<Boolean> addRole(@RequestParam long userId, @RequestParam long roleId){
         if(userServicesService.addRole(userId, roleId))
             return ResponseEntity.ok(true);

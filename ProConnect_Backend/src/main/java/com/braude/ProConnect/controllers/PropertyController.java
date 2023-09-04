@@ -25,7 +25,7 @@ public class PropertyController {
     }
 
 
-    @PostMapping(value = "createProperty")
+    @PostMapping(value = "create-property")
     public ResponseEntity<Property> createProperty(@Valid @RequestBody RequestWithId<Property> propertyRequest){
         Property newProperty = propertyService.createProperty(propertyRequest.getData(), propertyRequest.getId());
         if(newProperty != null)
@@ -33,12 +33,12 @@ public class PropertyController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping(value = "getProperties")
+    @GetMapping(value = "get-properties")
     public ResponseEntity<List<Property>> getProperties(){
         return ResponseEntity.ok(propertyService.getProperties());
     }
 
-    @GetMapping(value = "getLocations")
+    @GetMapping(value = "get-locations")
     public ResponseEntity<List<Location>> getLocations(){
         return ResponseEntity.ok(propertyService.getLocations());
     }
