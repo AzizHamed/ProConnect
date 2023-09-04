@@ -1,0 +1,5 @@
+id,description,service/id,service/name,service/profession/id,service/profession/name,service/profession/description,user/id,cost
+0,Service1,1,serv1,1,Cons,BUILD,1,321.25
+0,Service2,3,serv2,1,Cons,BUILD,1,456
+0,Service3,4,serv3,1,Cons,BUILD,1,590.75
+0,Service4,4,serv4,1,Cons,BUILD,1,725.5
