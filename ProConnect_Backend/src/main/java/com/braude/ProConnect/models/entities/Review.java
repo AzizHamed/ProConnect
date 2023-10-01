@@ -1,10 +1,7 @@
 package com.braude.ProConnect.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -19,25 +16,30 @@ public class Review {
 
     @Min(value = 1)
     @Max(value = 5)
+    @NotNull(message = "Review score must be provided.")
     private int score;
 
     @Size(min = 10, max = 2000)
     @Column(length = 2000)
+    @NotNull(message = "Review text must be provided.")
+    @NotEmpty(message = "Review text can't be empty.")
     private String reviewText;
 
     @ManyToOne
     @JoinColumn(name = "reviewer_user_id")
+    @NotNull(message = "Reviewer can't be null.")
     private User reviewer;
 
     @ManyToOne
     @JoinColumn(name = "reviewed_user_id")
+    @NotNull(message = "Reviewed user can't be null.")
     private User reviewedUser;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @NotNull(message = "Role of reviewed user can't be null.")
     private Role roleReviewed;
 
-    @NotNull
     private ZonedDateTime timestamp;
 
     public Review() {
@@ -99,6 +101,14 @@ public class Review {
 
     public void setRoleReviewed(Role roleReviewed) {
         this.roleReviewed = roleReviewed;
+    }
+
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(ZonedDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override

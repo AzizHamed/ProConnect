@@ -30,6 +30,11 @@ public class UserService {
         return null;
     }
 
+    /**
+     * Returns the User with the given id if found, otherwise returns null.
+     * @param id
+     * @return
+     */
     public User getUser(long id) {
         Optional<User> user = userRepository.findById(id);
         return user.isPresent() ? user.get() : null;

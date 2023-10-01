@@ -3,7 +3,7 @@ package com.braude.ProConnect.services;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.Profession;
 import com.braude.ProConnect.models.entities.Service;
-import com.braude.ProConnect.models.entities.UserService;
+import com.braude.ProConnect.models.entities.UserServiceEntity;
 import com.braude.ProConnect.repositories.ProfessionRepository;
 import com.braude.ProConnect.repositories.ServiceRepository;
 import com.braude.ProConnect.repositories.UserServiceRepository;
@@ -35,14 +35,14 @@ public class ServicesService {
         return serviceRepository.save(skill);
     }
 
-    public UserService addUserService(UserService userService) {
-        return userServiceRepository.save(userService);
+    public UserServiceEntity addUserService(UserServiceEntity userServiceEntity) {
+        return userServiceRepository.save(userServiceEntity);
     }
 
-    public List<UserService> addUserServices(List<UserService> userServices) {
-        List<UserService> services = new ArrayList<>();
-        for (UserService userService : userServices) {
-            services.add(addUserService(userService));
+    public List<UserServiceEntity> addUserServices(List<UserServiceEntity> userServiceEntities) {
+        List<UserServiceEntity> services = new ArrayList<>();
+        for (UserServiceEntity userServiceEntity : userServiceEntities) {
+            services.add(addUserService(userServiceEntity));
         }
         return services;
     }

@@ -1,8 +1,7 @@
 package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.models.entities.Service;
-import com.braude.ProConnect.models.entities.UserService;
-import com.braude.ProConnect.requests.RequestWithId;
+import com.braude.ProConnect.models.entities.UserServiceEntity;
 import com.braude.ProConnect.services.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,13 +29,13 @@ public class ServiceController {
         return new ResponseEntity<>(newService, HttpStatus.OK);
     }
     @PostMapping(value = "/create-user-service")
-    public ResponseEntity<UserService> createUserService(@RequestBody UserService userService) {
-        UserService newService = servicesService.addUserService(userService);
+    public ResponseEntity<UserServiceEntity> createUserService(@RequestBody UserServiceEntity userServiceEntity) {
+        UserServiceEntity newService = servicesService.addUserService(userServiceEntity);
         return new ResponseEntity<>(newService, HttpStatus.OK);
     }
     @PostMapping(value = "/create-user-services")
-    public ResponseEntity<List<UserService>> createUserServices(@RequestBody List<UserService> userServices) {
-        List<UserService> newServices = servicesService.addUserServices(userServices);
+    public ResponseEntity<List<UserServiceEntity>> createUserServices(@RequestBody List<UserServiceEntity> userServiceEntities) {
+        List<UserServiceEntity> newServices = servicesService.addUserServices(userServiceEntities);
         return new ResponseEntity<>(newServices, HttpStatus.OK);
     }
 }
