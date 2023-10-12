@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +15,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +42,7 @@ public class Role {
     public static final Role CONTRACTOR = new Role("Contractor", "CON");
     public static final Role WORKER = new Role("Worker", "WOR");
 
-    public Role() {
-    }
 
-    public Role(long id, String name, String code) {
-        this.id = id;
-        this.name = name;
-        this.code = code.toUpperCase();
-    }
 
     public Role(String name, String code) {
         this.name = name;
@@ -53,26 +54,6 @@ public class Role {
         List<Role> roles = new ArrayList<>();
         roles.addAll(List.of(new Role[]{ADMIN, HOMEOWNER, PROFESSIONAL, CONTRACTOR, WORKER}));
         return roles;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public void setCode(String code) {

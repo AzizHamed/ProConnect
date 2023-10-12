@@ -3,6 +3,10 @@ package com.braude.ProConnect.models.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -11,6 +15,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user_services")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserServiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +41,6 @@ public class UserServiceEntity {
 
     private double cost;
 
-    public UserServiceEntity() {
-    }
 
     public UserServiceEntity(String description, Service service, User user, double cost) {
         this.description = description;
@@ -43,53 +49,6 @@ public class UserServiceEntity {
         this.cost = cost;
     }
 
-    public UserServiceEntity(long id, String description, Service service, User user, double cost) {
-        this.id = id;
-        this.description = description;
-        this.service = service;
-        this.user = user;
-        this.cost = cost;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -23,6 +23,7 @@ public class RoleController {
         this.roleService = roleService;
     }
 
+
     @GetMapping(value = "/get-all")
     public ResponseEntity<List<Role>> getAllRoles(){
         List<Role> roles = roleService.getRoles();

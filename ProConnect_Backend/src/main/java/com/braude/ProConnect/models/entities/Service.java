@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -12,6 +16,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "services")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,43 +36,13 @@ public class Service {
     @JoinColumn(name = "profession_id")
     private Profession profession;
 
-    public Service() {
-    }
 
     public Service(String name, Profession profession) {
         this.name = name;
         this.profession = profession;
     }
 
-    public Service(long id, String name, Profession profession) {
-        this.id = id;
-        this.name = name;
-        this.profession = profession;
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Profession getProfession() {
-        return profession;
-    }
-
-    public void setProfession(Profession profession) {
-        this.profession = profession;
-    }
 
     @Override
     public boolean equals(Object o) {

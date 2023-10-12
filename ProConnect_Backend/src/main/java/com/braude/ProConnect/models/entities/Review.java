@@ -2,12 +2,20 @@ package com.braude.ProConnect.models.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "reviews")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,74 +50,7 @@ public class Review {
 
     private ZonedDateTime timestamp;
 
-    public Review() {
-    }
 
-    public Review(long id, int score, String reviewText, User reviewer, User reviewedUser, Role roleReviewed, ZonedDateTime timestamp) {
-        this.id = id;
-        this.score = score;
-        this.reviewText = reviewText;
-        this.reviewer = reviewer;
-        this.reviewedUser = reviewedUser;
-        this.roleReviewed = roleReviewed;
-        this.timestamp = timestamp;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
-    public User getReviewer() {
-        return reviewer;
-    }
-
-    public void setReviewer(User reviewer) {
-        this.reviewer = reviewer;
-    }
-
-    public User getReviewedUser() {
-        return reviewedUser;
-    }
-
-    public void setReviewedUser(User reviewedUser) {
-        this.reviewedUser = reviewedUser;
-    }
-
-    public Role getRoleReviewed() {
-        return roleReviewed;
-    }
-
-    public void setRoleReviewed(Role roleReviewed) {
-        this.roleReviewed = roleReviewed;
-    }
-
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,6 @@
 package com.braude.ProConnect;
 
+import com.braude.ProConnect.models.entities.Role;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

@@ -5,12 +5,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "jobs")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,83 +42,7 @@ public class Job {
     @NotEmpty(message = "Job description can't be empty.")
     private String description;
 
-    public Job() {
-    }
 
-    public Job(long id, double budget, User owner, Property property, OffsetDateTime datePosted, JobStatus jobStatus, String title, String description) {
-        this.id = id;
-        this.budget = budget;
-        this.owner = owner;
-        this.property = property;
-        this.datePosted = datePosted;
-        this.jobStatus = jobStatus;
-        this.title = title;
-        this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public double getBudget() {
-        return budget;
-    }
-
-    public void setBudget(double budget) {
-        this.budget = budget;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
-    public OffsetDateTime getDatePosted() {
-        return datePosted;
-    }
-
-    public void setDatePosted(OffsetDateTime datePosted) {
-        this.datePosted = datePosted;
-    }
-
-    public JobStatus getJobStatus() {
-        return jobStatus;
-    }
-
-    public void setJobStatus(JobStatus jobStatus) {
-        this.jobStatus = jobStatus;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Override
     public boolean equals(Object o) {
