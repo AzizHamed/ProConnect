@@ -20,4 +20,4 @@ For professionals, the app features a comprehensive job search engine, allowing 
 
 Homeowners benefit from an easy-to-use interface for finding and hiring skilled professionals. They can search for professionals based on job type, location, and other criteria, and view professional profiles and reviews before making a hiring decision.
 
-Our application provides a simple, user-friendly solution for connecting homeowners and professionals, aiming to create a more efficient, effective, and profitable industry.
+Our application provides a simple, user-friendly solution for connecting homeowners and professionals, aiming to create a more efficient, effective, and profitable industry. 
