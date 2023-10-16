@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> has 1 child 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#CFE8FB",
+      "flex": 1,
+      "flexDirection": "column",
+      "paddingLeft": 10,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "height": 200,
+      }
+    }
+  >
+    <View>
+      <View>
+        <Image
+          source={1}
+          style={
+            {
+              "borderColor": "#0F30F7",
+              "borderRadius": 100,
+              "borderWidth": 3,
+              "height": 150,
+              "width": 150,
+            }
+          }
+        />
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "flex-start",
+          "flexDirection": "row",
+          "height": 75,
+          "justifyContent": "space-between",
+          "width": 1000,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "marginLeft": 30,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "fontWeight": "bold",
+            }
+          }
+        />
+        <Text />
+        <Text />
+      </View>
+      <View
+        style={
+          {
+            "marginLeft": 30,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Contact Information
+        </Text>
+        <View
+          style={
+            {
+              "alignItems": "flex-end",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text />
+          <Text
+            style={
+              {
+                "marginLeft": 8,
+              }
+            }
+          />
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text />
+          <Text
+            style={
+              {
+                "marginLeft": 8,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "justifyContent": "flex-start",
+            "marginLeft": 30,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Availibality
+        </Text>
+        <Text />
+        <View
+          style={
+            {
+              "alignItems": "flex-end",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text />
+          <Text
+            style={{}}
+          >
+            works in 
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "marginLeft": 30,
+          }
+        }
+      >
+        <button
+          style={
+            {
+              "backgroundColor": "#0F30F7",
+              "borderColor": "#0F30F7",
+              "borderRadius": 20,
+              "color": "white",
+              "fontFamily": "Arial",
+              "fontSize": 20,
+              "height": 60,
+              "width": 200,
+            }
+          }
+        >
+          Propose a job
+        </button>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "flexDirection": "column",
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "fontWeight": "bold",
+          }
+        }
+      >
+        About John
+      </Text>
+      <Text>
+        In this modified code, Ive introduced an interface GalleryImageProps to define the expected props for the GalleryImage component. The source prop is used to dynamically set the image source, and the imageStyle prop is used to allow custom styling of the Image component.Now, when you use the GalleryImage component in your application, you can pass the desired values for the source and imageStyle props:
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flex": 1,
+          "marginLeft": 10,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Gallery
+      </Text>
+      <View
+        style={
+          {
+            "height": 100,
+            "width": 500,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;
