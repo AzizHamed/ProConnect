@@ -67,12 +67,12 @@ const ProfileInfo: React.FC<ProfileInfoProps> = (props) => {
     </View>
 
     <View style={styles.proposeAjobBC}>
-      
+{/*       
       <button  style={styles.proposeAjobB}  >
 
       Propose a job
        </button>
-        
+         */}
      
     </View>
 
