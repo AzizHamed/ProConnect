@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native'
 import React from 'react'
+import { StyleSheet } from 'react-native'
 import { Button, ButtonProps } from 'react-native-ui-lib';
 
 interface ProButtonProps {
