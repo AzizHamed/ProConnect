@@ -26,7 +26,8 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
         borderRadius={borderRadius}
         supportRTL={true} 
         label={text} 
-        color={color}>    
+        color={color}
+        bg-primary>    
     </Button>
   )
 }
