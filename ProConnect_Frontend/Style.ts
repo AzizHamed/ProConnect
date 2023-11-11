@@ -76,7 +76,7 @@ export function initTheme() {
 
 export function setTheme(dark: boolean) {
   Colors.setScheme(dark ? "dark" : "light");
-  console.log("SetTheme: ", dark ? "Dark" : "Light");
+//   console.log("SetTheme: ", dark ? "Dark" : "Light");
 }
 
 const themeStorageKey = "darkTheme";
@@ -93,10 +93,10 @@ export async function loadThemePreference() {
   await getSimpleData(themeStorageKey).then((value) => {
       if (value === undefined) {
           isDarkTheme = false;
-          console.log("GetSimpleData Value: undefined");
+        //   console.log("GetSimpleData Value: undefined");
         } else {
             isDarkTheme = value === "true";
-            console.log(`GetSimpleData Value: ${value}`);
+            // console.log(`GetSimpleData Value: ${value}`);
         }
     });
 return isDarkTheme;
