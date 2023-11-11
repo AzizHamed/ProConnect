@@ -28,6 +28,8 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
-    }
-  }
+    },
+    "sdkVersion": "49.0.0"
+  },
+  "name": "proconnect_frontend"
 }
