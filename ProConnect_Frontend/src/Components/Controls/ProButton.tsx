@@ -26,12 +26,9 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
         borderRadius={borderRadius}
         supportRTL={true} 
         label={text} 
-        color={color}
-        bg-primary>    
+        color={color}>    
     </Button>
   )
 }
-
-const styles = StyleSheet.create({})
 
 export default ProButton

@@ -16,7 +16,7 @@ const ProHeader: React.FC<ProHeaderProps & TextProps> = (props) => {
     const large = isHeaderSize(headerType, HeaderType.Large);
   return (
     //<Text {...props} text60L={small} text40L={normal} text20L={large} h1 primary>{text}</Text>
-    <Text {...props} allowFontScaling h1={large} h2={normal} h3={small} marginV-headers>{text}</Text>
+    <Text {...props} textPrimary allowFontScaling h1={large} h2={normal} h3={small} marginV-headers>{text}</Text>
   )
 }
 
