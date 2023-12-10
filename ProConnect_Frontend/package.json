@@ -42,6 +42,8 @@
     "react-native-vector-icons": "^10.0.0",
     "react-native-web": "~0.19.6",
     "@react-native-async-storage/async-storage": "1.18.2"
+
+    "react-router-dom": "^6.15.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
