@@ -2,6 +2,7 @@ package com.braude.ProConnect.services;
 
 
 import com.braude.ProConnect.models.entities.Job;
+import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.repositories.JobProposalRepository;
 import com.braude.ProConnect.repositories.JobRepository;
@@ -32,6 +33,8 @@ public class JobService {
     }
 
     public List<Job> getJobByUserId(Long userId) {
-        return jobRepository.findByUserId(userId);
+        User user = new User();
+        user.setId(userId);
+        return jobRepository.findByOwner(user);
     }
 }
