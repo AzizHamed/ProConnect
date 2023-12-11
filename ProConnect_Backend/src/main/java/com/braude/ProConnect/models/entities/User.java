@@ -41,11 +41,12 @@ public class User {
     private List<Review> reviewsReceived;
 
 
-    @ElementCollection
-    @MapKeyColumn(name="profession")
-    @Column(name="years_of_experience")
-    @CollectionTable(name="user_professions", joinColumns=@JoinColumn(name="user_id"))
-    private Map<Profession,Double> professions ;
+//    @ElementCollection
+//    @MapKeyColumn(name="profession")
+//    @Column(name="years_of_experience")
+//    @CollectionTable(name="user_professions", joinColumns=@JoinColumn(name="user_id"))
+//    private Map<Profession,Double> professions ;
+
     /* @ManyToMany
     @JoinTable(name = "user_professions",
             joinColumns = @JoinColumn(name = "profession_id"),
