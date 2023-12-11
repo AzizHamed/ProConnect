@@ -20,7 +20,7 @@ import java.util.Objects;
 public class ApplyForJobPostedByHomeowner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long apply_id;
 
     private Date date;

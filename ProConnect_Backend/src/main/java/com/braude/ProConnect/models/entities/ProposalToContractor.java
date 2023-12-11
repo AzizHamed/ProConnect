@@ -19,7 +19,7 @@ import java.util.Objects;
 public class ProposalToContractor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long proposal_id;
 
     private Date dayOfProposal;

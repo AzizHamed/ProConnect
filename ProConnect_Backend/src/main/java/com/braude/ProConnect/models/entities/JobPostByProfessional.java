@@ -18,7 +18,7 @@ import java.util.Objects;
 public class JobPostByProfessional {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long post_id;
 
     private String title;

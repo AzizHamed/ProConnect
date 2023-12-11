@@ -20,7 +20,7 @@ import java.util.Objects;
 public class WorkerApply {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long apply_id;
 
 

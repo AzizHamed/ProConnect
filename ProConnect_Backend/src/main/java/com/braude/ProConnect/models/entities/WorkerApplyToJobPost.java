@@ -18,7 +18,7 @@ import java.util.Objects;
 public class WorkerApplyToJobPost {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long apply_id;
 
 
