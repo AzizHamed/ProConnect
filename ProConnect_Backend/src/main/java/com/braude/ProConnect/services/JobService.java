@@ -2,6 +2,7 @@ package com.braude.ProConnect.services;
 
 
 import com.braude.ProConnect.models.entities.Job;
+import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.repositories.JobProposalRepository;
