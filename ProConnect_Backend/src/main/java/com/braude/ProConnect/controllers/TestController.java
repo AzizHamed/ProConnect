@@ -1,56 +1,52 @@
-//package com.braude.ProConnect.controllers;
-//
-//import com.braude.ProConnect.models.entities.Role;
-//import com.braude.ProConnect.models.entities.User;
-//import com.braude.ProConnect.services.RoleService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("test")
-//@CrossOrigin
-//public class TestController {
-//    @Autowired
-//    private RoleService roleService;
-//
-//    @GetMapping("hello")
-//    public String myTest()
-//    {
-//        System.out.print("Hello!");
-//        return "HELLO WORLD!!!";
-//    }
-//
-//    @GetMapping("hello2")
-//    public String myTest2(String name)
-//    {
-//        return "HELLO " + name + "!!!";
-//    }
-//
-//
-//    @PostMapping("postBody")
-//    public String postTest(@RequestBody String data, @RequestParam(value = "name") String name){
-//        System.out.println(data);
-//        return name + " requested DATA: " + data;
-//    }
-//
-//    @PostMapping("postUser")
-//    public String postUserTest(@RequestBody User user, @RequestParam(value = "name") String name){
-//        System.out.println(user.toString() + user.getName());
-//        return name + " requested DATA about: " + user;
-//    }
-//
-//    @GetMapping("getUsers")
-//    public ArrayList<User> getUsers(){
-//        ArrayList<User> users = new ArrayList<User>();
-//
-//        return users;
-//    }
-//
-//    @GetMapping("roles")
-//    public List<Role> getRoles(){
-//        return roleService.getRoles();
-//    }
-//}
+package com.braude.ProConnect.controllers;
+
+import com.braude.ProConnect.models.embeddables.Name;
+import com.braude.ProConnect.models.entities.Role;
+import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.services.RoleService;
+import com.braude.ProConnect.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+@RestController
+@CrossOrigin
+public class TestController {
+    private final RoleService roleService;
+    private final UserService userService;
+
+    public TestController(UserService userService, RoleService roleService) {
+        this.roleService = roleService;
+        this.userService = userService;
+    }
+
+    @GetMapping("init")
+    public void init()
+    {
+        List<Role> savedRoles = roleService.generateRoles();
+        if(savedRoles == null)
+            savedRoles = roleService.getRoles();
+        List<User> users = new ArrayList<>();
+        User user;
+        List<Role> roles = new ArrayList<>();
+        roles.add(savedRoles.get(0));
+        roles.add(savedRoles.get(3));
+        user = User.builder().name(new Name("User", "1")).email("user1@gmail.com").phoneNumber("0521111111").dateOfBirth(Date.valueOf("2001-1-1")).roles(roles).build();
+        users.add(user);
+        roles = new ArrayList<>();
+        roles.add(savedRoles.get(1));
+        roles.add(savedRoles.get(4));
+        user = User.builder().name(new Name("User", "2")).email("user2@gmail.com").phoneNumber("0522222222").dateOfBirth(Date.valueOf("2002-2-2")).roles(roles).build();
+        users.add(user);
+        roles = new ArrayList<>();
+        roles.add(savedRoles.get(2));
+        user = User.builder().name(new Name("User", "3")).email("user3@gmail.com").phoneNumber("0523333333").dateOfBirth(Date.valueOf("2003-3-3")).roles(roles).build();
+        users.add(user);
+        userService.createUsers(users);
+    }
+
+}

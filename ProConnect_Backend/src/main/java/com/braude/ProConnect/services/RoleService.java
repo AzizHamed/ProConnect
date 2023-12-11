@@ -15,9 +15,10 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public void generateRoles(){
+    public List<Role> generateRoles(){
         if(roleRepository.count() == 0)
-            roleRepository.saveAll(Role.getDefaultRoles());
+            return roleRepository.saveAll(Role.getDefaultRoles());
+        return null;
     }
 
     public List<Role> getRoles() {
