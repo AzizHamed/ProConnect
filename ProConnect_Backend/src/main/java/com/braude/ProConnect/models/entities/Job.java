@@ -5,12 +5,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,16 +17,20 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_id", updatable = false)
     private long id;
     private double budget;
-    @ManyToOne
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User owner;
-    @ManyToOne
+    @JoinColumn(name = "property_id", referencedColumnName = "property_id")
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Property property;
+
     private OffsetDateTime datePosted;
     @Enumerated(EnumType.STRING)
     private JobStatus jobStatus;
@@ -41,6 +43,19 @@ public class Job {
     @NotNull(message = "Job description can't be null.")
     @NotEmpty(message = "Job description can't be empty.")
     private String description;
+
+
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> likedUsers;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Comment> commentedUsers;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Profession> neededProfessions;
+
+    private int numberOfReports;
 
 
 

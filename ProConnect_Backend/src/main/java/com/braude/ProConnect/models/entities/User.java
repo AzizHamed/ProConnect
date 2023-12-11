@@ -5,22 +5,17 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +29,8 @@ public class User {
     @NotEmpty(message = "Email cannot be empty.")
     @Column(unique = true)
     private String email;
+
+    @Column(unique = true)
     private String phoneNumber;
     private Date dateOfBirth;
 
@@ -43,18 +40,35 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
-    @ManyToMany
+
+    @ElementCollection
+    @MapKeyColumn(name="profession")
+    @Column(name="years_of_experience")
+    @CollectionTable(name="user_professions", joinColumns=@JoinColumn(name="user_id"))
+    private Map<Profession,Double> professions ;
+    /* @ManyToMany
     @JoinTable(name = "user_professions",
             joinColumns = @JoinColumn(name = "profession_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    List<Profession> professions;
+            inverseJoinColumns = @JoinColumn(name = "user_id"))*/
+   // List<Profession> professions;
+
 
 
     @ManyToMany()
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<Role> roles;
+    private Set<Role>  roles;
+
+
+    @ManyToMany()
+    @JoinTable(name = "professional_contractor",
+            joinColumns = @JoinColumn(name = "professional_id"),
+            inverseJoinColumns = @JoinColumn(name = "contractor_id"))
+    private List<User> contractors;
+
+
+
     //private List<User> workers;
 
     @Override
