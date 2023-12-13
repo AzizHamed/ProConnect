@@ -21,3 +21,11 @@ export enum JobStatus {
     REQUIRES_ADJUSTMENTS = 'REQUIRES_ADJUSTMENTS',
     FINISHED = 'FINISHED',
   }
+
+  export enum JobDateSearch{
+    AllTime = "AllTime",
+    Month = "Month",
+    Week = "Week",
+    Day = "Day",
+    Hour = "Hour"
+  }

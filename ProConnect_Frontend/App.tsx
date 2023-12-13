@@ -1,5 +1,5 @@
 require("react-native-ui-lib/config").setConfig({ appScheme: "default" });
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   initTheme,
@@ -10,12 +10,16 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Testing from "./src/Components/Testing";
 import { View, Text } from "react-native-ui-lib";
+import JobsList from "./src/Components/Jobs/JobsList";
 let isDarkTheme: any = undefined;
 initTheme();
+
 
 export default function App() {
   // const users = useGetUsers();
   const [darkTheme, setDarkTheme] = useState<boolean>(isDarkTheme);
+ 
+
   async function loadPreferences() {
     isDarkTheme = await loadThemePreference();
     // console.log("Load await value: ", isDarkTheme);
@@ -26,9 +30,7 @@ export default function App() {
   }, []);
 
   function updateTheme() {
-    // console.log(`Update Theme: ${isDarkTheme}`);
     saveThemePreference(isDarkTheme).then(() => {
-      // console.log(`Saved Theme Pref: ${isDarkTheme}`);
       setTheme(isDarkTheme);
       setTimeout(() => {
         setDarkTheme(isDarkTheme);
@@ -43,12 +45,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <View padding-page bg-screenBG>
-        <Text h1 textColor>
-          {isDarkTheme ? 'Dark Mode' : 'Light Mode'}
+      <View paddingT-page paddingL-page bg-backgroundPrimary>
+        <Text h1 textPrimary>
+          {isDarkTheme ? "Dark Mode" : "Light Mode"}
         </Text>
       </View>
-      <Testing toggleTheme={toggleTheme} />
+      <JobsList></JobsList>
+      {/* <Testing toggleTheme={toggleTheme} /> */}
     </SafeAreaProvider>
   );
 }
@@ -59,5 +62,5 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     alignItems: "center",
     justifyContent: "center",
-  },
+  }
 });
