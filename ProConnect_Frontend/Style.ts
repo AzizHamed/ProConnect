@@ -20,32 +20,56 @@ export function initTheme() {
 
   Colors.loadSchemes({
     light: {
-      primary: "#ce6a6a",
-      textPrimary: "#222222",
-      screenBG: "transparent",
-      textColor: Colors.grey10,
-      moonOrSun: Colors.yellow30,
-      mountainForeground: Colors.green30,
-      mountainBackground: Colors.green50,
-      $backgroundSuccess: Colors.green40,
-      $backgroundSuccessLight: Colors.green70,
-    },
-    dark: {
-      primary: "#000000", // '#f8a4a4',
-      textPrimary: "#ffffff",
-      screenBG: "#2e333a",
-      textColor: Colors.white,
-      moonOrSun: Colors.grey80,
-      mountainForeground: Colors.violet10,
-      mountainBackground: Colors.violet20,
-      $backgroundSuccess: Colors.green40,
-      $backgroundSuccessLight: Colors.green20,
-    },
+      primary: "#3498db",
+      secondary: "#e74c3c",
+      tertiary: "#1f2421",
+      textPrimary: "#333333",
+      textSecondary: "#555555",
+      backgroundPrimary: "#ffffff",
+      backgroundSecondary: "#f2f2f2",
+      backgroundTertiary: "#fafafa",
+      success: "#27ae60",
+      failure: "#e74c3c",
+      highlight: "#cecece",
+  },
+dark: {
+  primary: "#3498db",
+  secondary: "#e74c3c",
+  tertiary: "#2ecc71",
+  textPrimary: "#ecf0f1",
+  textSecondary: "#bdc3c7",
+  backgroundPrimary: "#34495e",
+  backgroundSecondary: "#2c3e50",
+  backgroundTertiary: "#2c3e50",
+  success: "#27ae60",
+  failure: "#e74c3c",
+  highlight: "#384f66",
+}
+
+    // light: {
+    //   primary: "#3498db",
+    //   textPrimary: "#333333",
+    //   screenBG: "transparent",
+    //   textColor: Colors.grey10,
+    //   $backgroundSuccess: Colors.green40,
+    //   $backgroundSuccessLight: Colors.green70,
+    // },
+    // dark: {
+    //   primary: "#3c5577", // '#f8a4a4',
+    //   textPrimary: "#ffffff",
+    //   screenBG: "#2e333a",
+    //   textColor: Colors.white,
+    //   $backgroundSuccess: Colors.green40,
+    //   $backgroundSuccessLight: Colors.green20,
+    // },
   });
+
+  
   Typography.loadTypographies({
     h1: { fontSize: 42, fontWeight: "heavy", lineHeight: 64 },
     h2: { fontSize: 42, fontWeight: "300", lineHeight: 64 },
-    h3: { fontSize: 30, fontWeight: "200", lineHeight: 40 },
+    h3: { fontSize: 30, fontWeight: "heavy", lineHeight: 40 },
+    h4: { fontSize: 30, fontWeight: "300", lineHeight: 40 },
     body: { fontSize: 16, fontWeight: "400", lineHeight: 18 },
   });
 
@@ -70,6 +94,14 @@ export function initTheme() {
     return {
       backgroundColor: Colors.primary,
       text: Colors.moonOrSun
+    };
+  });
+
+  ThemeManager.setComponentTheme('Card', (props: Props, context: any) => {
+
+    return {
+      padding: 10,
+      spacing: 30,
     };
   });
 }
