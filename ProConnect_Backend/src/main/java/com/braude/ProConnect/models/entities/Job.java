@@ -8,13 +8,13 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "jobs")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,14 +24,17 @@ public class Job {
     @Column(name = "job_id", updatable = false)
     private long id;
     private double budget;
-    @ManyToOne(optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User owner;
     @JoinColumn(name = "property_id", referencedColumnName = "property_id")
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Property property;
 
+
     private OffsetDateTime datePosted;
+
+    //private OffsetDateTime datePosted;
     @Enumerated(EnumType.STRING)
     private JobStatus jobStatus;
     @Size(max = 512, message = "Job title must be under 512 characters long.")
@@ -45,18 +48,22 @@ public class Job {
     private String description;
 
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "User_Job",
+    joinColumns = @JoinColumn(name = "job_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> likedUsers ;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<User> likedUsers;
-
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "job")
     private List<Comment> commentedUsers;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "job_profession",
+    joinColumns = @JoinColumn(name = "job_id", referencedColumnName = "job_id"),
+    inverseJoinColumns = @JoinColumn(name = "profession_id", referencedColumnName = "profession_id"))
     private List<Profession> neededProfessions;
 
-    private int numberOfReports;
-
+    private int numberOfReports=0;
 
 
     @Override
@@ -64,11 +71,11 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Job job = (Job) o;
-        return Double.compare(job.budget, budget) == 0 && owner.equals(job.owner) && property.equals(job.property) && datePosted.equals(job.datePosted) && jobStatus == job.jobStatus && title.equals(job.title) ;
+        return id == job.id && Double.compare(job.budget, budget) == 0 && numberOfReports == job.numberOfReports && Objects.equals(owner, job.owner) && Objects.equals(property, job.property) && jobStatus == job.jobStatus && Objects.equals(title, job.title) && Objects.equals(description, job.description) && Objects.equals(likedUsers, job.likedUsers) && Objects.equals(commentedUsers, job.commentedUsers) && Objects.equals(neededProfessions, job.neededProfessions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(budget, owner, property, datePosted, jobStatus, title);
+        return Objects.hash(id, budget, owner, property, jobStatus, title, description, likedUsers, commentedUsers, neededProfessions, numberOfReports);
     }
 }

@@ -40,21 +40,6 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
-
-//    @ElementCollection
-//    @MapKeyColumn(name="profession")
-//    @Column(name="years_of_experience")
-//    @CollectionTable(name="user_professions", joinColumns=@JoinColumn(name="user_id"))
-//    private Map<Profession,Double> professions ;
-
-    /* @ManyToMany
-    @JoinTable(name = "user_professions",
-            joinColumns = @JoinColumn(name = "profession_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))*/
-   // List<Profession> professions;
-
-
-
     @ManyToMany()
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

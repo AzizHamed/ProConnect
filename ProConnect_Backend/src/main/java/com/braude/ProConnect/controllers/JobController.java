@@ -1,9 +1,14 @@
 package com.braude.ProConnect.controllers;
 
 
+import com.braude.ProConnect.exceptions.ProConnectException;
+import com.braude.ProConnect.models.entities.Comment;
 import com.braude.ProConnect.models.entities.Job;
+import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.page.JobPage;
+import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.services.JobService;
+import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,11 +41,25 @@ public class JobController {
 
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Job>> getPages(JobPage jobPage){
-        return new ResponseEntity<>(jobService.getJobs(jobPage),
+    public ResponseEntity<Page<Job>> getPages(JobPage jobPage, JobSearchCriteria jobSearchCriteria){
+        return new ResponseEntity<>(jobService.getJobs(jobPage,jobSearchCriteria),
                 HttpStatus.OK);
     }
 
+    @PutMapping("/like")
+    public String likePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull Long userId){
+            return jobService.likePost(jobId,userId);
+    }
+
+    @PutMapping("/unlike")
+    public String unLikePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull Long userId){
+        return jobService.unLikePost(jobId,userId);
+    }
+
+    @PutMapping("/comment")
+    public Comment commentOnPost(@RequestBody Comment comment){
+        return jobService.addComment(comment);
+    }
     /*@GetMapping("/user")
     public List<Job> getJobsByUser(@RequestParam Long userId){
         return jobService.getJobByUserId(userId);
