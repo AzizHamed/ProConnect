@@ -38,6 +38,15 @@ public class PropertyService {
         return propertyRepository.save(property);
     }
 
+    public Property getProperty(long propertyId){
+        Optional<Property> optionalProperty = propertyRepository.findById(propertyId);
+        if(!optionalProperty.isPresent())
+            throw new ProConnectException("Property doesn't exist");
+        Property property = optionalProperty.get();
+
+        return property;
+    }
+
     public List<Location> getLocations() {
         List<Location> locations = new ArrayList<>();
         List<Property> properties = getProperties();

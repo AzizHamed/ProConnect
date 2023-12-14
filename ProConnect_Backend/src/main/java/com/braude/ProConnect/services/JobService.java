@@ -4,6 +4,7 @@ package com.braude.ProConnect.services;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.Comment;
 import com.braude.ProConnect.models.entities.Job;
+import com.braude.ProConnect.models.entities.Property;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
@@ -14,35 +15,42 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class JobService {
 
     private final JobRepositoryPaging jobRepositoryPaging;
     private final JobRepository jobRepository;
-
     private final JobProposalRepository jobProposalRepository;
-
     private final JobCriteriaRepository jobCriteriaRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CommentRepository commentRepository;
+    private final UserService userService;
+    private final PropertyService propertyService;
+    private final CommentRepository commentRepository;
 
 
     @Autowired
     public JobService(JobRepository jobRepository, JobRepositoryPaging jobRepositoryPaging, JobProposalRepository jobProposalRepository,
-                      JobCriteriaRepository jobCriteriaRepository) {
+                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository) {
         this.jobRepository = jobRepository;
         this.jobProposalRepository = jobProposalRepository;
         this.jobRepositoryPaging = jobRepositoryPaging;
         this.jobCriteriaRepository = jobCriteriaRepository;
 
+        this.propertyService = propertyService;
+        this.userService = userService;
+        this.commentRepository = commentRepository;
     }
 
     public Job postJob(Job job){
+        User user = userService.getUser(job.getOwner().getId());
+        Property property = propertyService.getProperty(job.getProperty().getId());
+        if(user == null)
+            throw new ProConnectException("Invalid user id");
+        if(property == null)
+            throw new ProConnectException("Invalid property id");
+        job.setOwner(user);
+        job.setProperty(property);
         job.setDatePosted(OffsetDateTime.now());
         job.setJobStatus(JobStatus.PUBLISHED);
         return jobRepository.save(job);
