@@ -2,10 +2,12 @@
 import { Job, JobStatus } from "../../Models/Job";
 import { User } from "../../Models/User";
 import { Property } from "../../Models/Property";
-import { View } from "react-native-ui-lib";
+import { Colors, View } from "react-native-ui-lib";
 import { ScrollView, StyleSheet } from "react-native";
 import JobCard from "./JobCard";
 import { useGetJobs } from "./Hooks/useGetJobs";
+import ProButton from "../Controls/ProButton";
+import { useNavigation } from "@react-navigation/native";
 const myUser: User = {
     id: 1,
     name: { firstName: "John", lastName: "Doe" },
@@ -67,12 +69,15 @@ const myUser: User = {
       "asdasawaw4 t 4aw3qt w34t4 4w234uiq hrt4hw4t hnehnw4o2ir8 hjoi4w28hfhrt!",
   };
 
+// TODO: Filter by budget, job status, JobDateSearch
 
 const JobsList: React.FC = () => {
     const jobs = useGetJobs();
+    const navigation = useNavigation();
     return (
       <ScrollView>
-        <View flexG style={styles.container}>
+        <ProButton onPress={()=>{navigation.navigate("Testing")}}></ProButton>
+        <View flexG style={styles.container} bg>
             {jobs.map((job) => { return <JobCard key={job.id} job={job}></JobCard> })}
           {/* <JobCard job={job}></JobCard>
           <JobCard job={job2}></JobCard>

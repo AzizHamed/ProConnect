@@ -5,53 +5,58 @@ import {
   Text,
   Card,
   CardProps,
-  Colors,
-  CardSelectionOptions,
-  Constants,
+  TextProps,
 } from "react-native-ui-lib";
 import { Job } from "../../Models/Job";
-import ProCard from "../Layout/ProCard";
+import ProCard, { CardSectionContent } from "../Layout/ProCard";
+import ProHeader, { HeaderType } from "../Layout/ProHeader";
+import { useNavigation } from "@react-navigation/native";
 
 interface JobCardProps {
   job: Job;
   radius?: number;
   onPress?: () => void;
 }
-
+// TODO: User picture, like comment share buttons
 function generateCardChildren(job: Job) {
   return (
     <View>
-      <View>
-        <Card.Section
-          marginB-30
-          content={[{ text: job.title, h3: true, textPrimary: true }]}
-        />
-      </View>
-      <Card.Section
-        content={[{ text: job.description, body: true, textPrimary: true }]}
-      />
-      <View style={styles.date}>
-        <Text body textPrimary textAlign="right" marginT-20>
+        <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3}/>
+        <Text >
+          {job.description}
+        </Text>
+        <Text t2 textAlign="right" marginT-20 style={styles.date}>
           {job.datePosted}
         </Text>
-      </View>
     </View>
   );
+}
+
+function generateCardContent(job: Job): CardSectionContent[] {
+  const content: CardSectionContent[] = [];
+  
+  content.push({text: job.title, "marginB-30":true, h3: true})
+  content.push({text: job.description})
+  // content.push({text: job.datePosted, "marginT-20":true, textAlign:"right", flex:true})
+  return content;
 }
 
 const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   const job = props.job;
   const children = generateCardChildren(job);
+  const content = generateCardContent(job);
+  const navigation = useNavigation();
   const onPress =
-    props.onPress !== undefined
-      ? props.onPress
-      : () => {
-          console.log("Pressed");
-        };
-
+  props.onPress !== undefined
+  ? props.onPress
+  : () => {
+    navigation.navigate("Job")
+  };
+  
   return (
-  <View margin-10 style={styles.card} >
+    <View style={styles.card} bg>
     <ProCard children={children} radius={props.radius} onPress={onPress}></ProCard>
+    {/* textContent={content} */}
     </View>);
 };
 
@@ -64,5 +69,6 @@ const styles = StyleSheet.create({
   },
   card:{
     width: '100%',
+    marginHorizontal: 10
   }
 });

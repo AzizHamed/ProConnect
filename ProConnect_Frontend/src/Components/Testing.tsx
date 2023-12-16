@@ -7,22 +7,28 @@ import { Colors, Text, View } from "react-native-ui-lib";
 import {clearData} from "../Utility/Storage";
 type TestingProps = {
     toggleTheme: () => void
+    isDarkTheme: boolean
 }
 
 const Testing: React.FC<TestingProps> = (props: TestingProps) => {
     const toggleTheme = props.toggleTheme;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View flex padding-page centerH backgroundColor={Colors.screenBG}>
+    // <SafeAreaView style={styles.container}>
+      <View flex paddingB-page paddingH-page centerH>
+        <View padding-page backgroundColor={Colors.backgroundPrimary}>
+          <Text h3>
+            {props.isDarkTheme ? "Dark Mode" : "Light Mode"}
+          </Text>
+        </View>
         <ScrollView>
           <ProHeader
             center
             text="Header Example S"
-            headerType={HeaderType.Small}
+            headerType={HeaderType.H3}
             />
-          <ProHeader text="Header Example N" headerType={HeaderType.Normal} />
-          <ProHeader text="Header Example L" headerType={HeaderType.Large} />
+          <ProHeader text="Header Example N" headerType={HeaderType.H2} />
+          <ProHeader text="Header Example L" headerType={HeaderType.H1} />
           <ProButton
             borderRadius={45}
             outlineWidth={1}
@@ -30,12 +36,11 @@ const Testing: React.FC<TestingProps> = (props: TestingProps) => {
             text='Toggle Theme'
             onPress={() => {
               toggleTheme();
-              // setDarkTheme(!darkTheme);
             }}
             />
             <ProButton onPress={()=>{clearData()}} text='Clear Data'></ProButton>
-          <Text textPrimary h1>Hello World</Text>
-          <Text textPrimary body>
+          <Text h1>Hello World</Text>
+          <Text t2>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nisi
             arcu, mattis fermentum placerat vel, maximus blandit lorem. Nulla id
             condimentum magna. In hac habitasse platea dictumst. Praesent ut
@@ -45,8 +50,8 @@ const Testing: React.FC<TestingProps> = (props: TestingProps) => {
             sem tincidunt, ac malesuada turpis vehicula. Pellentesque ac tortor
             ut purus facilisis rutrum at quis neque. Praesent faucibus venenatis
             metus ut fermentum. Aliquam erat volutpat.
-          </Text>
-          <Text textPrimary body>
+          </Text> 
+          <Text>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nisi
             arcu, mattis fermentum placerat vel, maximus blandit lorem. Nulla id
             condimentum magna. In hac habitasse platea dictumst. Praesent ut
@@ -59,7 +64,7 @@ const Testing: React.FC<TestingProps> = (props: TestingProps) => {
           </Text>
         </ScrollView>
       </View>
-</SafeAreaView>
+// </SafeAreaView>
   )
 }
 
@@ -70,6 +75,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-      justifyContent: "center",
+        justifyContent: "center",
     },
   });

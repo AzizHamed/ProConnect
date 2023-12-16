@@ -3,20 +3,20 @@ import { Text, TextProps } from 'react-native-ui-lib';
 type ProHeaderProps = {
     text: string
     headerType?: HeaderType 
-    color?: string
 }
 export enum HeaderType{
-    Small, Normal, Large
+    H1, H2, H3, H4
 }
 const ProHeader: React.FC<ProHeaderProps & TextProps> = (props) => {
     const text = props.text || "Hello World!";
-    const headerType = (props.headerType != undefined) ? props.headerType : HeaderType.Normal;
-    const small = isHeaderSize(headerType, HeaderType.Small);
-    const normal = isHeaderSize(headerType, HeaderType.Normal);
-    const large = isHeaderSize(headerType, HeaderType.Large);
+    const headerType = (props.headerType != undefined) ? props.headerType : HeaderType.H2;
+    const h1 = isHeaderSize(headerType, HeaderType.H1);
+    const h2 = isHeaderSize(headerType, HeaderType.H2);
+    const h3 = isHeaderSize(headerType, HeaderType.H3);
+    const h4 = isHeaderSize(headerType, HeaderType.H4);
+
   return (
-    //<Text {...props} text60L={small} text40L={normal} text20L={large} h1 primary>{text}</Text>
-    <Text {...props} textPrimary allowFontScaling h1={large} h2={normal} h3={small} marginV-headers>{text}</Text>
+    <Text {...props} allowFontScaling h1={h1} h2={h2} h3={h3} h4={h4} marginV-headers>{text}</Text>
   )
 }
 

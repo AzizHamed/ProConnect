@@ -82,6 +82,7 @@ dark: {
   Spacings.loadSpacings({
     page: Constants.isSmallScreen ? 16 : 24,
     headers: Constants.isSmallScreen ? 10 : 16,
+    paragraphMargin: 16,
     p: 80,
   });
 
@@ -97,8 +98,8 @@ dark: {
       h2: props.h2,
       h3: props.h3,
       h4: props.h4,
-      body: !(props.h1 || props.h2 || props.h3),
-      p: true,
+      body: !isHeader(props),
+      "marginB-15": true,
       color: (props.t2 !== undefined && props.t2) ? Colors.textSecondary : Colors.textPrimary
     };
   });
@@ -120,6 +121,11 @@ dark: {
       activeBackgroundColor: Colors.highlight
     };
   });
+
+  function isHeader(props: Props & TextProps)
+  {
+    return props.h1 || props.h2 || props.h3 || props.h4;
+  }
 
   function getViewColor(props: Props)
   {

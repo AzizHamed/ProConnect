@@ -14,22 +14,22 @@ export function useGetJobs()
     const page = {pageNumber: 1, pageSize: 5, sortDirection: "ASC", sortBy:"datePosted"}
     const criteria = {budget: 100, jobStatus: JobStatus.DRAFT, jobDateSearch: JobDateSearch.AllTime}
     params.clear();
-    params.set("pageNumber", 1);
-    params.set("pageSize", 5);
-    params.set("sortDirection", "ASC");
-    params.set("sortBy", "datePosted");
-    params.set("budget", 100);
-    params.set("jobStatus", JobStatus.PUBLISHED);
-    params.set("jobDateSearch",JobDateSearch.AllTime);
+    // params.set("pageNumber", 1);
+    // params.set("pageSize", 5);
+    // params.set("sortDirection", "ASC");
+    // params.set("sortBy", "datePosted");
+    // params.set("budget", 100);
+    // params.set("jobStatus", JobStatus.PUBLISHED);
+    // params.set("jobDateSearch",JobDateSearch.AllTime);
     get(URI, params)
       .then((response) =>
       {
-        setJobs(response.data);
+        setJobs(response.data.content);
         console.log(response.data)
       })
       .catch((error : Error) =>
       {
-        console.log(error.message);
+        console.log(error.name,error.message,error.cause);
       });
   },[]);
 
