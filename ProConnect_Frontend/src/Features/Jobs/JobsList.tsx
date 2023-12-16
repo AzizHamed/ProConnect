@@ -3,10 +3,10 @@ import { Job, JobStatus } from "../../Models/Job";
 import { User } from "../../Models/User";
 import { Property } from "../../Models/Property";
 import { Colors, View } from "react-native-ui-lib";
-import { ScrollView, StyleSheet } from "react-native";
+import { Dimensions, ScrollView, StyleSheet } from "react-native";
 import JobCard from "./JobCard";
 import { useGetJobs } from "./Hooks/useGetJobs";
-import ProButton from "../Controls/ProButton";
+import ProButton from "../../Components/Controls/ProButton";
 import { useNavigation } from "@react-navigation/native";
 const myUser: User = {
     id: 1,
@@ -75,25 +75,15 @@ const JobsList: React.FC = () => {
     const jobs = useGetJobs();
     const navigation = useNavigation();
     return (
-      <ScrollView>
+      <View style={styles.background} bg>
+
+      <ScrollView >
         <ProButton onPress={()=>{navigation.navigate("Testing")}}></ProButton>
         <View flexG style={styles.container} bg>
-            {jobs.map((job) => { return <JobCard key={job.id} job={job}></JobCard> })}
-          {/* <JobCard job={job}></JobCard>
-          <JobCard job={job2}></JobCard>
-          <JobCard job={job3}></JobCard>
-          <JobCard job={job2}></JobCard>
-          <JobCard job={job}></JobCard>
-          <JobCard job={job2}></JobCard>
-          <JobCard job={job3}></JobCard>
-          <JobCard job={job2}></JobCard>
-          <JobCard job={job}></JobCard>
-          <JobCard job={job2}></JobCard>
-          <JobCard job={job}></JobCard>
-          <JobCard job={job3}></JobCard>
-          <JobCard job={job2}></JobCard> */}
+            {jobs.map((job) => { return <JobCard key={job.id} job={job}></JobCard> })}        
         </View>
       </ScrollView>
+      </View>
     );
   }
 
@@ -105,5 +95,9 @@ const JobsList: React.FC = () => {
       flexWrap: "wrap",
       justifyContent: "center",
     },
+    background:{
+      flex: 1,
+      height: Dimensions.get("window").height
+    }
   });
   

@@ -8,10 +8,12 @@ import {
   TextProps,
 } from "react-native-ui-lib";
 import { Job } from "../../Models/Job";
-import ProCard, { CardSectionContent } from "../Layout/ProCard";
-import ProHeader, { HeaderType } from "../Layout/ProHeader";
+import ProCard, { CardSectionContent } from "../../Components/Layout/ProCard";
+import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { useNavigation } from "@react-navigation/native";
-
+import { formatDateString } from "../../Utility/Formatter";
+import { useDispatch } from "react-redux";
+import { selectJob } from "./JobSlice"
 interface JobCardProps {
   job: Job;
   radius?: number;
@@ -26,7 +28,7 @@ function generateCardChildren(job: Job) {
           {job.description}
         </Text>
         <Text t2 textAlign="right" marginT-20 style={styles.date}>
-          {job.datePosted}
+          {formatDateString(job.datePosted)}
         </Text>
     </View>
   );
@@ -46,11 +48,13 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   const children = generateCardChildren(job);
   const content = generateCardContent(job);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const onPress =
   props.onPress !== undefined
   ? props.onPress
   : () => {
-    navigation.navigate("Job")
+    dispatch(selectJob(job));
+    navigation.navigate("Job");
   };
   
   return (

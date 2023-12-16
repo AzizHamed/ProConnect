@@ -1,5 +1,5 @@
 require("react-native-ui-lib/config").setConfig({ appScheme: "default" });
-import { ScrollView, StyleSheet } from "react-native";
+import {  StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   initTheme,
@@ -9,15 +9,15 @@ import {
 } from "./Style";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Testing from "./src/Components/Testing";
-import { View, Text, Colors } from "react-native-ui-lib";
-import JobsList from "./src/Components/Jobs/JobsList";
+import JobsList from "./src/Features/Jobs/JobsList";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import JobPage from "./src/Components/Jobs/JobPage";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import JobPage from "./src/Features/Jobs/JobPage";
+import { Provider } from "react-redux";
+import { store } from "./src/Services/Store";
 
 let isDarkTheme: any = undefined;
 initTheme();
-
 
 export default function App() {
   // const users = useGetUsers();
@@ -37,7 +37,6 @@ export default function App() {
       setTheme(isDarkTheme);
       setTimeout(() => {
         setDarkTheme(isDarkTheme);
-       
       }, 10);
     });
   }
@@ -49,28 +48,32 @@ export default function App() {
 
   const Stack = createNativeStackNavigator();
   return (
-    <SafeAreaProvider>
-      <NavigationContainer key={isDarkTheme}>
-        <Stack.Navigator> 
-        <Stack.Screen name="Home" component={JobsList} />
-        <Stack.Screen name="Testing">
-          {(props) => <Testing toggleTheme={toggleTheme} isDarkTheme={isDarkTheme}/>} 
-        </Stack.Screen>
-        {/* <Stack.Screen name="Job">
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer key={isDarkTheme}>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={JobsList} />
+            <Stack.Screen name="Testing">
+              {(props) => (
+                <Testing toggleTheme={toggleTheme} isDarkTheme={isDarkTheme} />
+                )}
+            </Stack.Screen>
+                <Stack.Screen name="Job" component={JobPage} />
+            {/* <Stack.Screen name="Job">
           {(props) => <JobPage job={props}/>} 
         </Stack.Screen> */}
-        </Stack.Navigator>
-      
-      </NavigationContainer>
-    </SafeAreaProvider>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     // backgroundColor: '#fff',
     alignItems: "center",
     justifyContent: "center",
-  }
+  },
 });
