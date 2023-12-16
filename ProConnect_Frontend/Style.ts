@@ -8,7 +8,13 @@ import {
 } from "react-native-ui-lib";
 import { Props } from "react-native-ui-lib/src/components/button/ButtonTypes";
 import { storeSimpleData, getSimpleData } from "./src/Utility/Storage";
-
+export type TextProps = {
+  h1?: boolean,
+  h2?: boolean,
+  h3?: boolean,
+  h4?: boolean,
+  t2?: boolean,
+}
 export function initTheme() {
   Colors.loadColors({
     pink: "#FF69B4",
@@ -79,21 +85,29 @@ dark: {
     p: 80,
   });
 
-  ThemeManager.setComponentTheme("Text", (props: Props, context: any) => {
+  ThemeManager.setComponentTheme("View", (props: Props, context: any) => {
+    return {
+      backgroundColor: getViewColor(props)
+    };
+  });
+
+  ThemeManager.setComponentTheme("Text", (props: Props & TextProps, context: any) => {
     return {
       h1: props.h1,
       h2: props.h2,
       h3: props.h3,
-      body: props.body,
+      h4: props.h4,
+      body: !(props.h1 || props.h2 || props.h3),
       p: true,
+      color: (props.t2 !== undefined && props.t2) ? Colors.textSecondary : Colors.textPrimary
     };
   });
 
   ThemeManager.setComponentTheme('Button', (props: Props, context: any) => {
 
     return {
-      backgroundColor: Colors.primary,
-      text: Colors.moonOrSun
+      backgroundColor: Colors.backgroundSecondary,
+      color: Colors.textPrimary
     };
   });
 
@@ -102,13 +116,19 @@ dark: {
     return {
       padding: 10,
       spacing: 30,
+      backgroundColor: Colors.backgroundSecondary,
+      activeBackgroundColor: Colors.highlight
     };
   });
+
+  function getViewColor(props: Props)
+  {
+    return props.bg ? Colors.backgroundPrimary : Colors.backgroundSecondary;
+  }
 }
 
 export function setTheme(dark: boolean) {
   Colors.setScheme(dark ? "dark" : "light");
-//   console.log("SetTheme: ", dark ? "Dark" : "Light");
 }
 
 const themeStorageKey = "darkTheme";
@@ -125,11 +145,9 @@ export async function loadThemePreference() {
   await getSimpleData(themeStorageKey).then((value) => {
       if (value === undefined) {
           isDarkTheme = false;
-        //   console.log("GetSimpleData Value: undefined");
         } else {
             isDarkTheme = value === "true";
-            // console.log(`GetSimpleData Value: ${value}`);
         }
     });
-return isDarkTheme;
+  return isDarkTheme;
 }
