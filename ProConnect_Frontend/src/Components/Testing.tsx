@@ -5,20 +5,21 @@ import ProHeader, { HeaderType } from "../Components/Layout/ProHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Text, View } from "react-native-ui-lib";
 import {clearData} from "../Utility/Storage";
-type TestingProps = {
-    toggleTheme: () => void
-    isDarkTheme: boolean
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { isDarkTheme, toggleTheme } from '../Services/Redux/PreferencesSlice';
+import { AppDispatch } from '../Services/Store';
 
-const Testing: React.FC<TestingProps> = (props: TestingProps) => {
-    const toggleTheme = props.toggleTheme;
+
+const Testing: React.FC = () => {
+  const darkTheme = useSelector(isDarkTheme);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     // <SafeAreaView style={styles.container}>
       <View flex paddingB-page paddingH-page centerH>
         <View padding-page backgroundColor={Colors.backgroundPrimary}>
           <Text h3>
-            {props.isDarkTheme ? "Dark Mode" : "Light Mode"}
+            {darkTheme ? "Dark Mode" : "Light Mode"}
           </Text>
         </View>
         <ScrollView>
@@ -35,7 +36,7 @@ const Testing: React.FC<TestingProps> = (props: TestingProps) => {
             outlineColor="black"
             text='Toggle Theme'
             onPress={() => {
-              toggleTheme();
+              dispatch(toggleTheme());
             }}
             />
             <ProButton onPress={()=>{clearData()}} text='Clear Data'></ProButton>
