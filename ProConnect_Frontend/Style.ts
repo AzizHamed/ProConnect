@@ -38,36 +38,19 @@ export function initTheme() {
       failure: "#e74c3c",
       highlight: "#cecece",
   },
-dark: {
-  primary: "#3498db",
-  secondary: "#e74c3c",
-  tertiary: "#2ecc71",
-  textPrimary: "#ecf0f1",
-  textSecondary: "#bdc3c7",
-  backgroundPrimary: "#34495e",
-  backgroundSecondary: "#2c3e50",
-  backgroundTertiary: "#2c3e50",
-  success: "#27ae60",
-  failure: "#e74c3c",
-  highlight: "#384f66",
-}
-
-    // light: {
-    //   primary: "#3498db",
-    //   textPrimary: "#333333",
-    //   screenBG: "transparent",
-    //   textColor: Colors.grey10,
-    //   $backgroundSuccess: Colors.green40,
-    //   $backgroundSuccessLight: Colors.green70,
-    // },
-    // dark: {
-    //   primary: "#3c5577", // '#f8a4a4',
-    //   textPrimary: "#ffffff",
-    //   screenBG: "#2e333a",
-    //   textColor: Colors.white,
-    //   $backgroundSuccess: Colors.green40,
-    //   $backgroundSuccessLight: Colors.green20,
-    // },
+    dark: {
+      primary: "#3498db",
+      secondary: "#e74c3c",
+      tertiary: "#2ecc71",
+      textPrimary: "#ecf0f1",
+      textSecondary: "#bdc3c7",
+      backgroundPrimary: "#34495e",
+      backgroundSecondary: "#2c3e50",
+      backgroundTertiary: "#2c3e50",
+      success: "#27ae60",
+      failure: "#e74c3c",
+      highlight: "#384f66",
+  }
   });
 
   
@@ -118,7 +101,7 @@ dark: {
       padding: 10,
       spacing: 30,
       backgroundColor: Colors.backgroundSecondary,
-      activeBackgroundColor: Colors.highlight
+      "margin-20": true,
     };
   });
 
