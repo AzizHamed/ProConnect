@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { get } from "../../../Services/Requests";
 import { Job, JobDateSearch, JobStatus } from "../../../Models/Job";
+import { useDispatch } from "react-redux";
+import { setJobs as SetJobs } from "../JobSlice"
 
 const URI = "jobs/page";
 
@@ -8,11 +10,10 @@ export function useGetJobs()
 {
   const [jobs, setJobs] = useState<Job[]>([]);
   const params: Map<string,any> = new Map();
+  const dispatch = useDispatch();
 
   useEffect(() =>
   {
-    const page = {pageNumber: 1, pageSize: 5, sortDirection: "ASC", sortBy:"datePosted"}
-    const criteria = {budget: 100, jobStatus: JobStatus.DRAFT, jobDateSearch: JobDateSearch.AllTime}
     params.clear();
     // params.set("pageNumber", 1);
     // params.set("pageSize", 5);
@@ -25,7 +26,7 @@ export function useGetJobs()
       .then((response) =>
       {
         setJobs(response.data.content);
-        console.log(response.data)
+        dispatch(SetJobs(response.data.content));
       })
       .catch((error : Error) =>
       {
