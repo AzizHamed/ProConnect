@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import { Alert, StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import {
   View,
   Text,
-  Card,
   CardProps,
-  TextProps,
 } from "react-native-ui-lib";
 import { Job } from "../../Models/Job";
 import ProCard, { CardSectionContent } from "../../Components/Layout/ProCard";
@@ -14,11 +12,14 @@ import { useNavigation } from "@react-navigation/native";
 import { formatDateString } from "../../Utility/Formatter";
 import { useDispatch } from "react-redux";
 import { selectJob } from "./JobSlice"
+
 interface JobCardProps {
   job: Job;
   radius?: number;
+  autoAdjustWidth?: boolean;
   onPress?: () => void;
 }
+
 // TODO: User picture, like comment share buttons
 function generateCardChildren(job: Job) {
   return (
@@ -46,22 +47,16 @@ function generateCardContent(job: Job): CardSectionContent[] {
 const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   const job = props.job;
   const children = generateCardChildren(job);
-  const content = generateCardContent(job);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const onPress =
-  props.onPress !== undefined
-  ? props.onPress
-  : () => {
+  const onPress = props.onPress !== undefined ? props.onPress : () => {
     dispatch(selectJob(job));
     navigation.navigate("Job");
   };
   
   return (
-    <View style={styles.card} bg>
-    <ProCard children={children} radius={props.radius} onPress={onPress}></ProCard>
-    {/* textContent={content} */}
-    </View>);
+      <ProCard autoAdjustWidth children={children} radius={props.radius} onPress={onPress}/>
+  );
 };
 
 export default JobCard;
@@ -70,9 +65,5 @@ const styles = StyleSheet.create({
   date: {
     alignSelf: "flex-end",
     verticalAlign: "bottom"
-  },
-  card:{
-    width: '100%',
-    marginHorizontal: 10
   }
 });
