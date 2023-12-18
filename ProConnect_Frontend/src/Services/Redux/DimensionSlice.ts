@@ -20,11 +20,17 @@ export const dimensionSlice = createSlice({
         }
     },
     selectors:{
+        getWindow: (state) => {
+            return state.window;
+        },
         getWindowWidth: (state) => {
             return state.window.width;
         },
         getWindowHeight: (state) => {
             return state.window.height;
+        },
+        getScreen: (state) => {
+            return state.sceen;
         },
         getScreenWidth: (state) => {
             return state.sceen.width;
@@ -36,5 +42,5 @@ export const dimensionSlice = createSlice({
 })
 
 export const { setDimensions } = dimensionSlice.actions
-export const { getWindowWidth, getWindowHeight, getScreenHeight, getScreenWidth } = dimensionSlice.selectors
+export const { getWindow, getWindowWidth, getWindowHeight, getScreen, getScreenHeight, getScreenWidth } = dimensionSlice.selectors
 export default dimensionSlice.reducer
