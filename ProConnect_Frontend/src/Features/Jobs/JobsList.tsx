@@ -19,7 +19,7 @@ const JobsList: React.FC = () => {
     <BackgroundView
       children={
         <ScrollView>
-          <ProButton onPress={() => {
+          <ProButton isResponsive onPress={() => {
               navigation.navigate("Testing");
             }}/>
           <View style={styles.container} bg>
