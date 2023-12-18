@@ -41,7 +41,6 @@ export function useViewport() {
       }        
       else{
         tempWidth = screenWidth - smallScreenWebMargin;
-        console.log(tempWidth, screenWidth, smallScreenWebMargin)
       }              
       return tempWidth;
   }
