@@ -2,7 +2,6 @@ import { StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import ProButton from '../Components/Controls/ProButton'
 import ProHeader, { HeaderType } from "../Components/Layout/ProHeader";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Text, View } from "react-native-ui-lib";
 import {clearData} from "../Utility/Storage";
 import { useDispatch, useSelector } from 'react-redux';
