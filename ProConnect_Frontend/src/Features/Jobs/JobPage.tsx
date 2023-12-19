@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { View, Text, Card, CardProps } from "react-native-ui-lib";
-import { Job } from "../../Models/Job";
+import { View, Text } from "react-native-ui-lib";
+import { Job } from "../../Services/Redux/Api";
 import ProCard from "../../Components/Layout/ProCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getSelectedJob, selectJob } from "./JobSlice";

@@ -5,13 +5,13 @@ import {
   Text,
   CardProps,
 } from "react-native-ui-lib";
-import { Job } from "../../Models/Job";
 import ProCard, { CardSectionContent } from "../../Components/Layout/ProCard";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { useNavigation } from "@react-navigation/native";
 import { formatDateString } from "../../Utility/Formatter";
 import { useDispatch } from "react-redux";
 import { selectJob } from "./JobSlice"
+import { Job } from "../../Services/Redux/Api";
 
 interface JobCardProps {
   job: Job;

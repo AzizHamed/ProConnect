@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { get } from "../../Services/Requests";
-import { User } from "../../Models/User";
+import { User } from "../../Services/Redux/Api";
 
 const URI = "test/getUsers";
 
