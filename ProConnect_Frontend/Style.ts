@@ -48,7 +48,7 @@ export function initTheme() {
       backgroundSecondary: "#2c3e50",
       backgroundTertiary: "#2c3e50",
       success: "#27ae60",
-      failure: "#e74c3c",
+      failure: "#f37964",
       highlight: "#384f66",
   }
   });
@@ -102,6 +102,15 @@ export function initTheme() {
       spacing: 30,
       backgroundColor: Colors.backgroundSecondary,
       "margin-20": true,
+    };
+  });
+  ThemeManager.setComponentTheme('LoaderScreen', (props: Props, context: any) => {
+
+    return {
+      padding: 20,
+      margins: 20,
+      loaderColor: Colors.secondary,
+      messageStyle: {color: Colors.textPrimary}
     };
   });
 
