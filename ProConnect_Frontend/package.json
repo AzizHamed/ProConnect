@@ -56,6 +56,7 @@
     "@types/react-native-vector-icons": "^6.4.14",
     "@types/react-test-renderer": "^18.0.3",
     "esbuild-runner": "^2.2.2",
+    "react-native-dotenv": "^3.4.9",
     "sharp-cli": "^4.1.1",
     "typescript": "^5.1.3"
   },
