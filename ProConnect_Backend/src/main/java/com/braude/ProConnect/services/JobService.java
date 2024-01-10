@@ -51,6 +51,7 @@ public class JobService {
             throw new ProConnectException("Invalid property id");
         job.setOwner(user);
         job.setProperty(property);
+
         job.setDatePosted(OffsetDateTime.now());
         job.setJobStatus(JobStatus.PUBLISHED);
         return jobRepository.save(job);
@@ -99,13 +100,23 @@ public class JobService {
     }
 
     public Comment addComment(Comment comment) {
-        checkIfUserAndJobValid(comment.getUser().getId(),comment.getJob().getId());
+        checkIfUserAndJobValid(comment.getUser().getId(),comment.getJobId());
+        Job job = jobRepository.findById(comment.getJobId()).get();
+        job.getCommentedUsers().add(comment);
         commentRepository.save(comment);
         return comment;
     }
 
+    public Comment deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id).get();
+        if(comment==null)
+            throw new ProConnectException("comment with id: " + id +  " does not exist");
+        checkIfUserAndJobValid(comment.getUser().getId(),comment.getJobId());
+        Job job = jobRepository.findById(comment.getJobId()).get();
+        job.getCommentedUsers().remove(comment);
+        jobRepository.save(job);
+        commentRepository.delete(comment);
+        return comment;
+    }
 
-   /* public List<Job> getJobByUserId(Long userId) {
-        return jobRepository.findByUserId(userId);
-    }*/
 }
