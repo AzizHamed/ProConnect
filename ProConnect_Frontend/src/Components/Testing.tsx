@@ -7,12 +7,21 @@ import {clearData} from "../Utility/Storage";
 import { useDispatch, useSelector } from 'react-redux';
 import { isDarkTheme, toggleTheme } from '../Services/Redux/PreferencesSlice';
 import { AppDispatch } from '../Services/Store';
+import ProRefreshControl from './Controls/ProRefreshControl';
 
 
 const Testing: React.FC = () => {
   const darkTheme = useSelector(isDarkTheme);
   const dispatch = useDispatch<AppDispatch>();
-
+  function delay(ms:number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+  async function delayedLoop() {
+    await delay(1000);
+    dispatch(toggleTheme());
+  }
+  
   return (
     // <SafeAreaView style={styles.container}>
       <View flex paddingB-page paddingH-page centerH>
@@ -21,8 +30,7 @@ const Testing: React.FC = () => {
             {darkTheme ? "Dark Mode" : "Light Mode"}
           </Text>
         </View>
-        <ScrollView>
-          <ProHeader
+        <ProRefreshControl onRefreshAction={delayedLoop} children={(<View><ProHeader
             center
             text="Header Example S"
             headerType={HeaderType.H3}
@@ -61,7 +69,9 @@ const Testing: React.FC = () => {
             sem tincidunt, ac malesuada turpis vehicula. Pellentesque ac tortor
             ut purus facilisis rutrum at quis neque. Praesent faucibus venenatis
             metus ut fermentum. Aliquam erat volutpat.
-          </Text>
+          </Text></View>)}></ProRefreshControl>
+        <ScrollView>
+          
         </ScrollView>
       </View>
 // </SafeAreaView>

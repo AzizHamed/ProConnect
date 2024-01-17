@@ -46,6 +46,7 @@
     "react-native-ui-lib": "^7.8.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-web": "~0.19.6",
+    "react-native-web-refresh-control": "^1.1.1",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.15.0"
   },
