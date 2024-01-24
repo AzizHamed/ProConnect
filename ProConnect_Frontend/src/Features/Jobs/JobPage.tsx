@@ -8,7 +8,7 @@ import { getSelectedJob, selectJob } from "./JobSlice";
 import { useNavigation } from "@react-navigation/native";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { formatDateString } from "../../Utility/Formatter";
-import BackgeoundView from "../../Components/Layout/BackgroundView";
+import BackgroundView from "../../Components/Layout/BackgroundView";
 
 function generateCardChildren(job: Job | null) {
   if (job == null)
@@ -41,7 +41,7 @@ const JobCard: React.FC = () => {
       [navigation];
   });
   return (
-    <BackgeoundView children={(
+    <BackgroundView children={(
       <ScrollView>
       <View style={styles.cardContainer} bg>
         <ProCard children={children}></ProCard>
