@@ -13,6 +13,7 @@ import JobPage from "./Features/Jobs/JobPage";
 import { setDimensions } from "./Services/Redux/DimensionSlice";
 import { AppDispatch } from "./Services/Store";
 import EmailPasswordLoginScreen from "./Screens/Login/EmailPasswordLoginScreen";
+import ExampleForm from "./Screens/ExampleForm";
 
 const Index: React.FC = () => {
   const Stack = createNativeStackNavigator();
@@ -33,7 +34,7 @@ const Index: React.FC = () => {
   return (
       <NavigationContainer key={darkTheme.toString()}>
         <Stack.Navigator>
-          <Stack.Screen name="Login" component={EmailPasswordLoginScreen} />
+          <Stack.Screen name="Login" component={ExampleForm} />
           <Stack.Screen name="Home" component={JobsList} />
           <Stack.Screen name="Testing" component={Testing} />
           <Stack.Screen name="Job" component={JobPage} />
