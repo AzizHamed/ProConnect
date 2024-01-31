@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
-const baseUrl = 'http://localhost:8080';
+import { REACT_APP_BASE_URL } from "@env"
 
+const url = REACT_APP_BASE_URL;
 /**
  * Get data from the server.
  * @param apiEndpoint Mapping for the requested API endpoint. For example, users/getUser
@@ -13,7 +14,7 @@ function get(apiEndpoint: string, paramsMap?: Map<string, any>): Promise<AxiosRe
 {
   let response = axios({
     method: 'get',
-    url: `${baseUrl}/${apiEndpoint}`,
+    url: `${url}/${apiEndpoint}`,
     params: paramsMapToObject(paramsMap),
   });
   return response;
@@ -31,7 +32,7 @@ function post(apiEndpoint: string, data?: any, paramsMap?: Map<string, any>): Pr
 {
   let response = axios({
     method: 'post',
-    url: `${baseUrl}/${apiEndpoint}`,
+    url: `${url}/${apiEndpoint}`,
     params: paramsMapToObject(paramsMap),
     headers: { 'Content-Type': 'application/json' },
     data: data

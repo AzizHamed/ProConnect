@@ -5,11 +5,11 @@ interface BackgroundViewProps {
     children: React.ReactNode
 }
 
-const BackgeoundView: React.FC<BackgroundViewProps> = (props) => {
+const BackgroundView: React.FC<BackgroundViewProps> = (props) => {
   return <View style={styles.background} bg>{props.children}</View>;
 };
 
-export default BackgeoundView;
+export default BackgroundView;
 
 const styles = StyleSheet.create({
   background: {
