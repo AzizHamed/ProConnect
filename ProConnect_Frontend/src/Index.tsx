@@ -13,7 +13,10 @@ import JobPage from "./Features/Jobs/JobPage";
 import { setDimensions } from "./Services/Redux/DimensionSlice";
 import { AppDispatch } from "./Services/Store";
 import EmailPasswordLoginScreen from "./Screens/Login/EmailPasswordLoginScreen";
-import ExampleForm from "./Screens/ExampleForm";
+import SignInScreen from "./Screens/Authentication/SignInScreen";
+import ForgotPasswordScreen from "./Screens/Authentication/ForgotPasswordScreen";
+import NewPasswordScreen from "./Screens/Authentication/NewPasswordScreen";
+import SignUpScreen from "./Screens/Authentication/SignUpScreen";
 
 const Index: React.FC = () => {
   const Stack = createNativeStackNavigator();
@@ -34,7 +37,10 @@ const Index: React.FC = () => {
   return (
       <NavigationContainer key={darkTheme.toString()}>
         <Stack.Navigator>
-          <Stack.Screen name="Login" component={ExampleForm} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
           <Stack.Screen name="Home" component={JobsList} />
           <Stack.Screen name="Testing" component={Testing} />
           <Stack.Screen name="Job" component={JobPage} />
