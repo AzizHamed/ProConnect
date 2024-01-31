@@ -15,6 +15,7 @@ export type TextProps = {
   h4?: boolean,
   t2?: boolean,
 }
+
 export function initTheme() {
   Colors.loadColors({
     pink: "#FF69B4",
@@ -91,7 +92,8 @@ export function initTheme() {
 
     return {
       backgroundColor: Colors.backgroundSecondary,
-      color: Colors.textPrimary
+      color: Colors.textPrimary,
+      "marginV-10": true
     };
   });
 
