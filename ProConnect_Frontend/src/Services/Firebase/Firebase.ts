@@ -2,10 +2,9 @@
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getAuth, initializeAuth, getReactNativePersistence,
+         createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updatePassword, signOut } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-
-import * as firebaseAuth from 'firebase/auth';
 
 import { Platform } from "react-native";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -32,10 +31,12 @@ const createFirebaseApp = (config = {}) => {
     return initializeApp(config);
   }
 };
-const FIREBASE_APP = createFirebaseApp(firebaseConfig);
 
 
-export const webAuth = initializeAuth(FIREBASE_APP, {persistence: getReactNativePersistence(ReactNativeAsyncStorage)});
+const noActiveApps = !getApps().length;
+const FIREBASE_APP = noActiveApps ? createFirebaseApp(firebaseConfig) : getApp(); 
+export const webAuth = noActiveApps ? initializeAuth(FIREBASE_APP, isWeb ? {} : { persistence: getReactNativePersistence(ReactNativeAsyncStorage) }) : getAuth(FIREBASE_APP);
+
 // export const userId = () => {isWeb ? webAuth.currentUser?.getIdToken() : nativeAuth.currentUser?.getIdToken();}
 
 // export const analyticsEvent = (eventName:string, params?: { [key: string]: any; } | undefined) => {
@@ -57,8 +58,7 @@ export const emailSignOut = () => {
   // isWeb ? signOut(webAuth) : nativeAuth.signOut();
 }
 
+export const sendResetPasswordEmail = (email: string) => {
+  return sendPasswordResetEmail(webAuth, email);
+}
 export const firebaseUser = webAuth.currentUser;
-
-const googleProvider = new GoogleAuthProvider();
-export const GoogleProvider = GoogleAuthProvider
-export const googleSignin = () => { return signInWithRedirect(webAuth, googleProvider) }
