@@ -4,7 +4,6 @@ import { Colors, Text, View } from 'react-native-ui-lib';
 
 import ProButton from '../../Components/Controls/ProButton';
 import { GoogleProvider, emailSignIn, emailSignOut, emailSignUp, firebaseUser, googleSignin, webAuth } from '../../Services/Firebase/Firebase';
-import { useGetAuthUser } from '../../Services/Firebase/useGetAuthUser';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 import ProTextField from '../../Components/Controls/ProTextField';
 
@@ -12,7 +11,7 @@ const EmailPasswordLoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const user = useGetAuthUser(webAuth);
+
   const handleLogin = async () => {
 
     googleSignin().then((result) => {
@@ -57,8 +56,12 @@ const EmailPasswordLoginScreen = () => {
     </View>;
   }
   
-const emailSignup = async () => {emailSignUp(email, password).then(user=>{setUsername(user.user.email + " Created!"||"Null")}).catch(error=>{setUsername(error.message)})}
-const emailSignin = async () => {emailSignIn(email, password).then(user=>{setUsername(user.user.email + " Logged In!"||"Null")}).catch(error=>{setUsername(error.message)})}
+const emailSignup = async () => {emailSignUp(email, password)
+  // .then(user=>{setUsername(user.user.email + " Created!"||"Null")}).catch(error=>{setUsername(error.message)})
+}
+const emailSignin = async () => {emailSignIn(email, password)
+  // .then(user=>{setUsername(user.user.email + " Logged In!"||"Null")}).catch(error=>{setUsername(error.message)})
+}
 const emailSignout = async () => {emailSignOut()}
 
   return (
