@@ -16,22 +16,27 @@ import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import BackgroundView from "../../Components/Layout/BackgroundView";
 import { emailSignUp } from "../../Services/Firebase/Firebase";
 import { UserCredential } from "firebase/auth";
-
-const EMAIL_REGEX =
-  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+import ProPopup from "../../Components/Layout/ProPopup";
+import { EMAIL_REGEX } from "../../Constants/Values";
 
 const SignUpScreen: React.FC = () => {
   const { control, handleSubmit, watch } = useForm();
   const pwd = watch("password");
   const navigation = useNavigation();
+  const [isVisible, setIsVisible] = useState(false);
+  const [resultText, setResultText] = useState('');
 
   const onRegisterPressed = async (data: any) => {
     const { email, password } = data;
     emailSignUp(email, password).then((userCredential: UserCredential)=> {
         const user = userCredential.user;
         console.log(user);
-    }).catch((error: any) => {
+        setResultText(user.email + ' Created!'|| 'Signed up')
+        setIsVisible(true);
+      }).catch((error: any) => {
         console.log(error);
+        setResultText(error.message)
+        setIsVisible(true);
     }) ;
     // try {
     //   await Auth.signUp({
@@ -50,14 +55,6 @@ const SignUpScreen: React.FC = () => {
     navigation.navigate("SignIn");
   };
 
-  const onTermsOfUsePressed = () => {
-    console.warn("onTermsOfUsePressed");
-  };
-
-  const onPrivacyPressed = () => {
-    console.warn("onPrivacyPressed");
-  };
-
   return (
     <BackgroundView
       children={
@@ -69,38 +66,6 @@ const SignUpScreen: React.FC = () => {
                 headerType={HeaderType.H3}
               ></ProHeader>
 
-              {/* <ProTextInput
-                name="name"
-                control={control}
-                placeholder="Name"
-                rules={{
-                  required: "Name is required",
-                  minLength: {
-                    value: 3,
-                    message: "Name should be at least 3 characters long",
-                  },
-                  maxLength: {
-                    value: 24,
-                    message: "Name should be max 24 characters long",
-                  },
-                }}
-              />
-              <ProTextInput
-                name="username"
-                control={control}
-                placeholder="Username"
-                rules={{
-                  required: "Username is required",
-                  minLength: {
-                    value: 3,
-                    message: "Username should be at least 3 characters long",
-                  },
-                  maxLength: {
-                    value: 24,
-                    message: "Username should be max 24 characters long",
-                  },
-                }}
-              /> */}
               <ProTextInput
                 name="email"
                 control={control}
@@ -144,6 +109,8 @@ const SignUpScreen: React.FC = () => {
               />
             {/* </KeyboardAvoidingView> */}
           </View>
+          <ProPopup isVisible={isVisible} title={resultText} onDismiss={()=>{setIsVisible(false)}}></ProPopup>
+
         </ScrollView>
       }
     ></BackgroundView>

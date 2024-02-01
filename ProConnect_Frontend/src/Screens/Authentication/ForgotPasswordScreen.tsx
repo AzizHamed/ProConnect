@@ -5,18 +5,17 @@ import { useForm } from "react-hook-form";
 import ProButton from "../../Components/Controls/ProButton";
 import ProTextInput from "../../Components/Controls/ProTextInput";
 import BackgroundView from "../../Components/Layout/BackgroundView";
+import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
+import { EMAIL_REGEX } from "../../Constants/Values";
+import { sendResetPasswordEmail } from "../../Services/Firebase/Firebase";
 
 const ForgotPasswordScreen: React.FC = () => {
   const { control, handleSubmit } = useForm();
   const navigation = useNavigation();
 
   const onSendPressed = async (data: any) => {
-    // try {
-    //   await Auth.forgotPassword(data.username);
-    //   navigation.navigate('NewPassword');
-    // } catch (e) {
-    //   Alert.alert('Oops', e.message);
-    // }
+    const {email} = data;
+    sendResetPasswordEmail(email).then().catch();
   };
 
   const onSignInPress = () => {
@@ -28,14 +27,18 @@ const ForgotPasswordScreen: React.FC = () => {
       children={
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.root}>
-            <Text style={styles.title}>Reset your password</Text>
+          <ProHeader
+                text="Reset your password"
+                headerType={HeaderType.H3}
+              />
 
-            <ProTextInput
-              name="username"
+          <ProTextInput
+              name="email"
               control={control}
-              placeholder="Username"
+              placeholder="Email"
               rules={{
-                required: "Username is required",
+                required: "Email is required",
+                pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
               }}
             />
 

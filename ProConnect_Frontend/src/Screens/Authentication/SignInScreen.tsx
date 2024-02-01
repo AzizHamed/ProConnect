@@ -15,30 +15,38 @@ import { useForm, Controller } from "react-hook-form";
 import ProButton from "../../Components/Controls/ProButton";
 import ProTextInput from "../../Components/Controls/ProTextInput";
 import BackgroundView from "../../Components/Layout/BackgroundView";
+import ProPopup from "../../Components/Layout/ProPopup";
+import { emailSignIn } from "../../Services/Firebase/Firebase";
+import { UserCredential } from "firebase/auth";
+import { EMAIL_REGEX } from "../../Constants/Values";
 
 const SignInScreen = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [resultText, setResultText] = useState('');
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+
+  const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onSignInPressed = async (data: any) => {
+    const { email, password } = data;
     if (loading) {
       return;
     }
 
     setLoading(true);
-    // try {
-    //   const response = await Auth.signIn(data.username, data.password);
-    //   console.log(response);
-    // } catch (e) {
-    //   Alert.alert('Oops', e.message);
-    // }
+    emailSignIn(email, password).then((userCredential: UserCredential)=> {
+      const user = userCredential.user;
+      console.log(user);
+      setResultText(user.email + ' Logged in!'|| 'Logged In')
+      setIsVisible(true);
+    }).catch((error: any) => {
+      console.log(error);
+      setResultText(error.message)
+      setIsVisible(true);
+  }) ;
     setLoading(false);
   };
 
@@ -62,10 +70,13 @@ const SignInScreen = () => {
         /> */}
 
             <ProTextInput
-              name="username"
-              placeholder="Username"
+              name="email"
               control={control}
-              rules={{ required: "Username is required" }}
+              placeholder="Email"
+              rules={{
+                required: "Email is required",
+                pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
+              }}
             />
 
             <ProTextInput
@@ -97,6 +108,7 @@ const SignInScreen = () => {
               onPress={onSignUpPress}
             />
           </View>
+          <ProPopup isVisible={isVisible} title={resultText} onDismiss={()=>{setIsVisible(false)}}></ProPopup>
         </ScrollView>
       }
     ></BackgroundView>
