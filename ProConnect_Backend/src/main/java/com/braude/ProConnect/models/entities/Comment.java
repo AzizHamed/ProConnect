@@ -36,6 +36,9 @@ public class Comment {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
+    public long getJobId() {
+        return job.getId();
+    }
 
     private int numberOfReports;
 
