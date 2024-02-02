@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
   Image,
   StyleSheet,
   useWindowDimensions,
   ScrollView,
   TextInput,
-  Alert,
 } from "react-native";
 // import Logo from '../../../assets/images/Logo_1.png';
 import { useNavigation } from "@react-navigation/native";
@@ -19,6 +16,8 @@ import ProPopup from "../../Components/Layout/ProPopup";
 import { emailSignIn } from "../../Services/Firebase/Firebase";
 import { UserCredential } from "firebase/auth";
 import { EMAIL_REGEX } from "../../Constants/Values";
+import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
+import { View } from "react-native-ui-lib";
 
 const SignInScreen = () => {
   const { height } = useWindowDimensions();
@@ -42,6 +41,10 @@ const SignInScreen = () => {
       console.log(user);
       setResultText(user.email + ' Logged in!'|| 'Logged In')
       setIsVisible(true);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
     }).catch((error: any) => {
       console.log(error);
       setResultText(error.message)
@@ -55,19 +58,23 @@ const SignInScreen = () => {
   };
 
   const onSignUpPress = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("Signup");
   };
 
   return (
     <BackgroundView
       children={
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.root}>
+          <View style={styles.root} padding-20 paddingB-50 bg>
             {/* <Image
           source={Logo}
           style={[styles.logo, {height: height * 0.3}]}
           resizeMode="contain"
         /> */}
+              <ProHeader
+                text="Login"
+                headerType={HeaderType.H3}
+              />
 
             <ProTextInput
               name="email"
