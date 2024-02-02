@@ -21,7 +21,7 @@ const ProTextInput: React.FC<InputProps> = (props) => {
 
   return (
     <Controller
-      control={props.control}
+      control={props.control} defaultValue={''}
       name={props.name}
       rules={props.rules}
       render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
