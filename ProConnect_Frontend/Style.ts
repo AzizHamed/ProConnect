@@ -17,11 +17,7 @@ export type TextProps = {
 }
 
 export function initTheme() {
-  Colors.loadColors({
-    pink: "#FF69B4",
-    gold: "#FFD700",
-    hadi: "#3cff00",
-  });
+
 
   Colors.loadDesignTokens({ primaryColor: "#1f1f1f" });
 
