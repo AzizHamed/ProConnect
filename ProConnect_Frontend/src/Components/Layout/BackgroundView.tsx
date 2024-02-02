@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { View } from "react-native-ui-lib";
 
 interface BackgroundViewProps {
@@ -6,7 +7,11 @@ interface BackgroundViewProps {
 }
 
 const BackgroundView: React.FC<BackgroundViewProps> = (props) => {
-  return <View style={styles.background} bg>{props.children}</View>;
+  return(
+    <SafeAreaView style={styles.background}>
+      <View style={styles.background} bg>{props.children}</View>
+    </SafeAreaView>
+    );
 };
 
 export default BackgroundView;
