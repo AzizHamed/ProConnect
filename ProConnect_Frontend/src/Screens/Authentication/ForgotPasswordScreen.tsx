@@ -19,7 +19,7 @@ const ForgotPasswordScreen: React.FC = () => {
   };
 
   const onSignInPress = () => {
-    navigation.navigate("SignIn");
+    navigation.navigate("Login");
   };
 
   return (
