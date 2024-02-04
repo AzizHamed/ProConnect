@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,26 +8,66 @@ import {
 } from "react-native";
 // import Logo from '../../../assets/images/Logo_1.png';
 import { useNavigation } from "@react-navigation/native";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ProButton from "../../Components/Controls/ProButton";
 import ProTextInput from "../../Components/Controls/ProTextInput";
 import BackgroundView from "../../Components/Layout/BackgroundView";
 import ProPopup from "../../Components/Layout/ProPopup";
-import { emailSignIn } from "../../Services/Firebase/Firebase";
+import { emailSignIn, webAuth } from "../../Services/Firebase/Firebase";
 import { UserCredential } from "firebase/auth";
 import { EMAIL_REGEX } from "../../Constants/Values";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { View } from "react-native-ui-lib";
+import { onAuthStateChanged } from "firebase/auth";
+import { UserDetails, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
+import { useDispatch } from "react-redux";
+import ProLoading from "../../Components/Layout/ProLoading";
 
 const SignInScreen = () => {
-  const { height } = useWindowDimensions();
+  // Sign in
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
-
-
   const { control, handleSubmit, formState: { errors } } = useForm();
+  
+  // Auth state
+  const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const onAuthChanged = onAuthStateChanged(webAuth, (user)=>{
+      updateAuthState(user);
+      setIsLoadingAuthState(false);
+    });
+    return () => { onAuthChanged(); };
+  }, [])
+ 
+
+  function updateAuthState(user:any) {
+    // console.log(user);
+    if(user !== null && user !== undefined){
+      user?.getIdToken().then((idToken: any)=>{
+        const userDetails: UserDetails = {
+          email: user?.email, 
+          name: user?.displayName, 
+          phone: user?.phoneNumber,
+          idToken: idToken, 
+          uid: user?.uid, 
+          photoURL: user?.photoURL
+        }
+        console.log(user, userDetails)
+        dispatch(setUserCredential(userDetails));
+        navigateToMainStack();
+  
+      }).catch((error:any) => {
+        console.log('Error getting id token of user', error);
+        dispatch(setUserCredential({}));
+      })
+    } else{
+      
+    }
+  }
 
   const onSignInPressed = async (data: any) => {
     const { email, password } = data;
@@ -37,14 +77,11 @@ const SignInScreen = () => {
 
     setLoading(true);
     emailSignIn(email, password).then((userCredential: UserCredential)=> {
-      const user = userCredential.user;
-      console.log(user);
+      const user = userCredential.user;      
+      updateAuthState(user);
       setResultText(user.email + ' Logged in!'|| 'Logged In')
       setIsVisible(true);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Main' }],
-      });
+      navigateToMainStack();
     }).catch((error: any) => {
       console.log(error);
       setResultText(error.message)
@@ -61,6 +98,21 @@ const SignInScreen = () => {
     navigation.navigate("Signup");
   };
 
+  function navigateToMainStack(){
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main' }],
+    });
+  }
+
+
+  if(isLoadingAuthState){
+    return (
+      <BackgroundView children={(
+        <ProLoading/>
+      )}></BackgroundView>
+    )
+  }
   return (
     <BackgroundView
       children={
