@@ -10,7 +10,7 @@ import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { useNavigation } from "@react-navigation/native";
 import { formatDateString } from "../../Utility/Formatter";
 import { useDispatch } from "react-redux";
-import { selectJob } from "./JobSlice"
+import { selectJob } from "../../Services/Redux/Slices/JobSlice"
 import { Job } from "../../Services/Redux/Api";
 
 interface JobCardProps {

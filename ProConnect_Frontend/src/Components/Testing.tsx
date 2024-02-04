@@ -5,8 +5,8 @@ import ProHeader, { HeaderType } from "../Components/Layout/ProHeader";
 import { Colors, Text, View } from "react-native-ui-lib";
 import {clearData} from "../Utility/Storage";
 import { useDispatch, useSelector } from 'react-redux';
-import { isDarkTheme, toggleTheme } from '../Services/Redux/PreferencesSlice';
-import { AppDispatch } from '../Services/Store';
+import { isDarkTheme, toggleTheme } from '../Services/Redux/Slices/PreferencesSlice';
+import { AppDispatch } from '../Services/Redux/Store';
 import ProRefreshControl from './Controls/ProRefreshControl';
 
 

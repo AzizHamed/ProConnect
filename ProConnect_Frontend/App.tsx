@@ -4,7 +4,7 @@ import React from "react";
 import {  initTheme } from "./Style";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
-import { store } from "./src/Services/Store";
+import { store } from "./src/Services/Redux/Store";
 import Index from "./src/Index";
 
 initTheme();

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Job } from "../../Services/Redux/Api";
+import { Job } from "../Api";
 
 export interface JobInitialState {
     jobs: Job[],

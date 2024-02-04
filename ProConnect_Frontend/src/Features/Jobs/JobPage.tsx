@@ -4,7 +4,7 @@ import { View, Text } from "react-native-ui-lib";
 import { Job } from "../../Services/Redux/Api";
 import ProCard from "../../Components/Layout/ProCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedJob, selectJob } from "./JobSlice";
+import { getSelectedJob, selectJob } from "../../Services/Redux/Slices/JobSlice";
 import { useNavigation } from "@react-navigation/native";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { formatDateString } from "../../Utility/Formatter";

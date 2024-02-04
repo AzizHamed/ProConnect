@@ -4,7 +4,7 @@ import JobCard from "./JobCard";
 import ProButton from "../../Components/Controls/ProButton";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { getJobs, setJobs } from "./JobSlice";
+import { getJobs, setJobs } from "../../Services/Redux/Slices/JobSlice";
 import BackgroundView from "../../Components/Layout/BackgroundView";
 import { useGetJobsQuery } from "../../Services/Redux/Api";
 import { useEffect } from "react";

@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import JobReducer from "../Features/Jobs/JobSlice";
-import DimensionReducer from "./Redux/DimensionSlice";
-import PreferencesReducer, { initializePreferences } from "./Redux/PreferencesSlice";
-import { api } from "./Redux/Api";
+import AuthReducer from "./Slices/AuthSlice";
+import JobReducer from "./Slices/JobSlice";
+import DimensionReducer from "./Slices/DimensionSlice";
+import PreferencesReducer, { initializePreferences } from "./Slices/PreferencesSlice";
+import { api } from "./Api";
 
 export const store = configureStore({
     reducer: {
+        auth: AuthReducer,
         job: JobReducer,
         dimension: DimensionReducer,
         preferences: PreferencesReducer,

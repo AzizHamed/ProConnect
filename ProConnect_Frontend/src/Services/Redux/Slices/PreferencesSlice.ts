@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import * as Style from "../../../Style";
+import * as Style from "../../../../Style";
 
 export interface PreferencesState {
   isDarkTheme: boolean;

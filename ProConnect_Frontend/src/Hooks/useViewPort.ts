@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dimensions, ScaledSize, Animated, Platform } from "react-native";
-import { setDimensions, getWindow } from "../Services/Redux/DimensionSlice";
+import { setDimensions, getWindow } from "../Services/Redux/Slices/DimensionSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../Services/Store";
+import { AppDispatch } from "../Services/Redux/Store";
 interface UpdateDimensionsData{
   window: ScaledSize,
   screen: ScaledSize
