@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import JobsList from '../../Features/Jobs/JobsList';
-import Testing from '../Testing';
+import Testing from '../../Components/Testing';
 import { View, Image, Colors,Text} from 'react-native-ui-lib';
 import getColors from '../../Constants/Colors';
 import DrawerContent from './DrawerContent';

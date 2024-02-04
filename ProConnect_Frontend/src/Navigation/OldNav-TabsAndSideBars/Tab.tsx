@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import JobsList from '../../Features/Jobs/JobsList';
-import Testing from '../Testing';
+import Testing from '../../Components/Testing';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

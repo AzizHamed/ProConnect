@@ -1,7 +1,7 @@
 import React from 'react'
 import { View,Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
-import BackgeoundView from '../Layout/BackgroundView';
+import BackgeoundView from '../../Components/Layout/BackgroundView';
 import { Touchable } from 'react-native';
 import JobCard from '../../Features/Jobs/JobCard';
 import ServiceCard from './ServiceCard';
@@ -36,7 +36,7 @@ const Search1 = () => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
-          <ServiceCard imageurl={service.imageurl} profession={service.service} />
+          {/* <ServiceCard imageurl={service.imageurl} profession={service.service} /> */}
            
            
         </TouchableOpacity>

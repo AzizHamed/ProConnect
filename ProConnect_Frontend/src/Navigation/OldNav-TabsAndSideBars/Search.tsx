@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, WheelPicker } from 'react-native-ui-lib'
 import {Button} from 'react-native-elements'
-import BackgroundView from '../Layout/BackgroundView'
+import BackgroundView from '../../Components/Layout/BackgroundView'
 import { TextInput } from 'react-native-gesture-handler'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import SearchTextFields from './SearchTextFields'
@@ -10,7 +10,7 @@ import { Dropdown } from 'react-native-element-dropdown'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Constants from 'expo-constants';
 import Service from './Service'
-import ProButton from '../Controls/ProButton'
+import ProButton from '../../Components/Controls/ProButton'
 
 
 const Search = () => {
