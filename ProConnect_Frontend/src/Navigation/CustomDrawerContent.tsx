@@ -31,7 +31,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
           }}
         >
           <Image
-            source={require("../../assets/temp/R.jpg")}
+            source={require("../../R.jpg")}
             style={{
               height: 130,
               width: 130,
