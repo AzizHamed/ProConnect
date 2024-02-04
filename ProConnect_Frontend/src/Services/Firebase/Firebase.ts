@@ -1,9 +1,8 @@
-// Import the functions you need from the SDKs you need
-
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import { getAuth, initializeAuth, getReactNativePersistence,
-         createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updatePassword, signOut } from "firebase/auth";
+import { getAuth, initializeAuth, 
+        getReactNativePersistence, browserLocalPersistence, // This shows an error but works for some reason
+        createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Platform } from "react-native";
@@ -32,12 +31,12 @@ const createFirebaseApp = (config = {}) => {
   }
 };
 
-
 const noActiveApps = !getApps().length;
 const FIREBASE_APP = noActiveApps ? createFirebaseApp(firebaseConfig) : getApp(); 
-export const webAuth = noActiveApps ? initializeAuth(FIREBASE_APP, isWeb ? {} : { persistence: getReactNativePersistence(ReactNativeAsyncStorage) }) : getAuth(FIREBASE_APP);
-
-// export const userId = () => {isWeb ? webAuth.currentUser?.getIdToken() : nativeAuth.currentUser?.getIdToken();}
+// Create an auth instance
+export const webAuth = noActiveApps 
+? initializeAuth(FIREBASE_APP,  { persistence: isWeb ? browserLocalPersistence : getReactNativePersistence(ReactNativeAsyncStorage) }) // Save login state
+: getAuth(FIREBASE_APP); // If there's already an auth instance running, use that instead (fixes bug with Android hot reload).
 
 // export const analyticsEvent = (eventName:string, params?: { [key: string]: any; } | undefined) => {
 //   isWeb ? logEvent(webAnalytics, eventName, params) : nativeAnalytics.logEvent(eventName, params)
@@ -45,17 +44,14 @@ export const webAuth = noActiveApps ? initializeAuth(FIREBASE_APP, isWeb ? {} : 
 
 export const emailSignUp = (email:string, password:string) => {
   return createUserWithEmailAndPassword(webAuth, email, password)
-  // isWeb ? createUserWithEmailAndPassword(webAuth, email, password) : nativeAuth.createUserWithEmailAndPassword(email, password);
 }
 
 export const emailSignIn = (email:string, password:string) => {
   return signInWithEmailAndPassword(webAuth, email, password)
-  // isWeb ? signInWithEmailAndPassword(webAuth, email, password) : nativeAuth.signInWithEmailAndPassword(email, password);
 }
 
 export const emailSignOut = () => {
   return signOut(webAuth)
-  // isWeb ? signOut(webAuth) : nativeAuth.signOut();
 }
 
 export const sendResetPasswordEmail = (email: string) => {
