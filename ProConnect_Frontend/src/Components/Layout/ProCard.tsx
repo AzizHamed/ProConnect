@@ -40,7 +40,7 @@ const ProCard: React.FC<ProCardProps & CardProps> = (props) => {
   const onPress = props.onPress !== undefined ? props.onPress
       : () => { console.log("Pressed"); };
 
-  function calculateWidth() { 
+  function calculateWidth() { // TODO: Change this to behave like the ProButton
     return calculateResponsiveWidth(screenWidth, autoAdjustWidth);
   }
 
