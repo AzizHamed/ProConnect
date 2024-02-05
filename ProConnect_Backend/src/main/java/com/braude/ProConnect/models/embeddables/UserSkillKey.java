@@ -9,23 +9,23 @@ import java.util.Objects;
 @Embeddable
 public class UserSkillKey implements Serializable {
     @Column(name = "user_id")
-    private long userId;
+    private String userId;
     @Column(name = "skill_id")
     private long skillId;
 
     public UserSkillKey() {
     }
 
-    public UserSkillKey(long userId, long skillId) {
+    public UserSkillKey(String userId, long skillId) {
         this.userId = userId;
         this.skillId = skillId;
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

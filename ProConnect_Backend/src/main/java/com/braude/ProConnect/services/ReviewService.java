@@ -40,7 +40,7 @@ public class ReviewService {
         return newReviews;
     }
 
-    public List<Review> getReviewsByReviewerUserId(long reviewerUserId){
+    public List<Review> getReviewsByReviewerUserId(String reviewerUserId){
         User user = userService.getUser(reviewerUserId);
         return null;
     }

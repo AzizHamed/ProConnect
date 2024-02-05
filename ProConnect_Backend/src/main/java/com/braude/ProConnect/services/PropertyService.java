@@ -25,7 +25,7 @@ public class PropertyService {
     }
 
 
-    public Property createProperty(Property property, long userId) {
+    public Property createProperty(Property property, String userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(!optionalUser.isPresent())
             throw new ProConnectException("User doesn't exist");

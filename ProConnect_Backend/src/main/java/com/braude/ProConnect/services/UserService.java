@@ -35,8 +35,8 @@ public class UserService {
      * @param id
      * @return
      */
-    public User getUser(long id) {
-        Optional<User> user = userRepository.findById(id);
+    public User getUser(String userId) {
+        Optional<User> user = userRepository.findById(userId);
         return user.isPresent() ? user.get() : null;
     }
 
@@ -44,7 +44,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public boolean addRole(long userId, long roleId) {
+    public boolean addRole(String userId, long roleId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(!optionalUser.isPresent())
             throw new ProConnectException("User not found.");

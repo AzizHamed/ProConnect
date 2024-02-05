@@ -42,12 +42,12 @@ public class JobController {
     }
 
     @PutMapping("/like")
-    public String likePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull Long userId){
+    public String likePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull String userId){
             return jobService.likePost(jobId,userId);
     }
 
     @PutMapping("/unlike")
-    public String unlikePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull Long userId){
+    public String unlikePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull String userId){
         return jobService.unLikePost(jobId,userId);
     }
 
@@ -56,7 +56,7 @@ public class JobController {
         return jobService.addComment(comment);
     }
     /*@GetMapping("/user")
-    public List<Job> getJobsByUser(@RequestParam Long userId){
+    public List<Job> getJobsByUser(@RequestParam String userId){
         return jobService.getJobByUserId(userId);
     }*/
 

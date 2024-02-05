@@ -26,8 +26,8 @@ public class PropertyController {
 
 
     @PostMapping(value = "create-property")
-    public ResponseEntity<Property> createProperty(@Valid @RequestBody RequestWithId<Property> propertyRequest){
-        Property newProperty = propertyService.createProperty(propertyRequest.getData(), propertyRequest.getId());
+    public ResponseEntity<Property> createProperty(@Valid @RequestBody Property property){
+        Property newProperty = propertyService.createProperty(property, property.getOwner().getId());
         if(newProperty != null)
             return ResponseEntity.ok(newProperty);
         return ResponseEntity.badRequest().build();

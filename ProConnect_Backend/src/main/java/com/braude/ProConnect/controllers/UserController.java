@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/get")
-    public ResponseEntity<User> getUser(@RequestParam long userId){
+    public ResponseEntity<User> getUser(@RequestParam String userId){
         User user = userService.getUser(userId);
         if(user != null)
             return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping(value = "add-role")
-    public ResponseEntity<Boolean> addRole(@RequestParam long userId, @RequestParam long roleId){
+    public ResponseEntity<Boolean> addRole(@RequestParam String userId, @RequestParam long roleId){
         if(userService.addRole(userId, roleId))
             return ResponseEntity.ok(true);
         throw new ProConnectException("Failed to add role to user.");

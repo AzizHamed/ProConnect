@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface JobRepositoryPaging extends PagingAndSortingRepository<Job,Long> {
 
-    /*List<Job> findByUserId(Long userId);*/
+    /*List<Job> findByUserId(String userId);*/
 }

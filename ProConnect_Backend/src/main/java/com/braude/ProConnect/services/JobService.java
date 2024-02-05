@@ -66,7 +66,7 @@ public class JobService {
 
     }
 
-    public String likePost(Long jobId, Long userId)  {
+    public String likePost(Long jobId, String userId)  {
         checkIfUserAndJobValid(userId,jobId);
         Job job = jobRepository.findById(jobId).get();
         User user = userService.getUser(userId);
@@ -77,7 +77,7 @@ public class JobService {
         return "success";
     }
 
-    public String unLikePost(Long jobId, Long userId) {
+    public String unLikePost(Long jobId, String userId) {
         checkIfUserAndJobValid(userId,jobId);
         Job job = jobRepository.findById(jobId).get();
         User user = userService.getUser(userId);
@@ -88,7 +88,7 @@ public class JobService {
         return "success";
     }
 
-    private void checkIfUserAndJobValid(Long userId, Long jobId) throws ProConnectException{
+    private void checkIfUserAndJobValid(String userId, Long jobId) throws ProConnectException{
         if(!jobRepository.findById(jobId).isPresent() && userService.getUser(userId)==null)
             throw new ProConnectException("job and user not found");
 

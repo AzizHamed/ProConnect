@@ -18,9 +18,8 @@ import java.util.*;
 @Builder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", updatable = false)
-    private long id;
+    private String id;
     @NotNull
     @Embedded
     private Name name;
