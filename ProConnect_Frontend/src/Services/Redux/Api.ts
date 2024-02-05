@@ -116,7 +116,7 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/properties/create-property`,
           method: "POST",
-          body: queryArg.requestWithIdProperty,
+          body: queryArg.property,
         }),
         invalidatesTags: ["property-controller"],
       }),
@@ -185,12 +185,12 @@ export { injectedRtkApi as api };
 export type UnlikePostApiResponse = /** status 200 OK */ string;
 export type UnlikePostApiArg = {
   jobId: number;
-  userId: number;
+  userId: string;
 };
 export type LikePostApiResponse = /** status 200 OK */ string;
 export type LikePostApiArg = {
   jobId: number;
-  userId: number;
+  userId: string;
 };
 export type CommentOnPostApiResponse = /** status 200 OK */ Comment;
 export type CommentOnPostApiArg = {
@@ -206,7 +206,7 @@ export type CreateUsersApiArg = {
 };
 export type AddRoleApiResponse = /** status 200 OK */ boolean;
 export type AddRoleApiArg = {
-  userId: number;
+  userId: string;
   roleId: number;
 };
 export type CreateUserServicesApiResponse =
@@ -230,7 +230,7 @@ export type CreateRoleApiArg = {
 };
 export type CreatePropertyApiResponse = /** status 200 OK */ Property;
 export type CreatePropertyApiArg = {
-  requestWithIdProperty: RequestWithIdProperty;
+  property: Property;
 };
 export type CreateService1ApiResponse = /** status 200 OK */ Profession;
 export type CreateService1ApiArg = {
@@ -243,7 +243,7 @@ export type PostJobsApiArg = {
 };
 export type GetUserApiResponse = /** status 200 OK */ User;
 export type GetUserApiArg = {
-  userId: number;
+  userId: string;
 };
 export type GetAllUsersApiResponse = /** status 200 OK */ User[];
 export type GetAllUsersApiArg = void;
@@ -255,8 +255,8 @@ export type GetLocationsApiResponse = /** status 200 OK */ Location[];
 export type GetLocationsApiArg = void;
 export type GetJobsApiResponse = /** status 200 OK */ PageJob;
 export type GetJobsApiArg = {
-  jobPage?: JobPage;
-  jobSearchCriteria?: JobSearchCriteria;
+  jobPage: JobPage;
+  jobSearchCriteria: JobSearchCriteria;
 };
 export type InitApiResponse = unknown;
 export type InitApiArg = void;
@@ -279,7 +279,7 @@ export type Review = {
   timestamp?: string;
 };
 export type User = {
-  id?: number;
+  id?: string;
   name: Name;
   email: string;
   phoneNumber?: string;
@@ -338,6 +338,7 @@ export type Comment = {
   job?: Job;
   user?: User;
   numberOfReports?: number;
+  jobId?: number;
 };
 export type Service = {
   id?: number;
@@ -351,10 +352,6 @@ export type UserServiceEntity = {
   user: User;
   cost?: number;
 };
-export type RequestWithIdProperty = {
-  id?: number;
-  data?: Property;
-};
 export type SortObject = {
   empty?: boolean;
   sorted?: boolean;
@@ -363,14 +360,14 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  unpaged?: boolean;
-  paged?: boolean;
   pageNumber?: number;
   pageSize?: number;
+  unpaged?: boolean;
+  paged?: boolean;
 };
 export type PageJob = {
-  totalPages?: number;
   totalElements?: number;
+  totalPages?: number;
   size?: number;
   content?: Job[];
   number?: number;
