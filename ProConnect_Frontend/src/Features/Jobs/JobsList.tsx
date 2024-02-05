@@ -31,11 +31,11 @@ const JobsList: React.FC = () => {
   return (
     <BackgroundView
       children={
-        <View>
+        <View bg>
           <ProRefreshControl onRefreshAction={refetch}
             children={
-              <View>
-                <ProButton isResponsive onPress={() => { navigation.navigate("Testing");}} />
+              <View bg>
+                <ProButton onPress={() => { navigation.navigate("Testing");}} />
                 <LoadingOrError isSuccess={isSuccess} isError={isError} errorDisplayMessage 
                 />
                 {error && <BackgroundView children={<Text>{error.error}</Text>}></BackgroundView>}
