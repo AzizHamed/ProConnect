@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps } from 'react-native-ui-lib';
-import { calculateResponsiveWidth, useViewport } from '../../Hooks/useViewPort';
+import { Button, ButtonProps, View } from 'react-native-ui-lib';
 import { Animated, Platform } from 'react-native';
 
 interface ProButtonProps {
@@ -15,9 +14,7 @@ interface ProButtonProps {
 const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
     const text = props.text || 'Submit';
     const borderRadius = props.radius || 0;
-    const isResponsive = props.isResponsive || false;
     const width = (Platform.OS === 'web') ? (props.webWidth || 400) : (props.mobileWidth || '90%')
-    const { screenWidth } = useViewport();
 
     const onPress = props.onPress !== undefined ? props.onPress : () =>
     {
@@ -26,16 +23,17 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
 
 
   return (
-    <Button 
-        {...props} style={{width: width}}
-        // style={generateStyle()}
-        onPress={onPress}
-        borderRadius={borderRadius}
-        supportRTL={true} 
-        // outlineColor='black'
-        label={text} 
-        >    
-    </Button>
+    <View center bg>      
+      <Button 
+          {...props} style={{width: width}}
+          onPress={onPress}
+          center
+          borderRadius={borderRadius}
+          supportRTL={true} 
+          label={text} 
+          >    
+      </Button>
+    </View>
   )
 }
 
