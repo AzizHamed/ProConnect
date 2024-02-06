@@ -31,10 +31,8 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var accessToken = request.getHeader("Authorization");
 
-        if(accessToken != null)
-        {
-            try
-            {
+        if (accessToken != null) {
+            try {
                 FirebaseToken token = firebaseAuth.verifyIdToken(accessToken, true);
                 String uid = token.getUid();
                 Authentication auth = new FirebaseAuthentication(uid, accessToken);
@@ -43,16 +41,13 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
                 securityContext.setAuthentication(auth);
                 HttpSession session = request.getSession();
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-                filterChain.doFilter(request, response);
-            }
-            catch (FirebaseAuthException e){
+            } catch (FirebaseAuthException e) {
                 response.sendError(401, e.getAuthErrorCode().toString());
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
                 response.setStatus(401);
             }
         }
+        filterChain.doFilter(request, response);
     }
 }
