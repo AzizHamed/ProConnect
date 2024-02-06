@@ -22,7 +22,6 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.println("In  " + this.getClass());
         if (!supports(authentication.getClass())) return null;
         String uid = (String) authentication.getPrincipal();
         User user = userService.getUser(uid);
