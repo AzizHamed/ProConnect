@@ -1,6 +1,7 @@
 package com.braude.ProConnect.models.entities;
 
 import com.braude.ProConnect.models.embeddables.Name;
+import com.braude.ProConnect.models.enums.AccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -52,7 +53,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "contractor_id"))
     private List<User> contractors;
 
-
+    @Enumerated(EnumType.STRING)
+    private AccountStatus accountStatus;
 
     //private List<User> workers;
 
