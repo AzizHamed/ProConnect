@@ -5,14 +5,13 @@ import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.security.SecurityUser;
 import com.braude.ProConnect.security.authentications.FirebaseAuthentication;
 import com.braude.ProConnect.services.UserService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FirebaseAuthProvider implements AuthenticationProvider {
     private final UserService userService;
 
@@ -35,9 +34,8 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
         if (!securityUser.isEnabled()) {
             throw new ProConnectException(securityUser.getUsername() + " is disabled.");
         }
-        Authentication auth = new FirebaseAuthentication(securityUser, authentication.getCredentials(), securityUser.getAuthorities());
-//            userService.updateLastAccessDate(user);
-        return auth;
+        //            userService.updateLastAccessDate(user);
+        return new FirebaseAuthentication(securityUser, authentication.getCredentials(), securityUser.getAuthorities());
     }
 
 

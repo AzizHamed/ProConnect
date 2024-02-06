@@ -1,16 +1,14 @@
 package com.braude.ProConnect.security.filters;
 
-import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.security.authentications.FirebaseAuthentication;
-import com.braude.ProConnect.services.UserService;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -21,13 +19,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class FirebaseAuthFilter extends OncePerRequestFilter {
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
     private final AuthenticationManager authenticationManager;
-    private final FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
-    private final UserService userService;
-    @Autowired
-    public FirebaseAuthFilter(AuthenticationManager authenticationManager, UserService userService) {
+
+    public FirebaseAuthFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
     }
 
     @Override
@@ -41,7 +38,6 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
             {
                 FirebaseToken token = firebaseAuth.verifyIdToken(accessToken, true);
                 String uid = token.getUid();
-                User user = userService.getUser(uid);
                 Authentication auth = new FirebaseAuthentication(uid, accessToken);
                 auth = authenticationManager.authenticate(auth);
                 SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -49,7 +45,11 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
                 HttpSession session = request.getSession();
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
                 filterChain.doFilter(request, response);
-            } catch (Exception e)
+            }
+            catch (FirebaseAuthException e){
+                response.sendError(401, e.getAuthErrorCode().toString());
+            }
+            catch (Exception e)
             {
                 System.out.println(e.getMessage());
                 response.setStatus(401);

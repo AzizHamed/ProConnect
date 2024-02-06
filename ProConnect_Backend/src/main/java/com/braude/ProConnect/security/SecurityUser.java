@@ -79,7 +79,7 @@ public class SecurityUser implements UserDetails
     @Override
     public boolean isEnabled()
     {
-        return user.getAccountStatus() == AccountStatus.ACTIVE;
+        return isAccountNonLocked();
     }
 
     public User getUser()
