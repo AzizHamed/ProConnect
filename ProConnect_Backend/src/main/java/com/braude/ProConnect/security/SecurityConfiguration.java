@@ -45,16 +45,13 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.
-                authorizeHttpRequests((auth) ->
-                        auth.requestMatchers(AUTH_WHITELIST).permitAll()
-                        .anyRequest().authenticated() // TODO: authenticated()
-                )
+        http
                 .httpBasic(withDefaults())
                 .cors(cors->{cors.configurationSource(corsConfigurationSource());})
                 .csrf(csrf -> {csrf.disable();});
 
-        http.addFilterAfter(new FirebaseAuthFilter(authenticationConfiguration.getAuthenticationManager()), BasicAuthenticationFilter.class);
+        http.addFilterAfter(new FirebaseAuthFilter(authenticationConfiguration.getAuthenticationManager()), BasicAuthenticationFilter.class)
+                .authorizeHttpRequests(auth->auth.requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated());
         return http.build();
     }
 
