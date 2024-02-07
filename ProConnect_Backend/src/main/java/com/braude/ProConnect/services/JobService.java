@@ -10,8 +10,10 @@ import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.repositories.*;
+import com.braude.ProConnect.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -61,7 +63,12 @@ public class JobService {
         /*Sort sort = Sort.by(jobPage.getSortDirection(), jobPage.getSortBy());
         Pageable pageable = PageRequest.of(jobPage.getPageNumber(),jobPage.getPageSize(),sort);
         return jobRepositoryPaging.findAll(pageable);*/
-
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getCredentials()); // Null
+        System.out.println(auth.getPrincipal()); // SecurityUser
+        System.out.println(auth.getName()); // Email
+        var securityUser = (SecurityUser)auth.getPrincipal();
+        System.out.println(securityUser.getUser().getId());
         return jobCriteriaRepository.findAllWithFilters(jobSearchCriteria, jobPage);
 
     }
