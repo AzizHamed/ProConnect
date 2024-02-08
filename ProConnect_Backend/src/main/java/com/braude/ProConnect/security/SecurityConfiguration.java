@@ -1,6 +1,7 @@
 package com.braude.ProConnect.security;
 
 import com.braude.ProConnect.security.filters.FirebaseAuthFilter;
+import com.braude.ProConnect.security.filters.SwaggerAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,11 +48,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(withDefaults())
-                .cors(cors->{cors.configurationSource(corsConfigurationSource());})
-                .csrf(csrf -> {csrf.disable();});
+                .cors(cors -> {
+                    cors.configurationSource(corsConfigurationSource());
+                })
+                .csrf(csrf -> {
+                    csrf.disable();
+                });
 
         http.addFilterAfter(new FirebaseAuthFilter(authenticationConfiguration.getAuthenticationManager()), BasicAuthenticationFilter.class)
-                .authorizeHttpRequests(auth->auth.requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated());
+                .addFilterAfter(new SwaggerAuthFilter(authenticationConfiguration.getAuthenticationManager()), FirebaseAuthFilter.class) // TODO: Turn off in builds
+                .authorizeHttpRequests(auth -> auth.requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated());
         return http.build();
     }
 
