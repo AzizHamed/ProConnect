@@ -4,6 +4,7 @@ import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
 import Tab from "./OldNav-TabsAndSideBars/Tab";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 const MainDrawer = createDrawerNavigator();
 
@@ -31,7 +32,15 @@ export const MainDrawerScreen: React.FC = () => {
         }
       }}>
       {/* <MainDrawer.Screen name="MainTabs" component={Tab} /> */}
-      <MainDrawer.Screen name="MainTabs" component={MainTabScreen} />
+      <MainDrawer.Screen name="MainTabs" component={MainTabScreen}   options={{
+            drawerLabel: "Home",
+            title: "Home",
+            drawerIcon: () => (
+              <SimpleLineIcons name="home" size={20} color="#808080" />
+            )
+          }}
+      
+      />
       <MainDrawer.Screen name="test" component={JobsList} />
     </MainDrawer.Navigator>
   );

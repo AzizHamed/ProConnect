@@ -5,6 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
 import Search1 from "./OldNav-TabsAndSideBars/Search1";
 import JobsList from "../Features/Jobs/JobsList";
+import Search from "./OldNav-TabsAndSideBars/Search";
 
 type MainTabParamList = {
   Home: undefined;
@@ -59,7 +60,7 @@ export const MainTabScreen: React.FC = () => {
       />
       <MainTab.Screen
         name="Search"
-        component={Search1}
+        component={Search}
         options={{ headerShown: false }}
       />
       <MainTab.Screen
