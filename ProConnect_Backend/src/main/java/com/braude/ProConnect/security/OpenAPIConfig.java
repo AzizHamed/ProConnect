@@ -21,9 +21,10 @@ import org.springframework.context.annotation.Configuration;
                         email = "hadidanial97@gmail.com"
                 ),
                 title = "ProConnect API",
-                description = "This is the ProConnect API.\nProConnect is the final project at Braude College of Engineering by Hadi and Aziz.\n" +
-                        "You can find the source code at [https://github.com/hadiDanial/ProConnect](https://github.com/hadiDanial/ProConnect).\n" +
-                        "You must provide a valid Firebase authentication access token in order to use this API.",
+                description = "This is the ProConnect API.\n\nProConnect is the final project at Braude College of Engineering by Hadi and Aziz.\n\n" +
+                        "You can find the source code at [https://github.com/hadiDanial/ProConnect](https://github.com/hadiDanial/ProConnect).\n\n" +
+                        "You must provide a valid Firebase authentication id token in order to use this API.\n\n" +
+                        "During development, you can access the API using the username: \"admin\" and the password \"proconnect\"",
                 version = "0.3"
         ),
         security = {
