@@ -3,6 +3,7 @@ package com.braude.ProConnect.controllers;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("users")
 @CrossOrigin()
 @Validated
+@Tag(name = "Users")
 public class UserController {
     private final UserService userService;
 

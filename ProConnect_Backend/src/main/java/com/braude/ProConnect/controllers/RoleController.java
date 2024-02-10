@@ -2,6 +2,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.services.RoleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("roles")
 @CrossOrigin()
 @Validated
+@Tag(name = "Roles")
 public class RoleController {
     private final RoleService roleService;
 
