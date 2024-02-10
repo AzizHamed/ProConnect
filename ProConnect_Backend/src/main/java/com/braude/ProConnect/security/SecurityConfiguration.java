@@ -1,22 +1,20 @@
 package com.braude.ProConnect.security;
 
-import com.braude.ProConnect.security.filters.FirebaseAuthFilter;
-import com.braude.ProConnect.security.filters.SwaggerAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +45,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic(withDefaults())
                 .cors(cors -> {
                     cors.configurationSource(corsConfigurationSource());
                 })
@@ -55,20 +52,35 @@ public class SecurityConfiguration {
                     csrf.disable();
                 });
 
-        http.addFilterAfter(new FirebaseAuthFilter(authenticationConfiguration.getAuthenticationManager()), BasicAuthenticationFilter.class)
-                .addFilterAfter(new SwaggerAuthFilter(authenticationConfiguration.getAuthenticationManager()), FirebaseAuthFilter.class) // TODO: Turn off in builds
-                .authorizeHttpRequests(auth -> auth.requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated());
+        http.apply(new ApiSecurityBuilderConfigurer());
+
+        http.authorizeHttpRequests(auth ->
+                // Allow all the endpoints in the AUTH_WHITELIST without any authentication
+                auth.requestMatchers(AUTH_WHITELIST).permitAll()
+                // All other requests need to be authenticated.
+                    .anyRequest().authenticated());
         return http.build();
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // TODO: Change allowed origins to match frontend site and localhost only
         configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+
+    @Bean
+    FirebaseUserDetailsService firebaseUserDetailsService(){
+        return new FirebaseUserDetailsService();
+    }
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
     }
 }

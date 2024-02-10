@@ -23,12 +23,13 @@ public class SwaggerAuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        System.out.println("Security: In class SwaggerAuthProvider");
         var username = authentication.getName().toString();
         var password = (String) authentication.getCredentials();
-        if(username.equalsIgnoreCase("admin") && password.equals("proconnect")) {
+        if(username.equalsIgnoreCase("admin") && password.equals("Basic YWRtaW46cHJvY29ubmVjdA==")) {
             User user = userService.getUser("admin");
             SecurityUser securityUser = new SecurityUser(user);
-            Authentication auth = new SwaggerAuthentication(securityUser, securityUser.getPassword(), securityUser.getAuthorities());
+            Authentication auth = new SwaggerAuthentication(securityUser, "jwt", securityUser.getAuthorities());
             return auth;
 
         }
@@ -40,6 +41,6 @@ public class SwaggerAuthProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return FirebaseAuthentication.class.equals(authentication);
+        return SwaggerAuthentication.class.equals(authentication);
     }
 }

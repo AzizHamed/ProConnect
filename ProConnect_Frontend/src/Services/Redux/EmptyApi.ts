@@ -9,7 +9,7 @@ export const emptySplitApi = createApi({
       const state = getState();
       const idToken = state?.auth?.idToken;
       if(idToken && idToken !== '')
-        headers.set('Authorization', idToken);
+        headers.set('Firebase_Authorization', idToken);
     }
     }),
   endpoints: () => ({}),

@@ -20,8 +20,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Intercepts all Swagger requests and verifies that they contain valid credentials. DEV ONLY.
+ */
 public class SwaggerAuthFilter extends OncePerRequestFilter {
     private final AuthenticationManager authenticationManager;
+    private final String authToken = "Basic YWRtaW46cHJvY29ubmVjdA==";
 
     public SwaggerAuthFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -29,16 +33,17 @@ public class SwaggerAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var username = request.getHeader("username");
-        var password = request.getHeader("password");
-        if(username != null && password != null)
+//        System.out.println("Security: In class SwaggerAuthFilter");
+        var accessToken = request.getHeader("Authorization");
+
+        if(accessToken != null && accessToken.equals(authToken))
         {
             try
             {
-                SwaggerAuthentication a = new SwaggerAuthentication(username, password, null);
-                a = (SwaggerAuthentication) authenticationManager.authenticate(a);
+                Authentication auth = new SwaggerAuthentication("admin", "jwt");
+                auth = authenticationManager.authenticate(auth);
                 SecurityContext securityContext = SecurityContextHolder.getContext();
-                securityContext.setAuthentication(a);
+                securityContext.setAuthentication(auth);
                 HttpSession session = request.getSession();
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
             } catch (AuthenticationException e)

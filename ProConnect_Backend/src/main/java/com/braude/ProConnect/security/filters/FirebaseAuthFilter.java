@@ -18,6 +18,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Intercepts all requests and verifies that they contain a valid Firebase idToken.
+ */
 public class FirebaseAuthFilter extends OncePerRequestFilter {
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -29,23 +32,22 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var accessToken = request.getHeader("Authorization");
-
+//        System.out.println("Security: In class FirebaseAuthFilter");
+        var accessToken = request.getHeader("Firebase_Authorization");
         if (accessToken != null) {
             try {
                 FirebaseToken token = firebaseAuth.verifyIdToken(accessToken, true);
                 String uid = token.getUid();
-                Authentication auth = new FirebaseAuthentication(uid, accessToken);
+                Authentication auth = new FirebaseAuthentication(uid, "jwt");
                 auth = authenticationManager.authenticate(auth);
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(auth);
                 HttpSession session = request.getSession();
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
             } catch (FirebaseAuthException e) {
-                response.sendError(401, e.getAuthErrorCode().toString());
+                System.out.println(e.getMessage());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                response.setStatus(401);
             }
         }
         filterChain.doFilter(request, response);

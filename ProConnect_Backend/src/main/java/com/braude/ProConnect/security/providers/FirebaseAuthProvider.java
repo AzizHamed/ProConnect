@@ -22,7 +22,7 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (!supports(authentication.getClass())) return null;
+        System.out.println("Security: In class FirebaseAuthProvider");
         String uid = (String) authentication.getPrincipal();
         User user = userService.getUser(uid);
         System.out.println("User: " + user.getEmail());
@@ -34,7 +34,7 @@ public class FirebaseAuthProvider implements AuthenticationProvider {
             throw new ProConnectException(securityUser.getUsername() + " is disabled.");
         }
         //            userService.updateLastAccessDate(user);
-        return new FirebaseAuthentication(securityUser, authentication.getCredentials(), securityUser.getAuthorities());
+        return new FirebaseAuthentication(securityUser, "jwt", securityUser.getAuthorities());
     }
 
 

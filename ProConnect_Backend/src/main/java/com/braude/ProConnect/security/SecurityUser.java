@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * {@link UserDetails} implementation that wraps a {@link User} entity.
+ */
 public class SecurityUser implements UserDetails
 {
     private final User user;
@@ -49,7 +52,7 @@ public class SecurityUser implements UserDetails
     @Override
     public String getPassword()
     {
-        return null;
+        return "jwt";
     }
 
     @Override
