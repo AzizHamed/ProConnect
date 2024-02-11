@@ -22,56 +22,5 @@ import java.util.concurrent.ExecutionException;
 
 @SpringBootApplication
 public class ProConnectApplication {
-	private static UserService userService;
-
-	@Autowired
-	public ProConnectApplication(UserService userService) {
-		ProConnectApplication.userService = userService;
-	}
-
-	public static void main(String[] args) {
-		initializeFirebase();
-		SpringApplication.run(ProConnectApplication.class, args);
-//		createTestIdToken();
-	}
-
-	private static void initializeFirebase() {
-		try {
-			ResourceLoader resourceLoader = new DefaultResourceLoader();
-			Resource resource = resourceLoader.getResource("classpath:proconnect-6173c-firebase-adminsdk-msam9-1ff2a5bffd.json");
-			FirebaseOptions options = new FirebaseOptions.Builder()
-					.setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
-					.build();
-			FirebaseApp.initializeApp(options);
-
-		}
-		catch (FileNotFoundException ex){
-			throw new ProConnectException("Firebase Service Account file not found.");
-		}
-		catch (IOException ex){
-			throw new ProConnectException("Failed to read Firebase Service Account file.");
-		}
-	}
-
-	private static void createTestIdToken() {
-		try {
-			String uid = "admin"; // Replace with your user ID
-			String customToken = null;
-			customToken = FirebaseAuth.getInstance().createCustomTokenAsync(uid).get();
-
-			// Verify the custom token to get the decoded token including expiration time
-			if(!userService.exists(uid)){
-				User admin = new User();
-				admin.setId(uid);
-				admin.setEmail("admin@proconnect.com");
-				admin.setName(new Name("ProConnect", "Admin"));
-				userService.createUser(admin);
-			}
-			// Print the decoded token (including expiration time)
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		} catch (ExecutionException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	public static void main(String[] args) {SpringApplication.run(ProConnectApplication.class, args);}
 }
