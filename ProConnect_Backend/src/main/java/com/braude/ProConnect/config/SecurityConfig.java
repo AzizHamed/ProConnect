@@ -1,5 +1,7 @@
-package com.braude.ProConnect.security;
+package com.braude.ProConnect.config;
 
+import com.braude.ProConnect.security.ApiSecurityBuilderConfigurer;
+import com.braude.ProConnect.security.FirebaseUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
 
     private static final String[] AUTH_WHITELIST = {
@@ -38,7 +40,7 @@ public class SecurityConfiguration {
     };
 
     @Autowired
-    public SecurityConfiguration(AuthenticationConfiguration authenticationConfiguration) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
     }
 

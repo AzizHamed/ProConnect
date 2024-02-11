@@ -1,4 +1,4 @@
-package com.braude.ProConnect.security;
+package com.braude.ProConnect.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
