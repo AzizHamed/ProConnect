@@ -3,6 +3,7 @@ package com.braude.ProConnect.controllers;
 import com.braude.ProConnect.models.entities.Service;
 import com.braude.ProConnect.models.entities.UserServiceEntity;
 import com.braude.ProConnect.services.ServicesService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("services")
 @CrossOrigin()
 @Validated
+@Tag(name = "Services")
 public class ServiceController {
     private final ServicesService servicesService;
 

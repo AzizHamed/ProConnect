@@ -40,6 +40,9 @@ public class UserService {
         return user.isPresent() ? user.get() : null;
     }
 
+    public boolean exists(String userId){
+        return userRepository.existsById(userId);
+    }
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
