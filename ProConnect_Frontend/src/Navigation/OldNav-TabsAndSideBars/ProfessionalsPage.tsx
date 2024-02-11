@@ -1,23 +1,79 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View,Text, Modal, Button, TextInput } from 'react-native'
 import {ScrollView, StyleSheet} from 'react-native'
-import { useGetAllUsersQuery, useGetUserQuery } from '../../Services/Redux/Api';
+import { useGetAllUsersQuery } from '../../Services/Redux/Api';
 import ProfessionalCard from './ProfessionalCard';
 import BackgroundView from '../../Components/Layout/BackgroundView';
-import ProRefreshControl from '../../Components/Controls/ProRefreshControl';
-import ProButton from '../../Components/Controls/ProButton';
-import LoadingOrError from '../../Components/Layout/LoadingOrError';
-import { useNavigation } from '@react-navigation/native';
+
 import { TouchableOpacity } from 'react-native';
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
 import ModalDesigned from '../ModalDesigned';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MyTextInput from '../../Components/Controls/MyTextInput';
+import RNPickerSelect from 'react-native-picker-select';
+
+
 
 const ProfessionalsPage = () => {
-  const navigation = useNavigation();
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
   const [modalVisible, setModalVisible] = useState(false);
+  const [Professionals, setProfessionals] = useState(data)
+  const [rating, setrating] = useState(0)
+  const [experience, setexperience] = useState(0)
+  const [location, setlocation] = useState("choose location")
+  var textInput = "";
+  const [sortBy, setsortBy] = useState(0)
+  function onChangeText(text : string){ 
+
+    textInput = text;
+    filterProfessionals()
+    
+    }
+
+    const sorts = [{label : "Expereince", value : 0}, {label : "Rating", value :1 }]
+
+
+  useEffect(() => {
+    
+    filterProfessionals()
+    
+  }, [data])
+
+  
+
+  function filterProfessionals(){
+    setProfessionals(data?.filter((professional)=> {
+      return professional.rating >= rating && checkName(textInput,professional.name.firstName , professional.name.lastName)  && professional.experience >= experience;
+    
+    }))
+  }
+
+  function checkName(text : string, firstName : string, lastName : string){
+    return firstName.toLowerCase().startsWith(text.toLowerCase()) || lastName.toLowerCase().startsWith(text.toLowerCase()) || (firstName.toLowerCase() + "" + lastName.toLowerCase()).startsWith(text.toLowerCase())
+  }
+
+  function sort1 (value : number) {
+    filterProfessionals()
+    if(value==0)
+    setProfessionals(Professionals?.sort((professional1, professional2) => {
+    return professional1.experience - professional2.experience;
+  }
+    ))
+
+    else
+    if(value==1)
+    setProfessionals(Professionals?.sort((professional1,professional2) => {
+  return professional1.rating - professional2.rating;
+  }))
+
+
+  }
+    
+  
+
+
+  
+
   
   return (
     <BackgroundView children={
@@ -39,18 +95,25 @@ const ProfessionalsPage = () => {
             
             <View style={styles.sortOrFilter}>
             <Text style={{color:"white", fontSize:20}}>Sort</Text>
-            <TouchableOpacity style={styles.filterButton} onPress={()=> {
+            {/* <TouchableOpacity style={styles.filterButton} onPress={()=> {
               setModalVisible(true);
               }}>
               <FontAwesome name='sort' size={47} color={"black"}/>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+
+            <RNPickerSelect
+                      onValueChange={(value) => sort1(value) }
+                      items={sorts}
+                      style={{viewContainer: {backgroundColor : "white"}}}        />
 
             </View>
             
                 
         </View>
 
-        <MyTextInput/>
+        <MyTextInput placeHolder={'Search Professional'} icon={<EvilIcons name='search'  size={45} style={{backgroundColor:"white"}}/>} onChange={onChangeText} />
+
+      
 
        <Modal
         animationType="slide"
@@ -61,9 +124,9 @@ const ProfessionalsPage = () => {
         }}
       >
 
-     <ModalDesigned visibleModal={()=> {
-      setModalVisible(false);
-     }} />
+     <ModalDesigned visibleModal={() => {
+            setModalVisible(false);
+          } } setRating={setrating} setExperience={setexperience} experience={experience} rating={rating} setLocation={setlocation} location={location} filterProfessionals={filterProfessionals } />
       </Modal>
 
        
@@ -80,7 +143,7 @@ const ProfessionalsPage = () => {
 
      
 
-      {isSuccess && data.map( (Professional) => {
+      {isSuccess && Professionals?.map( (Professional) => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
@@ -107,6 +170,7 @@ const ProfessionalsPage = () => {
     
   )
 }
+
 
 export default ProfessionalsPage
 

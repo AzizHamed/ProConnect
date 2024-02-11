@@ -4,13 +4,14 @@ import { User } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import { Rating } from 'react-native-ratings';
 import { AirbnbRating } from 'react-native-elements';
+import ProButton from '../../Components/Controls/ProButton';
 
-interface ProfessionalCardProps {
+interface FriendCardProps {
   imageurl :string;
   user : User;
 }
 
-const ProfessionalCard :React.FC<ProfessionalCardProps> =  (props) => {
+const FriendCard :React.FC<FriendCardProps> =  (props) => {
   return (
   <View style={styles.container}>
 
@@ -20,9 +21,10 @@ const ProfessionalCard :React.FC<ProfessionalCardProps> =  (props) => {
 <Image
 source={require('../../../gardner2.png')}
 style={{
-  height: 120,
-  width: 120,
+  height: 100,
+  width: 100,
   borderRadius:70,
+  marginBottom:8,
  
   
 
@@ -31,32 +33,18 @@ style={{
 
 <Text style={{color:"white"}}> {props.user.name.firstName} {props.user.name.lastName}</Text>
 <Text style={{color:"white"}}>Software Engineering</Text>
-<Text style={{color:"white"}}>12 years experience</Text>
 
 
 
 
 </View>
 
-<AirbnbRating 
-count={5}
-size={20}
-isDisabled={true}
-showRating={false}
-
-/>
+<View style={styles.buttonsContainer}>
+  <ProButton text={"Chat"} mobileWidth={180} />
+</View>
 
 
-{/* <Rating
-  type='star'
-  ratingBackgroundColor='white'
-  ratingCount={5}
-  imageSize={30}
-  readonly={true}
-  
 
-  style={{  }}
-/> */}
 
 </View>
 
@@ -66,16 +54,21 @@ showRating={false}
 
 
 
-export default ProfessionalCard
+export default FriendCard
 
 const styles = StyleSheet.create({
+
+  buttonsContainer : {
+    
+    backgroundColor : Colors.$backgroundDark,
+  },
 
   CardContainer : {
     backgroundColor:Colors.$backgroundDark,
     // borderColor:"green",
     // borderWidth:5,
-    width:190,
-    height:220,
+    width:180,
+    height:180,
     alignItems:"center",
     justifyContent:"center",
     
@@ -83,7 +76,6 @@ const styles = StyleSheet.create({
   ,
   container : {
     backgroundColor:Colors.$backgroundDark,
-    alignItems:"center",
    
   }
 

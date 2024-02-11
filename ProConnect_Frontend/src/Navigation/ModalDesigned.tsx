@@ -6,13 +6,38 @@ import DesignedDropDown from './DesignedDropDown';
 import { TextInput } from 'react-native-gesture-handler';
 import ProButton from '../Components/Controls/ProButton';
 import RNPickerSelect from 'react-native-picker-select';
+import { User } from '../Services/Redux/Api';
 interface ModalDesignedProps {
   visibleModal : ()=> void;
+  setRating : (rating : number)=>void
+  setExperience : (experience : number)=>void
+  setLocation : (location : string)=>void
+  filterProfessionals : ()=>void
+  experience : number
+  rating : number
+  location : string;
 }
 
 const ModalDesigned : React.FC<ModalDesignedProps> = (props) => {
 const [Experience, setExperience] = useState([{label : '0+' , value : 0}]);
 const [Ratings, setRatings] = useState([{label : '0+' , value : 0}]);
+const [reset, setreset] = useState(false)
+var rating = props.rating;
+var experience = props.experience;
+
+const dataLocation = [
+  { label: 'Haifa', value:'1' },
+  { label: 'Nazareth', value: '2' },
+  { label: 'Kfar yasif', value: '3' },
+  { label: 'Nahareya', value: '4' },
+  { label: 'Acre', value: '5' },
+  { label: 'Elat', value: '6' },
+  { label: 'Karmiel', value: '7' },
+  { label: 'Ramla', value: '8' },
+
+  
+];
+
 useEffect(() => {
   function createYears() {
     var i;
@@ -39,7 +64,9 @@ useEffect(() => {
   
 }, [])
 
-{/*  */}
+
+
+
   
   return (
 <BackgroundView
@@ -51,14 +78,17 @@ useEffect(() => {
 
                 <View >
                   <Text style={{color : "white"}}>Location</Text>
-                  <DesignedDropDown/>
+                  {!reset && <DesignedDropDown value={props.location} setlocation={props.setLocation} dropDownData={dataLocation}/> }
+                  {reset &&<DesignedDropDown value={"choose location"} setlocation={props.setLocation} dropDownData={dataLocation}/> }
+                  
                 </View>
 
                 <View>
                   <Text style={{color : "white"}}>Experience</Text>
                   <RNPickerSelect
-                      onValueChange={(value) => console.log(value)}
+                      onValueChange={(value) => props.setExperience(value)}
                       items={Experience}
+                      value={experience}
                       style={{viewContainer: {backgroundColor : "white"}}}        />
                     </View>
 
@@ -66,17 +96,28 @@ useEffect(() => {
                     <View>
                   <Text style={{color : "white"}}>Rating</Text>
                   <RNPickerSelect
-                      onValueChange={(value) => console.log(value)}
+                      onValueChange={(value) => props.setRating(value)}
                       items={Ratings}
-                      style={{viewContainer: {backgroundColor : "white", 
+                      value={rating}
+                      style={{viewContainer: {backgroundColor : "white",
                     }}}        />
                     </View>
 
               </View>
-              
+
+             
 
               <ProButton text={"Continue"} onPress={()=>{
-                props.visibleModal()
+                props.filterProfessionals();
+                props.visibleModal();
+                }} />
+
+            <ProButton text={"Reset"} onPress={()=>{
+               props.setExperience(0)
+               props.setRating(0)
+               rating=0
+               experience=0
+               setreset(true);
                 }} />
            
             

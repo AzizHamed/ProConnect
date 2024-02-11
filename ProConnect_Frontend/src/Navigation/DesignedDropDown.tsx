@@ -1,29 +1,36 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import {StyleSheet} from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+interface DropDownProps {
+  value : string
+  setlocation : (location : string)=>void
+  dropDownData : Object[]
+  
+}
 
 
-const DesignedDropDown = () => {
+
+const DesignedDropDown : React.FC<DropDownProps> = (props) => {
 
 const [isFocusLocation, setIsFocusLocation] = useState(false);
 
 
-const [valueLocation, setValueLocation] = useState(null);
+const [valueLocation, setValueLocation] = useState(props.value);
 
-const dataLocation = [
-  { label: 'Haifa', value:'1' },
-  { label: 'Nazareth', value: '2' },
-  { label: 'Kfar yasif', value: '3' },
-  { label: 'Nahareya', value: '4' },
-  { label: 'Acre', value: '5' },
-  { label: 'Elat', value: '6' },
-  { label: 'Karmiel', value: '7' },
-  { label: 'Ramla', value: '8' },
 
-  
-];
+
+
+
+
+function reset(){
+  setValueLocation("choose location")
+  props.setlocation("choose location")
+}
+
+
+
   return (
     <>
     <Dropdown
@@ -32,12 +39,12 @@ const dataLocation = [
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={dataLocation}
+          data={props.dropDownData}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocusLocation ? 'Select Location' : '...'}
+          placeholder={!isFocusLocation ? valueLocation : '...'}
           searchPlaceholder="Search..."
           value={valueLocation}
           onFocus={() => setIsFocusLocation(true)}
@@ -45,7 +52,10 @@ const dataLocation = [
           onChange={item => {
             setValueLocation(item.value);
             setIsFocusLocation(false);
+            props.setlocation(item.value);
+            
           }}
+
           renderLeftIcon={() => (
             <FontAwesome
               style={styles.icon}
@@ -60,6 +70,8 @@ const dataLocation = [
 }
 
 export default DesignedDropDown
+
+
 
 const styles = StyleSheet.create({
   dropdown: {
