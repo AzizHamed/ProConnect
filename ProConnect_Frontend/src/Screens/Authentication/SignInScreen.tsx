@@ -49,12 +49,12 @@ const SignInScreen = () => {
     if(user !== null && user !== undefined){
       user?.getIdToken().then((idToken: any)=>{
         const userDetails: UserDetails = {
-          email: user?.email, 
-          name: user?.displayName, 
-          phone: user?.phoneNumber,
+          email: user?.email || '', 
+          name: user?.displayName || '', 
+          phone: user?.phoneNumber || '',
           idToken: idToken, 
           uid: user?.uid, 
-          photoURL: user?.photoURL
+          photoURL: user?.photoURL || ''
         }
         console.log(user, userDetails)
         dispatch(setUserCredential(userDetails));

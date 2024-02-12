@@ -45,11 +45,11 @@ const SignUpScreen: React.FC = () => {
             };
             const userDetails: UserDetails = {
               email: user?.email, 
-              name: user?.displayName, 
-              phone: user?.phoneNumber,
+              name: user?.displayName || '', 
+              phone: user?.phoneNumber || '',
               idToken: idToken, 
               uid: user?.uid, 
-              photoURL: user?.photoURL
+              photoURL: user?.photoURL || ''
             }
             console.log(user, userDetails)
             dispatch(setUserCredential(userDetails));
@@ -73,18 +73,7 @@ const SignUpScreen: React.FC = () => {
         console.log(error);
         setResultText(error.message)
         setIsVisible(true);
-    }) ;
-    // try {
-    //   await Auth.signUp({
-    //     username,
-    //     password,
-    //     attributes: {email, name, preferred_username: username},
-    //   });
-
-    //   navigation.navigate('ConfirmEmail', {username});
-    // } catch (e) {
-    //   Alert.alert('Oops', e.message);
-    // }
+    });
   };
 
   const onSignInPress = () => {
