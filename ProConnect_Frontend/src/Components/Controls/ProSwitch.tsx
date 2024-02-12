@@ -41,11 +41,11 @@ const ProSwitch: React.FC<ProSwitchProps & SwitchProps> = (props) => {
         alignContent: "center",
       }}
     >
-      <Text style={styles.labels}>
+      <Text >
         {props.rightLabel ? props.rightLabel : ""}
       </Text>
       <Switch value={currentValue} onValueChange={onValueChange} style={{borderColor:Colors.controlBackground, borderWidth:1}} width={60}/>
-      <Text style={styles.labels}>
+      <Text>
         {props.leftLabel ? props.leftLabel : ""}
       </Text>
     </View>
@@ -53,8 +53,3 @@ const ProSwitch: React.FC<ProSwitchProps & SwitchProps> = (props) => {
 };
 
 export default ProSwitch;
-const styles = StyleSheet.create({
-  labels: {
-    transform: [{ translateY: 8 }],
-  },
-});

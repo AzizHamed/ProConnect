@@ -25,9 +25,9 @@ const SettingsScreen: React.FC = () => {
   
   return (
     // <SafeAreaView style={styles.container}>
-      <View flex paddingB-page paddingH-page centerH style={{justifyContent:"flex-start"}}>
+      <View flex>
         <ProRefreshControl onRefreshAction={delayedLoop} children={(
-        <View style={{height:"100%"}}>
+        <View style={{height:"100%", alignContent:'center'}}>
 
           <ProHeader
             center
@@ -38,7 +38,7 @@ const SettingsScreen: React.FC = () => {
             dispatch(toggleTheme());
           }}></ProSwitch>
         
-            <ProButton onPress={()=>{clearData()}} radius={5} text='Clear Data'></ProButton>
+            <ProButton onPress={()=>{clearData()}} text='Clear Data'></ProButton>
           {/* <View bg height={200}>
           </View> */}
           {/* <ProHeader text="Header Example N" headerType={HeaderType.H2} />

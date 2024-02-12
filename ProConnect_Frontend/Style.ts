@@ -93,6 +93,7 @@ export function initTheme() {
     return {
       backgroundColor: Colors.backgroundSecondary,
       color: Colors.textPrimary,
+      center: true,
       "marginV-10": true
     };
   });
