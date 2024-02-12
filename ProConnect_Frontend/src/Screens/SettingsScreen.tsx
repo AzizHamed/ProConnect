@@ -38,6 +38,9 @@ const SettingsScreen: React.FC = () => {
             />
           <ProHeader text="Header Example N" headerType={HeaderType.H2} />
           <ProHeader text="Header Example L" headerType={HeaderType.H1} />
+          <ProSwitch value={darkTheme} onValueChange={() => {
+              dispatch(toggleTheme());
+            }}></ProSwitch>
           <ProButton
             borderRadius={45}
             outlineWidth={1}
