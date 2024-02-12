@@ -19,38 +19,30 @@ const SettingsScreen: React.FC = () => {
   }
   
   async function delayedLoop() {
-    await delay(1000);
+    await delay(200);
     dispatch(toggleTheme());
   }
   
   return (
     // <SafeAreaView style={styles.container}>
-      <View flex paddingB-page paddingH-page centerH>
-        <View padding-page backgroundColor={Colors.backgroundPrimary}>
-          <Text h3>
-            {darkTheme ? "Dark Mode" : "Light Mode"}
-          </Text>
-        </View>
-        <ProRefreshControl onRefreshAction={delayedLoop} children={(<View><ProHeader
+      <View flex paddingB-page paddingH-page centerH style={{justifyContent:"flex-start"}}>
+        <ProRefreshControl onRefreshAction={delayedLoop} children={(
+        <View style={{height:"100%"}}>
+
+          <ProHeader
             center
-            text="Header Example S"
+            text="Settings"
             headerType={HeaderType.H3}
             />
-          <ProHeader text="Header Example N" headerType={HeaderType.H2} />
+          <ProSwitch value={darkTheme} rightLabel='Light Theme' leftLabel='Dark Theme' delayChange onValueChange={() => {
+            dispatch(toggleTheme());
+          }}></ProSwitch>
+        
+            <ProButton onPress={()=>{clearData()}} radius={5} text='Clear Data'></ProButton>
+          {/* <View bg height={200}>
+          </View> */}
+          {/* <ProHeader text="Header Example N" headerType={HeaderType.H2} />
           <ProHeader text="Header Example L" headerType={HeaderType.H1} />
-          <ProSwitch value={darkTheme} onValueChange={() => {
-              dispatch(toggleTheme());
-            }}></ProSwitch>
-          <ProButton
-            borderRadius={45}
-            outlineWidth={1}
-            outlineColor="black"
-            text='Toggle Theme'
-            onPress={() => {
-              dispatch(toggleTheme());
-            }}
-            />
-            <ProButton onPress={()=>{clearData()}} text='Clear Data'></ProButton>
           <Text h1>Hello World</Text>
           <Text t2>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nisi
@@ -73,7 +65,11 @@ const SettingsScreen: React.FC = () => {
             sem tincidunt, ac malesuada turpis vehicula. Pellentesque ac tortor
             ut purus facilisis rutrum at quis neque. Praesent faucibus venenatis
             metus ut fermentum. Aliquam erat volutpat.
-          </Text></View>)}></ProRefreshControl>
+          </Text>
+           */}
+          </View>)}>
+            
+          </ProRefreshControl>
         <ScrollView>
           
         </ScrollView>
@@ -88,7 +84,7 @@ export default SettingsScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        // alignItems: "center",
+        // justifyContent: "center",
     },
   });
