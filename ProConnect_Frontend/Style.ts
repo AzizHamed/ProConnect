@@ -92,6 +92,15 @@ export function initTheme() {
       "marginV-10": true
     };
   });
+  ThemeManager.setComponentTheme('Switch', (props: Props, context: any) => {
+
+    return {
+      onColor: Colors.success,
+      offColor: Colors.textSecondary,
+      thumbColor: Colors.backgroundSecondary,
+      "margin-15": true
+    };
+  });
 
   ThemeManager.setComponentTheme('Card', (props: Props, context: any) => {
 
