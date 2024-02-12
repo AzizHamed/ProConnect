@@ -33,7 +33,7 @@ export const MainDrawerScreen: React.FC = () => {
         }
       }}>
       {/* <MainDrawer.Screen name="MainTabs" component={Tab} /> */}
-      <MainDrawer.Screen name="Home" component={MainTabScreen} />
+      <MainDrawer.Screen name="MainTabs" options={{drawerLabel: "Home"}} component={MainTabScreen} />
       <MainDrawer.Screen name="Profile" component={ProfileEditorScreen} />
       <MainDrawer.Screen name="Settings" component={SettingsScreen} />
     </MainDrawer.Navigator>
