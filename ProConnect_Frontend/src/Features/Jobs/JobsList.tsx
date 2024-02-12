@@ -34,7 +34,7 @@ const JobsList: React.FC = () => {
         <View bg>
           <ProRefreshControl onRefreshAction={refetch}
             children={
-              <View bg>
+              <View bg style={{alignItems:"center"}}>
                 <ProButton onPress={() => { navigation.navigate("Testing");}} />
                 <LoadingOrError isSuccess={isSuccess} isError={isError} errorDisplayMessage 
                 />
