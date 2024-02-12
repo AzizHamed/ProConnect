@@ -3,6 +3,7 @@ package com.braude.ProConnect.services;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,17 @@ public class UserService {
     }
 
     public User createUser(User user){
-        if(!userRepository.existsById(user.getId()))
+        if(!userRepository.existsById(user.getId())){
+            user.setAccountStatus(AccountStatus.SETUP);
             return userRepository.save(user);
+        }
         return null;
     }
 
     /**
-     * Returns the User with the given id if found, otherwise returns null.
-     * @param id
-     * @return
+     * Returns the User with the given userId if found, otherwise returns null.
+     * @param userId
+     * @return {@link User} with the given userId, or null if not foundl.
      */
     public User getUser(String userId) {
         Optional<User> user = userRepository.findById(userId);
