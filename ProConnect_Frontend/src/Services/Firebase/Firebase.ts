@@ -2,7 +2,7 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { getAuth, initializeAuth, 
         getReactNativePersistence, browserLocalPersistence, // This shows an error but works for some reason
-        createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "firebase/auth";
+        createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Platform } from "react-native";
@@ -57,4 +57,27 @@ export const emailSignOut = () => {
 export const sendResetPasswordEmail = (email: string) => {
   return sendPasswordResetEmail(webAuth, email);
 }
+
+export const updateUserProfile = (displayName: string, photoURL:string) => {
+  if(webAuth.currentUser !== null){
+    return updateProfile(webAuth.currentUser, {
+      displayName: displayName, photoURL: photoURL
+    });
+  }
+  else {
+    console.log("No logged in user")
+    return null;
+  }
+}
+
+export const updateUserEmail = (email: string) => {
+  if(webAuth.currentUser !== null){
+    return updateEmail(webAuth.currentUser, email);
+  }
+  else {
+    console.log("No logged in user")
+    return null;
+  }
+}
+
 export const firebaseUser = webAuth.currentUser;
