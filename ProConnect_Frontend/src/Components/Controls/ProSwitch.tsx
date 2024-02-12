@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch, SwitchProps, View, Text } from "react-native-ui-lib";
+import { Switch, SwitchProps, View, Text, Colors } from "react-native-ui-lib";
 import { Animated, Platform, StyleSheet } from "react-native";
 
 interface ProSwitchProps {
@@ -8,13 +8,13 @@ interface ProSwitchProps {
   value: boolean;
   delayChange?: boolean;
   onValueChange?: (val: boolean) => void;
-  webWidth?: number | "auto" | `${number}%` | Animated.AnimatedNode;
-  mobileWidth?: number | "auto" | `${number}%` | Animated.AnimatedNode;
+  webWidth?: number;
+  mobileWidth?: number;
 }
 
 const ProSwitch: React.FC<ProSwitchProps & SwitchProps> = (props) => {
   const width =
-    Platform.OS === "web" ? props.webWidth || 80 : props.mobileWidth || "10%";
+    Platform.OS === "web" ? props.webWidth || 100 : props.mobileWidth || 30;
   const initialValue = props.value || false;
   const [currentValue, setCurrentValue] = useState<boolean>(initialValue);
 
@@ -34,7 +34,7 @@ const ProSwitch: React.FC<ProSwitchProps & SwitchProps> = (props) => {
   return (
     <View
       center
-      bg
+      backgroundColor={props.backgroundColor}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -44,7 +44,7 @@ const ProSwitch: React.FC<ProSwitchProps & SwitchProps> = (props) => {
       <Text style={styles.labels}>
         {props.rightLabel ? props.rightLabel : ""}
       </Text>
-      <Switch value={currentValue} onValueChange={onValueChange} />
+      <Switch value={currentValue} onValueChange={onValueChange} style={{borderColor:Colors.controlBackground, borderWidth:1}} width={60}/>
       <Text style={styles.labels}>
         {props.leftLabel ? props.leftLabel : ""}
       </Text>

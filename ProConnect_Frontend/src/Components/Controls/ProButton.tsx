@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps, View } from 'react-native-ui-lib';
+import { Button, ButtonProps, Colors, View } from 'react-native-ui-lib';
 import { Animated, Platform } from 'react-native';
 
 interface ProButtonProps {
@@ -23,14 +23,18 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
 
 
   return (
-    <View center bg>      
+    <View center backgroundColor={props.backgroundColor} style={{width: width}}>      
       <Button 
           {...props} style={{width: width}}
+          backgroundColor={Colors.controlBackground}
+          color={Colors.controlText}
           onPress={onPress}
           center
+          
           borderRadius={borderRadius}
           supportRTL={true} 
           label={text} 
+          labelStyle={{textAlign: 'center', fontWeight: 'bold'}}
           >    
       </Button>
     </View>

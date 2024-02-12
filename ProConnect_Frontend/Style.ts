@@ -30,7 +30,9 @@ export function initTheme() {
       textSecondary: "#555555",
       backgroundPrimary: "#f0f0f0",
       backgroundSecondary: "#d5dbe0",
-      backgroundTertiary: "#fafafa",
+      backgroundTertiary: "#d5dbe0",
+      controlBackground: "#7a7a7a",
+      controlText: "#fafafa",
       success: "#27ae60",
       failure: "#e74c3c",
       highlight: "#cecece",
@@ -44,6 +46,8 @@ export function initTheme() {
       backgroundPrimary: "#34495e",
       backgroundSecondary: "#2c3e50",
       backgroundTertiary: "#2c3e50",
+      controlBackground: "#4b6e91",
+      controlText: "#d5dbe0",
       success: "#27ae60",
       failure: "#f37964",
       highlight: "#384f66",
@@ -79,7 +83,7 @@ export function initTheme() {
       h3: props.h3,
       h4: props.h4,
       body: !isHeader(props),
-      "marginB-15": true,
+      "marginV-5": true,
       color: (props.t2 !== undefined && props.t2) ? Colors.textSecondary : Colors.textPrimary
     };
   });
@@ -95,9 +99,11 @@ export function initTheme() {
   ThemeManager.setComponentTheme('Switch', (props: Props, context: any) => {
 
     return {
-      onColor: Colors.success,
-      offColor: Colors.textSecondary,
-      thumbColor: Colors.backgroundSecondary,
+      onColor: Colors.controlText,
+      offColor: Colors.backgroundTertiary,
+      thumbColor: Colors.controlBackground,
+      height: 35,
+      thumbSize: 25,
       "margin-15": true
     };
   });
