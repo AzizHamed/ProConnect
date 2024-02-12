@@ -4,6 +4,8 @@ import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
 import Tab from "./OldNav-TabsAndSideBars/Tab";
+import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
+import SettingsScreen from "../Screens/SettingsScreen";
 
 const MainDrawer = createDrawerNavigator();
 
@@ -31,8 +33,9 @@ export const MainDrawerScreen: React.FC = () => {
         }
       }}>
       {/* <MainDrawer.Screen name="MainTabs" component={Tab} /> */}
-      <MainDrawer.Screen name="MainTabs" component={MainTabScreen} />
-      <MainDrawer.Screen name="test" component={JobsList} />
+      <MainDrawer.Screen name="Home" component={MainTabScreen} />
+      <MainDrawer.Screen name="Profile" component={ProfileEditorScreen} />
+      <MainDrawer.Screen name="Settings" component={SettingsScreen} />
     </MainDrawer.Navigator>
   );
 };

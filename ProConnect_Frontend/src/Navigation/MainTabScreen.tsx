@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Testing from "../Components/Testing";
+import SettingsScreen from "../Screens/SettingsScreen";
 import React from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
@@ -64,12 +64,12 @@ export const MainTabScreen: React.FC = () => {
       />
       <MainTab.Screen
         name="Friends"
-        component={Testing}
+        component={SettingsScreen}
         options={{ headerShown: false }}
       />
       <MainTab.Screen
         name="Post"
-        component={Testing}
+        component={SettingsScreen}
         options={{ headerShown: false }}
       />
     </MainTab.Navigator>

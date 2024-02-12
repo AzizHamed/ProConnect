@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import JobsList from '../../Features/Jobs/JobsList';
-import Testing from '../../Components/Testing';
+import SettingsScreen from '../../Screens/SettingsScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -64,8 +64,8 @@ const Tab = () => {
     
     <Tab1.Screen name="Home" component={StackNavigator}  options={{ headerShown: false }}  />
     <Tab1.Screen name="Search" component={Search1} options={{headerShown:false}} />
-    <Tab1.Screen name="Friends" component={Testing}  options={{headerShown:false}}/>
-    <Tab1.Screen name="Post" component={Testing} options={{headerShown:false}} />
+    <Tab1.Screen name="Friends" component={SettingsScreen}  options={{headerShown:false}}/>
+    <Tab1.Screen name="Post" component={SettingsScreen} options={{headerShown:false}} />
    
 
   </Tab1.Navigator>
@@ -83,7 +83,7 @@ function StackNavigator () {
   
   
   <Stack.Screen name="Home2" component={JobsList} options={{headerShown:false}} />
-  <Stack.Screen name="Testing" component={Testing} options={{headerShown:false}}  />
+  <Stack.Screen name="Testing" component={SettingsScreen} options={{headerShown:false}}  />
   <Stack.Screen name="Job" component={JobPage} options={{headerStyle : {
     backgroundColor:Colors.$backgroundElevatedLight
 

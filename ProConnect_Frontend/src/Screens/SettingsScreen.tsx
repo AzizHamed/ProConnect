@@ -7,10 +7,11 @@ import {clearData} from "../Utility/Storage";
 import { useDispatch, useSelector } from 'react-redux';
 import { isDarkTheme, toggleTheme } from '../Services/Redux/Slices/PreferencesSlice';
 import { AppDispatch } from '../Services/Redux/Store';
-import ProRefreshControl from './Controls/ProRefreshControl';
+import ProRefreshControl from '../Components/Controls/ProRefreshControl';
+import ProSwitch from '../Components/Controls/ProSwitch';
 
 
-const Testing: React.FC = () => {
+const SettingsScreen: React.FC = () => {
   const darkTheme = useSelector(isDarkTheme);
   const dispatch = useDispatch<AppDispatch>();
   function delay(ms:number) {
@@ -78,7 +79,7 @@ const Testing: React.FC = () => {
   )
 }
 
-export default Testing
+export default SettingsScreen
 
 
 const styles = StyleSheet.create({
