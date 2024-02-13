@@ -103,7 +103,7 @@ export function initTheme() {
       onColor: Colors.controlText,
       offColor: Colors.backgroundTertiary,
       thumbColor: Colors.controlBackground,
-      height: 35,
+      height: 30,
       thumbSize: 25,
       "margin-15": true
     };
