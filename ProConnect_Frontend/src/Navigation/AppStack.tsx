@@ -11,14 +11,6 @@ export const AppStackScreen: React.FC = () => {
         <AppStack.Screen name="Auth" component={AuthStackScreen}/>
         <AppStack.Screen name="Main" component={MainDrawerScreen} />
 
-
-
-
-
-
-
-
-        <AppStack.Screen name="ProfileEditor" component={ProfileEditorScreen}/>
-    </AppStack.Navigator>
+   </AppStack.Navigator>
   );
 };
