@@ -31,16 +31,17 @@ const JobsList: React.FC = () => {
   return (
     <BackgroundView
       children={
-        <View bg>
+        <View bg style={{width:"100%"}}>
           <ProRefreshControl onRefreshAction={refetch}
             children={
-              <View bg style={{alignItems:"center"}}>
+              <View bg style={{alignItems:"center", width:"100%"}}>
                 <LoadingOrError isSuccess={isSuccess} isError={isError} errorDisplayMessage 
                 />
                 {error && <BackgroundView children={<Text>{error.error}</Text>}></BackgroundView>}
                 {isSuccess && (
-                  <View style={styles.container} bg>
-                    {jobs.map((job) => {
+                  // <View style={styles.container} bg>
+                  <View bg style={{width:"100%"}}>
+                    {jobs.map((job) => { 
                       return (
                         <JobCard
                           autoAdjustWidth

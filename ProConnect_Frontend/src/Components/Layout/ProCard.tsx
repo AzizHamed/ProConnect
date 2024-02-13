@@ -6,7 +6,9 @@ import {
   CardSelectionOptions,
   TextProps,
 } from "react-native-ui-lib";
-import { calculateResponsiveWidth, useViewport } from "../../Hooks/useViewPort";
+import { Animated, Platform } from "react-native";
+import { useSelector } from "react-redux";
+import { getWindowWidth } from "../../Services/Redux/Slices/DimensionSlice";
 
 interface ProCardProps {
   radius?: number;
@@ -15,6 +17,8 @@ interface ProCardProps {
   autoAdjustWidth?: boolean;
   children: React.ReactNode;
   textContent?: CardSectionContent[];
+  webWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode;
+  mobileWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode;
 }
 
 export type CardSectionContent = TextProps & {
@@ -23,12 +27,15 @@ export type CardSectionContent = TextProps & {
 
 const ProCard: React.FC<ProCardProps & CardProps> = (props) => {
   const [isSelected, setIsSelected] = useState(false);
-  const { screenWidth } = useViewport();
+  // const { screenWidth } = useViewport();
+  const windowWidth = useSelector(getWindowWidth);
   const canBeSelected = props.canBeSelected || false;
   const children = props.children || <></>;
   const textContent = props.textContent || [];
   const borderRadius = props.radius || 5;
-  const autoAdjustWidth = props.autoAdjustWidth || false;
+  // const autoAdjustWidth = props.autoAdjustWidth || false;
+  const width = (Platform.OS === 'web') ? (props.webWidth || (windowWidth < 450 ? (windowWidth - 20) :"90%")) : (props.mobileWidth || "90%")
+
 
   const selectionOptions: CardSelectionOptions = {
     icon: 0,
@@ -40,13 +47,13 @@ const ProCard: React.FC<ProCardProps & CardProps> = (props) => {
   const onPress = props.onPress !== undefined ? props.onPress
       : () => { console.log("Pressed"); };
 
-  function calculateWidth() { // TODO: Change this to behave like the ProButton
-    return calculateResponsiveWidth(screenWidth, autoAdjustWidth);
-  }
+  // function calculateWidth() { // TODO: Change this to behave like the ProButton
+  //   return calculateResponsiveWidth(screenWidth, autoAdjustWidth);
+  // }
 
   return (
     <Card
-      style={{ width: calculateWidth() }}
+      style={{ width: width, minWidth: 10, alignSelf: "center"}}
       selected={isSelected}
       selectionOptions={selectionOptions}
       onPress={() => {

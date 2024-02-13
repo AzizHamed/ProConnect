@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     height: Dimensions.get("window").height,
+    width: "100%"
   },
 });
