@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
-  Alert,
-  KeyboardAvoidingView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
@@ -17,9 +14,11 @@ import { emailSignUp } from "../../Services/Firebase/Firebase";
 import { UserCredential } from "firebase/auth";
 import ProPopup from "../../Components/Layout/ProPopup";
 import { EMAIL_REGEX } from "../../Constants/Values";
-import { UserDetails, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
+import { UserDetails, setUserAccount, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
 import { useDispatch } from "react-redux";
 import { CreateUserApiArg, User, useCreateUserMutation } from "../../Services/Redux/Api";
+import { navigateToMainStack, updateAuthState } from "./UpdateAuthState";
+import { User as FBUser } from "firebase/auth";
 
 const SignUpScreen: React.FC = () => {
   const { control, handleSubmit, watch } = useForm();
@@ -27,6 +26,7 @@ const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const [createUser] = useCreateUserMutation();
@@ -34,41 +34,25 @@ const SignUpScreen: React.FC = () => {
 
   const onRegisterPressed = async (data: any) => {
     const { email, password } = data;
-    emailSignUp(email, password).then((userCredential: UserCredential)=> {
+    emailSignUp(email, password).then(async (userCredential: UserCredential)=> {
         const user = userCredential.user;
-        if(user !== null && user !== undefined){
-          user?.getIdToken().then((idToken: any)=>{
-            const createdUser:CreateUserApiArg = {user: {
-              id: user.uid,
-              email: user.email || 'Error',
-              name:{firstName:user.displayName || 'Error', lastName: ''}}
-            };
-            const userDetails: UserDetails = {
-              email: user?.email, 
-              name: user?.displayName || '', 
-              phone: user?.phoneNumber || '',
-              idToken: idToken, 
-              uid: user?.uid, 
-              photoURL: user?.photoURL || ''
-            }
-            console.log(user, userDetails)
-            dispatch(setUserCredential(userDetails));
-            createUser(createdUser).unwrap().then((res)=>{console.log(res)}).catch((error)=>{console.log(error)});
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Main' }], // TODO: Navigate to create profile screen
-            });
-      
-          }).catch((error:any) => {
-            console.log('Error getting id token of user', error);
-            dispatch(setUserCredential({}));
-          })
-        } else{
-          
-        }
+        await updateAuthState(user, dispatch, undefined, (user: FBUser)=>{
+          console.log('User created')
+          const createdUser:CreateUserApiArg = {user: {
+            id: user.uid,
+            email: user.email || 'Error',
+            name:{firstName:user.displayName || 'Error', lastName: ''}}
+          };
+          createUser(createdUser).unwrap().then((res)=>{
+            console.log(res);
+            dispatch(setUserAccount(res))
+          }).catch((error)=>{console.log(error)});
+
+        });           
         console.log(user);
         setResultText(user.email + ' Created!'|| 'Signed up')
         setIsVisible(true);
+        setTimeout(()=>{navigateToMainStack(navigation)}, 3000);
       }).catch((error: any) => {
         console.log(error);
         setResultText(error.message)
