@@ -7,10 +7,12 @@ import BackgroundView from '../../Components/Layout/BackgroundView';
 import ProTextInput from '../../Components/Controls/ProTextInput';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileEditorScreen: React.FC = () =>
 {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { email, name, photoURL, phone } = useSelector(getUserCredential);
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: useMemo(() =>
@@ -25,6 +27,12 @@ const ProfileEditorScreen: React.FC = () =>
   {
     const { newEmail, newName, newPhotoURL, newPhone } = data;
     console.log(newEmail, newName, newPhotoURL, newPhone, errors);
+  }
+
+  const cancel = async () =>
+  {
+    navigation.navigate("Profile");
+
   }
 
   return (
@@ -61,6 +69,11 @@ const ProfileEditorScreen: React.FC = () =>
 
         <ProButton
           text={"Cancel"}
+          onPress={cancel}
+        />
+
+        <ProButton
+          text={"Reset"}
           onPress={reset}
         />
         <ProButton
