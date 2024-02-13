@@ -1,10 +1,12 @@
 import React from 'react'
-import { View,StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { View,StyleSheet, TouchableOpacity, ScrollView,Text } from 'react-native'
 import BackgroundView from '../../Components/Layout/BackgroundView'
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import FriendCard from './FriendCard'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
 import { useGetAllUsersQuery } from '../../Services/Redux/Api'
+import ProButton from '../../Components/Controls/ProButton'
+import { Colors } from 'react-native-ui-lib'
 
 
 interface FriendsProps { 
@@ -46,7 +48,10 @@ const Friends : React.FC<FriendsProps> = (props) => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
-          <FriendCard user={friend} imageurl={'../../../gardner2.png'}/>
+          <FriendCard user={friend} imageurl={'../../../gardner2.png'} imageStyle={styles.photoStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {friend.name.firstName} {friend.name.lastName}</Text>,
+
+              <Text style={{ color: "white" }}>Software Engineering</Text>
+              ]} additionalComponents={[<ProButton text={"Chat"} mobileWidth={180} />]} cardContainerStyle={styles.CardContainer}/>
            
            
         </TouchableOpacity>
@@ -73,6 +78,24 @@ const Friends : React.FC<FriendsProps> = (props) => {
 export default Friends
 
 const styles = StyleSheet.create({
+
+  CardContainer : {
+    backgroundColor:Colors.$backgroundDark,
+    // borderColor:"green",
+    // borderWidth:5,
+    width:180,
+    height:180,
+    alignItems:"center",
+    justifyContent:"center",
+    
+  },
+
+  photoStyle : {
+    height: 100,
+    width: 100,
+    borderRadius:70,
+    marginBottom:8,
+  },
 
   textInputStyle : {
     backgroundColor :"white",

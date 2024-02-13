@@ -7,6 +7,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import ProButton from '../Components/Controls/ProButton';
 import RNPickerSelect from 'react-native-picker-select';
 import { User } from '../Services/Redux/Api';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 interface ModalDesignedProps {
   visibleModal : ()=> void;
   setRating : (rating : number)=>void
@@ -19,6 +20,7 @@ interface ModalDesignedProps {
 }
 
 const ModalDesigned : React.FC<ModalDesignedProps> = (props) => {
+  const [isFocusLocation, setisFocusLocation] = useState(false)
 const [Experience, setExperience] = useState([{label : '0+' , value : 0}]);
 const [Ratings, setRatings] = useState([{label : '0+' , value : 0}]);
 const [reset, setreset] = useState(false)
@@ -78,8 +80,18 @@ useEffect(() => {
 
                 <View >
                   <Text style={{color : "white"}}>Location</Text>
-                  {!reset && <DesignedDropDown value={props.location} setlocation={props.setLocation} dropDownData={dataLocation}/> }
-                  {reset &&<DesignedDropDown value={"choose location"} setlocation={props.setLocation} dropDownData={dataLocation}/> }
+                  {!reset && <DesignedDropDown value={props.location} set={props.setLocation} dropDownData={dataLocation} leftIcon={<FontAwesome
+                  style={styles.icon}
+                   color={isFocusLocation ? 'tomato' : 'black'}
+                   name="map-marker"
+                  size={20}
+            />}/> }
+                  {reset &&<DesignedDropDown value={"choose location"} set={props.setLocation} dropDownData={dataLocation} leftIcon={ <FontAwesome
+                  style={styles.icon}
+                   color={isFocusLocation ? 'tomato' : 'black'}
+                   name="map-marker"
+                  size={20}
+            />}/> }
                   
                 </View>
 
@@ -132,6 +144,10 @@ export default ModalDesigned
 
 
 const styles = StyleSheet.create({
+
+  icon: {
+    marginRight: 5,
+  },
 
   textAndComponentStyle : {
     height : 250,

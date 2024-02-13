@@ -68,7 +68,7 @@ showRating={false}
 
 export default ProfessionalCard
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
 
   CardContainer : {
     backgroundColor:Colors.$backgroundDark,
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
   ,
   container : {
     backgroundColor:Colors.$backgroundDark,
-    alignItems:"center",
    
   }
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import { View,Image,Text, StyleSheet } from 'react-native'
+import React, { Component, ReactElement } from 'react'
+import { View,Image,Text, StyleSheet, ImageStyle, StyleProp, ViewStyle } from 'react-native'
 import { User } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import { Rating } from 'react-native-ratings';
@@ -8,31 +8,28 @@ import ProButton from '../../Components/Controls/ProButton';
 
 interface FriendCardProps {
   imageurl :string;
+  imageStyle : ImageStyle
   user : User;
+  compnentsUnderImage : React.ReactNode[]
+  additionalComponents ?: ReactElement[]
+  cardContainerStyle : StyleProp<ViewStyle>;
+  
+  
 }
 
 const FriendCard :React.FC<FriendCardProps> =  (props) => {
   return (
   <View style={styles.container}>
 
-<View style={styles.CardContainer}>
+<View style={props.cardContainerStyle}>
 
       
 <Image
 source={require('../../../gardner2.png')}
-style={{
-  height: 100,
-  width: 100,
-  borderRadius:70,
-  marginBottom:8,
- 
-  
-
-}}
+style={props.imageStyle}
 />
 
-<Text style={{color:"white"}}> {props.user.name.firstName} {props.user.name.lastName}</Text>
-<Text style={{color:"white"}}>Software Engineering</Text>
+{props.compnentsUnderImage}
 
 
 
@@ -40,7 +37,7 @@ style={{
 </View>
 
 <View style={styles.buttonsContainer}>
-  <ProButton text={"Chat"} mobileWidth={180} />
+  {props.additionalComponents}
 </View>
 
 
@@ -67,8 +64,8 @@ const styles = StyleSheet.create({
     backgroundColor:Colors.$backgroundDark,
     // borderColor:"green",
     // borderWidth:5,
-    width:180,
-    height:180,
+    width: 190,
+    height:220,
     alignItems:"center",
     justifyContent:"center",
     

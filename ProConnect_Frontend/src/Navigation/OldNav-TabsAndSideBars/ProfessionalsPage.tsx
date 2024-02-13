@@ -11,6 +11,9 @@ import ModalDesigned from '../ModalDesigned';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MyTextInput from '../../Components/Controls/MyTextInput';
 import RNPickerSelect from 'react-native-picker-select';
+import FriendCard from './FriendCard';
+import { AirbnbRating } from 'react-native-ratings';
+import { Colors } from 'react-native-ui-lib';
 
 
 
@@ -147,7 +150,14 @@ const ProfessionalsPage = () => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
-          <ProfessionalCard user={Professional} imageurl={'../../../gardner2.png'}/>
+          <FriendCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={styles.imageStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
+              <Text style={{ color: "white" }}>Software Engineering</Text>,
+              <Text style={{ color: "white" }}>12 years experience</Text>
+              ]} additionalComponents={[<AirbnbRating
+                count={5}
+                size={20}
+                isDisabled={true}
+                showRating={false} />]} cardContainerStyle={styles.CardContainer} />
            
            
         </TouchableOpacity>
@@ -175,6 +185,22 @@ const ProfessionalsPage = () => {
 export default ProfessionalsPage
 
 const styles = StyleSheet.create({
+  CardContainer : {
+    backgroundColor:Colors.$backgroundDark,
+    // borderColor:"green",
+    // borderWidth:5,
+    width:190,
+    height:220,
+    alignItems:"center",
+    justifyContent:"center",
+    
+  },
+
+  imageStyle : {
+      height: 120,
+      width: 120,
+      borderRadius:70,
+  },
 
   textInputStyle : {
     backgroundColor :"white",

@@ -12,7 +12,7 @@ import { MainTabParamList } from '../MainTabScreen';
 
 
 
-const Search = () => {
+const ProfessionalSearcPage = () => {
 
   
 
@@ -44,14 +44,9 @@ const Search = () => {
   ];
   
   const dataProfessions = [
-    { label: 'Carpetner', value:'1' },
-    { label: 'Painter', value: '2' },
-    { label: 'Constructor', value: '3' },
-    { label: 'Pavor', value: '4' },
-    { label: 'Electric service', value: '5' },
-    { label: 'Security', value: '6' },
-    { label: 'Designer', value: '7' },
-    { label: 'Garden', value: '8' },
+    { label: 'Contractor', value:'1' },
+    { label: 'Worker', value: '2' },
+   
   ]
   return (
     <BackgroundView
@@ -106,7 +101,7 @@ const Search = () => {
 
 
 
-export default Search
+export default ProfessionalSearcPage
 
   const styles = StyleSheet.create({
 

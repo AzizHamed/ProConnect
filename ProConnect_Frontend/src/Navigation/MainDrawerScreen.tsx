@@ -4,11 +4,28 @@ import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
 import Tab from "./OldNav-TabsAndSideBars/Tab";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { SimpleLineIcons,Ionicons } from "@expo/vector-icons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Search from "./OldNav-TabsAndSideBars/Search";
+import ProfessionalWorkWith from "./OldNav-TabsAndSideBars/ProfessionalWorksNavigator";
 
 const MainDrawer = createDrawerNavigator();
+interface MainDrawerProps {
+  role : string
+}
 
-export const MainDrawerScreen: React.FC = () => {
+
+export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
+  const dataProfessions = [
+    { label: 'Carpetner', value:'1' },
+    { label: 'Painter', value: '2' },
+    { label: 'Constructor', value: '3' },
+    { label: 'Pavor', value: '4' },
+    { label: 'Electric service', value: '5' },
+    { label: 'Security', value: '6' },
+    { label: 'Designer', value: '7' },
+    { label: 'Garden', value: '8' },
+  ]
   return (
     <MainDrawer.Navigator 
     drawerContent={(props) => <CustomDrawerContent {...props}
@@ -41,7 +58,23 @@ export const MainDrawerScreen: React.FC = () => {
           }}
       
       />
+
+<MainDrawer.Screen
+          name="people"
+          options={{
+            drawerLabel: "Work with me",
+            title: "people",
+            drawerIcon: () => (
+              <Ionicons name="people-outline" size={20} color="#808080" />
+            )
+          }}
+          component={ProfessionalWorkWith}
+          initialParams={dataProfessions}
+        />
       <MainDrawer.Screen name="test" component={JobsList} />
+
+      
+
     </MainDrawer.Navigator>
   );
 };

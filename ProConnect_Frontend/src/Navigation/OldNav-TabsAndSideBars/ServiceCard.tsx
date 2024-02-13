@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
   ,
   container : {
     backgroundColor:Colors.$backgroundDark,
-    alignItems:"center",
   }
 
 })

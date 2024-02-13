@@ -261,8 +261,8 @@ export type GetJobsApiArg = {
 export type InitApiResponse = unknown;
 export type InitApiArg = void;
 export type Name = {
-  firstName?: string;
-  lastName?: string;
+  firstName: string;
+  lastName: string;
 };
 export type Role = {
   id?: number;
@@ -279,6 +279,8 @@ export type Review = {
   timestamp?: string;
 };
 export type User = {
+  experience: number;
+  rating: number;
   id?: string;
   name: Name;
   email: string;

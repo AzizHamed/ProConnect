@@ -5,8 +5,10 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 interface DropDownProps {
   value : string
-  setlocation : (location : string)=>void
-  dropDownData : Object[]
+  set : (location : string)=>void
+  dropDownData : {label : string, value :string}[]
+  leftIcon : any
+  setFocus : (value : boolean) =>void
   
 }
 
@@ -14,10 +16,10 @@ interface DropDownProps {
 
 const DesignedDropDown : React.FC<DropDownProps> = (props) => {
 
-const [isFocusLocation, setIsFocusLocation] = useState(false);
+const [isFocus, setIsFocus] = useState(false);
 
 
-const [valueLocation, setValueLocation] = useState(props.value);
+const [value, setValue] = useState(props.value);
 
 
 
@@ -25,8 +27,8 @@ const [valueLocation, setValueLocation] = useState(props.value);
 
 
 function reset(){
-  setValueLocation("choose location")
-  props.setlocation("choose location")
+  setValue("choose location")
+  props.set("choose location")
 }
 
 
@@ -34,7 +36,7 @@ function reset(){
   return (
     <>
     <Dropdown
-          style={[styles.dropdown, isFocusLocation && { borderColor: 'blue' }]}
+          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -44,25 +46,20 @@ function reset(){
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocusLocation ? valueLocation : '...'}
+          placeholder={!isFocus ? value : '...'}
           searchPlaceholder="Search..."
-          value={valueLocation}
-          onFocus={() => setIsFocusLocation(true)}
-          onBlur={() => setIsFocusLocation(false)}
+          value={value}
+          onFocus={() => props.setFocus(true)}
+          onBlur={() => props.setFocus(false)}
           onChange={item => {
-            setValueLocation(item.value);
-            setIsFocusLocation(false);
-            props.setlocation(item.value);
+            setValue(item.value);
+            setIsFocus(false);
+            props.set(item.value);
             
           }}
 
           renderLeftIcon={() => (
-            <FontAwesome
-              style={styles.icon}
-              color={isFocusLocation ? 'tomato' : 'black'}
-              name="map-marker"
-              size={20}
-            />
+            props.leftIcon
           )}
         />
     </>
