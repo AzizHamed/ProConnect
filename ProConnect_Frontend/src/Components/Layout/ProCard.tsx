@@ -9,6 +9,7 @@ import {
 import { Animated, Platform } from "react-native";
 import { useSelector } from "react-redux";
 import { getWindowWidth } from "../../Services/Redux/Slices/DimensionSlice";
+import { customWidthValues } from "../../Constants/Values";
 
 interface ProCardProps {
   radius?: number;
@@ -34,7 +35,8 @@ const ProCard: React.FC<ProCardProps & CardProps> = (props) => {
   const textContent = props.textContent || [];
   const borderRadius = props.radius || 5;
   // const autoAdjustWidth = props.autoAdjustWidth || false;
-  const width = (Platform.OS === 'web') ? (props.webWidth || (windowWidth < 450 ? (windowWidth - 20) :"90%")) : (props.mobileWidth || "90%")
+  const width = customWidthValues((windowWidth < 450 ? (windowWidth - 20) :("90%")), props.mobileWidth);
+  // (Platform.OS === 'web') ? (props.webWidth || (windowWidth < 450 ? (windowWidth - 20) :"90%")) : (props.mobileWidth || "90%")
 
 
   const selectionOptions: CardSelectionOptions = {

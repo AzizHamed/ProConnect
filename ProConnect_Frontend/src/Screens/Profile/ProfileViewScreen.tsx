@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserCredential } from '../../Services/Redux/Slices/AuthSlice';
+import { getUserAccount, getUserCredential } from '../../Services/Redux/Slices/AuthSlice';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 import ProButton from '../../Components/Controls/ProButton';
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,7 @@ import { Colors, Text, View } from 'react-native-ui-lib';
 const ProfileViewScreen: React.FC = () =>
 {
   const navigation = useNavigation();
-  const { email, name, photoURL, phone } = useSelector(getUserCredential);
+  const user = useSelector(getUserAccount);
 
   const edit = () =>
   {
@@ -23,11 +23,11 @@ const ProfileViewScreen: React.FC = () =>
       <View bg style={styles.container}>
 
         <ProTextView text={`Email`} isLabel/>
-        <ProTextView text={`${email}`}/>
+        <ProTextView text={`${user?.email}`}/>
         <ProTextView text={`Name`} isLabel/>
-        <ProTextView text={`${name}`}/>
+        <ProTextView text={`${user?.name.firstName + " " + user?.name.lastName}`}/>
         <ProTextView text={`Phone`} isLabel/>
-        <ProTextView text={`${phone}`}/>
+        <ProTextView text={`${user?.phoneNumber}`}/>
 
         <ProButton marginT-20
           text={"Edit"}

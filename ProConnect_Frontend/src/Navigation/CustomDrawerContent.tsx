@@ -8,13 +8,13 @@ import { SafeAreaView } from "react-native";
 import { View, Image, Text } from "react-native-ui-lib";
 import { emailSignOut } from "../Services/Firebase/Firebase";
 import { useNavigation } from "@react-navigation/native";
-import { getUserCredential, setUserCredential } from "../Services/Redux/Slices/AuthSlice";
+import { getUserAccount, getUserCredential, setUserCredential } from "../Services/Redux/Slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( props ) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {email, name, photoURL} = useSelector(getUserCredential);
+  const user = useSelector(getUserAccount);
   return (
     <DrawerContentScrollView {...props}>
       {/* Your custom drawer header, if needed */}
@@ -46,7 +46,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
               color: "white",
             }}
           >
-            { name || 'Aziz Hamed' }
+            { user !== null ? (user?.name.firstName + ' ' + user?.name.lastName) : 'Aziz Hamed' }
           </Text>
           <Text
             style={{
@@ -54,7 +54,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
               color: "white",
             }}
           >
-           { email || 'Software Engineering'}
+           { user?.email || 'Software Engineering'}
           </Text>
         </View>
       </SafeAreaView>

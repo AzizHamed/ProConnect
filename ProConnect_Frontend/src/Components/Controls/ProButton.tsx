@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, ButtonProps, Colors, View } from 'react-native-ui-lib';
 import { Animated, Platform } from 'react-native';
+import { customWidthValues } from '../../Constants/Values';
 
 interface ProButtonProps {
     text?: string
@@ -14,7 +15,7 @@ interface ProButtonProps {
 const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
     const text = props.text || 'Submit';
     const borderRadius = props.radius || 5;
-    const width = (Platform.OS === 'web') ? (props.webWidth || 400) : (props.mobileWidth || "90%")
+    const width = customWidthValues(props.webWidth, props.mobileWidth);
 
     const onPress = props.onPress !== undefined ? props.onPress : () =>
     {

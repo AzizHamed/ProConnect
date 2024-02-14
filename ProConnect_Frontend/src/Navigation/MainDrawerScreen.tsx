@@ -3,10 +3,8 @@ import React, { useState } from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
-import Tab from "./OldNav-TabsAndSideBars/Tab";
-import { SimpleLineIcons,Ionicons } from "@expo/vector-icons";
+import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Search from "./OldNav-TabsAndSideBars/Search";
 import ProfessionalWorkWith from "./OldNav-TabsAndSideBars/ProfessionalWorksNavigator";
 import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
 import SettingsScreen from "../Screens/SettingsScreen";
@@ -14,10 +12,10 @@ import ProfileViewScreen from "../Screens/Profile/ProfileViewScreen";
 import { Platform, View } from "react-native";
 import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
 import { useSelector } from "react-redux";
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
 import ProLoading from "../Components/Layout/ProLoading";
 import BackgroundView from "../Components/Layout/BackgroundView";
+import { useNavigation } from "@react-navigation/native";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -27,7 +25,7 @@ interface MainDrawerProps {
 
 export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
   const dataProfessions = [
-    { label: 'Carpetner', value:'1' },
+    { label: 'Carpenter', value:'1' },
     { label: 'Painter', value: '2' },
     { label: 'Constructor', value: '3' },
     { label: 'Pavor', value: '4' },
@@ -37,11 +35,14 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
     { label: 'Garden', value: '8' },
   ]
 
-export const MainDrawerScreen: React.FC = () => {
+  const navigation = useNavigation();
   const currentWindowWidth = useSelector(getWindowWidth);
   const user = useSelector(getUserAccount);
   if(user === undefined || user === null ){
     return <BackgroundView children={<ProLoading/>}/>
+  }
+  else if(user.accountStatus === 'SETUP'){
+    return <ProfileEditorScreen></ProfileEditorScreen>
   }
 
   return (
