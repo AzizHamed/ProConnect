@@ -17,8 +17,10 @@ import { EMAIL_REGEX } from "../../Constants/Values";
 import { UserDetails, setUserAccount, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
 import { useDispatch } from "react-redux";
 import { CreateUserApiArg, User, useCreateUserMutation } from "../../Services/Redux/Api";
-import { navigateToMainStack, updateAuthState } from "./UpdateAuthState";
+import { navigateToMainStack, navigateToProfileEditor, updateAuthState } from "./UpdateAuthState";
 import { User as FBUser } from "firebase/auth";
+import ProLoading from "../../Components/Layout/ProLoading";
+import { set } from "date-fns";
 
 const SignUpScreen: React.FC = () => {
   const { control, handleSubmit, watch } = useForm();
@@ -26,7 +28,7 @@ const SignUpScreen: React.FC = () => {
   const navigation = useNavigation();
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const [createUser] = useCreateUserMutation();
@@ -34,35 +36,33 @@ const SignUpScreen: React.FC = () => {
 
   const onRegisterPressed = async (data: any) => {
     const { email, password } = data;
+    setIsLoadingAuthState(true);
     emailSignUp(email, password).then(async (userCredential: UserCredential)=> {
         const user = userCredential.user;
-        await updateAuthState(user, dispatch, undefined, (user: FBUser)=>{
-          console.log('User created')
-          const createdUser:CreateUserApiArg = {user: {
-            id: user.uid,
-            email: user.email || 'Error',
-            name:{firstName:user.displayName || 'Error', lastName: ''}}
-          };
-          createUser(createdUser).unwrap().then((res)=>{
-            console.log(res);
-            dispatch(setUserAccount(res))
-          }).catch((error)=>{console.log(error)});
-
-        });           
+        await updateAuthState(user, dispatch, navigation, true);         
         console.log(user);
         setResultText(user.email + ' Created!'|| 'Signed up')
         setIsVisible(true);
-        setTimeout(()=>{navigateToMainStack(navigation)}, 3000);
       }).catch((error: any) => {
         console.log(error);
         setResultText(error.message)
         setIsVisible(true);
+        setIsLoadingAuthState(false);  
     });
   };
 
   const onSignInPress = () => {
     navigation.navigate("Login");
   };
+
+  if(isLoadingAuthState){
+    return (
+      <BackgroundView children={(
+        <ProLoading/>
+      )}></BackgroundView>
+    )
+  }
+
 
   return (
     <BackgroundView
