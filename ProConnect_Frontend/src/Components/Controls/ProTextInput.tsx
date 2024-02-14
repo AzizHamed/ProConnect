@@ -1,6 +1,7 @@
-import {View, Text, TextInput, StyleSheet, Platform, Animated} from 'react-native';
+import {Text, TextInput, StyleSheet, Platform, Animated} from 'react-native';
 import {Control, Controller, RegisterOptions } from 'react-hook-form';
-import { Colors } from 'react-native-ui-lib';
+import { Colors, View } from 'react-native-ui-lib';
+import { customWidthValues } from '../../Constants/Values';
 
 
 interface InputProps{
@@ -12,13 +13,16 @@ interface InputProps{
     webWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode;
     mobileWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode;
     autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined
-    spellCheck?: boolean
+    spellCheck?: boolean,
+    flexShrink?: boolean,
+    marginR?: number,
+    marginL?: number,
 }
 
 const ProTextInput: React.FC<InputProps> = (props) => {
   const isWeb = Platform.OS === 'web';
-  const width = isWeb ? (props.webWidth || 400) : (props.mobileWidth || '90%')
-
+  const width = customWidthValues(props.webWidth, props.mobileWidth);
+  const flexShrink = props.flexShrink || false;
   return (
     <Controller
       control={props.control} defaultValue={''}
@@ -26,7 +30,7 @@ const ProTextInput: React.FC<InputProps> = (props) => {
       rules={props.rules}
       render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
         <>
-        <View style={{width: width}}>
+        <View style={{width: width, marginRight: props.marginR, marginLeft: props.marginL, backgroundColor: 'transparent'}} flexS={flexShrink}>
 
           <View
             style={[
@@ -45,7 +49,7 @@ const ProTextInput: React.FC<InputProps> = (props) => {
               />
           </View>
             <Text style={{color: Colors.failure, alignSelf: 'stretch'}}>{error?.message || ' '}</Text>
-              </View>
+          </View>
         </>
       )}
     />
