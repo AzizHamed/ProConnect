@@ -1,5 +1,5 @@
 import { DrawerToggleButton, createDrawerNavigator } from "@react-navigation/drawer";
-import React from "react";
+import React, { useState } from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
@@ -11,12 +11,18 @@ import { Platform, View } from "react-native";
 import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
 import { useSelector } from "react-redux";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
+import ProLoading from "../Components/Layout/ProLoading";
+import BackgroundView from "../Components/Layout/BackgroundView";
 
 const MainDrawer = createDrawerNavigator();
 
 export const MainDrawerScreen: React.FC = () => {
   const currentWindowWidth = useSelector(getWindowWidth);
-
+  const user = useSelector(getUserAccount);
+  if(user === undefined || user === null ){
+    return <BackgroundView children={<ProLoading/>}/>
+  }
   return (
     <MainDrawer.Navigator 
     drawerContent={(props) => <CustomDrawerContent {...props}
