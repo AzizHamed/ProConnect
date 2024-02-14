@@ -14,7 +14,7 @@
 	<name>ProConnect</name>
 	<description>Final Software Engineering project at Braude College of Engineering By Hadi and Aziz. Project Code 23-2-D-9</description>
 	<properties>
-		<java.version>21.0.2</java.version>
+		<java.version>21</java.version>
 		<maven.compiler.verbose>true</maven.compiler.verbose>
 	</properties>
 	<dependencies>
