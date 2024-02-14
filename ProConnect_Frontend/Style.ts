@@ -156,7 +156,7 @@ export async function loadThemePreference() {
   let isDarkTheme = false;
   await getSimpleData(themeStorageKey).then((value) => {
       if (value === undefined) {
-          isDarkTheme = false;
+          isDarkTheme = true;
         } else {
             isDarkTheme = value === "true";
         }
