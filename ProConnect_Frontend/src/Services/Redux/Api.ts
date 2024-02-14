@@ -1,11 +1,11 @@
 import { emptySplitApi as api } from "./EmptyApi";
 export const addTagTypes = [
-  "job-controller",
-  "user-controller",
-  "service-controller",
-  "role-controller",
-  "property-controller",
-  "profession-controller",
+  "Jobs",
+  "Users",
+  "Services",
+  "Roles",
+  "Properties",
+  "Professions",
   "test-controller",
 ] as const;
 const injectedRtkApi = api
@@ -20,7 +20,7 @@ const injectedRtkApi = api
           method: "PUT",
           params: { jobId: queryArg.jobId, userId: queryArg.userId },
         }),
-        invalidatesTags: ["job-controller"],
+        invalidatesTags: ["Jobs"],
       }),
       likePost: build.mutation<LikePostApiResponse, LikePostApiArg>({
         query: (queryArg) => ({
@@ -28,7 +28,7 @@ const injectedRtkApi = api
           method: "PUT",
           params: { jobId: queryArg.jobId, userId: queryArg.userId },
         }),
-        invalidatesTags: ["job-controller"],
+        invalidatesTags: ["Jobs"],
       }),
       commentOnPost: build.mutation<
         CommentOnPostApiResponse,
@@ -39,7 +39,7 @@ const injectedRtkApi = api
           method: "PUT",
           body: queryArg.comment,
         }),
-        invalidatesTags: ["job-controller"],
+        invalidatesTags: ["Jobs"],
       }),
       createUser: build.mutation<CreateUserApiResponse, CreateUserApiArg>({
         query: (queryArg) => ({
@@ -47,7 +47,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.user,
         }),
-        invalidatesTags: ["user-controller"],
+        invalidatesTags: ["Users"],
       }),
       createUsers: build.mutation<CreateUsersApiResponse, CreateUsersApiArg>({
         query: (queryArg) => ({
@@ -55,7 +55,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.body,
         }),
-        invalidatesTags: ["user-controller"],
+        invalidatesTags: ["Users"],
       }),
       addRole: build.mutation<AddRoleApiResponse, AddRoleApiArg>({
         query: (queryArg) => ({
@@ -63,7 +63,7 @@ const injectedRtkApi = api
           method: "POST",
           params: { userId: queryArg.userId, roleId: queryArg.roleId },
         }),
-        invalidatesTags: ["user-controller"],
+        invalidatesTags: ["Users"],
       }),
       createUserServices: build.mutation<
         CreateUserServicesApiResponse,
@@ -74,7 +74,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.body,
         }),
-        invalidatesTags: ["service-controller"],
+        invalidatesTags: ["Services"],
       }),
       createUserService: build.mutation<
         CreateUserServiceApiResponse,
@@ -85,7 +85,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.userServiceEntity,
         }),
-        invalidatesTags: ["service-controller"],
+        invalidatesTags: ["Services"],
       }),
       createService: build.mutation<
         CreateServiceApiResponse,
@@ -99,7 +99,7 @@ const injectedRtkApi = api
             professionId: queryArg.professionId,
           },
         }),
-        invalidatesTags: ["service-controller"],
+        invalidatesTags: ["Services"],
       }),
       createRole: build.mutation<CreateRoleApiResponse, CreateRoleApiArg>({
         query: (queryArg) => ({
@@ -107,7 +107,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.role,
         }),
-        invalidatesTags: ["role-controller"],
+        invalidatesTags: ["Roles"],
       }),
       createProperty: build.mutation<
         CreatePropertyApiResponse,
@@ -118,7 +118,7 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.property,
         }),
-        invalidatesTags: ["property-controller"],
+        invalidatesTags: ["Properties"],
       }),
       createService1: build.mutation<
         CreateService1ApiResponse,
@@ -129,7 +129,7 @@ const injectedRtkApi = api
           method: "POST",
           params: { name: queryArg.name, description: queryArg.description },
         }),
-        invalidatesTags: ["profession-controller"],
+        invalidatesTags: ["Professions"],
       }),
       postJobs: build.mutation<PostJobsApiResponse, PostJobsApiArg>({
         query: (queryArg) => ({
@@ -137,32 +137,32 @@ const injectedRtkApi = api
           method: "POST",
           body: queryArg.job,
         }),
-        invalidatesTags: ["job-controller"],
+        invalidatesTags: ["Jobs"],
       }),
       getUser: build.query<GetUserApiResponse, GetUserApiArg>({
         query: (queryArg) => ({
           url: `/users/get`,
           params: { userId: queryArg.userId },
         }),
-        providesTags: ["user-controller"],
+        providesTags: ["Users"],
       }),
       getAllUsers: build.query<GetAllUsersApiResponse, GetAllUsersApiArg>({
         query: () => ({ url: `/users/get-all` }),
-        providesTags: ["user-controller"],
+        providesTags: ["Users"],
       }),
       getAllRoles: build.query<GetAllRolesApiResponse, GetAllRolesApiArg>({
         query: () => ({ url: `/roles/get-all` }),
-        providesTags: ["role-controller"],
+        providesTags: ["Roles"],
       }),
       getProperties: build.query<GetPropertiesApiResponse, GetPropertiesApiArg>(
         {
           query: () => ({ url: `/properties/get-properties` }),
-          providesTags: ["property-controller"],
+          providesTags: ["Properties"],
         }
       ),
       getLocations: build.query<GetLocationsApiResponse, GetLocationsApiArg>({
         query: () => ({ url: `/properties/get-locations` }),
-        providesTags: ["property-controller"],
+        providesTags: ["Properties"],
       }),
       getJobs: build.query<GetJobsApiResponse, GetJobsApiArg>({
         query: (queryArg) => ({
@@ -172,7 +172,7 @@ const injectedRtkApi = api
             jobSearchCriteria: queryArg.jobSearchCriteria,
           },
         }),
-        providesTags: ["job-controller"],
+        providesTags: ["Jobs"],
       }),
       init: build.query<InitApiResponse, InitApiArg>({
         query: () => ({ url: `/init` }),
@@ -288,6 +288,7 @@ export type User = {
   reviewsReceived?: Review[];
   roles?: Role[];
   contractors?: User[];
+  accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
 };
 export type Point = {
   x?: number;
@@ -372,9 +373,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
