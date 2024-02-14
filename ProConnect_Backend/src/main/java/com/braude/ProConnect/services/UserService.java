@@ -6,7 +6,11 @@ import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserRepository;
+import com.braude.ProConnect.requests.UpdateProfileRequest;
+import com.braude.ProConnect.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +19,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
@@ -23,6 +26,19 @@ public class UserService {
     public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+    }
+
+    public static User getAuthorizedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof SecurityUser) {
+            User user = ((SecurityUser) principal).getUser();
+            return user;
+        }
+        return null;
     }
 
     public User createUser(User user){
@@ -70,5 +86,17 @@ public class UserService {
             newUsers.add(createUser(user));
         }
         return newUsers;
+    }
+
+    public UpdateProfileRequest updateProfile(UpdateProfileRequest request){
+        User user = getAuthorizedUser();
+        if(user == null)
+            throw new ProConnectException("User not found.");
+        user.setName(request.getName());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setRoles(request.getRoles());
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        user = userRepository.save(user);
+        return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles());
     }
 }

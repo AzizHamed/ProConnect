@@ -41,6 +41,17 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Jobs"],
       }),
+      updateProfile: build.mutation<
+        UpdateProfileApiResponse,
+        UpdateProfileApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/update-profile`,
+          method: "POST",
+          body: queryArg.updateProfileRequest,
+        }),
+        invalidatesTags: ["Users"],
+      }),
       createUser: build.mutation<CreateUserApiResponse, CreateUserApiArg>({
         query: (queryArg) => ({
           url: `/users/create`,
@@ -196,6 +207,11 @@ export type CommentOnPostApiResponse = /** status 200 OK */ Comment;
 export type CommentOnPostApiArg = {
   comment: Comment;
 };
+export type UpdateProfileApiResponse =
+  /** status 200 OK */ UpdateProfileRequest;
+export type UpdateProfileApiArg = {
+  updateProfileRequest: UpdateProfileRequest;
+};
 export type CreateUserApiResponse = /** status 200 OK */ User;
 export type CreateUserApiArg = {
   user: User;
@@ -261,8 +277,8 @@ export type GetJobsApiArg = {
 export type InitApiResponse = unknown;
 export type InitApiArg = void;
 export type Name = {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
 };
 export type Role = {
   id?: number;
@@ -279,8 +295,6 @@ export type Review = {
   timestamp?: string;
 };
 export type User = {
-  experience: number;
-  rating: number;
   id?: string;
   name: Name;
   email: string;
@@ -343,6 +357,12 @@ export type Comment = {
   numberOfReports?: number;
   jobId?: number;
 };
+export type UpdateProfileRequest = {
+  name?: Name;
+  phoneNumber?: string;
+  accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
+  roles?: Role[];
+};
 export type Service = {
   id?: number;
   name: string;
@@ -363,10 +383,10 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
+  paged?: boolean;
+  unpaged?: boolean;
   pageNumber?: number;
   pageSize?: number;
-  unpaged?: boolean;
-  paged?: boolean;
 };
 export type PageJob = {
   totalElements?: number;
@@ -375,9 +395,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
-  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
+  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -403,6 +423,7 @@ export const {
   useUnlikePostMutation,
   useLikePostMutation,
   useCommentOnPostMutation,
+  useUpdateProfileMutation,
   useCreateUserMutation,
   useCreateUsersMutation,
   useAddRoleMutation,
