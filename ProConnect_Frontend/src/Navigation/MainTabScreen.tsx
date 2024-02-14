@@ -1,24 +1,45 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useEffect } from "react";
 import SettingsScreen from "../Screens/SettingsScreen";
-import React from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
 import Search1 from "./OldNav-TabsAndSideBars/Search1";
 import JobsList from "../Features/Jobs/JobsList";
+import Search from "./OldNav-TabsAndSideBars/Search";
+import Friends from "./OldNav-TabsAndSideBars/Friends";
+import { da } from "date-fns/locale";
+import { dataLocation, dataProfessions } from "../Constants/ConstantData";
+import ProfessionalSearcPage from "./OldNav-TabsAndSideBars/ProfessionalSearchPage";
 
-type MainTabParamList = {
+export type MainTabParamList = {
   Home: undefined;
   Profile: undefined;
   Settings: undefined;
-  Search: undefined;
+  Search: {label : string , value : string}[];
   Friends: undefined;
   Post: undefined;
 };
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
 
+
+
+
+
+
 export const MainTabScreen: React.FC = () => {
+
+  function renderSearchPage(){
+    return (
+      <MainTab.Screen
+      name="Search"
+      component={ProfessionalSearcPage}        
+      options={{ headerShown: false }}
+    />
+    )
+  }
   return (
+    
     <MainTab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -57,14 +78,11 @@ export const MainTabScreen: React.FC = () => {
         component={JobsList}
         options={{ headerShown: false }}
       />
-      <MainTab.Screen
-        name="Search"
-        component={Search1}
-        options={{ headerShown: false }}
-      />
+     {renderSearchPage()}
       <MainTab.Screen
         name="Friends"
-        component={SettingsScreen}
+        component={Friends}
+
         options={{ headerShown: false }}
       />
       <MainTab.Screen
