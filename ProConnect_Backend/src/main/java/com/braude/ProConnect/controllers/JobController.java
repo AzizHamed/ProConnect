@@ -6,6 +6,7 @@ import com.braude.ProConnect.models.entities.Job;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.services.JobService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("jobs")
 @CrossOrigin
 @Validated
+@Tag(name = "Jobs")
 public class JobController {
 
 

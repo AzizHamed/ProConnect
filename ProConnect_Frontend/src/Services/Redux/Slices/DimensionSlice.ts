@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { Dimensions, ScaledSize } from "react-native"
 
 export interface DimensionInitialState {
-    sceen: ScaledSize,
+    screen: ScaledSize,
     window: ScaledSize,
 }
 const initialState: DimensionInitialState = {
-    sceen: Dimensions.get("screen"),
+    screen: Dimensions.get("screen"),
     window: Dimensions.get("window"),
 }
 
@@ -15,7 +15,7 @@ export const dimensionSlice = createSlice({
     initialState,
     reducers: {
         setDimensions: (state, action: PayloadAction<DimensionInitialState>) => {
-            state.sceen = action.payload.sceen;
+            state.screen = action.payload.screen;
             state.window = action.payload.window;
         }
     },
@@ -30,13 +30,13 @@ export const dimensionSlice = createSlice({
             return state.window.height;
         },
         getScreen: (state) => {
-            return state.sceen;
+            return state.screen;
         },
         getScreenWidth: (state) => {
-            return state.sceen.width;
+            return state.screen.width;
         },
         getScreenHeight: (state) => {
-            return state.sceen.height;
+            return state.screen.height;
         },
     },
 })

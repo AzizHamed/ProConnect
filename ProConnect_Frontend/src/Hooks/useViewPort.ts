@@ -16,7 +16,7 @@ export function useViewport() {
 
     function updateDimensions({ window, screen } : UpdateDimensionsData)  {
     if (window.width !== currentWindow.width || window.height !== currentWindow.height)
-      dispatch(setDimensions({ sceen: screen, window: window }));
+      dispatch(setDimensions({ screen: screen, window: window }));
     setScreenWidth(window.width);
     }
 

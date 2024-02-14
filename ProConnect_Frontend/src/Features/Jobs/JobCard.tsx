@@ -55,7 +55,7 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   };
   
   return (
-      <ProCard autoAdjustWidth children={children} radius={props.radius} onPress={onPress}/>
+      <ProCard style={{minWidth: 10, width:"95%"}} webWidth={"95%"}  children={children} radius={props.radius} onPress={onPress}/>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import JobsList from '../../Features/Jobs/JobsList';
-import Testing from '../../Components/Testing';
+import SettingsScreen from '../../Screens/SettingsScreen';
 import { View, Image, Colors,Text} from 'react-native-ui-lib';
 import getColors from '../../Constants/Colors';
 import DrawerContent from './DrawerContent';
@@ -75,7 +75,7 @@ const Drawer1 = () => {
               <MaterialIcons name="timer" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
         <Drawer.Screen
           name="Categories"
@@ -86,7 +86,7 @@ const Drawer1 = () => {
               <MaterialIcons name="category" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
         <Drawer.Screen
           name="Customize"
@@ -97,7 +97,7 @@ const Drawer1 = () => {
               <MaterialIcons name="dashboard-customize" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
         <Drawer.Screen
           name="Settings"
@@ -108,7 +108,7 @@ const Drawer1 = () => {
               <SimpleLineIcons name="settings" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
 
         
@@ -122,7 +122,7 @@ const Drawer1 = () => {
               <MaterialCommunityIcons name="certificate" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
         <Drawer.Screen
           name="Rate this App"
@@ -133,7 +133,7 @@ const Drawer1 = () => {
               <FontAwesome name="star" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
 
         <Drawer.Screen
@@ -145,7 +145,7 @@ const Drawer1 = () => {
               <MaterialCommunityIcons name="message-alert-outline" size={20} color="#808080" />
             )
           }}
-          component={Testing}
+          component={SettingsScreen}
         />
       </Drawer.Navigator>
   )

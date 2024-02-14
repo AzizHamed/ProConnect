@@ -7,10 +7,11 @@ import {clearData} from "../Utility/Storage";
 import { useDispatch, useSelector } from 'react-redux';
 import { isDarkTheme, toggleTheme } from '../Services/Redux/Slices/PreferencesSlice';
 import { AppDispatch } from '../Services/Redux/Store';
-import ProRefreshControl from './Controls/ProRefreshControl';
+import ProRefreshControl from '../Components/Controls/ProRefreshControl';
+import ProSwitch from '../Components/Controls/ProSwitch';
 
 
-const Testing: React.FC = () => {
+const SettingsScreen: React.FC = () => {
   const darkTheme = useSelector(isDarkTheme);
   const dispatch = useDispatch<AppDispatch>();
   function delay(ms:number) {
@@ -18,35 +19,30 @@ const Testing: React.FC = () => {
   }
   
   async function delayedLoop() {
-    await delay(1000);
+    await delay(200);
     dispatch(toggleTheme());
   }
   
   return (
     // <SafeAreaView style={styles.container}>
-      <View flex paddingB-page paddingH-page centerH>
-        <View padding-page backgroundColor={Colors.backgroundPrimary}>
-          <Text h3>
-            {darkTheme ? "Dark Mode" : "Light Mode"}
-          </Text>
-        </View>
-        <ProRefreshControl onRefreshAction={delayedLoop} children={(<View><ProHeader
+      <View flex>
+        <ProRefreshControl onRefreshAction={delayedLoop} children={(
+        <View style={{height:"100%", alignContent:'center'}}>
+
+          <ProHeader
             center
-            text="Header Example S"
+            text="Settings"
             headerType={HeaderType.H3}
             />
-          <ProHeader text="Header Example N" headerType={HeaderType.H2} />
-          <ProHeader text="Header Example L" headerType={HeaderType.H1} />
-          <ProButton
-            borderRadius={45}
-            outlineWidth={1}
-            outlineColor="black"
-            text='Toggle Theme'
-            onPress={() => {
-              dispatch(toggleTheme());
-            }}
-            />
+          <ProSwitch value={darkTheme} rightLabel='Light Theme' leftLabel='Dark Theme' delayChange onValueChange={() => {
+            dispatch(toggleTheme());
+          }}></ProSwitch>
+        
             <ProButton onPress={()=>{clearData()}} text='Clear Data'></ProButton>
+          {/* <View bg height={200}>
+          </View> */}
+          {/* <ProHeader text="Header Example N" headerType={HeaderType.H2} />
+          <ProHeader text="Header Example L" headerType={HeaderType.H1} />
           <Text h1>Hello World</Text>
           <Text t2>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nisi
@@ -69,7 +65,11 @@ const Testing: React.FC = () => {
             sem tincidunt, ac malesuada turpis vehicula. Pellentesque ac tortor
             ut purus facilisis rutrum at quis neque. Praesent faucibus venenatis
             metus ut fermentum. Aliquam erat volutpat.
-          </Text></View>)}></ProRefreshControl>
+          </Text>
+           */}
+          </View>)}>
+            
+          </ProRefreshControl>
         <ScrollView>
           
         </ScrollView>
@@ -78,13 +78,13 @@ const Testing: React.FC = () => {
   )
 }
 
-export default Testing
+export default SettingsScreen
 
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        // alignItems: "center",
+        // justifyContent: "center",
     },
   });

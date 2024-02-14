@@ -1,5 +1,5 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import React from "react";
+import { DrawerToggleButton, createDrawerNavigator } from "@react-navigation/drawer";
+import React, { useState } from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
@@ -8,6 +8,16 @@ import { SimpleLineIcons,Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Search from "./OldNav-TabsAndSideBars/Search";
 import ProfessionalWorkWith from "./OldNav-TabsAndSideBars/ProfessionalWorksNavigator";
+import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
+import SettingsScreen from "../Screens/SettingsScreen";
+import ProfileViewScreen from "../Screens/Profile/ProfileViewScreen";
+import { Platform, View } from "react-native";
+import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
+import { useSelector } from "react-redux";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
+import ProLoading from "../Components/Layout/ProLoading";
+import BackgroundView from "../Components/Layout/BackgroundView";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -26,6 +36,14 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
     { label: 'Designer', value: '7' },
     { label: 'Garden', value: '8' },
   ]
+
+export const MainDrawerScreen: React.FC = () => {
+  const currentWindowWidth = useSelector(getWindowWidth);
+  const user = useSelector(getUserAccount);
+  if(user === undefined || user === null ){
+    return <BackgroundView children={<ProLoading/>}/>
+  }
+
   return (
     <MainDrawer.Navigator 
     drawerContent={(props) => <CustomDrawerContent {...props}
@@ -46,9 +64,18 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
         },
         drawerLabelStyle: {
           color: "#111"
-        }
+        },
+        headerLeft: ( tintColor?: string | undefined, pressColor?: string | undefined, pressOpacity?: number | undefined )=>{
+          return isWeb(currentWindowWidth) 
+          ? <></> 
+          : <View>
+              <DrawerToggleButton></DrawerToggleButton>
+          </View>;
+        },
+        drawerType: getDrawerType(currentWindowWidth),
       }}>
       {/* <MainDrawer.Screen name="MainTabs" component={Tab} /> */}
+
       <MainDrawer.Screen name="MainTabs" component={MainTabScreen}   options={{
             drawerLabel: "Home",
             title: "Home",
@@ -74,7 +101,17 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
       <MainDrawer.Screen name="test" component={JobsList} />
 
       
-
+      <MainDrawer.Screen name="Settings" component={SettingsScreen} />
+      <MainDrawer.Screen name="Profile" component={ProfileViewScreen}/>
+      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle:{display:"none"} }}/>
     </MainDrawer.Navigator>
   );
 };
+
+function getDrawerType(currentWindowWidth: number): "permanent" | "front" | "back" | "slide" | undefined {
+  return isWeb(currentWindowWidth) ? "permanent" : "front";
+}
+function isWeb(currentWindowWidth: number) {
+  return Platform.OS === "web" && currentWindowWidth > 720;
+}
+

@@ -5,6 +5,7 @@ import PersonsPageReducer from "./Slices/PersonsPageSlice";
 import DimensionReducer from "./Slices/DimensionSlice";
 import PreferencesReducer, { initializePreferences } from "./Slices/PreferencesSlice";
 import { api } from "./Api";
+import { fetchUserDataMiddleware } from "./fetchUserDataMiddleware";
 
 export const store = configureStore({
     reducer: {
@@ -14,10 +15,9 @@ export const store = configureStore({
         dimension: DimensionReducer,
         preferences: PreferencesReducer,
         [api.reducerPath]: api.reducer
-        
-    },
+    } as any, 
     middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(api.middleware)
+    getDefaultMiddleware().concat(api.middleware).concat(fetchUserDataMiddleware)
 })
 
 store.dispatch(initializePreferences());
