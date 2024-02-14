@@ -42,7 +42,7 @@ const ForgotPasswordScreen: React.FC = () => {
               }}
             />
 
-            <ProButton text="Send" onPress={handleSubmit(onSendPressed)} />
+            <ProButton text="Send Password Reset E-mail" onPress={handleSubmit(onSendPressed)} />
 
             <ProButton text="Back to Sign in" onPress={onSignInPress} />
           </View>

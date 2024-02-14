@@ -22,7 +22,7 @@ const ProRefreshControl: React.FC<ProRefreshControlProps> = (props) => {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.scrollView}
+      contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }

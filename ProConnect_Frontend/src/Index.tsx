@@ -6,18 +6,20 @@ import { initializePreferences,  isDarkTheme } from "./Services/Redux/Slices/Pre
 import { setDimensions } from "./Services/Redux/Slices/DimensionSlice";
 import { AppDispatch } from "./Services/Redux/Store";
 import { AppStackScreen } from "./Navigation/AppStack";
+import { useViewport } from "./Hooks/useViewPort";
 
 
 const Index: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const darkTheme = useSelector(isDarkTheme);
+  const { screenWidth } = useViewport();
 
   useEffect(() => {
     dispatch(initializePreferences());
     const subscription = Dimensions.addEventListener(
       "change",
       ({ window, screen }) => {
-        dispatch(setDimensions({ sceen: screen, window: window }));
+        dispatch(setDimensions({ screen: screen, window: window }));
       }
     );
     return () => subscription?.remove();

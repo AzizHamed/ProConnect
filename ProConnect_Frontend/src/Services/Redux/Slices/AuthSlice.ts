@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { User } from "firebase/auth";
+import { User } from "../Api";
 
 export interface UserDetails {
   email?: string | null
@@ -8,6 +8,7 @@ export interface UserDetails {
   idToken?: string | null
   uid?: string | null
   photoURL?: string | null
+  user?: User | null
 }
 
 const initialState: UserDetails = {
@@ -17,6 +18,7 @@ const initialState: UserDetails = {
   idToken: null,
   uid: null,
   photoURL: null, 
+  user: null
 };
 
 export const authSlice = createSlice({
@@ -30,16 +32,21 @@ export const authSlice = createSlice({
       state.phone = action.payload.phone;
       state.photoURL = action.payload.photoURL;
       state.uid = action.payload.uid;
-      console.log('Arrived in Auth Store', state)
+    },
+    setUserAccount: (state, action: PayloadAction<User>)=>{
+      state.user = action.payload;
     }
   },
   selectors: {
     getUserCredential: (state) => {
       return state;
     },
+    getUserAccount: (state) => {
+      return state.user;
+    }
   },
 });
 
-export const { setUserCredential } = authSlice.actions;
-export const { getUserCredential } = authSlice.selectors;
+export const { setUserCredential, setUserAccount } = authSlice.actions;
+export const { getUserCredential, getUserAccount } = authSlice.selectors;
 export default authSlice.reducer;

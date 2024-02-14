@@ -4,6 +4,7 @@ import com.braude.ProConnect.models.embeddables.Location;
 import com.braude.ProConnect.models.entities.Property;
 import com.braude.ProConnect.requests.RequestWithId;
 import com.braude.ProConnect.services.PropertyService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("properties")
 @CrossOrigin()
 @Validated
+@Tag(name = "Properties")
 public class PropertyController {
     private final PropertyService propertyService;
 

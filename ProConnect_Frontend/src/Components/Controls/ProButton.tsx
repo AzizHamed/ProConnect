@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps, View } from 'react-native-ui-lib';
+import { Button, ButtonProps, Colors, View } from 'react-native-ui-lib';
 import { Animated, Platform } from 'react-native';
 
 interface ProButtonProps {
@@ -13,8 +13,8 @@ interface ProButtonProps {
 
 const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
     const text = props.text || 'Submit';
-    const borderRadius = props.radius || 0;
-    const width = (Platform.OS === 'web') ? (props.webWidth || 400) : (props.mobileWidth || '90%')
+    const borderRadius = props.radius || 5;
+    const width = (Platform.OS === 'web') ? (props.webWidth || 400) : (props.mobileWidth || "90%")
 
     const onPress = props.onPress !== undefined ? props.onPress : () =>
     {
@@ -22,15 +22,19 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
     }
 
 
+  const widthStyle = { width: width };
   return (
-    <View center bg>      
+    <View center backgroundColor={props.backgroundColor} style={widthStyle}>      
       <Button 
-          {...props} style={{width: width}}
+          {...props} style={widthStyle}
+          backgroundColor={Colors.controlBackground}
+          color={Colors.controlText}
           onPress={onPress}
-          center
+          
           borderRadius={borderRadius}
           supportRTL={true} 
           label={text} 
+          labelStyle={[{textAlign: 'center', fontWeight: 'bold'}, widthStyle]}
           >    
       </Button>
     </View>
