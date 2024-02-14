@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, WheelPicker } from 'react-native-ui-lib'
+import { View, Text, WheelPicker, Colors } from 'react-native-ui-lib'
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import BackgroundView from '../../Components/Layout/BackgroundView'
 import { StyleSheet, TouchableOpacity } from 'react-native'
@@ -9,12 +9,15 @@ import Constants from 'expo-constants';
 import ProButton from '../../Components/Controls/ProButton'
 import DesignedDropDown from '../DesignedDropDown';
 import { MainTabParamList } from '../MainTabScreen';
+import { AirbnbRating } from 'react-native-ratings';
+import { useDispatch } from 'react-redux';
+import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
 
 
 
 const Search = () => {
 
-  
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
   
@@ -90,8 +93,16 @@ const Search = () => {
 
 
 
+
 <ProButton text="Continue" onPress={()=>{
-  navigation.navigate("ProfessionalsPage")
+  dispatch(setPersonsPage({
+  ComponentType : "Rating"
+    
+  }))
+  navigation.navigate("PersonsPage");
+
+
+
 }}/>
 
 
@@ -108,7 +119,25 @@ const Search = () => {
 
 export default Search
 
+
+
   const styles = StyleSheet.create({
+
+    CardContainer : {
+      backgroundColor:Colors.$backgroundDark,
+      // borderColor:"green",
+      // borderWidth:5,
+      width:190,
+      height:220,
+      alignItems:"center",
+      justifyContent:"center",
+      
+    },
+    imageStyle : {
+      height: 120,
+      width: 120,
+      borderRadius:70,
+  },
 
   textInput:{
     backgroundColor:"white",

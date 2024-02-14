@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Testing from '../../Components/Testing';
 import { NavigationContainer } from '@react-navigation/native';
 import Friends from './Friends';
+import PersonsPage from './PersonsPage';
 
 const ProfessionalWorkWith = () => {
 
@@ -13,7 +14,7 @@ const ProfessionalWorkWith = () => {
 const Tab = createMaterialTopTabNavigator();
 
 let width =  Dimensions.get('window').width;
-let height =  Dimensions.get('window').height
+//let height =  Dimensions.get('window').height
 
 
   return (
@@ -22,9 +23,9 @@ let height =  Dimensions.get('window').height
       tabBarItemStyle: { width: width / 3 },
       tabBarStyle: { backgroundColor: 'powderblue' },
     }}>
-      <Tab.Screen name="HomeOwners" component={Friends} />
-      <Tab.Screen name="Contractors" component={Friends} />
-      <Tab.Screen name="Workers" component={Friends} />
+      <Tab.Screen name="HomeOwners" component={PersonsPage} />
+      <Tab.Screen name="Contractors" component={PersonsPage} />
+      <Tab.Screen name="Workers" component={PersonsPage} />
     </Tab.Navigator>
   )
 }

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { View,Text, Modal, Button, TextInput } from 'react-native'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { View,Text, Modal, Button, TextInput, ImageStyle, ViewStyle, StyleProp } from 'react-native'
 import {ScrollView, StyleSheet} from 'react-native'
 import { useGetAllUsersQuery } from '../../Services/Redux/Api';
-import ProfessionalCard from './ProfessionalCard';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 
 import { TouchableOpacity } from 'react-native';
@@ -11,13 +10,21 @@ import ModalDesigned from '../ModalDesigned';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MyTextInput from '../../Components/Controls/MyTextInput';
 import RNPickerSelect from 'react-native-picker-select';
-import FriendCard from './FriendCard';
+import PersonCard from './PersonCard';
 import { AirbnbRating } from 'react-native-ratings';
 import { Colors } from 'react-native-ui-lib';
+import { RouteProp } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { getSelectedPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
+import { PersonPage1, PersonPage2 } from '../../Constants/Values';
+import ProButton from '../../Components/Controls/ProButton';
 
 
 
-const ProfessionalsPage = () => {
+
+
+
+const PersonsPage = () => {
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
   const [modalVisible, setModalVisible] = useState(false);
   const [Professionals, setProfessionals] = useState(data)
@@ -26,6 +33,26 @@ const ProfessionalsPage = () => {
   const [location, setlocation] = useState("choose location")
   var textInput = "";
   const [sortBy, setsortBy] = useState(0)
+ const componentType = useSelector(getSelectedPersonsPage)
+
+let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
+
+
+
+
+  function renderComponent(){
+    return componentType == "Rating" ? [<AirbnbRating
+      count={5}
+      size={20}
+      isDisabled={true}
+      showRating={false} />] : [<ProButton text={"Chat"} mobileWidth={180} />]
+  }
+
+ 
+
+
+
+
   function onChangeText(text : string){ 
 
     textInput = text;
@@ -37,6 +64,7 @@ const ProfessionalsPage = () => {
 
 
   useEffect(() => {
+
     
     filterProfessionals()
     
@@ -150,14 +178,10 @@ const ProfessionalsPage = () => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
-          <FriendCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={styles.imageStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
+          <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
               <Text style={{ color: "white" }}>Software Engineering</Text>,
               <Text style={{ color: "white" }}>12 years experience</Text>
-              ]} additionalComponents={[<AirbnbRating
-                count={5}
-                size={20}
-                isDisabled={true}
-                showRating={false} />]} cardContainerStyle={styles.CardContainer} />
+              ]} additionalComponents={renderComponent()} cardContainerStyle={PersonPage.CardContainerStyle} />
            
            
         </TouchableOpacity>
@@ -182,7 +206,7 @@ const ProfessionalsPage = () => {
 }
 
 
-export default ProfessionalsPage
+export default PersonsPage
 
 const styles = StyleSheet.create({
   CardContainer : {

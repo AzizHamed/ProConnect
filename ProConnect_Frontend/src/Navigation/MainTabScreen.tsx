@@ -1,15 +1,19 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import SettingsScreen from "../Screens/SettingsScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
-import Search1 from "./OldNav-TabsAndSideBars/Search1";
 import JobsList from "../Features/Jobs/JobsList";
 import Search from "./OldNav-TabsAndSideBars/Search";
 import Friends from "./OldNav-TabsAndSideBars/Friends";
 import { da } from "date-fns/locale";
 import { dataLocation, dataProfessions } from "../Constants/ConstantData";
 import ProfessionalSearcPage from "./OldNav-TabsAndSideBars/ProfessionalSearchPage";
+import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
+import ProButton from "../Components/Controls/ProButton";
+import { useDispatch } from "react-redux";
+import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 
 export type MainTabParamList = {
   Home: undefined;
@@ -29,11 +33,13 @@ const MainTab = createBottomTabNavigator<MainTabParamList>();
 
 export const MainTabScreen: React.FC = () => {
 
+  const dispatch = useDispatch();
+
   function renderSearchPage(){
     return (
       <MainTab.Screen
       name="Search"
-      component={ProfessionalSearcPage}        
+      component={Search}        
       options={{ headerShown: false }}
     />
     )
@@ -81,10 +87,15 @@ export const MainTabScreen: React.FC = () => {
      {renderSearchPage()}
       <MainTab.Screen
         name="Friends"
-        component={Friends}
+        options={{ headerShown: false }} listeners={{
+          tabPress: (e) => {
+            dispatch(setPersonsPage({ComponentType : "ProButton"}))
+          },
+        }}>
+          
+      {(props) => <PersonsPage   />}
 
-        options={{ headerShown: false }}
-      />
+</MainTab.Screen>
       <MainTab.Screen
         name="Post"
         component={SettingsScreen}
@@ -93,3 +104,27 @@ export const MainTabScreen: React.FC = () => {
     </MainTab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+
+  CardContainer : {
+    backgroundColor:Colors.$backgroundDark,
+    // borderColor:"green",
+    // borderWidth:5,
+    width:180,
+    height:180,
+    alignItems:"center",
+    justifyContent:"center",
+    
+  },
+  photoStyle : {
+    height: 100,
+    width: 100,
+    borderRadius:70,
+    marginBottom:8,
+  },
+
+
+
+});
+

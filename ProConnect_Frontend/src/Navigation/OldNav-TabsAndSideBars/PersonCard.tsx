@@ -6,18 +6,18 @@ import { Rating } from 'react-native-ratings';
 import { AirbnbRating } from 'react-native-elements';
 import ProButton from '../../Components/Controls/ProButton';
 
-interface FriendCardProps {
+interface PersonCardProps {
   imageurl :string;
   imageStyle : ImageStyle
   user : User;
   compnentsUnderImage : React.ReactNode[]
   additionalComponents ?: ReactElement[]
-  cardContainerStyle : StyleProp<ViewStyle>;
+  cardContainerStyle : StyleProp<ViewStyle>
   
   
 }
 
-const FriendCard :React.FC<FriendCardProps> =  (props) => {
+const PersonCard :React.FC<PersonCardProps> =  (props) => {
   return (
   <View style={styles.container}>
 
@@ -51,7 +51,7 @@ style={props.imageStyle}
 
 
 
-export default FriendCard
+export default PersonCard
 
 const styles = StyleSheet.create({
 
@@ -60,17 +60,17 @@ const styles = StyleSheet.create({
     backgroundColor : Colors.$backgroundDark,
   },
 
-  CardContainer : {
-    backgroundColor:Colors.$backgroundDark,
-    // borderColor:"green",
-    // borderWidth:5,
-    width: 190,
-    height:220,
-    alignItems:"center",
-    justifyContent:"center",
+  // CardContainer : {
+  //   backgroundColor:Colors.$backgroundDark,
+  //   // borderColor:"green",
+  //   // borderWidth:5,
+  //   width: 190,
+  //   height:220,
+  //   alignItems:"center",
+  //   justifyContent:"center",
     
-  }
-  ,
+  // }
+  //,
   container : {
     backgroundColor:Colors.$backgroundDark,
    

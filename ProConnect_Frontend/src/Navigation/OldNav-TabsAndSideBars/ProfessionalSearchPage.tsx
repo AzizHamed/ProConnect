@@ -86,7 +86,7 @@ const ProfessionalSearcPage = () => {
 
 
 <ProButton text="Continue" onPress={()=>{
-  navigation.navigate("ProfessionalsPage")
+  navigation.navigate("PersonsPage")
 }}/>
 
 
@@ -109,15 +109,6 @@ export default ProfessionalSearcPage
     backgroundColor:"white",
     paddingLeft:5,
     height:"100%"
-  },
-
-  selectServiceContainer:{
-
-  },
-  
-  buttonContainer:{
-    
-    
   },
   
   button : {
