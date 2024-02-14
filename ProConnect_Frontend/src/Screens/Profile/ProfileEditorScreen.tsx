@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, getUserCredential, setUserAccount } from '../../Services/Redux/Slices/AuthSlice';
 import { useForm } from 'react-hook-form';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 import ProTextInput from '../../Components/Controls/ProTextInput';
-import { EMAIL_REGEX, PHONE_REGEX } from '../../Constants/Values';
+import { EMAIL_REGEX, IS_WEB, PHONE_REGEX, defaultWidthValues } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { UpdateProfileApiArg, User, useUpdateProfileMutation } from '../../Services/Redux/Api';
@@ -17,7 +17,8 @@ const ProfileEditorScreen: React.FC = () =>
   const [updateProfile] = useUpdateProfileMutation();
   const navigation = useNavigation();
   const { user } = useSelector(getUserCredential);
-  const name = user?.name?.firstName || '';
+  const firstName = user?.name?.firstName || '';
+  const lastName = user?.name?.lastName || '';
   const phone = user?.phoneNumber || '';
   const email = user?.email || '';
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
@@ -25,15 +26,15 @@ const ProfileEditorScreen: React.FC = () =>
     {
       console.log("User has changed");
       // console.log(email, name, photoURL, phone );
-      return { email, name, phone };
-    }, [email, name, phone])
+      return { email, firstName, lastName, phone };
+    }, [email, firstName, lastName, phone])
   });
 
   const onSavePressed = async (data: any) =>
   {
-    const { email, name, phone } = data;
+    const { email, firstName, lastName, phone } = data;
     navigation.dispatch(DrawerActions.openDrawer());
-    const updateRequest:UpdateProfileApiArg = {updateProfileRequest:{name: {firstName:name, lastName:name}, phoneNumber: phone}};
+    const updateRequest:UpdateProfileApiArg = {updateProfileRequest:{name: {firstName:firstName, lastName:lastName}, phoneNumber: phone}};
     console.log(updateRequest);
     
     updateProfile(updateRequest).
@@ -68,14 +69,25 @@ const ProfileEditorScreen: React.FC = () =>
             pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
           }}
         />
-        <ProTextInput
-          name="name"
+        <View style={{flexDirection: 'row', width: defaultWidthValues()}}>
+
+        <ProTextInput flexShrink marginR={5}
+          name="firstName"
           control={control}
-          placeholder="Name"
+          placeholder="First Name"
           rules={{
-            required: "Name is required",
+            required: "First Name is required",
           }}
-        />
+          />
+        <ProTextInput flexShrink marginL={5}
+          name="lastName"
+          control={control}
+          placeholder="Last Name"
+          rules={{
+            required: "Last Name is required",
+          }}
+          />
+          </View>
 
         <ProTextInput
           name="phone"
