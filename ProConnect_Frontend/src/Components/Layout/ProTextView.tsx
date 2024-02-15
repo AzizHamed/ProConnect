@@ -6,16 +6,21 @@ interface LabelProps{
     webWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode,
     mobileWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode,
     height?: number,
-    isLabel?: boolean
+    isLabel?: boolean,
+    backgroundColor?: string,
+    borderColor?: string,
 }
+const defaultBackgroundColor = '#ffffff05';
+const defaultBorderColor = '#e8e8e822';
+
 
 const ProTextView: React.FC<LabelProps> = (props) => {
   const isWeb = Platform.OS === 'web';
   const width = isWeb ? (props.webWidth || 400) : (props.mobileWidth || '90%')
     const height = props.height ? props.height : 45;
     
-    const backgroundColor = props.isLabel ? 'transparent' : '#ffffff05';
-    const borderColor = props.isLabel ? 'transparent' : '#e8e8e822';
+    const backgroundColor = props.isLabel ? 'transparent' : (props.backgroundColor ? props.backgroundColor : defaultBackgroundColor);
+    const borderColor = props.isLabel ? 'transparent' :     (props.borderColor ? props.borderColor : defaultBorderColor);
     const fontSize = props.isLabel ? 18 : 16;
     const padding = props.isLabel ? 0 : 10;
     const margin = props.isLabel ? 0 : 5;
