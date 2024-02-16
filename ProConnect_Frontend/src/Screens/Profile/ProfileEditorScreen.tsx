@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Text, View } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, getUserCredential, setUserAccount } from '../../Services/Redux/Slices/AuthSlice';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import ProButton from '../../Components/Controls/ProButton';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { UpdateProfileApiArg, User, useUpdateProfileMutation } from '../../Services/Redux/Api';
 import ProHeader, { HeaderType } from '../../Components/Layout/ProHeader';
+import { Keyboard } from 'react-native';
 
 const ProfileEditorScreen: React.FC = () =>
 {
@@ -21,6 +22,12 @@ const ProfileEditorScreen: React.FC = () =>
   const lastName = user?.name?.lastName || '';
   const phone = user?.phoneNumber || '';
   const email = user?.email || '';
+
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const phoneRef = useRef(null);
+
+
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: useMemo(() =>
     {
@@ -68,6 +75,10 @@ const ProfileEditorScreen: React.FC = () =>
             required: "Email is required",
             pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
           }}
+          returnKeyType='next'
+          keyboardType='email-address'
+          textContentType='emailAddress'
+          onSubmitEditing={() => firstNameRef.current?.focus()}
         />
         <View style={{flexDirection: 'row', width: defaultWidthValues()}}>
 
@@ -78,6 +89,11 @@ const ProfileEditorScreen: React.FC = () =>
           rules={{
             required: "First Name is required",
           }}
+          returnKeyType='next'
+          textContentType='givenName'
+          ref={firstNameRef}
+          onSubmitEditing={() => lastNameRef.current?.focus()}
+          
           />
         <ProTextInput flexShrink marginL={5}
           name="lastName"
@@ -86,6 +102,10 @@ const ProfileEditorScreen: React.FC = () =>
           rules={{
             required: "Last Name is required",
           }}
+          returnKeyType='next'
+          textContentType='familyName'
+          ref={lastNameRef}
+          onSubmitEditing={() => phoneRef.current?.focus()}
           />
           </View>
 
@@ -97,6 +117,10 @@ const ProfileEditorScreen: React.FC = () =>
             required: "Phone is required",
             pattern: { value: PHONE_REGEX, message: "Phone is invalid" }
           }}
+          textContentType='telephoneNumber'
+          keyboardType='phone-pad'
+          ref={phoneRef}
+          onSubmitEditing={() => Keyboard.dismiss() }
         />
 
         <ProButton
