@@ -28,6 +28,6 @@ export const fetchUserDataMiddleware: Middleware =  ({ dispatch }) =>  (next) =>
       const promise = dispatch(api.endpoints.getUser.initiate(getUserArgs));
       const { data } = await promise;
       dispatch(setUserAccount(data as User)); // Typecast 'data' to 'User'
-      console.log("Payload: " + JSON.stringify(data));
+      // console.log("Payload: " + JSON.stringify(data));
     }
   };
