@@ -40,8 +40,9 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
 
 
-  function renderComponent(){
+  function renderComponent(rating : number){
     return componentType == "Rating" ? [<AirbnbRating
+      defaultRating={rating}
       count={5}
       size={20}
       isDisabled={true}
@@ -64,7 +65,7 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
 
   useEffect(() => {
-
+    
     
     filterProfessionals()
     
@@ -74,31 +75,42 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
   function filterProfessionals(){
     setProfessionals(data?.filter((professional)=> {
-      return professional.rating >= rating && checkName(textInput,professional.name.firstName , professional.name.lastName)  && professional.experience >= experience;
+     
+      if(professional.rating===undefined)
+      professional.rating = 0
+    if(professional.name.firstName===undefined || professional.name.lastName===undefined){
+      professional.name.lastName="aaa"
+    professional.name.firstName = "aaa"
+    }
+    if(professional.experience===undefined)
+      professional.experience = 0;
+      return professional.rating >= rating && checkName(textInput,professional.name.firstName , professional.name.lastName)  && 
+      professional.experience >= experience;
     
     }))
   }
 
   function checkName(text : string, firstName : string, lastName : string){
-    return firstName.toLowerCase().startsWith(text.toLowerCase()) || lastName.toLowerCase().startsWith(text.toLowerCase()) || (firstName.toLowerCase() + "" + lastName.toLowerCase()).startsWith(text.toLowerCase())
+    return firstName.toLowerCase().startsWith(text.toLowerCase()) || lastName.toLowerCase().startsWith(text.toLowerCase()) || (firstName.toLowerCase() + " " + lastName.toLowerCase()).startsWith(text.toLowerCase())
   }
 
-  function sort1 (value : number) {
-    filterProfessionals()
-    if(value==0)
-    setProfessionals(Professionals?.sort((professional1, professional2) => {
-    return professional1.experience - professional2.experience;
-  }
-    ))
+  // function sort1 (value : number) {
+  //   filterProfessionals()
+  //   if(value==0)
+  //   setProfessionals(Professionals?.sort((professional1, professional2) => {
+  //   return professional1.experience - professional2.experience;
+  // }
+  //   ))
 
-    else
-    if(value==1)
-    setProfessionals(Professionals?.sort((professional1,professional2) => {
-  return professional1.rating - professional2.rating;
-  }))
+  //   else
+  //   if(value==1)
+  //   setProfessionals(Professionals?.sort((professional1,professional2) => {
+  
+  // return professional1.rating - professional2.rating;
+  // }))
 
 
-  }
+  // }
     
   
 
@@ -111,36 +123,36 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
       <View style={styles.container}>
 
-        <View style={styles.filterAndSortContainer}>
+        {PersonPage.setButtons && <View style={styles.filterAndSortContainer}>
         
-          <View style={styles.sortOrFilter} >
-          <Text style={{color:"white", fontSize:20}}>Filters</Text>
+        <View style={styles.sortOrFilter} >
+        <Text style={{color:"white", fontSize:20}}>Filters</Text>
 
-            <TouchableOpacity style={styles.filterButton} onPress={()=> {
+          <TouchableOpacity style={styles.filterButton} onPress={()=> {
+          setModalVisible(true);
+          }}>
+          <Ionicons name='filter' size={45} color={"black"}/>
+          </TouchableOpacity>
+        </View>
+       
+          
+          <View style={styles.sortOrFilter}>
+          <Text style={{color:"white", fontSize:20}}>Sort</Text>
+          {/* <TouchableOpacity style={styles.filterButton} onPress={()=> {
             setModalVisible(true);
             }}>
-            <Ionicons name='filter' size={45} color={"black"}/>
-            </TouchableOpacity>
+            <FontAwesome name='sort' size={47} color={"black"}/>
+            </TouchableOpacity> */}
+
+          {/* <RNPickerSelect
+                    onValueChange={(value) => sort1(value) }
+                    items={sorts}
+                    style={{viewContainer: {backgroundColor : "white"}}}        /> */}
+
           </View>
-         
-            
-            <View style={styles.sortOrFilter}>
-            <Text style={{color:"white", fontSize:20}}>Sort</Text>
-            {/* <TouchableOpacity style={styles.filterButton} onPress={()=> {
-              setModalVisible(true);
-              }}>
-              <FontAwesome name='sort' size={47} color={"black"}/>
-              </TouchableOpacity> */}
-
-            <RNPickerSelect
-                      onValueChange={(value) => sort1(value) }
-                      items={sorts}
-                      style={{viewContainer: {backgroundColor : "white"}}}        />
-
-            </View>
-            
-                
-        </View>
+          
+              
+      </View>}
 
         <MyTextInput placeHolder={'Search Professional'} icon={<EvilIcons name='search'  size={45} style={{backgroundColor:"white"}}/>} onChange={onChangeText} />
 
@@ -180,8 +192,11 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
         <TouchableOpacity style={styles.touchableOpacityStyle}>
           <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
               <Text style={{ color: "white" }}>Software Engineering</Text>,
-              <Text style={{ color: "white" }}>12 years experience</Text>
-              ]} additionalComponents={renderComponent()} cardContainerStyle={PersonPage.CardContainerStyle} />
+              <Text style={{ color: "white" }}>{Professional.experience} years experience</Text>
+
+            
+              
+              ]} additionalComponents={renderComponent(Professional.rating)} cardContainerStyle={PersonPage.CardContainerStyle} />
            
            
         </TouchableOpacity>

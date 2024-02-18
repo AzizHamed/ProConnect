@@ -40,6 +40,10 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
+    private double rating=0;
+
+    private int experience=0;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

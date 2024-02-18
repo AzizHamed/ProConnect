@@ -22,3 +22,7 @@ export const dataProfessions = [
   { label: 'Garden', value: '8' },
 ]
 
+export const dataProfessions1 = [
+  'Carpetner', 'Painter','Constructor','Pavor','Electric service','Security','Designer','Garden'
+]
+

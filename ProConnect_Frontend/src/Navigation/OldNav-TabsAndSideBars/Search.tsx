@@ -10,7 +10,7 @@ import ProButton from '../../Components/Controls/ProButton'
 import DesignedDropDown from '../DesignedDropDown';
 import { MainTabParamList } from '../MainTabScreen';
 import { AirbnbRating } from 'react-native-ratings';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
 
 
@@ -18,6 +18,8 @@ import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
 const Search = () => {
 
   const dispatch = useDispatch();
+
+  //let DropDownData = useSelector(getDropDownData)
 
   const navigation = useNavigation();
   
@@ -75,7 +77,7 @@ const Search = () => {
               style={styles.icon}
               color={isFocus1 ? 'tomato' : 'black'}
               name="Safety"
-              size={20} />} setFocus={setIsFocus1 } />
+              size={20} />} setFocus={setIsFocus1} />
 
 
 </View>
@@ -85,7 +87,7 @@ const Search = () => {
               style={styles.icon}
               color={isFocus2 ? 'tomato' : 'black'}
               name="Safety"
-              size={20} />} setFocus={setIsFocus2 } />
+              size={20} />} setFocus={setIsFocus2} />
 
         
 

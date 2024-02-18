@@ -11,11 +11,12 @@ import SettingsScreen from "../Screens/SettingsScreen";
 import ProfileViewScreen from "../Screens/Profile/ProfileViewScreen";
 import { Platform, View } from "react-native";
 import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
 import ProLoading from "../Components/Layout/ProLoading";
 import BackgroundView from "../Components/Layout/BackgroundView";
 import { useNavigation } from "@react-navigation/native";
+import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -35,11 +36,12 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
     { label: 'Garden', value: '8' },
   ]
 
+  const dispatch = useDispatch()
   const navigation = useNavigation();
   const currentWindowWidth = useSelector(getWindowWidth);
   const user = useSelector(getUserAccount);
   if(user === undefined || user === null ){
-    return <BackgroundView children={<ProLoading/>}/>
+    //return <BackgroundView children={<ProLoading/>}/>
   }
   else if(user.accountStatus === 'SETUP'){
     return <ProfileEditorScreen></ProfileEditorScreen>
@@ -96,8 +98,14 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
               <Ionicons name="people-outline" size={20} color="#808080" />
             )
           }}
+          listeners={{
+            drawerItemPress : (e)=>{
+              dispatch(setPersonsPage({ComponentType : "ProButton"}))
+            }
+          }}
           component={ProfessionalWorkWith}
           initialParams={dataProfessions}
+          
         />
       <MainDrawer.Screen name="test" component={JobsList} />
 

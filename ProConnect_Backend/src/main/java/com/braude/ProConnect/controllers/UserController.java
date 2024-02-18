@@ -74,4 +74,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @GetMapping(value = "users-num")
+    public int getAllUsersNumber(){
+        return userService.getAllUsersNumber();
+    }
 }

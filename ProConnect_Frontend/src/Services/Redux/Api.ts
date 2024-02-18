@@ -150,6 +150,13 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Jobs"],
       }),
+      getAllUsersNumber: build.query<
+        GetAllUsersNumberApiResponse,
+        GetAllUsersNumberApiArg
+      >({
+        query: () => ({ url: `/users/users-num` }),
+        providesTags: ["Users"],
+      }),
       getUser: build.query<GetUserApiResponse, GetUserApiArg>({
         query: (queryArg) => ({
           url: `/users/get`,
@@ -257,6 +264,8 @@ export type PostJobsApiResponse = /** status 200 OK */ string;
 export type PostJobsApiArg = {
   job: Job;
 };
+export type GetAllUsersNumberApiResponse = /** status 200 OK */ number;
+export type GetAllUsersNumberApiArg = void;
 export type GetUserApiResponse = /** status 200 OK */ User;
 export type GetUserApiArg = {
   userId: string;
@@ -302,6 +311,8 @@ export type User = {
   dateOfBirth?: string;
   reviewsGiven?: Review[];
   reviewsReceived?: Review[];
+  rating?: number;
+  experience?: number;
   roles?: Role[];
   contractors?: User[];
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
@@ -383,10 +394,10 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  paged?: boolean;
-  unpaged?: boolean;
-  pageNumber?: number;
   pageSize?: number;
+  pageNumber?: number;
+  unpaged?: boolean;
+  paged?: boolean;
 };
 export type PageJob = {
   totalElements?: number;
@@ -434,6 +445,7 @@ export const {
   useCreatePropertyMutation,
   useCreateService1Mutation,
   usePostJobsMutation,
+  useGetAllUsersNumberQuery,
   useGetUserQuery,
   useGetAllUsersQuery,
   useGetAllRolesQuery,

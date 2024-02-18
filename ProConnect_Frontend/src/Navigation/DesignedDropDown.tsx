@@ -3,6 +3,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import {StyleSheet} from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import EvilIcons from '@expo/vector-icons/AntDesign';
 interface DropDownProps {
   value : string
   set : (location : string)=>void

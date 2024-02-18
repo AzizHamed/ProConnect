@@ -99,4 +99,8 @@ public class UserService {
         user = userRepository.save(user);
         return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles());
     }
+
+    public int getAllUsersNumber() {
+        return userRepository.findAll().size();
+    }
 }

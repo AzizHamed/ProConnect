@@ -14,6 +14,8 @@ import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
 import { useDispatch } from "react-redux";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import { dataProfessions1 } from "../Constants/Values";
+import HomePage from "./OldNav-TabsAndSideBars/HomePage";
 
 export type MainTabParamList = {
   Home: undefined;
@@ -35,15 +37,11 @@ export const MainTabScreen: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  function renderSearchPage(){
-    return (
-      <MainTab.Screen
-      name="Search"
-      component={Search}        
-      options={{ headerShown: false }}
-    />
-    )
-  }
+  // function renderSearchPage(){
+  //   return (
+    
+  //   )
+  // }
   return (
     
     <MainTab.Navigator
@@ -81,10 +79,21 @@ export const MainTabScreen: React.FC = () => {
     >
       <MainTab.Screen
         name="Home"
-        component={JobsList}
+        component={HomePage}
         options={{ headerShown: false }}
       />
-     {renderSearchPage()}
+       <MainTab.Screen
+      name="Search"
+      component={Search}        
+      options={{ headerShown: false }} 
+      
+      
+      // listeners={{
+      //   tabPress: (e) => {
+      //     dispatch(setDropDownData({DropDownData : dataProfessions1}))
+      //   },
+      // }}
+    />
       <MainTab.Screen
         name="Friends"
         options={{ headerShown: false }} listeners={{
