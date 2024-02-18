@@ -71,7 +71,7 @@ const Search = () => {
 
   <Text>Select Profession</Text>
 
-  <DesignedDropDown value={'Search Profession'} set={setprofession} dropDownData={dataProfessions} leftIcon={<AntDesign
+  <DesignedDropDown value={'Search Profession'} setValue={setprofession} dropDownData={dataProfessions} leftIcon={<AntDesign
               style={styles.icon}
               color={isFocus1 ? 'tomato' : 'black'}
               name="Safety"
@@ -81,7 +81,7 @@ const Search = () => {
 </View>
 <View>
 <Text>Select Location</Text>
-<DesignedDropDown value={'Select Location'} set={setlocation} dropDownData={dataLocation} leftIcon={<AntDesign
+<DesignedDropDown value={'Select Location'} setValue={setlocation} dropDownData={dataLocation} leftIcon={<AntDesign
               style={styles.icon}
               color={isFocus2 ? 'tomato' : 'black'}
               name="Safety"
