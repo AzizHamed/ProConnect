@@ -14,6 +14,7 @@ import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
 import { useDispatch } from "react-redux";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import PostJobScreen from "../Features/Jobs/PostJobScreen";
 
 export type MainTabParamList = {
   Home: undefined;
@@ -98,7 +99,7 @@ export const MainTabScreen: React.FC = () => {
 </MainTab.Screen>
       <MainTab.Screen
         name="Post"
-        component={SettingsScreen}
+        component={PostJobScreen}
         options={{ headerShown: false }}
       />
     </MainTab.Navigator>
