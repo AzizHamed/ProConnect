@@ -60,7 +60,7 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
     
     }
 
-    const sorts = [{label : "Expereince", value : 0}, {label : "Rating", value :1 }]
+    const sorts = [{label : "Experience", value : 0}, {label : "Rating", value :1 }]
 
 
   useEffect(() => {
