@@ -4,6 +4,13 @@ import { getAuth, initializeAuth,
         getReactNativePersistence, browserLocalPersistence, // This shows an error but works for some reason
         createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  listAll,
+} from "firebase/storage";
 
 import { Platform } from "react-native";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -37,6 +44,8 @@ const FIREBASE_APP = noActiveApps ? createFirebaseApp(firebaseConfig) : getApp()
 export const webAuth = noActiveApps 
 ? initializeAuth(FIREBASE_APP,  { persistence: isWeb ? browserLocalPersistence : getReactNativePersistence(ReactNativeAsyncStorage) }) // Save login state
 : getAuth(FIREBASE_APP); // If there's already an auth instance running, use that instead (fixes bug with Android hot reload).
+
+export const storage = getStorage(FIREBASE_APP);
 
 // export const analyticsEvent = (eventName:string, params?: { [key: string]: any; } | undefined) => {
 //   isWeb ? logEvent(webAnalytics, eventName, params) : nativeAnalytics.logEvent(eventName, params)
@@ -80,4 +89,72 @@ export const updateUserEmail = (email: string) => {
   }
 }
 
+export const listFiles = async (path: string) => {
+  const storageRef = ref(storage, path);
+  const list = await listAll(storageRef);
+  console.log(list.items)
+  return list.items;
+}
+
+export const uploadToFirebase = async (uri: string, uploadPath: string, name: string, onProgress:(progress: number) => void)
+: Promise<{downloadUrl: string; metadata: any;}> => {
+  const blob = await uriToBlob(uri);
+  const imageRef = ref(getStorage(), `${uploadPath}/${name}`);
+
+  const uploadTask = uploadBytesResumable(imageRef, blob);
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        onProgress && onProgress(progress);
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.log(error);
+        reject(error);
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        resolve({
+          downloadUrl,
+          metadata: uploadTask.snapshot.metadata,
+        });
+      }
+    );
+  });
+};
+
+/**
+ * Function to convert a URI to a Blob object
+ * @param {string} uri - The URI of the file
+ * @returns {Promise} - Returns a promise that resolves with the Blob object
+ */
+function uriToBlob(uri: string): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    // If successful -> return with blob
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+
+    // reject on error
+    xhr.onerror = function () {
+      reject(new Error('uriToBlob failed'));
+    };
+
+    // Set the response type to 'blob' - this means the server's response 
+    // will be accessed as a binary object
+    xhr.responseType = 'blob';
+
+    // Initialize the request. The third argument set to 'true' denotes 
+    // that the request is asynchronous
+    xhr.open('GET', uri, true);
+
+    // Send the request. The 'null' argument means that no body content is given for the request
+    xhr.send(null);
+  });
+};
 export const firebaseUser = webAuth.currentUser;
