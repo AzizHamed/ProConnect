@@ -1,8 +1,11 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { getAuth, initializeAuth, 
-        getReactNativePersistence, browserLocalPersistence, // This shows an error but works for some reason
-        createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, updateProfile, updateEmail } from "firebase/auth";
+  
+// browserLocalPersistence shows an error but works for some reason
+// @ts-ignore
+import { getReactNativePersistence, browserLocalPersistence} from 'firebase/auth' 
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import {
   getStorage,
@@ -13,6 +16,8 @@ import {
 } from "firebase/storage";
 
 import { Platform } from "react-native";
+import { SelectedFile } from "../../Constants/Types";
+import { User } from "../Redux/Api";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -96,7 +101,7 @@ export const listFiles = async (path: string) => {
   return list.items;
 }
 
-export const uploadToFirebase = async (uri: string, uploadPath: string, name: string, onProgress:(progress: number) => void)
+const uploadToFirebase = async (uri: string, uploadPath: string, name: string, onProgress:(progress: number) => void)
 : Promise<{downloadUrl: string; metadata: any;}> => {
   const blob = await uriToBlob(uri);
   const imageRef = ref(getStorage(), `${uploadPath}/${name}`);
@@ -126,6 +131,22 @@ export const uploadToFirebase = async (uri: string, uploadPath: string, name: st
   });
 };
 
+export async function uploadSelectedFiles(uploadPath: string, selectedFiles: SelectedFile[], user: User) {
+  const promises = Array.from(selectedFiles).map(async (file) => {
+    const uploadResp = await uploadToFirebase(
+      file.uri,
+      uploadPath + '/' + user?.id,
+      file.fileName,
+      (onProgress) => console.log(onProgress)
+    );
+
+    // console.log(uploadResp, uploadResp.downloadUrl);
+    return uploadResp.downloadUrl;
+  });
+
+  const urls: string[] = await Promise.all(promises);
+  return urls;
+}
 /**
  * Function to convert a URI to a Blob object
  * @param {string} uri - The URI of the file
@@ -157,4 +178,3 @@ function uriToBlob(uri: string): Promise<Blob> {
     xhr.send(null);
   });
 };
-export const firebaseUser = webAuth.currentUser;
