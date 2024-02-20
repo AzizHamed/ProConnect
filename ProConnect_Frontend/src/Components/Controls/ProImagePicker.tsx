@@ -1,83 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Button, Colors, Text } from 'react-native-ui-lib';
+import { Colors } from 'react-native-ui-lib';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useImagePicker } from '../../Hooks/useImagePicker';
 import ProIconButton from './ProIconButton';
-import Carousel from 'react-native-reanimated-carousel';
-import { defaultWidthNumber } from '../../Constants/Values';
+import { IS_WEB } from '../../Constants/Values';
+import ProCarousel from './ProCarousel';
+import { SelectedFile } from '../../Constants/Types';
 
 interface ProImagePickerProps {
   uploadPath: string;
+  setSelectedFiles: (files: SelectedFile[]) => void;
 }
 
-const ProImagePicker: React.FC<ProImagePickerProps> = ({ uploadPath }) => {
-  const { selectPictures, uploadSelectedPictures, selectedFiles, removeSelectedPicture } = useImagePicker();
-  const width = defaultWidthNumber
+const ProImagePicker: React.FC<ProImagePickerProps> = (props) => {
+  const { selectPictures, selectedFiles, removeSelectedPicture } = useImagePicker();
+  const isWeb = IS_WEB();
 
-  const handleUpload = async () => {
-    await uploadSelectedPictures(uploadPath);
-  };
+  useEffect(() => {
+    props.setSelectedFiles(Array.from(selectedFiles || []));
+    console.log('Set selected files: ', selectedFiles)
+  },[selectedFiles])
 
   return (
     <View>
-        <View style={styles.buttonContainer}>
-            <ProIconButton materialIcon materialIconName="photo-album" showAddIcon onPress={() => selectPictures('GALLERY')}></ProIconButton>
-            <ProIconButton ionicon ioniconName="camera" showAddIcon onPress={() => selectPictures('CAMERA')}></ProIconButton>
+      <View style={styles.buttonContainer}>
+        {!isWeb && <ProIconButton materialIcon materialIconName="photo-album" showAddIcon onPress={() => selectPictures('GALLERY')}></ProIconButton>}
+        <ProIconButton ionicon ioniconName="camera" showAddIcon onPress={() => selectPictures('CAMERA', true)}></ProIconButton>
 
-        </View>
-        <Carousel
-                loop
-                width={width}
-                height={width / 2}
-                data={Array.from(selectedFiles || [])}
-                scrollAnimationDuration={1000}
-                onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({ index, item }) => (
-                    <View
-                        style={{
-                            flex: 1,
-                            borderWidth: 1,
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <View key={index}
-                        style={{
-                            flex: 1,
-                            borderWidth: 1,
-                            justifyContent: 'center',
-                        }}
-                        >
-                        <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} />
-                        <MaterialIcons name="close" size={24} style={{position: 'absolute', top: 5, right: 5}} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
-                    </View>
-                    </View>
-                )}
-            />
-      
-{/* 
-        <Carousel
-                width={width}
-                height={200}
-                mode='horizontal-stack'
-                // data={selectedFiles ? Array.from(selectedFiles) : []}
-                data = {[{uri: 'https://www.w3schools.com/w3images/lights.jpg'}, {uri: 'https://www.w3schools.com/w3images/lights.jpg'}, {uri: 'https://www.w3schools.com/w3images/lights.jpg'}]}
-                scrollAnimationDuration={500}
-                onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({ index, item }) => (
-                    <View key={index}
-                        style={{
-                            flex: 1,
-                            borderWidth: 1,
-                            justifyContent: 'center',
-                        }}
-                        >
-                        <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} />
-                        <MaterialIcons name="close" size={24} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
-                    </View>
-                )}
-            /> */}
-      <Button label="Upload" onPress={handleUpload} />
+      </View>
+      <ProCarousel displayArrows data={Array.from(selectedFiles || [])} 
+        renderItems={({ item, index }) => (
+          <View key={index}  style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }} >
+            <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+            <MaterialIcons name="close" size={24} style={{ position: 'absolute', top: 5, right: 5 }} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
+          </View>
+      )} />
+
+
+      {/* <Button label="Upload" onPress={handleUpload} /> */}
     </View>
   );
 };
@@ -85,7 +46,9 @@ const ProImagePicker: React.FC<ProImagePickerProps> = ({ uploadPath }) => {
 export default ProImagePicker;
 
 const styles = StyleSheet.create({
-    buttonContainer:{
-        flexDirection: 'row',
-    }
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })
