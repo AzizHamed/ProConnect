@@ -4,6 +4,7 @@ import { View } from "react-native-ui-lib";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useSelector } from "react-redux";
 import { getScreenHeight } from "../../Services/Redux/Slices/DimensionSlice";
+import { IS_WEB } from "../../Constants/Values";
 
 interface BackgroundViewProps {
     children: React.ReactNode,
@@ -11,12 +12,22 @@ interface BackgroundViewProps {
 }
 
 const BackgroundView: React.FC<BackgroundViewProps> = (props) => {
-  const tabBarHeight = useBottomTabBarHeight();
+  const tabBarHeight = getTabBarHeight();
   const screenHeight = useSelector(getScreenHeight);
+  const adjustedHeight = IS_WEB() ? screenHeight : screenHeight - tabBarHeight;
+  
+  function getTabBarHeight() {
+    try {
+      const tabBarHeight = useBottomTabBarHeight();
+      return tabBarHeight;
+    } catch (error) {
+      return 0;
+    }
+  }
 
   if(props.hasScroll) {
     return(
-      <SafeAreaView style={[styles.background, {height: screenHeight - tabBarHeight}]}>
+      <SafeAreaView style={[styles.background, {height: adjustedHeight}]}>
         <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
           <View style={styles.background} bg>{props.children}</View>
         </ScrollView>
@@ -25,7 +36,7 @@ const BackgroundView: React.FC<BackgroundViewProps> = (props) => {
   }
 
   return(
-    <SafeAreaView style={[styles.background, {height: screenHeight - tabBarHeight}]}>
+    <SafeAreaView style={[styles.background, {height: adjustedHeight}]}>
       <View style={styles.background} bg>{props.children}</View>
     </SafeAreaView>
     );
