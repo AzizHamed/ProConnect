@@ -54,7 +54,7 @@
     "react-native-placesearch": "^4.0.1",
     "react-native-ratings": "^8.1.0",
     "react-native-reanimated": "~3.3.0",
-    "react-native-reanimated-carousel": "^3.5.1",
+    "react-native-reanimated-carousel": "^4.0.0-alpha.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-tab-view": "^3.5.2",
