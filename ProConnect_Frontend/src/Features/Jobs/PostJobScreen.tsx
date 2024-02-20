@@ -11,6 +11,10 @@ import BackgroundView from '../../Components/Layout/BackgroundView';
 import ValidatedDropDown from '../../Components/Controls/ValidatedDropdown';
 import { useImagePicker } from '../../Hooks/useImagePicker';
 import ProImagePicker from '../../Components/Controls/ProImagePicker';
+import { SelectedFile } from '../../Constants/Types';
+import { uploadSelectedFiles } from '../../Services/Firebase/Firebase';
+import { useSelector } from 'react-redux';
+import { getUserAccount } from '../../Services/Redux/Slices/AuthSlice';
 
 const icon = <Ionicons name="home" size={20} style={{ marginHorizontal: 5 }} />
 
@@ -18,13 +22,18 @@ const PostJobScreen: React.FC = () => {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const properties = [{ value: 1, label: "Property 1" }, { value: 2, label: "Property 2" }, { value: 3, label: "Property 3" }];
     const [isDropdownValid, setIsDropdownValid] = useState(false);
-    const {permission, requestPermission, selectPictures, uploadSelectedPictures} = useImagePicker();
+    const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([])
+    const user = useSelector(getUserAccount);
 
     const onSubmit = (data: any) => {
         console.log(data)
     
-        if(isDropdownValid){
+        if(isDropdownValid && user){
             // POST
+            uploadSelectedFiles('jobs', selectedFiles, user).then((downloadUrls) => {
+                // Handle the downloadUrls
+                console.log(downloadUrls);
+            });            
         }
     
     };
@@ -35,16 +44,10 @@ const PostJobScreen: React.FC = () => {
         handleSubmit(onSubmit)();
     }
     
-    const select = () => {
-        selectPictures("GALLERY", true);
-    }
-    
-    const uploadPhoto = () => {
-        uploadSelectedPictures("jobs");
-    }
+
 
     return (
-        <BackgroundView children={(
+        <BackgroundView hasScroll children={(
         <View style={{alignItems: "center", width:"100%"}}>
 
             <ProTextInput
@@ -67,7 +70,7 @@ const PostJobScreen: React.FC = () => {
                 }}
                 keyboardType='numeric'
             />
-            <ProImagePicker uploadPath='jobs'></ProImagePicker>
+            <ProImagePicker setSelectedFiles={setSelectedFiles} uploadPath='jobs'></ProImagePicker>
             <ProButton text="Post Job" onPress={handleOnSubmit} />
         </View>
 
