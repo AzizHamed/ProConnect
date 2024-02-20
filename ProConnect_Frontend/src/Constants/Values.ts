@@ -1,5 +1,6 @@
 import { ImageStyle, StyleProp, ViewStyle,Animated, Platform } from "react-native";
 import { Colors } from "react-native-ui-lib";
+import { WidthValues } from "./Types";
 
 export const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -14,7 +15,6 @@ export const IS_WEB = () => {
   return isWeb;
 }
 
-type WidthValues =  number | 'auto' | `${number}%` | Animated.AnimatedNode;
 
 export const defaultWidthNumber = 400;
 export const defaultWidthPercent = '90%';
