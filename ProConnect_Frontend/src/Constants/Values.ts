@@ -16,12 +16,14 @@ export const IS_WEB = () => {
 
 type WidthValues =  number | 'auto' | `${number}%` | Animated.AnimatedNode;
 
+export const defaultWidthNumber = 400;
+export const defaultWidthPercent = '90%';
 export const defaultWidthValues = () => {
-  return IS_WEB() ? 400 : '90%';
+  return IS_WEB() ? defaultWidthNumber : defaultWidthPercent;
 }
 
 export const customWidthValues = (webWidth?: WidthValues, mobileWidth?: WidthValues) => {
-  return IS_WEB() ? (webWidth || 400) : (mobileWidth || '90%');
+  return IS_WEB() ? (webWidth || defaultWidthNumber) : (mobileWidth || defaultWidthPercent);
 }
 
 
