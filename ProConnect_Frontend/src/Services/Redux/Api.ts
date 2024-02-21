@@ -146,7 +146,7 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/jobs/post`,
           method: "POST",
-          body: queryArg.job,
+          body: queryArg.createJobRequest,
         }),
         invalidatesTags: ["Jobs"],
       }),
@@ -253,9 +253,9 @@ export type CreateService1ApiArg = {
   name: string;
   description: string;
 };
-export type PostJobsApiResponse = /** status 200 OK */ string;
+export type PostJobsApiResponse = /** status 200 OK */ Job;
 export type PostJobsApiArg = {
-  job: Job;
+  createJobRequest: CreateJobRequest;
 };
 export type GetUserApiResponse = /** status 200 OK */ User;
 export type GetUserApiArg = {
@@ -305,6 +305,7 @@ export type User = {
   roles?: Role[];
   contractors?: User[];
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
+  photoUrl?: string;
 };
 export type Point = {
   x?: number;
@@ -345,6 +346,7 @@ export type Job = {
   title: string;
   description: string;
   likedUsers?: User[];
+  photos?: string[];
   commentedUsers?: Comment[];
   neededProfessions?: Profession[];
   numberOfReports?: number;
@@ -375,6 +377,10 @@ export type UserServiceEntity = {
   user: User;
   cost?: number;
 };
+export type CreateJobRequest = {
+  job?: Job;
+  propertyId?: number;
+};
 export type SortObject = {
   empty?: boolean;
   sorted?: boolean;
@@ -383,21 +389,21 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  paged?: boolean;
-  unpaged?: boolean;
   pageNumber?: number;
   pageSize?: number;
+  paged?: boolean;
+  unpaged?: boolean;
 };
 export type PageJob = {
-  totalElements?: number;
   totalPages?: number;
+  totalElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
