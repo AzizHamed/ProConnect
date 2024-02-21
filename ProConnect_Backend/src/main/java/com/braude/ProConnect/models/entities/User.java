@@ -56,6 +56,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+    private String photoUrl;
+
     //private List<User> workers;
 
     @Override
