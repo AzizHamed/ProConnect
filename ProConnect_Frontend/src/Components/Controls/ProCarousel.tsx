@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { Colors, View } from 'react-native-ui-lib';
-import { defaultWidthNumber } from '../../Constants/Values';
+import { IS_WEB, defaultWidthNumber } from '../../Constants/Values';
 import ProIconButton from './ProIconButton';
 
 interface ProCarouselProps {
@@ -17,7 +17,8 @@ interface ProCarouselProps {
 const ProCarousel: React.FC<ProCarouselProps> = (props) => {
     const carouselRef = useRef(null);
     const loop = props.loop || false;
-    const width = props.width || defaultWidthNumber - 20;
+    const width = props.width || defaultWidthNumber - 50;
+    const displayArrows = props.displayArrows || IS_WEB();
     const onSnapToItem = props.onSnapToItem || ((index) => {console.log('current index:', index)})
     const handleNext = () => {
         if (carouselRef.current) {
@@ -33,7 +34,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
 
   return (
     <View invisible style={{alignItems: 'center', justifyContent:'center', flexDirection: 'row'}}>
-        {props.displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} />}
+        {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} />}
         <Carousel
           loop={loop}
           width={width}
@@ -45,7 +46,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
           onSnapToItem={onSnapToItem}
           renderItem={props.renderItems}
           />
-          {props.displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={handleNext} />}
+          {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={handleNext} />}
       </View>
   );
 };
