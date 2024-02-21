@@ -2,7 +2,6 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.models.embeddables.Location;
 import com.braude.ProConnect.models.entities.Property;
-import com.braude.ProConnect.requests.RequestWithId;
 import com.braude.ProConnect.services.PropertyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,7 +28,7 @@ public class PropertyController {
 
     @PostMapping(value = "create-property")
     public ResponseEntity<Property> createProperty(@Valid @RequestBody Property property){
-        Property newProperty = propertyService.createProperty(property, property.getOwner().getId());
+        Property newProperty = propertyService.createProperty(property);
         if(newProperty != null)
             return ResponseEntity.ok(newProperty);
         return ResponseEntity.badRequest().build();

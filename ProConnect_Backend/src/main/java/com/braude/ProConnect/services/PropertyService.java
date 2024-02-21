@@ -25,16 +25,9 @@ public class PropertyService {
     }
 
 
-    public Property createProperty(Property property, String userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if(!optionalUser.isPresent())
-            throw new ProConnectException("User doesn't exist");
-        User owner = optionalUser.get();
+    public Property createProperty(Property property) {
+        User owner = UserService.getAuthorizedUser();
         property.setOwner(owner);
-        System.out.println("Received ID: " + userId);
-        System.out.println("Owner ID: " + owner.getId());
-        System.out.println("Property: " + property);
-
         return propertyRepository.save(property);
     }
 
@@ -56,6 +49,7 @@ public class PropertyService {
         return locations;
     }
     public List<Property> getProperties() {
-        return propertyRepository.findAll();
+        User user = UserService.getAuthorizedUser();
+        return propertyRepository.findByOwner_Id(user.getId());
     }
 }

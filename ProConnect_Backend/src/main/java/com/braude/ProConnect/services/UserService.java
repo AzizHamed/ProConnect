@@ -31,14 +31,14 @@ public class UserService {
     public static User getAuthorizedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
+            throw new ProConnectException("User not authenticated.");
         }
         Object principal = authentication.getPrincipal();
         if (principal instanceof SecurityUser) {
             User user = ((SecurityUser) principal).getUser();
             return user;
         }
-        return null;
+        throw new ProConnectException("User not authenticated.");
     }
 
     public User createUser(User user){
