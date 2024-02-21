@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
+        backgroundColor: Colors.controlBackground,
     },
     plus: {
         position: 'absolute',
