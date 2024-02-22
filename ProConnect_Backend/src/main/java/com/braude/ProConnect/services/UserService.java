@@ -7,10 +7,7 @@ import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
-import com.braude.ProConnect.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,24 +18,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
+    private final AuthenticationService authenticationService;
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationService authenticationService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-    }
-
-    public static User getAuthorizedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new ProConnectException("User not authenticated.");
-        }
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof SecurityUser) {
-            User user = ((SecurityUser) principal).getUser();
-            return user;
-        }
-        throw new ProConnectException("User not authenticated.");
+        this.authenticationService = authenticationService;
     }
 
     public User createUser(User user){
@@ -51,12 +36,12 @@ public class UserService {
 
     /**
      * Returns the User with the given userId if found, otherwise returns null.
-     * @param userId
-     * @return {@link User} with the given userId, or null if not foundl.
+     * @param userId User id to search for.
+     * @return {@link User} with the given userId, or null if not found.
      */
     public User getUser(String userId) {
         Optional<User> user = userRepository.findById(userId);
-        return user.isPresent() ? user.get() : null;
+        return user.orElse(null);
     }
 
     public boolean exists(String userId){
@@ -68,10 +53,10 @@ public class UserService {
 
     public boolean addRole(String userId, long roleId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        if(!optionalUser.isPresent())
+        if(optionalUser.isEmpty())
             throw new ProConnectException("User not found.");
         Optional<Role> role = roleRepository.findById(roleId);
-        if(!role.isPresent())
+        if(role.isEmpty())
             throw new ProConnectException("Role not found.");
         User user = optionalUser.get();
         if(!user.addRole(role.get()))
@@ -89,7 +74,7 @@ public class UserService {
     }
 
     public UpdateProfileRequest updateProfile(UpdateProfileRequest request){
-        User user = getAuthorizedUser();
+        User user = authenticationService.getAuthorizedUser();
         if(user == null)
             throw new ProConnectException("User not found.");
         user.setName(request.getName());

@@ -29,11 +29,11 @@ public class JobService {
     private final UserService userService;
     private final PropertyService propertyService;
     private final CommentRepository commentRepository;
-
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public JobService(JobRepository jobRepository, JobRepositoryPaging jobRepositoryPaging, JobProposalRepository jobProposalRepository,
-                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository) {
+                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository, AuthenticationService authenticationService) {
         this.jobRepository = jobRepository;
         this.jobProposalRepository = jobProposalRepository;
         this.jobRepositoryPaging = jobRepositoryPaging;
@@ -42,10 +42,11 @@ public class JobService {
         this.propertyService = propertyService;
         this.userService = userService;
         this.commentRepository = commentRepository;
+        this.authenticationService = authenticationService;
     }
 
     public Job postJob(CreateJobRequest createJobRequest){
-        User user = UserService.getAuthorizedUser();
+        User user = authenticationService.getAuthorizedUser();
         Job job = createJobRequest.getJob();
         Property property = propertyService.getProperty(createJobRequest.getPropertyId());
         if(property == null)
