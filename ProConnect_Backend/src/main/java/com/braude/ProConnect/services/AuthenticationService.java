@@ -4,6 +4,7 @@ import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class AuthenticationService {
     private final UserService userService;
 
     @Autowired
+    @Lazy
     public AuthenticationService(UserService userService) {
         this.userService = userService;
     }
