@@ -18,16 +18,20 @@ interface ProCarouselProps {
 const ProCarousel: React.FC<ProCarouselProps> = (props) => {
     const carouselRef = useRef(null);
     const loop = props.loop || false;
-    const width = props.width || defaultWidthNumber - 50;
+    const width = props.width || 200;
     const displayArrows = props.displayArrows || IS_WEB();
     const displayIndex = props.displayIndex || true;
-    const [indexString, setIndexString] = useState<string>('0/0')
+    const [indexString, setIndexString] = useState<string>('0/0');
+    const [isFirst, setIsFirst] = useState<boolean>(true);
+    const [isLast, setIsLast] = useState<boolean>(false);
     
     const onSnapToItem = (index: number) => {
       if(props.onSnapToItem)
         props.onSnapToItem(index);
       console.log('current index:', index);
       setIndexString(generateIndexString());
+      setIsFirst(index === 0);
+      setIsLast(index === props.data.length - 1);
       
     } 
     const handleNext = () => {
@@ -50,7 +54,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
     }, [])
   return (
     <View invisible style={{alignItems: 'center', justifyContent:'center', flexDirection: 'row'}}>
-        {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} />}
+        {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} disabled={isFirst}/>}
         <View style={{flexDirection: 'column'}}>
 
         <Carousel
@@ -59,14 +63,14 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
           height={width}
           data={props.data}
           style={{borderWidth: 1, borderColor: Colors.$backgroundDark, backgroundColor: Colors.backgroundSecondary, borderRadius: 5}}
-          scrollAnimationDuration={1000}
+          scrollAnimationDuration={500}
           ref={carouselRef}
           onSnapToItem={onSnapToItem}
           renderItem={props.renderItems}
           />
           {displayIndex && <Text textAlign='center' style={{alignSelf:'center'}}>{indexString}</Text>}
           </View>
-          {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={handleNext} />}
+          {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={handleNext} disabled={isLast}/>}
       </View>
   );
 
