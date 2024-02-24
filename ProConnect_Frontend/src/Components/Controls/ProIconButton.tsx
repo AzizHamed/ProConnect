@@ -6,6 +6,7 @@ import { Ionicons, MaterialIcons, AntDesign, Entypo, EvilIcons, Feather, FontAwe
 interface ProIconButtonProps {
     onPress: () => void;
     showAddIcon?: boolean;
+    disabled?: boolean;
 
     materialIcon?: boolean;
     materialIconName?: keyof typeof MaterialIcons.glyphMap;
@@ -38,6 +39,7 @@ interface ProIconButtonProps {
   }
   
   const ProIconButton: React.FC<ProIconButtonProps> = (props) => {
+    const disabled = props.disabled || false;
     let IconComponent, iconName;
     if(props.materialIcon){IconComponent = MaterialIcons; iconName = props.materialIconName;}
     else if(props.ionicon){IconComponent = Ionicons; iconName = props.ioniconName;}
@@ -57,21 +59,20 @@ interface ProIconButtonProps {
 
 
   return (
-    <Button style={styles.button} round onPress={props.onPress}> 
-      <IconComponent name={iconName} size={28} color={Colors.textPrimary} />
-      {props.showAddIcon && <MaterialIcons name="add-circle" size={14} color={Colors.textPrimary} style={styles.plus}/>}
+    <Button style={styles.button} round onPress={props.onPress} backgroundColor='transparent' disabledBackgroundColor='transparent'disabled={disabled}> 
+      <IconComponent name={iconName} size={28} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} />
+      {props.showAddIcon && <MaterialIcons name="add-circle" size={14} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} style={styles.plus}/>}
     </Button>
   );
 };
 
 const styles = StyleSheet.create({
     button:{
-        width: 65,
-        height: 65,
+        width: 45,
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
-        backgroundColor: Colors.controlBackground,
     },
     plus: {
         position: 'absolute',
