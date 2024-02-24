@@ -1,5 +1,7 @@
 import { ImageStyle, StyleProp, ViewStyle,Animated, Platform } from "react-native";
 import { Colors } from "react-native-ui-lib";
+import { User } from "../Services/Redux/Api";
+import { QuickReplies } from "react-native-gifted-chat";
 
 export const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -102,8 +104,6 @@ export  const dataProfessions1 = [
 export   const dataProfessions2 = [
   { label: 'Carpetner', value:'1', uri : 'https://www.svgrepo.com/show/103746/carpenter.svg' },
   { label: 'Painter', value: '2', uri : 'https://www.svgrepo.com/show/366776/painter.svg' },
-  { label: 'Painter', value: '7', uri : 'https://www.svgrepo.com/show/366776/painter.svg' },
-  { label: 'Painter', value: '8', uri : 'https://www.svgrepo.com/show/366776/painter.svg' },
   { label: 'Constructor', value: '3', uri : 'https://www.svgrepo.com/show/65391/constructor-with-hard-hat-protection-on-his-head.svg'},
   { label: 'Electrical', value: '4', uri : 'https://www.svgrepo.com/show/308571/electrical-repair-kit.svg' },
   { label: 'Security', value: '5', uri : 'https://www.svgrepo.com/show/449417/security-camera.svg' },
@@ -128,9 +128,36 @@ export const popularProfessions = [
 {profession : "Tiler" , number : 60000, uri : "https://www.svgrepo.com/show/393289/garden-centre.svg"}
 ]
 
+export interface IMessage {
+  _id: string | number
+  text: string
+  createdAt: Date | number
+  user: User
+  image?: string
+  video?: string
+  audio?: string
+  system?: boolean
+  sent?: boolean
+  received?: boolean
+  pending?: boolean
+  quickReplies?: QuickReplies
+}
+
+export interface Reply {
+  title: string
+  value: string
+  messageId?: any
+}
+
+export interface QuickReplies {
+  type: 'radio' | 'checkbox'
+  values: Reply[]
+  keepIt?: boolean
+}
 
 
 
 
 
 
+export let ChatFriendsNumber=0

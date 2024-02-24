@@ -1,3 +1,4 @@
+import { User } from "../Services/Redux/Api";
 
 export const dataLocation = [
   { label: 'Haifa', value:'1' },
