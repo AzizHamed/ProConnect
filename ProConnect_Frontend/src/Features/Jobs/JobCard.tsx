@@ -25,7 +25,7 @@ function generateCardChildren(job: Job) {
   return (
     <View>
         <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3}/>
-        <Text >
+        <Text ellipsizeMode="tail" numberOfLines={3}>
           {job.description}
         </Text>
         <Text t2 textAlign="right" marginT-20 style={styles.date}>
