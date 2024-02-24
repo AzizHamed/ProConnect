@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import { getSelectedPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
 import { PersonPage1, PersonPage2 } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
+import { checkName } from '../../Constants/Functions/Functions';
 
 
 
@@ -90,27 +91,9 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
     }))
   }
 
-  function checkName(text : string, firstName : string, lastName : string){
-    return firstName.toLowerCase().startsWith(text.toLowerCase()) || lastName.toLowerCase().startsWith(text.toLowerCase()) || (firstName.toLowerCase() + " " + lastName.toLowerCase()).startsWith(text.toLowerCase())
-  }
-
-  // function sort1 (value : number) {
-  //   filterProfessionals()
-  //   if(value==0)
-  //   setProfessionals(Professionals?.sort((professional1, professional2) => {
-  //   return professional1.experience - professional2.experience;
-  // }
-  //   ))
-
-  //   else
-  //   if(value==1)
-  //   setProfessionals(Professionals?.sort((professional1,professional2) => {
   
-  // return professional1.rating - professional2.rating;
-  // }))
 
-
-  // }
+ 
     
   
 
@@ -138,16 +121,7 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
           
           <View style={styles.sortOrFilter}>
           <Text style={{color:"white", fontSize:20}}>Sort</Text>
-          {/* <TouchableOpacity style={styles.filterButton} onPress={()=> {
-            setModalVisible(true);
-            }}>
-            <FontAwesome name='sort' size={47} color={"black"}/>
-            </TouchableOpacity> */}
-
-          {/* <RNPickerSelect
-                    onValueChange={(value) => sort1(value) }
-                    items={sorts}
-                    style={{viewContainer: {backgroundColor : "white"}}}        /> */}
+          
 
           </View>
           

@@ -1,5 +1,5 @@
 import React, { Component, ReactElement } from 'react'
-import { View,Image,Text, StyleSheet, ImageStyle, StyleProp, ViewStyle } from 'react-native'
+import { View,Image,Text, StyleSheet, ImageStyle, StyleProp, ViewStyle, Dimensions } from 'react-native'
 import { User } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import { Rating } from 'react-native-ratings';
@@ -13,13 +13,19 @@ interface PersonCardProps {
   compnentsUnderImage : React.ReactNode[]
   additionalComponents ?: ReactElement[]
   cardContainerStyle : StyleProp<ViewStyle>
+  containerStyle ?:  StyleProp<ViewStyle>
   
   
 }
 
 const PersonCard :React.FC<PersonCardProps> =  (props) => {
+
+  const {height, width} = Dimensions.get('window')
+
+
+  
   return (
-  <View style={styles.container}>
+  <View style={props?.containerStyle}>
 
 <View style={props.cardContainerStyle}>
 
@@ -56,8 +62,8 @@ export default PersonCard
 const styles = StyleSheet.create({
 
   buttonsContainer : {
-    
-    backgroundColor : Colors.$backgroundDark,
+    alignItems : "flex-end",
+    justifyContent : "center",
   },
 
   // CardContainer : {
@@ -72,7 +78,6 @@ const styles = StyleSheet.create({
   // }
   //,
   container : {
-    backgroundColor:Colors.$backgroundDark,
    
   }
 
