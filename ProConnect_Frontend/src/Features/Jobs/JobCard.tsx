@@ -30,7 +30,7 @@ function generateCardChildren(job: Job) {
         <Text ellipsizeMode="tail" numberOfLines={3}>
           {job.description}
         </Text>
-        {job.photos && job.photos.length > 0 && <ProCarousel data={job.photos} renderItems={({item, index}) => {
+        {job.photos && job.photos.length > 0 && <ProCarousel displayArrows data={job.photos} renderItems={({item, index}) => {
           return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
         }} marginT-20/>}
         <Text t2 textAlign="right" marginT-20 style={styles.date}>
