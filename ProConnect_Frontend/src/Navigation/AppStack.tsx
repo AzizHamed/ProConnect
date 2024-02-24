@@ -4,6 +4,7 @@ import { AuthStackScreen } from "./AuthStack";
 import JobsList from "../Features/Jobs/JobsList";
 import JobPage from "../Features/Jobs/JobPage";
 import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
+import Chat from "../Navigation/Chat/Chat";
 
 
 const AppStack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ export const AppStackScreen: React.FC = () => {
 
         <AppStack.Screen options={{headerShown: true}}  name="Job" component={JobPage}  />
         <AppStack.Screen name="PersonsPage" component={PersonsPage} />
+        <AppStack.Screen name="Chats" component={Chat} options={{headerShown : true}} />
 
     </AppStack.Navigator>
 
