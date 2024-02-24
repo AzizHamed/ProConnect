@@ -92,7 +92,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
 <MainDrawer.Screen
           name="people"
           options={{
-            drawerLabel: "Work with me",
+            drawerLabel: "Friends",
             title: "people",
             drawerIcon: () => (
               <Ionicons name="people-outline" size={20} color="#808080" />
@@ -107,10 +107,14 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
           initialParams={dataProfessions}
           
         />
-      <MainDrawer.Screen name="test" component={JobsList} />
+      {/* <MainDrawer.Screen name="test" component={JobsList} /> */}
 
       
-      <MainDrawer.Screen name="Settings" component={SettingsScreen} />
+      <MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
+        
+        drawerIcon: () => (
+              <Ionicons name="settings-outline" size={20} color="#808080" />
+            )}} />
       <MainDrawer.Screen name="Profile" component={ProfileViewScreen}/>
       <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle:{display:"none"} }}/>
     </MainDrawer.Navigator>

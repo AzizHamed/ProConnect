@@ -16,6 +16,9 @@ import { useDispatch } from "react-redux";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 import { dataProfessions1 } from "../Constants/Values";
 import HomePage from "./OldNav-TabsAndSideBars/HomePage";
+import Requests from "./OldNav-TabsAndSideBars/Requests";
+import PersonsChat from "./Chat/PersonsChat";
+import HomeScreen from "../Screens/HomeScreen";
 
 export type MainTabParamList = {
   Home: undefined;
@@ -24,6 +27,8 @@ export type MainTabParamList = {
   Search: {label : string , value : string}[];
   Friends: undefined;
   Post: undefined;
+  Chat : undefined
+  Jobs : undefined
 };
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
@@ -51,16 +56,19 @@ export const MainTabScreen: React.FC = () => {
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline"; // Replace with the name of your home icon
-          } else if (route.name === "Search") {
-            iconName = focused ? "search" : "search-outline"; // Replace with the name of your settings icon
+          } else if (route.name === "Chat") {
+            iconName = focused ? "chatbubble" : "chatbubble-outline"; // Replace with the name of your settings icon
           } else if (route.name == "Friends") {
             iconName = focused ? "people" : "people-outline";
           } else if (route.name == "Post") {
             iconName = focused ? "share" : "share-outline";
           }
+          else if (route.name == "Jobs") {
+            iconName = focused ? "share-social" : "share-social-outline";
+          }
 
           // You can customize the icon further if needed
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={Colors.$backgroundDarkElevated} />;
         },
 
         tabBarActiveTintColor: "#141414", // Color of the active
@@ -83,18 +91,23 @@ export const MainTabScreen: React.FC = () => {
         options={{ headerShown: false }}
       />
        <MainTab.Screen
-      name="Search"
-      component={Search}        
+      name="Chat"
+      component={PersonsChat}        
       options={{ headerShown: false }} 
+
+    
       
       
-      // listeners={{
-      //   tabPress: (e) => {
-      //     dispatch(setDropDownData({DropDownData : dataProfessions1}))
-      //   },
-      // }}
+    
     />
-      <MainTab.Screen
+
+    <MainTab.Screen 
+
+    name="Jobs"
+    component={JobsList}
+    options={{ headerShown: false }} 
+    />
+      {/* <MainTab.Screen
         name="Friends"
         options={{ headerShown: false }} listeners={{
           tabPress: (e) => {
@@ -104,7 +117,7 @@ export const MainTabScreen: React.FC = () => {
           
       {(props) => <PersonsPage   />}
 
-</MainTab.Screen>
+</MainTab.Screen> */}
       <MainTab.Screen
         name="Post"
         component={SettingsScreen}
