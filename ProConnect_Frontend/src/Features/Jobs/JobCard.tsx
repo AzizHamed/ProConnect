@@ -26,25 +26,31 @@ interface JobCardProps {
 function generateCardChildren(job: Job) {
   return (
     <View>
-        <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3}/>
-        <Text ellipsizeMode="tail" numberOfLines={3}>
-          {job.description}
-        </Text>
-        {job.photos && job.photos.length > 0 && <ProCarousel displayArrows data={job.photos} renderItems={({item, index}) => {
-          return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
-        }} marginT-20/>}
-        <Text t2 textAlign="right" marginT-20 style={styles.date}>
-          {formatDateString(job.datePosted)}
-        </Text>
+      <View row>
+        <View flex-1 flexG>
+          <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
+          <Text ellipsizeMode="tail" numberOfLines={3}>
+            {job.description}
+          </Text>
+        </View>
+        <View flexS>
+          {job.photos && job.photos.length > 0 && <ProCarousel displayArrows data={job.photos} renderItems={({ item, index }) => {
+            return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+          }} marginT-20 />}
+        </View>
+      </View>
+      <Text t2 textAlign="right" marginT-20 style={styles.date}>
+        {formatDateString(job.datePosted)}
+      </Text>
     </View>
   );
 }
 
 function generateCardContent(job: Job): CardSectionContent[] {
   const content: CardSectionContent[] = [];
-  
-  content.push({text: job.title, "marginB-30":true, h3: true})
-  content.push({text: job.description})
+
+  content.push({ text: job.title, "marginB-30": true, h3: true })
+  content.push({ text: job.description })
   // content.push({text: job.datePosted, "marginT-20":true, textAlign:"right", flex:true})
   return content;
 }
@@ -58,9 +64,9 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
     dispatch(selectJob(job));
     navigation.navigate("Job");
   };
-  
+
   return (
-      <ProCard style={{minWidth: 10, width:"95%"}} webWidth={"95%"}  children={children} radius={props.radius} onPress={onPress}/>
+    <ProCard style={{ minWidth: 10, width: "95%" }} webWidth={"95%"} children={children} radius={props.radius} onPress={onPress} />
   );
 };
 

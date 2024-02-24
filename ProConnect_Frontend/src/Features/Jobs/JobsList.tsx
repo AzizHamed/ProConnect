@@ -28,7 +28,7 @@ const JobsList: React.FC = () => {
   }, [data, error]);
 
   return (
-    <BackgroundView
+    <BackgroundView hasScroll
       children={
         <View bg style={{width:"100%"}}>
           <ProRefreshControl onRefreshAction={refetch}
