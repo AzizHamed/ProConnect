@@ -16,6 +16,7 @@ import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
 import ProLoading from "../Components/Layout/ProLoading";
 import BackgroundView from "../Components/Layout/BackgroundView";
 import { useNavigation } from "@react-navigation/native";
+import JobPage from "../Features/Jobs/JobPage";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -45,6 +46,8 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
     return <ProfileEditorScreen></ProfileEditorScreen>
   }
 
+  const backButton = () => { return <Ionicons size={24} style={{ marginLeft: 10 }} name="arrow-back" onPress={navigation.goBack} />; };
+  
   return (
     <MainDrawer.Navigator 
     drawerContent={(props) => <CustomDrawerContent {...props}
@@ -105,6 +108,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
       <MainDrawer.Screen name="Settings" component={SettingsScreen} />
       <MainDrawer.Screen name="Profile" component={ProfileViewScreen}/>
       <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle:{display:"none"} }}/>
+      <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle:{display:"none"}, headerLeft:backButton }}/>
     </MainDrawer.Navigator>
   );
 };

@@ -14,7 +14,6 @@ export const AppStackScreen: React.FC = () => {
         <AppStack.Screen name="Auth" component={AuthStackScreen}/>
         <AppStack.Screen name="Main" component={MainDrawerScreen} />
 
-        <AppStack.Screen options={{headerShown: true}}  name="Job" component={JobPage}  />
         <AppStack.Screen name="PersonsPage" component={PersonsPage} />
 
     </AppStack.Navigator>
