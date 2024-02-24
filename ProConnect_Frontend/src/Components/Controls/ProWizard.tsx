@@ -28,7 +28,7 @@ const ProWizard: React.FC<ProWizardProps> = ({ control, steps, stepLabels, onAct
     }
     const isLastStep = (index: number) => {
         return index + 1 == steps.length;
-    } 
+    }
 
     return (
         <BackgroundView children={(
@@ -38,31 +38,31 @@ const ProWizard: React.FC<ProWizardProps> = ({ control, steps, stepLabels, onAct
                 defaultValue={0}
                 name="activeIndex"
                 render={({ field: { onChange, value } }) => (
-                    <View>
-                    <Wizard containerStyle={{backgroundColor: 'transparent'}} activeIndex={value} onActiveIndexChanged={(index) => {
-                        setMaxIndex(index > maxIndex ? index : maxIndex);
-                        console.log('On Change Active index:', index);
-                        console.log('On Change Max index:', maxIndex);
-                        onChange(index);
-                        onActiveIndexChanged?.(index);
-                    }}>
-               
-                        {stepLabels.map((label, index) => (
-                            <Wizard.Step key={index} label={label} state={getState(index, value)} 
-                            circleBackgroundColor={Colors.controlBackground} circleColor='transparent' color={Colors.controlText}
-                            circleSize={30} connectorStyle={{height: 2, backgroundColor:Colors.controlText, borderWidth: 0}} />
-                        ))}
-                    </Wizard>
+                    <View height={"100%"}>
+                        <Wizard containerStyle={{ backgroundColor: 'transparent' }} activeIndex={value} onActiveIndexChanged={(index) => {
+                            setMaxIndex(index > maxIndex ? index : maxIndex);
+                            console.log('On Change Active index:', index);
+                            console.log('On Change Max index:', maxIndex);
+                            onChange(index);
+                            onActiveIndexChanged?.(index);
+                        }}>
+
+                            {stepLabels.map((label, index) => (
+                                <Wizard.Step key={index} label={label} state={getState(index, value)}
+                                    circleBackgroundColor={Colors.controlBackground} circleColor='transparent' color={Colors.controlText}
+                                    circleSize={30} connectorStyle={{ height: 2, backgroundColor: Colors.controlText, borderWidth: 0 }} />
+                            ))}
+                        </Wizard>
 
                         <View marginT-20 center>
 
                             {steps[value]}
-                            <ProButton text={isLastStep(value) ? 'Submit' : 'Next'} onPress={isLastStep(value) ? onSubmit : onNext} marginB-30/>
+                            <ProButton text={isLastStep(value) ? 'Submit' : 'Next'} onPress={isLastStep(value) ? onSubmit : onNext} marginB-30 />
 
                         </View>
                     </View>
                 )}
-                />
+            />
         )}
         />);
 }
