@@ -2,7 +2,6 @@ import React from 'react'
 import { BackHandler, Dimensions, View } from 'react-native'
 import BackgroundView from '../../Components/Layout/BackgroundView'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Testing from '../../Components/Testing';
 import { NavigationContainer } from '@react-navigation/native';
 import Friends from './Friends';
 import PersonsPage from './PersonsPage';
