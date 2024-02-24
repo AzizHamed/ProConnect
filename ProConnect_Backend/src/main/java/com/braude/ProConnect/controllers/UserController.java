@@ -79,4 +79,14 @@ public class UserController {
     public int getAllUsersNumber(){
         return userService.getAllUsersNumber();
     }
+
+//    @PutMapping(value = "add-profession")
+//    public void addProfession(String userId, String professionName ){
+//         userService.addProfession(userId,professionName);
+//    }
+
+//    @GetMapping(value = "Profession")
+//    public List<User> findUserByProfession(String professionId){
+//        return userService.findByProfession(professionId);
+//    }
 }

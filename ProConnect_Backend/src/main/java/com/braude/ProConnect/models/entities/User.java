@@ -60,6 +60,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+
+//    @OneToMany()
+//    @JoinTable(name = "user_professions",
+//            joinColumns = @JoinColumn(name = "user_id" ),
+//            inverseJoinColumns = @JoinColumn(name = "profession-id"))
+//    private List<Profession> professions;
+
     //private List<User> workers;
 
     @Override
