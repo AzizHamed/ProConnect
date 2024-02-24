@@ -338,6 +338,7 @@ export type Profession = {
   id?: number;
   name: string;
   description: string;
+  svg: string;
 };
 export type Job = {
   id?: number;
@@ -394,21 +395,21 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  pageSize?: number;
   pageNumber?: number;
+  pageSize?: number;
   unpaged?: boolean;
   paged?: boolean;
 };
 export type PageJob = {
-  totalElements?: number;
   totalPages?: number;
+  totalElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
