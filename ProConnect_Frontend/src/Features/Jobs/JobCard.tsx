@@ -4,6 +4,7 @@ import {
   View,
   Text,
   CardProps,
+  Image
 } from "react-native-ui-lib";
 import ProCard, { CardSectionContent } from "../../Components/Layout/ProCard";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
@@ -12,6 +13,7 @@ import { formatDateString } from "../../Utility/Formatter";
 import { useDispatch } from "react-redux";
 import { selectJob } from "../../Services/Redux/Slices/JobSlice"
 import { Job } from "../../Services/Redux/Api";
+import ProCarousel from "../../Components/Controls/ProCarousel";
 
 interface JobCardProps {
   job: Job;
@@ -28,6 +30,9 @@ function generateCardChildren(job: Job) {
         <Text ellipsizeMode="tail" numberOfLines={3}>
           {job.description}
         </Text>
+        {job.photos && job.photos.length > 0 && <ProCarousel data={job.photos} renderItems={({item, index}) => {
+          return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+        }} marginT-20/>}
         <Text t2 textAlign="right" marginT-20 style={styles.date}>
           {formatDateString(job.datePosted)}
         </Text>
