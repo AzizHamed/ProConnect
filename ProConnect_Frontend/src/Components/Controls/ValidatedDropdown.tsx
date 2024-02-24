@@ -4,10 +4,12 @@ import DesignedDropDown from '../../Navigation/DesignedDropDown';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { defaultWidthValues } from '../../Constants/Values';
 import { set } from 'date-fns';
+import { Control, Controller } from 'react-hook-form';
 
 const icon = <Ionicons name="home" size={20} style={{ marginLeft: 5, marginRight: 10 }} />
 
 interface ValidatedDropDownProps {
+    control: Control;
     values: { value: any, label: string }[];
     value: string;
     errorMessage: string;
@@ -48,15 +50,20 @@ const ValidatedDropDown: React.FC<ValidatedDropDownProps> = (props) => {
       }, [selectedValue, wasSubmitted, props.triggerValidation]);
 
     return (
+        <Controller
+        control={props.control}
+        defaultValue={''}
+        name="validatedDropdown"
+        render={({ field: { onChange, value } }) => (
         <View style={{width: width, backgroundColor: "transparent", marginTop: 10, marginBottom: 5}}>
             <DesignedDropDown 
                 leftIcon={icon} 
-                value={props.value} 
-                setValue={updateSelectedValue} 
+                value={value} 
+                setValue={(newValue) => {updateSelectedValue(newValue); onChange(newValue);}} 
                 dropDownData={values}>
             </DesignedDropDown>
             <Text style={{color: Colors.failure, alignSelf: 'stretch'}}>{hasError ? props.errorMessage : ' '}</Text>
-        </View>
+        </View>)}/>
     );
 };
 
