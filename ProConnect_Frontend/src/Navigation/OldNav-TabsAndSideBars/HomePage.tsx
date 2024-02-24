@@ -16,6 +16,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import renderProfession from './ProfessionAutoComplete';
 import renderPopularProfessions from './RenderPopularProfessionsCard';
 import { AirbnbRating } from 'react-native-ratings';
+import Swiper from 'react-native-swiper';
 
 interface Item {
   label: string;
@@ -126,14 +127,17 @@ const data1 = findData(Query)
   return (
     <BackgroundView children={
 
+      
+
       <ScrollView>
+
 
         
          <View style={styles.container}>
         <View style={styles.logoContainer} >
           {/* <Image source={require('../../../icon.jpg')} style={styles.imageStyle}/> */}
 
-          <SvgUri uri={"https://www.svgrepo.com/show/103746/carpenter.svg"} width={"80"} height={"80"} fill={"white"} />
+          <SvgUri uri={"https://www.svgrepo.com/show/295352/sharing-home.svg"} width={"80"} height={"80"} fill={"white"} />
         </View>
 
 
@@ -165,7 +169,7 @@ const data1 = findData(Query)
             <Text style={{color : "white",  fontSize : 20, fontWeight :"bold"}}>Popular Professions</Text>
           <View style={styles.carouselProfessions}>
                 
-                <Carousel data={popularProfessions} renderItem={renderPopularProfessions} sliderWidth={250} itemWidth={250} />
+                <Carousel data={popularProfessions} renderItem={renderPopularProfessions} sliderWidth={250} itemWidth={250}  />
                 
 
                 </View>
@@ -177,14 +181,14 @@ const data1 = findData(Query)
 
         <View style={styles.carousel}>
           
-         <Carousel data={articles} renderItem={renderCarouselItem} sliderWidth={350} itemWidth={350}  />
+         <Carousel data={articles} renderItem={renderCarouselItem} sliderWidth={350} itemWidth={350} />
   
         </View>
 
 
         <View style={styles.ratingContainer}>
           <Text style={{color : "white", fontSize : 20, fontWeight : "500"}}>Rate this App</Text>
-          <AirbnbRating starContainerStyle={{marginLeft: 2}}/>
+          <AirbnbRating starContainerStyle={{marginLeft: 2}}  />
         </View>
        
         
