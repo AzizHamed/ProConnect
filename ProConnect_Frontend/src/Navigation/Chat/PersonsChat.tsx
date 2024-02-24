@@ -84,7 +84,7 @@ const style1 = (chatsNumber : number) =>{
       flexDirection : "row",
       justifyContent :"flex-start",
       borderWidth: 1,
-      borderColor : "gray",
+      borderColor : "silver",
     },
   
     chatPeople : {

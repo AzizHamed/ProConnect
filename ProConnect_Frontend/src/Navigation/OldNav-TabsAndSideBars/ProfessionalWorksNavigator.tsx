@@ -19,12 +19,12 @@ let width =  Dimensions.get('window').width;
   return (
     <Tab.Navigator  screenOptions={{
       tabBarLabelStyle: { fontSize: 12 },
-      tabBarItemStyle: { width: width / 3 },
+      tabBarItemStyle: { width: width / 2 },
       tabBarStyle: { backgroundColor: 'powderblue' },
     }}>
       <Tab.Screen name="HomeOwners" component={PersonsPage} />
-      <Tab.Screen name="Contractors" component={PersonsPage} />
-      <Tab.Screen name="Workers" component={PersonsPage} />
+      <Tab.Screen name="Professionals" component={PersonsPage} />
+      
     </Tab.Navigator>
   )
 }
