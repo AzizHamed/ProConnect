@@ -1,3 +1,4 @@
+import { User } from "../Services/Redux/Api";
 
 export const dataLocation = [
   { label: 'Haifa', value:'1' },
@@ -20,5 +21,9 @@ export const dataProfessions = [
   { label: 'Security', value: '6' },
   { label: 'Designer', value: '7' },
   { label: 'Garden', value: '8' },
+]
+
+export const dataProfessions1 = [
+  'Carpetner', 'Painter','Constructor','Pavor','Electric service','Security','Designer','Garden'
 ]
 

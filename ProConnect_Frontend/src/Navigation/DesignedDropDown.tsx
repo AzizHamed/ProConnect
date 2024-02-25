@@ -4,6 +4,9 @@ import {Animated, StyleSheet} from 'react-native'
 import { View } from 'react-native-ui-lib';
 import { Control } from 'react-hook-form';
 
+import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import EvilIcons from '@expo/vector-icons/AntDesign';
 interface DropDownProps {
   control?: Control,
   name?: string

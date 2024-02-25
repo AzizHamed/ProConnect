@@ -6,6 +6,7 @@ import DimensionReducer from "./Slices/DimensionSlice";
 import PreferencesReducer, { initializePreferences } from "./Slices/PreferencesSlice";
 import { api } from "./Api";
 import { fetchUserDataMiddleware } from "./fetchUserDataMiddleware";
+import { Dropdown } from "react-native-element-dropdown";
 
 export const store = configureStore({
     reducer: {

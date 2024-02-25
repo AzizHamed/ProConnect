@@ -5,18 +5,19 @@ import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import ProfessionalWorkWith from "./OldNav-TabsAndSideBars/ProfessionalWorksNavigator";
+import SearchTabNavigator from "./SearchTabNavigator";
 import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
 import SettingsScreen from "../Screens/SettingsScreen";
 import ProfileViewScreen from "../Screens/Profile/ProfileViewScreen";
 import { Platform, View } from "react-native";
 import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
 import ProLoading from "../Components/Layout/ProLoading";
 import BackgroundView from "../Components/Layout/BackgroundView";
 import { useNavigation } from "@react-navigation/native";
 import JobPage from "../Features/Jobs/JobPage";
+import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -36,11 +37,12 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
     { label: 'Garden', value: '8' },
   ]
 
+  const dispatch = useDispatch()
   const navigation = useNavigation();
   const currentWindowWidth = useSelector(getWindowWidth);
   const user = useSelector(getUserAccount);
   if(user === undefined || user === null ){
-    return <BackgroundView children={<ProLoading/>}/>
+    //return <BackgroundView children={<ProLoading/>}/>
   }
   else if(user.accountStatus === 'SETUP'){
     return <ProfileEditorScreen></ProfileEditorScreen>
@@ -93,19 +95,29 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
 <MainDrawer.Screen
           name="people"
           options={{
-            drawerLabel: "Work with me",
+            drawerLabel: "Friends",
             title: "people",
             drawerIcon: () => (
               <Ionicons name="people-outline" size={20} color="#808080" />
             )
           }}
-          component={ProfessionalWorkWith}
+          listeners={{
+            drawerItemPress : (e)=>{
+              dispatch(setPersonsPage({ComponentType : "ProButton"}))
+            }
+          }}
+          component={SearchTabNavigator}
           initialParams={dataProfessions}
+          
         />
-      <MainDrawer.Screen name="test" component={JobsList} />
+      {/* <MainDrawer.Screen name="test" component={JobsList} /> */}
 
       
-      <MainDrawer.Screen name="Settings" component={SettingsScreen} />
+      <MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
+        
+        drawerIcon: () => (
+              <Ionicons name="settings-outline" size={20} color="#808080" />
+            )}} />
       <MainDrawer.Screen name="Profile" component={ProfileViewScreen}/>
       <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle:{display:"none"} }}/>
       <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle:{display:"none"}, headerLeft:backButton }}/>

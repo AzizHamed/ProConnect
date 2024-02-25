@@ -18,12 +18,15 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ProfessionService professionService;
     private final AuthenticationService authenticationService;
+
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationService authenticationService) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
+        this.professionService = professionService;
     }
 
     public User createUser(User user){
@@ -84,4 +87,16 @@ public class UserService {
         user = userRepository.save(user);
         return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles());
     }
+
+    public int getAllUsersNumber() {
+        return userRepository.findAll().size();
+    }
+
+//    public void addProfession(String userId, String professionName) {
+//        User user = userRepository.findById(userId).get();
+//        user.getProfessions().add(professionService.getProfessionByName(professionName));
+//        userRepository.save(user);
+//    }
+
+
 }
