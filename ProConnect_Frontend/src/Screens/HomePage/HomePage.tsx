@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BackgroundView from '../../Components/Layout/BackgroundView'
 import { View,Text,StyleSheet, Pressable, FlatList, Image, Linking, TouchableOpacity } from 'react-native'
-import DesignedDropDown from '../DesignedDropDown'
+import DesignedDropDown from '../../Navigation/DesignedDropDown'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import AutocompleteInput from 'react-native-autocomplete-input'
@@ -13,8 +13,8 @@ import { useGetAllUsersNumberQuery } from '../../Services/Redux/Api';
 import Carousel from 'react-native-snap-carousel';
 import ProButton from '../../Components/Controls/ProButton';
 import { ScrollView } from 'react-native-gesture-handler';
-import renderProfession from './ProfessionAutoComplete';
-import renderPopularProfessions from './RenderPopularProfessionsCard';
+import renderItem from '../../Components/Layout/AutoCompleteItem';
+import renderPopularProfessions from '../../Components/Layout/RenderPopularProfessionsCard';
 import { AirbnbRating } from 'react-native-ratings';
 import Swiper from 'react-native-swiper';
 
@@ -156,7 +156,7 @@ const data1 = findData(Query)
           <AutocompleteInput    listContainerStyle={{marginTop : 5, left : -10  }}  data={data1}    onChangeText={(text) => setQuery(text)} value={Query}
           flatListProps={{
             keyExtractor: (item) => item.value ,
-            renderItem:renderProfession
+            renderItem:renderItem
           }}
         placeholder="Enter Profession"
       />  

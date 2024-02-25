@@ -84,6 +84,9 @@ export const updateUserEmail = (email: string) => {
 
 export const firebaseUser = webAuth.currentUser;
 
+
+///Firestore beginning
+
 export const database = getFirestore();
 
 export const auth = getAuth();

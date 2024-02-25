@@ -2,7 +2,7 @@ import React from 'react'
 import { View,StyleSheet, TouchableOpacity, ScrollView,Text } from 'react-native'
 import BackgroundView from '../../Components/Layout/BackgroundView'
 import MyTextInput from '../../Components/Controls/MyTextInput'
-import PersonCard from './PersonCard'
+import PersonCard from '../../Features/Persons/PersonCard'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
 import { useGetAllUsersQuery } from '../../Services/Redux/Api'
 import ProButton from '../../Components/Controls/ProButton'

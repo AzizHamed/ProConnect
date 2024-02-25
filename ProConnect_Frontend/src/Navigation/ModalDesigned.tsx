@@ -20,7 +20,7 @@ interface ModalDesignedProps {
 }
 
 const ModalDesigned : React.FC<ModalDesignedProps> = (props) => {
-  const [isFocusLocation, setisFocusLocation] = useState(false)
+const [isFocusLocation, setisFocusLocation] = useState(false)
 const [Experience, setExperience] = useState([{label : '0+' , value : 0}]);
 const [Ratings, setRatings] = useState([{label : '0+' , value : 0}]);
 const [reset, setreset] = useState(false)

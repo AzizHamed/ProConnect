@@ -2,7 +2,7 @@ import React from 'react'
 import { View,StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
-import PersonCard from '../OldNav-TabsAndSideBars/PersonCard';
+import PersonCard from '../../Features/Persons/PersonCard';
 import { useGetAllUsersQuery } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import BackgroundView from '../../Components/Layout/BackgroundView';

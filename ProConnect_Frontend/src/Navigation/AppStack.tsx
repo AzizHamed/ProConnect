@@ -3,8 +3,8 @@ import { MainDrawerScreen } from "./MainDrawerScreen";
 import { AuthStackScreen } from "./AuthStack";
 import JobsList from "../Features/Jobs/JobsList";
 import JobPage from "../Features/Jobs/JobPage";
-import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
-import Chat from "../Navigation/Chat/Chat";
+import PersonsPage from "../Features/Persons/PersonsPage";
+import Chat from "../Screens/Chat/Chat";
 
 
 const AppStack = createNativeStackNavigator();

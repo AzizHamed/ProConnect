@@ -1,12 +1,12 @@
 import React from 'react'
 import { BackHandler, Dimensions, View } from 'react-native'
-import BackgroundView from '../../Components/Layout/BackgroundView'
+import BackgroundView from '../Components/Layout/BackgroundView'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import Friends from './Friends';
-import PersonsPage from './PersonsPage';
+import Friends from '../Screens/Friends/Friends';
+import PersonsPage from '../Features/Persons/PersonsPage';
 
-const ProfessionalWorkWith = () => {
+const SearchTabNavigator = () => {
 
   
 
@@ -29,4 +29,4 @@ let width =  Dimensions.get('window').width;
   )
 }
 
-export default ProfessionalWorkWith
+export default SearchTabNavigator

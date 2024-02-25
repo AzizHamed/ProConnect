@@ -7,7 +7,7 @@ interface Item {
   value: string;
   uri : string;
 }
-const renderProfession = ({ item }: { item: Item }) => (
+const renderItem = ({ item }: { item: Item }) => (
     
   <TouchableOpacity style={styles.pressable} onPress={()=>{alert(item?.label + "" + item?.value)}}>
     
@@ -33,7 +33,7 @@ const renderProfession = ({ item }: { item: Item }) => (
   </TouchableOpacity>
 );
 
-export default renderProfession
+export default renderItem
 
 const styles = StyleSheet.create({
 

@@ -6,7 +6,7 @@ import BackgroundView from '../../Components/Layout/BackgroundView';
 
 import { TouchableOpacity } from 'react-native';
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
-import ModalDesigned from '../ModalDesigned';
+import ModalDesigned from '../../Navigation/ModalDesigned';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MyTextInput from '../../Components/Controls/MyTextInput';
 import RNPickerSelect from 'react-native-picker-select';

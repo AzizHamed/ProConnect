@@ -5,7 +5,7 @@ import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import ProfessionalWorkWith from "./OldNav-TabsAndSideBars/ProfessionalWorksNavigator";
+import SearchTabNavigator from "./SearchTabNavigator";
 import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
 import SettingsScreen from "../Screens/SettingsScreen";
 import ProfileViewScreen from "../Screens/Profile/ProfileViewScreen";
@@ -103,7 +103,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
               dispatch(setPersonsPage({ComponentType : "ProButton"}))
             }
           }}
-          component={ProfessionalWorkWith}
+          component={SearchTabNavigator}
           initialParams={dataProfessions}
           
         />

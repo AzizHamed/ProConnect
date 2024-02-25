@@ -6,18 +6,18 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
 import JobsList from "../Features/Jobs/JobsList";
 import Search from "./OldNav-TabsAndSideBars/Search";
-import Friends from "./OldNav-TabsAndSideBars/Friends";
+import Friends from "../Screens/Friends/Friends";
 import { da } from "date-fns/locale";
 import { dataLocation, dataProfessions } from "../Constants/ConstantData";
 import ProfessionalSearcPage from "./OldNav-TabsAndSideBars/ProfessionalSearchPage";
-import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
+import PersonsPage from "../Features/Persons/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
 import { useDispatch } from "react-redux";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 import { dataProfessions1 } from "../Constants/Values";
-import HomePage from "./OldNav-TabsAndSideBars/HomePage";
+import HomePage from "../Screens/HomePage/HomePage";
 import Requests from "./OldNav-TabsAndSideBars/Requests";
-import PersonsChat from "./Chat/PersonsChat";
+import PersonsChat from "../Screens/Chat/PersonsChat";
 import HomeScreen from "../Screens/HomeScreen";
 
 export type MainTabParamList = {
