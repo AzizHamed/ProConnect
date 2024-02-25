@@ -35,6 +35,15 @@
         "projectId": "2a3c64d8-10ca-458c-85d0-9dad49aaf971"
       }
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow ProConnect to access your photos",
+          "cameraPermission": "Allow ProConnect to access your camera"
+        }
+      ]
+    ],
     "owner": "proconnect"
   },
   "name": "proconnect_frontend"

@@ -1,24 +1,54 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StyleSheet } from "react-native";
+import React, { useEffect } from "react";
 import SettingsScreen from "../Screens/SettingsScreen";
-import React from "react";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
-import Search1 from "./OldNav-TabsAndSideBars/Search1";
 import JobsList from "../Features/Jobs/JobsList";
+import Search from "./OldNav-TabsAndSideBars/Search";
+import Friends from "../Screens/Friends/Friends";
+import { da } from "date-fns/locale";
+import { dataLocation, dataProfessions } from "../Constants/ConstantData";
+import ProfessionalSearcPage from "./OldNav-TabsAndSideBars/ProfessionalSearchPage";
+import PersonsPage from "../Features/Persons/PersonsPage";
+import ProButton from "../Components/Controls/ProButton";
+import { useDispatch } from "react-redux";
+import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import PostJobScreen from "../Features/Jobs/PostJobScreen";
+import { dataProfessions1 } from "../Constants/Values";
+import HomePage from "../Screens/HomePage/HomePage";
+import PersonsChat from "../Screens/Chat/PersonsChat";
+import HomeScreen from "../Screens/HomeScreen";
 
-type MainTabParamList = {
+export type MainTabParamList = {
   Home: undefined;
   Profile: undefined;
   Settings: undefined;
-  Search: undefined;
+  Search: {label : string , value : string}[];
   Friends: undefined;
   Post: undefined;
+  Chat : undefined
+  Jobs : undefined
 };
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
 
+
+
+
+
+
 export const MainTabScreen: React.FC = () => {
+
+  const dispatch = useDispatch();
+
+  // function renderSearchPage(){
+  //   return (
+    
+  //   )
+  // }
   return (
+    
     <MainTab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -26,16 +56,19 @@ export const MainTabScreen: React.FC = () => {
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline"; // Replace with the name of your home icon
-          } else if (route.name === "Search") {
-            iconName = focused ? "search" : "search-outline"; // Replace with the name of your settings icon
+          } else if (route.name === "Chat") {
+            iconName = focused ? "chatbubble" : "chatbubble-outline"; // Replace with the name of your settings icon
           } else if (route.name == "Friends") {
             iconName = focused ? "people" : "people-outline";
           } else if (route.name == "Post") {
             iconName = focused ? "share" : "share-outline";
           }
+          else if (route.name == "Jobs") {
+            iconName = focused ? "share-social" : "share-social-outline";
+          }
 
           // You can customize the icon further if needed
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={Colors.$backgroundDarkElevated} />;
         },
 
         tabBarActiveTintColor: "#141414", // Color of the active
@@ -54,24 +87,66 @@ export const MainTabScreen: React.FC = () => {
     >
       <MainTab.Screen
         name="Home"
-        component={JobsList}
+        component={HomePage}
         options={{ headerShown: false }}
       />
-      <MainTab.Screen
-        name="Search"
-        component={Search1}
-        options={{ headerShown: false }}
-      />
-      <MainTab.Screen
+       <MainTab.Screen
+      name="Chat"
+      component={PersonsChat}        
+      options={{ headerShown: false }} 
+
+    
+      
+      
+    
+    />
+
+    <MainTab.Screen 
+
+    name="Jobs"
+    component={JobsList}
+    options={{ headerShown: false }} 
+    />
+      {/* <MainTab.Screen
         name="Friends"
-        component={SettingsScreen}
-        options={{ headerShown: false }}
-      />
+        options={{ headerShown: false }} listeners={{
+          tabPress: (e) => {
+            dispatch(setPersonsPage({ComponentType : "ProButton"}))
+          },
+        }}>
+          
+      {(props) => <PersonsPage   />}
+
+</MainTab.Screen> */}
       <MainTab.Screen
         name="Post"
-        component={SettingsScreen}
+        component={PostJobScreen}
         options={{ headerShown: false }}
       />
     </MainTab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+
+  CardContainer : {
+    backgroundColor:Colors.$backgroundDark,
+    // borderColor:"green",
+    // borderWidth:5,
+    width:180,
+    height:180,
+    alignItems:"center",
+    justifyContent:"center",
+    
+  },
+  photoStyle : {
+    height: 100,
+    width: 100,
+    borderRadius:70,
+    marginBottom:8,
+  },
+
+
+
+});
+

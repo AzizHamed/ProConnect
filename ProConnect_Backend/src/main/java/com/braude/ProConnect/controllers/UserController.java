@@ -2,6 +2,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.requests.UpdateProfileRequest;
 import com.braude.ProConnect.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -64,4 +65,28 @@ public class UserController {
             return ResponseEntity.ok(true);
         throw new ProConnectException("Failed to add role to user.");
     }
+
+    @PostMapping(value = "update-profile")
+    public ResponseEntity<UpdateProfileRequest> updateProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
+        try {
+            return ResponseEntity.ok(userService.updateProfile(updateProfileRequest));
+        } catch (ProConnectException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping(value = "users-num")
+    public int getAllUsersNumber(){
+        return userService.getAllUsersNumber();
+    }
+
+//    @PutMapping(value = "add-profession")
+//    public void addProfession(String userId, String professionName ){
+//         userService.addProfession(userId,professionName);
+//    }
+
+//    @GetMapping(value = "Profession")
+//    public List<User> findUserByProfession(String professionId){
+//        return userService.findByProfession(professionId);
+//    }
 }

@@ -41,6 +41,17 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Jobs"],
       }),
+      updateProfile: build.mutation<
+        UpdateProfileApiResponse,
+        UpdateProfileApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/update-profile`,
+          method: "POST",
+          body: queryArg.updateProfileRequest,
+        }),
+        invalidatesTags: ["Users"],
+      }),
       createUser: build.mutation<CreateUserApiResponse, CreateUserApiArg>({
         query: (queryArg) => ({
           url: `/users/create`,
@@ -135,9 +146,16 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/jobs/post`,
           method: "POST",
-          body: queryArg.job,
+          body: queryArg.createJobRequest,
         }),
         invalidatesTags: ["Jobs"],
+      }),
+      getAllUsersNumber: build.query<
+        GetAllUsersNumberApiResponse,
+        GetAllUsersNumberApiArg
+      >({
+        query: () => ({ url: `/users/users-num` }),
+        providesTags: ["Users"],
       }),
       getUser: build.query<GetUserApiResponse, GetUserApiArg>({
         query: (queryArg) => ({
@@ -196,6 +214,11 @@ export type CommentOnPostApiResponse = /** status 200 OK */ Comment;
 export type CommentOnPostApiArg = {
   comment: Comment;
 };
+export type UpdateProfileApiResponse =
+  /** status 200 OK */ UpdateProfileRequest;
+export type UpdateProfileApiArg = {
+  updateProfileRequest: UpdateProfileRequest;
+};
 export type CreateUserApiResponse = /** status 200 OK */ User;
 export type CreateUserApiArg = {
   user: User;
@@ -237,10 +260,12 @@ export type CreateService1ApiArg = {
   name: string;
   description: string;
 };
-export type PostJobsApiResponse = /** status 200 OK */ string;
+export type PostJobsApiResponse = /** status 200 OK */ Job;
 export type PostJobsApiArg = {
-  job: Job;
+  createJobRequest: CreateJobRequest;
 };
+export type GetAllUsersNumberApiResponse = /** status 200 OK */ number;
+export type GetAllUsersNumberApiArg = void;
 export type GetUserApiResponse = /** status 200 OK */ User;
 export type GetUserApiArg = {
   userId: string;
@@ -286,9 +311,12 @@ export type User = {
   dateOfBirth?: string;
   reviewsGiven?: Review[];
   reviewsReceived?: Review[];
+  rating?: number;
+  experience?: number;
   roles?: Role[];
   contractors?: User[];
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
+  photoUrl?: string;
 };
 export type Point = {
   x?: number;
@@ -311,6 +339,7 @@ export type Profession = {
   id?: number;
   name: string;
   description: string;
+  svg: string;
 };
 export type Job = {
   id?: number;
@@ -329,6 +358,7 @@ export type Job = {
   title: string;
   description: string;
   likedUsers?: User[];
+  photos?: string[];
   commentedUsers?: Comment[];
   neededProfessions?: Profession[];
   numberOfReports?: number;
@@ -340,6 +370,12 @@ export type Comment = {
   user?: User;
   numberOfReports?: number;
   jobId?: number;
+};
+export type UpdateProfileRequest = {
+  name?: Name;
+  phoneNumber?: string;
+  accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
+  roles?: Role[];
 };
 export type Service = {
   id?: number;
@@ -353,6 +389,10 @@ export type UserServiceEntity = {
   user: User;
   cost?: number;
 };
+export type CreateJobRequest = {
+  job?: Job;
+  propertyId?: number;
+};
 export type SortObject = {
   empty?: boolean;
   sorted?: boolean;
@@ -363,12 +403,12 @@ export type PageableObject = {
   sort?: SortObject;
   pageNumber?: number;
   pageSize?: number;
-  unpaged?: boolean;
   paged?: boolean;
+  unpaged?: boolean;
 };
 export type PageJob = {
-  totalElements?: number;
   totalPages?: number;
+  totalElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
@@ -401,6 +441,7 @@ export const {
   useUnlikePostMutation,
   useLikePostMutation,
   useCommentOnPostMutation,
+  useUpdateProfileMutation,
   useCreateUserMutation,
   useCreateUsersMutation,
   useAddRoleMutation,
@@ -411,6 +452,7 @@ export const {
   useCreatePropertyMutation,
   useCreateService1Mutation,
   usePostJobsMutation,
+  useGetAllUsersNumberQuery,
   useGetUserQuery,
   useGetAllUsersQuery,
   useGetAllRolesQuery,

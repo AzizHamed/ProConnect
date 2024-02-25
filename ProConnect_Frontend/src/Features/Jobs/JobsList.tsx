@@ -1,7 +1,6 @@
 import { View } from "react-native-ui-lib";
 import { StyleSheet, Text } from "react-native";
 import JobCard from "./JobCard";
-import ProButton from "../../Components/Controls/ProButton";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobs, setJobs } from "../../Services/Redux/Slices/JobSlice";
@@ -29,7 +28,7 @@ const JobsList: React.FC = () => {
   }, [data, error]);
 
   return (
-    <BackgroundView
+    <BackgroundView hasScroll
       children={
         <View bg style={{width:"100%"}}>
           <ProRefreshControl onRefreshAction={refetch}

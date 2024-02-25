@@ -5,6 +5,7 @@ import com.braude.ProConnect.models.entities.Comment;
 import com.braude.ProConnect.models.entities.Job;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
+import com.braude.ProConnect.requests.CreateJobRequest;
 import com.braude.ProConnect.services.JobService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nonnull;
@@ -31,9 +32,9 @@ public class JobController {
     }
 
     @PostMapping("/post")
-    public String postJobs(@RequestBody Job job){
-        Job returnedJob = jobService.postJob(job);
-        return "success";
+    public ResponseEntity<Job> postJobs(@RequestBody CreateJobRequest createJobRequest){
+        Job returnedJob = jobService.postJob(createJobRequest);
+        return new ResponseEntity<>(returnedJob, HttpStatus.CREATED);
     }
 
 

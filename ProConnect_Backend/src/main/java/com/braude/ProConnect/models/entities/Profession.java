@@ -37,11 +37,15 @@ public class Profession {
     @Size(max = 8192)
     private String description;
 
+    @NotNull
+    private String svg;
 
 
-    public Profession(String name, String description) {
+
+    public Profession(String name, String description, String svg) {
         this.name = name;
         this.description = description;
+        this.svg = svg;
     }
 
 

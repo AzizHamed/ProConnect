@@ -15,6 +15,9 @@ export type TextProps = {
   h4?: boolean,
   t2?: boolean,
 }
+export type ViewProps = {
+  invisible?: boolean,
+}
 
 export function initTheme() {
 
@@ -70,7 +73,7 @@ export function initTheme() {
     p: 80,
   });
 
-  ThemeManager.setComponentTheme("View", (props: Props, context: any) => {
+  ThemeManager.setComponentTheme("View", (props: Props & ViewProps, context: any) => {
     return {
       backgroundColor: getViewColor(props)
     };
@@ -133,8 +136,9 @@ export function initTheme() {
     return props.h1 || props.h2 || props.h3 || props.h4;
   }
 
-  function getViewColor(props: Props)
+  function getViewColor(props: Props & ViewProps)
   {
+    if(props.invisible) return Colors.transparent;
     return props.bg ? Colors.backgroundPrimary : Colors.backgroundSecondary;
   }
 }

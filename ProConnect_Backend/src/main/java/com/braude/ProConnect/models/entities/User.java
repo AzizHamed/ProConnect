@@ -40,6 +40,10 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
+    private double rating=0;
+
+    private int experience=0;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -55,6 +59,14 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
+
+    private String photoUrl;
+
+//    @OneToMany()
+//    @JoinTable(name = "user_professions",
+//            joinColumns = @JoinColumn(name = "user_id" ),
+//            inverseJoinColumns = @JoinColumn(name = "profession-id"))
+//    private List<Profession> professions;
 
     //private List<User> workers;
 
