@@ -1,6 +1,10 @@
 # ProConnect
 
-## Temporary Links (the final files will be uploaded to the repository soon)
+## Phase B
+
+_In Progress_
+
+## Phase A
 
 [Project Book](https://docs.google.com/document/d/e/2PACX-1vTw8gmbY5O7UTnwApPHqGgHrEaODn19NHAIfjJUaqGLbIf0lUPpZU_eH7TF3-wf84EBjkyuLS4HmNHl/pub)
 
