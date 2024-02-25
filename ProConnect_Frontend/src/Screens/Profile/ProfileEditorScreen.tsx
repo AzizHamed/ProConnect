@@ -60,7 +60,7 @@ const ProfileEditorScreen: React.FC = () =>
   }
   if(user?.accountStatus === 'SETUP')
   {
-    navigation.dispatch(DrawerActions.closeDrawer());
+   // navigation.dispatch(DrawerActions.closeDrawer());
   }
 
   return (

@@ -6,14 +6,19 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
 import JobsList from "../Features/Jobs/JobsList";
 import Search from "./OldNav-TabsAndSideBars/Search";
-import Friends from "./OldNav-TabsAndSideBars/Friends";
+import Friends from "../Screens/Friends/Friends";
 import { da } from "date-fns/locale";
 import { dataLocation, dataProfessions } from "../Constants/ConstantData";
 import ProfessionalSearcPage from "./OldNav-TabsAndSideBars/ProfessionalSearchPage";
-import PersonsPage from "./OldNav-TabsAndSideBars/PersonsPage";
+import PersonsPage from "../Features/Persons/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
 import { useDispatch } from "react-redux";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import { dataProfessions1 } from "../Constants/Values";
+import HomePage from "../Screens/HomePage/HomePage";
+import Requests from "./OldNav-TabsAndSideBars/Requests";
+import PersonsChat from "../Screens/Chat/PersonsChat";
+import HomeScreen from "../Screens/HomeScreen";
 
 export type MainTabParamList = {
   Home: undefined;
@@ -22,6 +27,8 @@ export type MainTabParamList = {
   Search: {label : string , value : string}[];
   Friends: undefined;
   Post: undefined;
+  Chat : undefined
+  Jobs : undefined
 };
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
@@ -35,15 +42,11 @@ export const MainTabScreen: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  function renderSearchPage(){
-    return (
-      <MainTab.Screen
-      name="Search"
-      component={Search}        
-      options={{ headerShown: false }}
-    />
-    )
-  }
+  // function renderSearchPage(){
+  //   return (
+    
+  //   )
+  // }
   return (
     
     <MainTab.Navigator
@@ -53,16 +56,19 @@ export const MainTabScreen: React.FC = () => {
 
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline"; // Replace with the name of your home icon
-          } else if (route.name === "Search") {
-            iconName = focused ? "search" : "search-outline"; // Replace with the name of your settings icon
+          } else if (route.name === "Chat") {
+            iconName = focused ? "chatbubble" : "chatbubble-outline"; // Replace with the name of your settings icon
           } else if (route.name == "Friends") {
             iconName = focused ? "people" : "people-outline";
           } else if (route.name == "Post") {
             iconName = focused ? "share" : "share-outline";
           }
+          else if (route.name == "Jobs") {
+            iconName = focused ? "share-social" : "share-social-outline";
+          }
 
           // You can customize the icon further if needed
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={Colors.$backgroundDarkElevated} />;
         },
 
         tabBarActiveTintColor: "#141414", // Color of the active
@@ -81,11 +87,27 @@ export const MainTabScreen: React.FC = () => {
     >
       <MainTab.Screen
         name="Home"
-        component={JobsList}
+        component={HomePage}
         options={{ headerShown: false }}
       />
-     {renderSearchPage()}
-      <MainTab.Screen
+       <MainTab.Screen
+      name="Chat"
+      component={PersonsChat}        
+      options={{ headerShown: false }} 
+
+    
+      
+      
+    
+    />
+
+    <MainTab.Screen 
+
+    name="Jobs"
+    component={JobsList}
+    options={{ headerShown: false }} 
+    />
+      {/* <MainTab.Screen
         name="Friends"
         options={{ headerShown: false }} listeners={{
           tabPress: (e) => {
@@ -95,7 +117,7 @@ export const MainTabScreen: React.FC = () => {
           
       {(props) => <PersonsPage   />}
 
-</MainTab.Screen>
+</MainTab.Screen> */}
       <MainTab.Screen
         name="Post"
         component={SettingsScreen}

@@ -6,12 +6,13 @@ import { getAuth, initializeAuth,
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Platform } from "react-native";
+import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyAlCHhoL3JTmOp2l-0D2cp2vS2uuTJKiys",
   authDomain: "proconnect-6173c.firebaseapp.com",
   projectId: "proconnect-6173c",
@@ -20,6 +21,7 @@ const firebaseConfig = {
   appId: "1:429902246683:web:ff3d77dbfa6b884bc9d9be",
   measurementId: "G-DP6PW6YH41"
 };
+
 const isWeb: boolean = Platform.OS === "web";
 
 // Initialize Firebase
@@ -81,3 +83,10 @@ export const updateUserEmail = (email: string) => {
 }
 
 export const firebaseUser = webAuth.currentUser;
+
+
+///Firestore beginning
+
+export const database = getFirestore();
+
+export const auth = getAuth();

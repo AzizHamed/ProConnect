@@ -26,8 +26,8 @@ public class ProfessionController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Profession> createService(String name, String description) {
-        Profession profession = professionService.addProfessions(name, description);
+    public ResponseEntity<Profession> createService(String name, String description,String svg) {
+        Profession profession = professionService.addProfessions(name, description,svg);
         return new ResponseEntity<>(profession, HttpStatus.OK);
 
     }

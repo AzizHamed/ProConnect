@@ -22,10 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    private final ProfessionService professionService;
+
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository,ProfessionService professionService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.professionService = professionService;
     }
 
     public static User getAuthorizedUser() {
@@ -99,4 +102,16 @@ public class UserService {
         user = userRepository.save(user);
         return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles());
     }
+
+    public int getAllUsersNumber() {
+        return userRepository.findAll().size();
+    }
+
+//    public void addProfession(String userId, String professionName) {
+//        User user = userRepository.findById(userId).get();
+//        user.getProfessions().add(professionService.getProfessionByName(professionName));
+//        userRepository.save(user);
+//    }
+
+
 }
