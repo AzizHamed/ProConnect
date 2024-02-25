@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -33,6 +33,7 @@ const SignInScreen = () => {
   // Auth state
   const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const passwordRef = useRef(null);
 
   useEffect(() => {
     setupAuthStateListener(setIsLoadingAuthState, dispatch, navigation);
@@ -98,6 +99,10 @@ const SignInScreen = () => {
                 required: "Email is required",
                 pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
               }}
+              returnKeyType='next'
+              keyboardType='email-address'
+              textContentType='emailAddress'
+              onSubmitEditing={() => passwordRef.current?.focus()}
             />
 
             <ProTextInput
@@ -112,6 +117,8 @@ const SignInScreen = () => {
                   message: "Password should be minimum 3 characters long",
                 },
               }}
+              textContentType="password"
+              ref={passwordRef}
             />
 
             <ProButton
@@ -125,7 +132,7 @@ const SignInScreen = () => {
             />
 
             <ProButton
-              text="Don't have an account? Create one"
+              text="Don't have an account?"
               onPress={onSignUpPress}
             />
           </View>

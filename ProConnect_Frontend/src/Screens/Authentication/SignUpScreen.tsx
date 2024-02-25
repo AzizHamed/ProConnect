@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -31,7 +31,8 @@ const SignUpScreen: React.FC = () => {
   const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const [createUser] = useCreateUserMutation();
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
 
 
   const onRegisterPressed = async (data: any) => {
@@ -83,6 +84,10 @@ const SignUpScreen: React.FC = () => {
                   required: "Email is required",
                   pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
                 }}
+                returnKeyType='next'
+                keyboardType='email-address'
+                textContentType='emailAddress'
+                onSubmitEditing={() => passwordRef.current?.focus()}
               />
               <ProTextInput
                 name="password"
@@ -96,6 +101,10 @@ const SignUpScreen: React.FC = () => {
                     message: "Password should be at least 8 characters long",
                   },
                 }}
+                returnKeyType='next'
+                textContentType="password"
+                onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                ref={passwordRef}
               />
               <ProTextInput
                 name="password-repeat"
@@ -105,6 +114,8 @@ const SignUpScreen: React.FC = () => {
                 rules={{
                   validate: (value) => value === pwd || "Password do not match",
                 }}
+                textContentType="password"
+                ref={confirmPasswordRef}
               />
 
               <ProButton
