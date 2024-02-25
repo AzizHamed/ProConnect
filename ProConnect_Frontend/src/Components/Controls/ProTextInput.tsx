@@ -27,7 +27,9 @@ const ProTextInput = React.forwardRef<TextInput, InputProps & TextInputProps>(({
   const isWeb = Platform.OS === 'web';
   const width = customWidthValues(webWidth, mobileWidth);
   const flexShrinkValue = flexShrink || false;
-  return (
+  const height = rest.numberOfLines ? 45 * rest.numberOfLines : 45;
+  const textAlignVertical = rest.numberOfLines ? 'top' : 'center'
+  return ( 
     <Controller
       control={control} defaultValue={''}
       name={name}
@@ -38,7 +40,7 @@ const ProTextInput = React.forwardRef<TextInput, InputProps & TextInputProps>(({
           <View
             style={[
               styles.container,
-              {borderColor: error ?  Colors.failure : '#e8e8e8'}
+              {borderColor: error ?  Colors.failure : '#e8e8e8', height: height,}
             ]}>
             <TextInput
               {...rest}
@@ -49,6 +51,7 @@ const ProTextInput = React.forwardRef<TextInput, InputProps & TextInputProps>(({
               placeholder={rest.placeholder}
               style={[styles.input, (isWeb ? {outlineStyle: 'none'}: {})]}
               blurOnSubmit={false}
+              textAlignVertical={textAlignVertical}
               />
           </View>
             <Text style={{color: Colors.failure, alignSelf: 'stretch'}}>{error?.message || ' '}</Text>
@@ -63,11 +66,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     width: '100%',
-    height: 45,
     borderColor: '#e8e8e8',
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
+    padding: 10,
     marginVertical: 5,
   },
   input: {

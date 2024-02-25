@@ -10,6 +10,7 @@ import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.repositories.*;
+import com.braude.ProConnect.requests.CreateJobRequest;
 import com.braude.ProConnect.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Service
 public class JobService {
@@ -29,11 +29,11 @@ public class JobService {
     private final UserService userService;
     private final PropertyService propertyService;
     private final CommentRepository commentRepository;
-
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public JobService(JobRepository jobRepository, JobRepositoryPaging jobRepositoryPaging, JobProposalRepository jobProposalRepository,
-                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository) {
+                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository, AuthenticationService authenticationService) {
         this.jobRepository = jobRepository;
         this.jobProposalRepository = jobProposalRepository;
         this.jobRepositoryPaging = jobRepositoryPaging;
@@ -42,13 +42,13 @@ public class JobService {
         this.propertyService = propertyService;
         this.userService = userService;
         this.commentRepository = commentRepository;
+        this.authenticationService = authenticationService;
     }
 
-    public Job postJob(Job job){
-        User user = userService.getUser(job.getOwner().getId());
-        Property property = propertyService.getProperty(job.getProperty().getId());
-        if(user == null)
-            throw new ProConnectException("Invalid user id");
+    public Job postJob(CreateJobRequest createJobRequest){
+        User user = authenticationService.getAuthorizedUser();
+        Job job = createJobRequest.getJob();
+        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
         if(property == null)
             throw new ProConnectException("Invalid property id");
         job.setOwner(user);

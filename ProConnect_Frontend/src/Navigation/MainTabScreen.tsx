@@ -14,9 +14,9 @@ import PersonsPage from "../Features/Persons/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
 import { useDispatch } from "react-redux";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import PostJobScreen from "../Features/Jobs/PostJobScreen";
 import { dataProfessions1 } from "../Constants/Values";
 import HomePage from "../Screens/HomePage/HomePage";
-import Requests from "./OldNav-TabsAndSideBars/Requests";
 import PersonsChat from "../Screens/Chat/PersonsChat";
 import HomeScreen from "../Screens/HomeScreen";
 
@@ -120,7 +120,7 @@ export const MainTabScreen: React.FC = () => {
 </MainTab.Screen> */}
       <MainTab.Screen
         name="Post"
-        component={SettingsScreen}
+        component={PostJobScreen}
         options={{ headerShown: false }}
       />
     </MainTab.Navigator>

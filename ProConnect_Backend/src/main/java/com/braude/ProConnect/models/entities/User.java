@@ -60,6 +60,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+    private String photoUrl;
 
 //    @OneToMany()
 //    @JoinTable(name = "user_professions",

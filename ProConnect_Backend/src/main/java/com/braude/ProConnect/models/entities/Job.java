@@ -54,6 +54,11 @@ public class Job {
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> likedUsers ;
 
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "job_photos", joinColumns = @JoinColumn(name = "job_id"))
+    @Column(name = "photo_url", nullable = false)
+    private List<String> photos;
+
     @OneToMany(mappedBy = "job")
     private List<Comment> commentedUsers;
 
