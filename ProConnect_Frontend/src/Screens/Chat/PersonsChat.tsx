@@ -7,11 +7,15 @@ import { useGetAllUsersQuery } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 
 
 const PersonsChat = () => {
 
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
+
+  const dispatch = useDispatch();
 
   let schatNumber = data?.length
   const {height,width} = Dimensions.get('window');
@@ -53,6 +57,7 @@ const PersonsChat = () => {
       {isSuccess && data.map((friend)=> {
         return(
           <TouchableOpacity onPress={()=>{
+            dispatch(setChat({ReceiverEmail : friend.email}))
             navigation.navigate("Chats")
           }}>
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} compnentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>

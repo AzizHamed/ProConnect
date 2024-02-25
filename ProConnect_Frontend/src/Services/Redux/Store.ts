@@ -7,10 +7,14 @@ import PreferencesReducer, { initializePreferences } from "./Slices/PreferencesS
 import { api } from "./Api";
 import { fetchUserDataMiddleware } from "./fetchUserDataMiddleware";
 import { Dropdown } from "react-native-element-dropdown";
+import Chat from "../../Screens/Chat/Chat";
+
+import ChatReducer from "./Slices/ChatSlice";
 
 export const store = configureStore({
     reducer: {
         auth: AuthReducer,
+        chat : ChatReducer,
         job: JobReducer,
         PersonsPage : PersonsPageReducer,
         dimension: DimensionReducer,

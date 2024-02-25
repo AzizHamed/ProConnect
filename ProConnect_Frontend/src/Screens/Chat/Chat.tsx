@@ -13,6 +13,8 @@ import {
   Query
 } from 'firebase/firestore';
 import { database, auth } from '../../Services/Firebase/Firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSelectedChat } from '../../Services/Redux/Slices/ChatSlice';
 
 
 interface ChatProps {
@@ -25,6 +27,8 @@ const Chat :React.FC<ChatProps> =  (props) => {
 
   const [messages, setMessages] = useState<IMessage[]>([])
 
+  const ReceiverEmail = useSelector(getSelectedChat)
+
   useEffect(() => {
    
 
@@ -36,19 +40,24 @@ const Chat :React.FC<ChatProps> =  (props) => {
     const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
 
-const user = auth.currentUser?.email;
+const user = {_id : auth.currentUser?.email};
+const ReceiverUser = {_id : ReceiverEmail};
 const results = query(
   collectionRef,
-  where('user', 'in', [user, 'aziz26@gmail.com']),
-  where('ReceiverUser', 'in', [user, 'aziz26@gmail.com']),orderBy('createdAt', 'desc')
+  where('user', 'in', [user,ReceiverUser]),
+  where('ReceiverUser', 'in', [user,ReceiverUser]),
+  orderBy('createdAt', 'desc')
 );
 
 
 
+//console.log(results)
 
-    const unsubscribe = onSnapshot(q, querySnapshot => {
-      console.log('querySnapshot unsusbscribe');
-      console.log(auth.currentUser?.email)
+
+    const unsubscribe = onSnapshot(results, querySnapshot => {
+      
+    // console.log('querySnapshot unsusbscribe');
+   console.log(querySnapshot.docs.length)
       setMessages(
         querySnapshot.docs.map(doc => ({
           _id: doc.data()._id,
@@ -79,7 +88,7 @@ const results = query(
     
   }, []);
 
-  console.log(auth.currentUser?.email)
+
   
 
   const BubbleChat = (props : Readonly<BubbleProps<IMessage>>) => {
@@ -116,7 +125,7 @@ const results = query(
         _id: auth?.currentUser?.email || ''
       },
       ReceiverUser: {
-        _id: 'hamed@gmail.com', // replace with actual receiver user ID
+        _id: ReceiverEmail, // replace with actual receiver user ID
         // include other receiver user properties here if needed
       },
     })))}
