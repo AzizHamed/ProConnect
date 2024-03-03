@@ -35,15 +35,19 @@ source={require('../../../gardner2.png')}
 style={props.imageStyle}
 />
 
-{props.compnentsUnderImage}
+{props.compnentsUnderImage} 
 
 
 
 
 </View>
 
+
+
 <View style={styles.buttonsContainer}>
-  {props.additionalComponents}
+
+{props.additionalComponents}
+ 
 </View>
 
 
@@ -62,21 +66,11 @@ export default PersonCard
 const styles = StyleSheet.create({
 
   buttonsContainer : {
-    alignItems : "flex-end",
+    alignItems : "center",
     justifyContent : "center",
   },
 
-  // CardContainer : {
-  //   backgroundColor:Colors.$backgroundDark,
-  //   // borderColor:"green",
-  //   // borderWidth:5,
-  //   width: 190,
-  //   height:220,
-  //   alignItems:"center",
-  //   justifyContent:"center",
-    
-  // }
-  //,
+
   container : {
    
   }

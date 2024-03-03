@@ -13,10 +13,13 @@ import { useGetAllUsersNumberQuery } from '../../Services/Redux/Api';
 import Carousel from 'react-native-snap-carousel';
 import ProButton from '../../Components/Controls/ProButton';
 import { ScrollView } from 'react-native-gesture-handler';
-import renderItem from '../../Components/Layout/AutoCompleteItem';
 import renderPopularProfessions from '../../Components/Layout/RenderPopularProfessionsCard';
 import { AirbnbRating } from 'react-native-ratings';
 import Swiper from 'react-native-swiper';
+import renderItem from '../../Components/Layout/AutoCompleteItem';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
 
 interface Item {
   label: string;
@@ -43,9 +46,40 @@ const HomePage = () => {
  const [dataProfessionals, setdataProfessionals] = useState([{}])
  const { data, isSuccess, isError, error, refetch } = useGetAllUsersNumberQuery();
 
+ const navigation = useNavigation();
+
+ const dispatch = useDispatch()
 
 
- 
+
+ const renderItem = ({ item }: { item: Item }) => (
+    
+  <TouchableOpacity style={styles.pressable} onPress={()=>{
+    dispatch(setPersonsPage({ComponentType : "Rating"}))
+    navigation.navigate("PersonsPage")
+  }}>
+    
+    <View style={styles.autoCompleteItemsStyle}>
+      <View style={{height:"100%", justifyContent :"center"}}>
+      <Text style={{color :"black"}}>{item?.label}</Text>
+      </View>
+
+      <View style={{height:"100%", justifyContent :"center"}}>
+
+      <SvgUri
+      width="40"
+      height="40"
+      uri={item.uri}
+      fill={Colors.$backgroundDarkActive}
+    />
+      
+      </View>
+      
+
+     
+    </View>
+  </TouchableOpacity>
+);
 
  const findData = (query : string) => {
   if (query === '') {
@@ -153,10 +187,11 @@ const data1 = findData(Query)
           <EvilIcons name='search' size={40} style={{backgroundColor : "rgb(255,255,255)"}} />
         <View style={styles.autocompleteContainer}  >
           
-          <AutocompleteInput    listContainerStyle={{marginTop : 5, left : -10  }}  data={data1}    onChangeText={(text) => setQuery(text)} value={Query}
+          <AutocompleteInput listContainerStyle={{marginTop : 5, left : -10  }}  data={data1}    onChangeText={(text) => setQuery(text)} value={Query}
           flatListProps={{
             keyExtractor: (item) => item.value ,
             renderItem:renderItem
+            
           }}
         placeholder="Enter Profession"
       />  
@@ -208,6 +243,22 @@ const data1 = findData(Query)
 export default HomePage
 
 const styles = StyleSheet.create({
+  pressable : {
+    backgroundColor : "white",
+    paddingRight : 5,
+    justifyContent : "center",
+  },
+
+  autoCompleteItemsStyle: {
+    backgroundColor : "white",
+    height : 60,
+    justifyContent : "space-between",
+    borderColor:"black",
+    borderBottomWidth :1,
+    paddingLeft:10,
+    flexDirection:"row",
+    width : "100%"
+  },
 
   ratingContainer : {
     alignItems : "center",

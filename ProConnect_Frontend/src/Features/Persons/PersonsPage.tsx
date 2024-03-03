@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View,Text, Modal, Button, TextInput, ImageStyle, ViewStyle, StyleProp } from 'react-native'
 import {ScrollView, StyleSheet} from 'react-native'
-import { useGetAllUsersQuery } from '../../Services/Redux/Api';
+import { User, useGetAllUsersQuery } from '../../Services/Redux/Api';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 
 import { TouchableOpacity } from 'react-native';
@@ -14,11 +14,16 @@ import PersonCard from './PersonCard';
 import { AirbnbRating } from 'react-native-ratings';
 import { Colors } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
-import { PersonPage1, PersonPage2 } from '../../Constants/Values';
+import { PersonPage1, PersonPage2, sort } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
 import { checkName } from '../../Constants/Functions/Functions';
+import { Dropdown } from 'react-native-element-dropdown';
+import DesignedDropDown from '../../Navigation/DesignedDropDown';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getSortBy, setSortBy } from '../../Services/Redux/Slices/SortBySlice';
 
 
 
@@ -32,12 +37,17 @@ const PersonsPage = () => {
   const [rating, setrating] = useState(0)
   const [experience, setexperience] = useState(0)
   const [location, setlocation] = useState("choose location")
+
+  const  [sortby, setsort] = useState("0")
   var textInput = "";
-  const [sortBy, setsortBy] = useState(0)
- const componentType = useSelector(getSelectedPersonsPage)
+  const componentType = useSelector(getSelectedPersonsPage)
 
-let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
+  const dispatch = useDispatch();
+
+  let sortBy = useSelector(getSortBy)
+  
+  let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
 
 
@@ -45,9 +55,20 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
     return componentType == "Rating" ? [<AirbnbRating
       defaultRating={rating}
       count={5}
-      size={20}
+      size={25}
       isDisabled={true}
-      showRating={false} />] : [<ProButton text={"Chat"} mobileWidth={180} />]
+      showRating={false}  starContainerStyle={{marginRight : 2}}/>] : [<ProButton text={"Chat"} mobileWidth={180} />]
+  }
+
+  function CheckValidation(professional: User) {
+    if (professional.rating === undefined)
+      professional.rating = 0;
+    if (professional.name.firstName === undefined || professional.name.lastName === undefined) {
+      professional.name.lastName = "aaa";
+      professional.name.firstName = "aaa";
+    }
+    if (professional.experience === undefined)
+      professional.experience = 0;
   }
 
  
@@ -62,34 +83,35 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
     
     }
 
-    const sorts = [{label : "Experience", value : 0}, {label : "Rating", value :1 }]
 
 
-  useEffect(() => {
-    
-    
-    filterProfessionals()
-    
-  }, [data])
+    useEffect(() => {
+      filterProfessionals()
+    }, [data]);
 
+
+ 
   
 
   function filterProfessionals(){
+
     setProfessionals(data?.filter((professional)=> {
      
-      if(professional.rating===undefined)
-      professional.rating = 0
-    if(professional.name.firstName===undefined || professional.name.lastName===undefined){
-      professional.name.lastName="aaa"
-    professional.name.firstName = "aaa"
+      if (professional.rating === undefined)
+      professional.rating = 0;
+    if (professional.name.firstName === undefined || professional.name.lastName === undefined) {
+      professional.name.lastName = "aaa";
+      professional.name.firstName = "aaa";
     }
-    if(professional.experience===undefined)
+    if (professional.experience === undefined)
       professional.experience = 0;
       return professional.rating >= rating && checkName(textInput,professional.name.firstName , professional.name.lastName)  && 
       professional.experience >= experience;
     
     }))
+
   }
+
 
   
 
@@ -112,6 +134,7 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
         <Text style={{color:"white", fontSize:20}}>Filters</Text>
 
           <TouchableOpacity style={styles.filterButton} onPress={()=> {
+
           setModalVisible(true);
           }}>
           <Ionicons name='filter' size={45} color={"black"}/>
@@ -121,8 +144,24 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
           
           <View style={styles.sortOrFilter}>
           <Text style={{color:"white", fontSize:20}}>Sort</Text>
+          <RNPickerSelect  
+           style={{
+        inputIOS: {
+            backgroundColor : "white",
           
-
+          
+          },
+        inputAndroid: {
+          backgroundColor : "white",
+          width: 200,
+      
+          height: 68,
+        },
+      }}  items={sort} onValueChange={(value)=>{
+           sortBy = value;
+           dispatch(setSortBy({sortBy : value}));
+           filterProfessionals();
+          }} />
           </View>
           
               
@@ -141,9 +180,7 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
         }}
       >
 
-     <ModalDesigned visibleModal={() => {
-            setModalVisible(false);
-          } } setRating={setrating} setExperience={setexperience} experience={experience} rating={rating} setLocation={setlocation} location={location} filterProfessionals={filterProfessionals } />
+     <ModalDesigned visibleModal={setModalVisible } setRating={setrating} setExperience={setexperience} experience={experience} rating={rating} setLocation={setlocation} location={location} filterProfessionals={filterProfessionals} sortBy={sortby} setSort={setsort}  />
       </Modal>
 
        
@@ -160,7 +197,43 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
      
 
-      {isSuccess && Professionals?.map( (Professional) => {
+      {isSuccess && Professionals?.slice().sort((a, b) => {
+
+      if(sortBy === "0"){
+        return 0;
+      }
+
+      if(sortBy === "1"){
+      if(a.experience ===undefined){
+        a.experience = 0;
+      }
+
+      if(b.experience ===undefined){
+        b.experience = 0;
+      }
+        if (a.experience < b.experience) return 1;
+        if (a.experience > b.experience) return -11;
+        return 0;
+      }
+
+      if(sortBy === "2"){
+      if(a.rating ===undefined){
+      a.rating = 0;
+      }
+
+       if(b.rating ===undefined){
+      b.rating = 0;
+      }
+       if (a.rating < b.rating) return 1;
+      if (a.rating > b.rating) return -1;
+      return 0;
+      }
+      
+     
+    })?.map( (Professional) => {
+        if(Professional.rating=== undefined){
+          Professional.rating = 0;
+        }
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
@@ -170,14 +243,15 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
             
               
-              ]} additionalComponents={renderComponent(Professional.rating)} cardContainerStyle={PersonPage.CardContainerStyle} />
+              ]} additionalComponents={renderComponent(Professional.rating)} cardContainerStyle={PersonPage.CardContainerStyle} containerStyle={{backgroundColor : Colors.$backgroundDark}}/>
            
            
         </TouchableOpacity>
         </View>
 
         )
-      })}
+      })
+      }
 
    
       
@@ -239,7 +313,7 @@ const styles = StyleSheet.create({
     justifyContent:"space-between",
     width:"100%",
     flexWrap:"wrap",
-    marginBottom:150,
+    marginBottom:200,
     
   },
   touchableOpacityStyle:{
@@ -252,6 +326,16 @@ const styles = StyleSheet.create({
     padding: 10,
 
   },
+
+  SortButton : {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    width:70,
+    alignItems:"center",
+    height : 68,
+  },
+
   filterButton: {
     backgroundColor: 'white',
     padding: 10,
@@ -265,5 +349,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
+  selector : {
+    backgroundColor : "white",
+
+  }
+
 
 });
+
+

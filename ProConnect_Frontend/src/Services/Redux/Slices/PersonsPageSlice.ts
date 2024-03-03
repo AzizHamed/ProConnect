@@ -3,10 +3,10 @@ import { ReactElement, ReactNode } from "react";
 import { ImageStyle, ViewStyle } from "react-native";
 
 export interface PersonsPageState {
-    ComponentType : "ProButton" | "Rating"
+    ComponentType : "ProButton" | "Rating",
 }
 const initialState: PersonsPageState = {
- ComponentType : "ProButton"
+ ComponentType : "ProButton",
 }
 
 export const PersonsSlice = createSlice({

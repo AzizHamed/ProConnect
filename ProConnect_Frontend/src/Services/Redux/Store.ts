@@ -10,13 +10,15 @@ import { Dropdown } from "react-native-element-dropdown";
 import Chat from "../../Screens/Chat/Chat";
 
 import ChatReducer from "./Slices/ChatSlice";
-
+import SortByReducer from "./Slices/SortBySlice";
 export const store = configureStore({
     reducer: {
+
         auth: AuthReducer,
         chat : ChatReducer,
         job: JobReducer,
         PersonsPage : PersonsPageReducer,
+        SortBy : SortByReducer,
         dimension: DimensionReducer,
         preferences: PreferencesReducer,
         [api.reducerPath]: api.reducer
