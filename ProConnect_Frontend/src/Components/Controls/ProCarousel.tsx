@@ -14,14 +14,17 @@ interface ProCarouselProps {
   loop?: boolean;
   displayArrows?: boolean;
   displayIndex?: boolean;
+  scrollAnimationDuration?: number;
 }
 
 const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   const carouselRef = useRef(null);
   const loop = props.loop || false;
   const width = props.width || 200;
+  const height = props.height || width;
   const displayArrows = props.displayArrows || IS_WEB();
   const displayIndex = props.displayIndex || true;
+  const scrollAnimationDuration = props.scrollAnimationDuration || 500;
   const [indexString, setIndexString] = useState<string>('0/0');
   const [isFirst, setIsFirst] = useState<boolean>(true);
   const [isLast, setIsLast] = useState<boolean>(false);
@@ -53,6 +56,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   useEffect(() => {
     setIndexString(generateIndexString());
   }, [])
+  
   return (
     <View invisible style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
       {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} disabled={isFirst} />}
@@ -63,10 +67,10 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
           <Carousel
             loop={loop}
             width={width}
-            height={width}
+            height={height}
             data={props.data}
             style={{ borderWidth: 1, borderColor: Colors.$backgroundDark, backgroundColor: Colors.backgroundSecondary, borderRadius: 5 }}
-            scrollAnimationDuration={500}
+            scrollAnimationDuration={scrollAnimationDuration}
             ref={carouselRef}
             onSnapToItem={onSnapToItem}
             renderItem={props.renderItems}
