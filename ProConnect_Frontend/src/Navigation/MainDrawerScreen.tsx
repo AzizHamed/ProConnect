@@ -82,7 +82,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
       }}>
       {/* <MainDrawer.Screen name="MainTabs" component={Tab} /> */}
 
-      <MainDrawer.Screen name="MainTabs" component={MainTabScreen}   options={{
+      <MainDrawer.Screen name="MainTabs" component={MainTabScreen}   options={{ sceneContainerStyle: { overflow: 'hidden' } ,
             drawerLabel: "Home",
             title: "Home",
             drawerIcon: () => (
