@@ -12,7 +12,6 @@ import { useViewport } from "./Hooks/useViewPort";
 const Index: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const darkTheme = useSelector(isDarkTheme);
-  const { screenWidth } = useViewport();
 
   useEffect(() => {
     dispatch(initializePreferences());
