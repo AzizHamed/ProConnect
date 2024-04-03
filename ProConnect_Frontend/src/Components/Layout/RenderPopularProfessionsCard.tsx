@@ -13,12 +13,12 @@ const renderPopularProfessions = ({ item }: { item: RenderPopularProfessionsProp
   return (
     <View style={styles.container}>
       <View style={styles.cardContainerStyle}>
-        <SVGIconContainer iconComponent={item.component} color={Colors.textPrimary} width={80} height={80}/>
-        <Text> {item.profession}</Text>
+        <SVGIconContainer iconComponent={item.component} color={Colors.textPrimary} width={100} height={100}/>
+        <Text marginT-20> {item.profession}</Text>
       </View>
       <View style={{ height: 50, alignItems: "center", justifyContent: "center" }}>
         <View>
-          <Text style={{ fontSize: 20, color: Colors.backgroundPrimary }}>{item.number} Users</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: Colors.backgroundPrimary }}>{item.number} Users</Text>
         </View>
       </View>
     </View>
