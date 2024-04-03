@@ -7,7 +7,7 @@ interface ProIconButtonProps {
     onPress: () => void;
     showAddIcon?: boolean;
     disabled?: boolean;
-
+    displayBackground?: boolean;
     materialIcon?: boolean;
     materialIconName?: keyof typeof MaterialIcons.glyphMap;
     ionicon?: boolean;
@@ -40,6 +40,7 @@ interface ProIconButtonProps {
   
   const ProIconButton: React.FC<ProIconButtonProps> = (props) => {
     const disabled = props.disabled || false;
+    const displayBackground = props.displayBackground || false;
     let IconComponent, iconName;
     if(props.materialIcon){IconComponent = MaterialIcons; iconName = props.materialIconName;}
     else if(props.ionicon){IconComponent = Ionicons; iconName = props.ioniconName;}
@@ -59,7 +60,7 @@ interface ProIconButtonProps {
 
 
   return (
-    <View style={styles.button} > 
+    <View style={[styles.button, displayBackground ? {backgroundColor: disabled ? Colors.transparent : Colors.controlBackground} : {}]} > 
       <IconComponent onPress={(e)=>{e.preventDefault(); props.onPress();}} disabled={disabled} name={iconName} size={28} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} />
       {props.showAddIcon && <MaterialIcons name="add-circle" size={14} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} style={styles.plus}/>}
     </View>
@@ -73,6 +74,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
+        borderRadius: 50,
+        zIndex: 5
     },
     plus: {
         position: 'absolute',
