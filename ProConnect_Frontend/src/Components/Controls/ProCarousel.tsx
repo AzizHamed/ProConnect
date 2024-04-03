@@ -15,6 +15,8 @@ interface ProCarouselProps {
   displayArrows?: boolean;
   displayIndex?: boolean;
   scrollAnimationDuration?: number;
+  mode?: "parallax" | "horizontal-stack" | "vertical-stack";
+  overflow?: "visible" | "hidden" | "scroll" | undefined;
 }
 
 const ProCarousel: React.FC<ProCarouselProps> = (props) => {
@@ -25,6 +27,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   const displayArrows = props.displayArrows || IS_WEB();
   const displayIndex = props.displayIndex || true;
   const scrollAnimationDuration = props.scrollAnimationDuration || 500;
+  const mode = props.mode || 'parallax';
   const [indexString, setIndexString] = useState<string>('0/0');
   const [isFirst, setIsFirst] = useState<boolean>(true);
   const [isLast, setIsLast] = useState<boolean>(false);
@@ -59,26 +62,28 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   
   return (
     <View invisible style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} disabled={isFirst} />}
+      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={handlePrev} disabled={isFirst} displayBackground/>}
       <View style={{ flexDirection: 'column' }}>
         {/* Stop parent clicks from triggering when clicking on the carousel items */}
-        <TouchableOpacity  onPress={() => { props.onPress?.(); }} style={{margin: 0, padding: 0}}> 
+        {/* <TouchableOpacity  onPress={() => { props.onPress?.(); }} style={{margin: 0, padding: 0}}>  */}
 
           <Carousel
             loop={loop}
             width={width}
             height={height}
             data={props.data}
-            style={{ borderWidth: 1, borderColor: Colors.$backgroundDark, backgroundColor: Colors.backgroundSecondary, borderRadius: 5 }}
+            style={{ overflow: props.overflow, backgroundColor: Colors.backgroundSecondary, borderRadius: 5 }}
             scrollAnimationDuration={scrollAnimationDuration}
             ref={carouselRef}
             onSnapToItem={onSnapToItem}
             renderItem={props.renderItems}
+            mode={mode}
+            modeConfig={{parallaxScrollingOffset: 50, parallaxAdjacentItemScale: 0.6}}
           />
-        </TouchableOpacity >
+        {/* </TouchableOpacity > */}
         {displayIndex && <Text textAlign='center' style={{ alignSelf: 'center' }}>{indexString}</Text>}
       </View>
-      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={handleNext} disabled={isLast} />}
+      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={handleNext} disabled={isLast} displayBackground/>}
     </View>
   );
 
