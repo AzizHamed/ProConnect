@@ -13,6 +13,8 @@ export type TextProps = {
   h2?: boolean,
   h3?: boolean,
   h4?: boolean,
+  h4l?: boolean,
+  h5?: boolean,
   t2?: boolean,
 }
 export type ViewProps = {
@@ -62,8 +64,10 @@ export function initTheme() {
     h1: { fontSize: 42, fontWeight: "heavy", lineHeight: 64 },
     h2: { fontSize: 42, fontWeight: "300", lineHeight: 64 },
     h3: { fontSize: 30, fontWeight: "heavy", lineHeight: 40 },
-    h4: { fontSize: 30, fontWeight: "300", lineHeight: 40 },
-    body: { fontSize: 16, fontWeight: "400", lineHeight: 18 },
+    h4: { fontSize: 30, fontWeight: "heavy", lineHeight: 40 },
+    h4l: { fontSize: 30, fontWeight: "300", lineHeight: 40 },
+    h5: { fontSize: 12, fontWeight: "heavy", lineHeight: 32 },
+    body: { fontSize: 18, fontWeight: "400", lineHeight: 18 },
   });
 
   Spacings.loadSpacings({
@@ -85,6 +89,8 @@ export function initTheme() {
       h2: props.h2,
       h3: props.h3,
       h4: props.h4,
+      h5: props.h5,
+      h4l: props.h4l,
       body: !isHeader(props),
       "marginV-5": true,
       color: (props.t2 !== undefined && props.t2) ? Colors.textSecondary : Colors.textPrimary
