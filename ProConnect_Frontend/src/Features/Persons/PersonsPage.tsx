@@ -164,7 +164,7 @@ let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
-          <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
+          <PersonCard key={Professional.id} user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} componentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
               <Text style={{ color: "white" }}>Software Engineering</Text>,
               <Text style={{ color: "white" }}>{Professional.experience} years experience</Text>
 
