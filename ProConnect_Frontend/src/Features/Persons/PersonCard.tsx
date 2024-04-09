@@ -1,5 +1,5 @@
 import React, { Component, ReactElement } from 'react'
-import { View,Image,Text, StyleSheet, ImageStyle, StyleProp, ViewStyle, Dimensions } from 'react-native'
+import { View, Image, Text, StyleSheet, ImageStyle, StyleProp, ViewStyle, Dimensions } from 'react-native'
 import { User } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import { Rating } from 'react-native-ratings';
@@ -7,53 +7,34 @@ import { AirbnbRating } from 'react-native-elements';
 import ProButton from '../../Components/Controls/ProButton';
 
 interface PersonCardProps {
-  imageurl :string;
-  imageStyle : ImageStyle
-  user : User;
-  compnentsUnderImage : React.ReactNode[]
-  additionalComponents ?: ReactElement[]
-  cardContainerStyle : StyleProp<ViewStyle>
-  containerStyle ?:  StyleProp<ViewStyle>
-  
-  
+  imageurl: string;
+  imageStyle: ImageStyle
+  user: User;
+  componentsUnderImage: React.ReactNode[]
+  additionalComponents?: ReactElement[]
+  cardContainerStyle: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>
+
+
 }
 
-const PersonCard :React.FC<PersonCardProps> =  (props) => {
-
-  const {height, width} = Dimensions.get('window')
-
-
-  
+const PersonCard: React.FC<PersonCardProps> = (props) => {
+  const { height, width } = Dimensions.get('window')
   return (
-  <View style={props?.containerStyle}>
-
-<View style={props.cardContainerStyle}>
-
-      
-<Image
-source={require('../../../gardner2.png')}
-style={props.imageStyle}
-/>
-
-{props.compnentsUnderImage}
-
-
-
-
-</View>
-
-<View style={styles.buttonsContainer}>
-  {props.additionalComponents}
-</View>
-
-
-
-
-</View>
-
-    
+    <View style={props?.containerStyle}>
+      <View style={props.cardContainerStyle}>
+        <Image
+          source={require('../../../gardner2.png')}
+          style={props.imageStyle}
+        />
+        {props.componentsUnderImage}
+      </View>
+      <View style={styles.buttonsContainer}>
+        {props.additionalComponents}
+      </View>
+    </View>
   )
-  }
+}
 
 
 
@@ -61,9 +42,9 @@ export default PersonCard
 
 const styles = StyleSheet.create({
 
-  buttonsContainer : {
-    alignItems : "flex-end",
-    justifyContent : "center",
+  buttonsContainer: {
+    alignItems: "flex-end",
+    justifyContent: "center",
   },
 
   // CardContainer : {
@@ -74,14 +55,11 @@ const styles = StyleSheet.create({
   //   height:220,
   //   alignItems:"center",
   //   justifyContent:"center",
-    
+
   // }
   //,
-  container : {
-   
+  container: {
+
   }
 
 })
-
-
-  
