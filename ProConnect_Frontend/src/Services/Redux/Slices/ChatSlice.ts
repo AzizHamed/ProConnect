@@ -3,10 +3,12 @@ import { ReactElement, ReactNode } from "react";
 import { ImageStyle, ViewStyle } from "react-native";
 
 export interface ChatState {
-    ReceiverEmail : string
+    ReceiverEmail : string,
+    openModal  :boolean
 }
 const initialState: ChatState = {
- ReceiverEmail : ""
+ ReceiverEmail : "",
+ openModal : false
 }
 
 export const ChatSlice = createSlice({
@@ -16,16 +18,21 @@ export const ChatSlice = createSlice({
        
         setChat: (state, action: PayloadAction<ChatState>) => {
             state.ReceiverEmail = action.payload.ReceiverEmail
+            state.openModal = action.payload.openModal
         },
     },
     selectors:{
-        getSelectedChat: (state) =>{
+        getSelectedChatEmail: (state) =>{
             return state.ReceiverEmail
+        },
+
+        getSelectedChatModal: (state) =>{
+            return state.openModal
         },
         
     },
 })
 
 export const { setChat } = ChatSlice.actions
-export const { getSelectedChat } = ChatSlice.selectors
+export const { getSelectedChatEmail, getSelectedChatModal } = ChatSlice.selectors
 export default ChatSlice.reducer

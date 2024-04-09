@@ -13,7 +13,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import PersonCard from './PersonCard';
 import { AirbnbRating } from 'react-native-ratings';
 import { Colors } from 'react-native-ui-lib';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
 import { PersonPage1, PersonPage2, sort } from '../../Constants/Values';
@@ -24,6 +24,7 @@ import DesignedDropDown from '../../Navigation/DesignedDropDown';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getSortBy, setSortBy } from '../../Services/Redux/Slices/SortBySlice';
+import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 
 
 
@@ -48,6 +49,8 @@ const PersonsPage = () => {
   let sortBy = useSelector(getSortBy)
   
   let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
+
+  const navigation = useNavigation();
 
 
 
@@ -236,7 +239,10 @@ const PersonsPage = () => {
         }
         return(
           <View>
-        <TouchableOpacity style={styles.touchableOpacityStyle}>
+        <TouchableOpacity style={styles.touchableOpacityStyle} onPress={()=>{
+          dispatch(setChat({ReceiverEmail : Professional.email , openModal : true}))
+          navigation.navigate("Chats")
+        }}>
           <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
               <Text style={{ color: "white" }}>Software Engineering</Text>,
               <Text style={{ color: "white" }}>{Professional.experience} years experience</Text>

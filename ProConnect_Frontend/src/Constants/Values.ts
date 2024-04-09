@@ -139,6 +139,12 @@ export const popularProfessions = [
 {profession : "Tiler" , number : 60000, uri : "https://www.svgrepo.com/show/393289/garden-centre.svg"}
 ]
 
+
+export const RequestTypes = [
+  {label : "Job offer", value : 1},
+  {label : "Job Apply", value : 2}
+]
+
 export interface IMessage {
   _id: string | number
   text: string
