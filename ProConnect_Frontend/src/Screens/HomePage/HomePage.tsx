@@ -188,7 +188,6 @@ const styles = StyleSheet.create({
   },
 
   popularProfessionsContainer: {
-    paddingLeft: 15,
     zIndex: -2,
     textAlign: 'center',
     marginBottom: 40

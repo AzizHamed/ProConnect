@@ -42,7 +42,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   const parallaxScrollingOffset = props.parallaxScrollingOffset || 50;
   const leftArrowStyle  : StyleProp<ViewStyle> = props.arrowOffset  !== undefined ? {position: "absolute", left: -props.arrowOffset} : {};
   const rightArrowStyle : StyleProp<ViewStyle>  = props.arrowOffset !== undefined ? {position: "absolute", right: -props.arrowOffset} : {};
-  const WrapperElement = (props.blockClicks || true) ? TouchableOpacity : View;
+
   const onSnapToItem = (index: number) => {
     if (props.onSnapToItem)
       props.onSnapToItem(index);
