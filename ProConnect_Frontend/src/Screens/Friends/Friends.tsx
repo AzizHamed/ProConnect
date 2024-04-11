@@ -51,7 +51,7 @@ const Friends : React.FC<FriendsProps> = (props) => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle}>
-          <PersonCard user={friend} imageurl={'../../../gardner2.png'} imageStyle={styles.photoStyle} compnentsUnderImage={[<Text style={{ color: "white" }}> {friend.name.firstName} {friend.name.lastName}</Text>,
+          <PersonCard user={friend} imageurl={'../../../gardner2.png'} imageStyle={styles.photoStyle} componentsUnderImage={[<Text style={{ color: "white" }}> {friend.name.firstName} {friend.name.lastName}</Text>,
 
               <Text style={{ color: "white" }}>Software Engineering</Text>
               ]} additionalComponents={[<ProButton text={"Chat"} mobileWidth={180} />]} cardContainerStyle={styles.CardContainer}/>

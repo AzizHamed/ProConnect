@@ -2,7 +2,13 @@ import { ImageStyle, StyleProp, ViewStyle,Animated, Platform } from "react-nativ
 import { Colors } from "react-native-ui-lib";
 import { WidthValues } from "./Types";
 import { User } from "../Services/Redux/Api";
-import { QuickReplies } from "react-native-gifted-chat";
+import CarpenterIcon from "../SVG/Professions/CarpenterIcon";
+import ElectricianIcon from "../SVG/Professions/ElectricianIcon";
+import ConstructorIcon from "../SVG/Professions/ConstructorIcon";
+import PainterIcon from "../SVG/Professions/PainterIcon";
+import PlumberIcon from "../SVG/Professions/PlumberIcon";
+import AirConditioningIcon from "../SVG/Professions/AirConditioningIcon";
+import GardenerIcon from "../SVG/Professions/GardenerIcon";
 
 export const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -105,6 +111,7 @@ export  const dataProfessions1 = [
  
 ]
 
+
 export const sort = [
   {label : "Experience" , value : '1'},
   {label : "Rating" , value : '2'},
@@ -112,13 +119,14 @@ export const sort = [
   {label : "Searches" , value : '4'}
 ]
 
-export   const dataProfessions2 = [
-  { label: 'Carpetner', value:'1', uri : 'https://www.svgrepo.com/show/103746/carpenter.svg' },
-  { label: 'Painter', value: '2', uri : 'https://www.svgrepo.com/show/366776/painter.svg' },
-  { label: 'Constructor', value: '3', uri : 'https://www.svgrepo.com/show/65391/constructor-with-hard-hat-protection-on-his-head.svg'},
-  { label: 'Electrical', value: '4', uri : 'https://www.svgrepo.com/show/308571/electrical-repair-kit.svg' },
-  { label: 'Security', value: '5', uri : 'https://www.svgrepo.com/show/449417/security-camera.svg' },
-  { label: 'Gardner', value: '6' , uri : 'https://www.svgrepo.com/show/393289/garden-centre.svg'},
+
+export const dataProfessions2 = [
+  { label: 'Carpetner', value:'1', uri : 'https://www.svgrepo.com/show/103746/carpenter.svg', component: CarpenterIcon },
+  { label: 'Painter', value: '2', uri : 'https://www.svgrepo.com/show/366776/painter.svg' , component: PainterIcon},
+  { label: 'Constructor', value: '3', uri : 'https://www.svgrepo.com/show/65391/constructor-with-hard-hat-protection-on-his-head.svg', component: ConstructorIcon},
+  { label: 'Electrical', value: '4', uri : 'https://www.svgrepo.com/show/308571/electrical-repair-kit.svg', component: ElectricianIcon },
+  { label: 'Security', value: '5', uri : 'https://www.svgrepo.com/show/449417/security-camera.svg', component: ElectricianIcon },
+  { label: 'Gardner', value: '6' , uri : 'https://www.svgrepo.com/show/393289/garden-centre.svg', component: GardenerIcon },
 ]
 
 
@@ -130,14 +138,14 @@ export const articles = [{title : "11 Construction Industry Trends for 2020 – 
 
 
 export const popularProfessions = [ 
-{profession : "Carpenter" , number : 10000, uri : "https://www.svgrepo.com/show/103746/carpenter.svg"},
-{profession : "Electrical" , number : 10000, uri : "https://www.svgrepo.com/show/308571/electrical-repair-kit.svg"},
-{profession : "Constructor" , number : 50000, uri : "https://www.svgrepo.com/show/65391/constructor-with-hard-hat-protection-on-his-head.svg"},
-{profession : "Painter" , number : 75000, uri : "https://www.svgrepo.com/show/366776/painter.svg"},
-{profession : "Plumber" , number : 10000,uri : "https://www.svgrepo.com/show/65391/constructor-with-hard-hat-protection-on-his-head.svg"},
-{profession : "Air Conditioner" , number : 20000, uri : "https://www.svgrepo.com/show/488043/air-conditioner.svg"},
-{profession : "Tiler" , number : 60000, uri : "https://www.svgrepo.com/show/393289/garden-centre.svg"}
-]
+  { profession: "Carpenter", number: 10000, component: CarpenterIcon },
+  { profession: "Electrical", number: 10000, component: ElectricianIcon },
+  { profession: "Constructor", number: 50000, component: ConstructorIcon },
+  { profession: "Painter", number: 75000, component: PainterIcon },
+  { profession: "Plumber", number: 10000, component: PlumberIcon },
+  { profession: "Air Conditioner", number: 20000, component: AirConditioningIcon },
+  { profession: "Gardener", number: 60000, component: GardenerIcon },
+];
 
 
 export const RequestTypes = [

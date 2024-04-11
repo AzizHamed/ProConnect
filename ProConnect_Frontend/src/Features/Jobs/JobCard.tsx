@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { selectJob } from "../../Services/Redux/Slices/JobSlice"
 import { Job } from "../../Services/Redux/Api";
 import ProCarousel from "../../Components/Controls/ProCarousel";
+import { IS_WEB } from "../../Constants/Values";
 
 interface JobCardProps {
   job: Job;
@@ -24,6 +25,7 @@ interface JobCardProps {
 
 // TODO: User picture, like comment share buttons
 function generateCardChildren(job: Job) {
+  if(IS_WEB())
   return (
     <View>
       <View row>
@@ -39,6 +41,24 @@ function generateCardChildren(job: Job) {
           }} marginT-20 />}
         </View>
       </View>
+      <Text t2 textAlign="right" marginT-20 style={styles.date}>
+        {formatDateString(job.datePosted)}
+      </Text>
+    </View>
+  );
+  return (
+    <View>
+        <View flex-1 flexG>
+          <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
+          <Text ellipsizeMode="tail" numberOfLines={3}>
+            {job.description}
+          </Text>
+        </View>
+        <View flexS>
+          {job.photos && job.photos.length > 0 && <ProCarousel displayArrows data={job.photos} renderItems={({ item, index }) => {
+            return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+          }} marginT-20 />}
+        </View>
       <Text t2 textAlign="right" marginT-20 style={styles.date}>
         {formatDateString(job.datePosted)}
       </Text>

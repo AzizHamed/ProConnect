@@ -50,7 +50,7 @@ const PersonsChat = () => {
 
          
 
-          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} compnentsUnderImage={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} cardContainerStyle={style.cardContainer} />
+          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} cardContainerStyle={style.cardContainer} />
         )
         
       })}
@@ -65,7 +65,8 @@ const PersonsChat = () => {
             dispatch(setChat({ReceiverEmail : friend.email , openModal : false}))
             navigation.navigate("Chats")
           }} >
-          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} compnentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
+          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
+
 
           </TouchableOpacity>
         )

@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Button, Colors, Text } from 'react-native-ui-lib';
 import { Ionicons, MaterialIcons, AntDesign, Entypo, EvilIcons, Feather, FontAwesome, FontAwesome5, Fontisto, Foundation, MaterialCommunityIcons, Octicons, SimpleLineIcons, Zocial } from '@expo/vector-icons';
 
 interface ProIconButtonProps {
+    style?: StyleProp<ViewStyle>;
     onPress: () => void;
     showAddIcon?: boolean;
     disabled?: boolean;
-
+    displayBackground?: boolean;
     materialIcon?: boolean;
     materialIconName?: keyof typeof MaterialIcons.glyphMap;
     ionicon?: boolean;
@@ -40,6 +41,7 @@ interface ProIconButtonProps {
   
   const ProIconButton: React.FC<ProIconButtonProps> = (props) => {
     const disabled = props.disabled || false;
+    const displayBackground = props.displayBackground || false;
     let IconComponent, iconName;
     if(props.materialIcon){IconComponent = MaterialIcons; iconName = props.materialIconName;}
     else if(props.ionicon){IconComponent = Ionicons; iconName = props.ioniconName;}
@@ -57,9 +59,9 @@ interface ProIconButtonProps {
     else if(props.zocial){IconComponent = Zocial; iconName = props.zocialName;}
     else return <Text>Invalid Icon</Text>;
 
-
+    const style = [styles.button, displayBackground ? {backgroundColor: disabled ? Colors.transparent : Colors.controlBackground}: {}, props.style || {}];
   return (
-    <View style={styles.button} > 
+    <View style={style} > 
       <IconComponent onPress={(e)=>{e.preventDefault(); props.onPress();}} disabled={disabled} name={iconName} size={28} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} />
       {props.showAddIcon && <MaterialIcons name="add-circle" size={14} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} style={styles.plus}/>}
     </View>
@@ -73,6 +75,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
+        borderRadius: 50,
+        zIndex: 5
     },
     plus: {
         position: 'absolute',

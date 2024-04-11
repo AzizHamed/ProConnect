@@ -21,13 +21,13 @@ import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
-  role : string
+  role: string
 }
 
 
 export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
   const dataProfessions = [
-    { label: 'Carpenter', value:'1' },
+    { label: 'Carpenter', value: '1' },
     { label: 'Painter', value: '2' },
     { label: 'Constructor', value: '3' },
     { label: 'Pavor', value: '4' },
@@ -41,21 +41,21 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
   const navigation = useNavigation();
   const currentWindowWidth = useSelector(getWindowWidth);
   const user = useSelector(getUserAccount);
-  if(user === undefined || user === null ){
+  if (user === undefined || user === null) {
     //return <BackgroundView children={<ProLoading/>}/>
   }
-  else if(user.accountStatus === 'SETUP'){
+  else if (user.accountStatus === 'SETUP') {
     return <ProfileEditorScreen></ProfileEditorScreen>
   }
 
   const backButton = () => { return <Ionicons size={24} style={{ marginLeft: 10 }} name="arrow-back" onPress={navigation.goBack} />; };
-  
+
   return (
-    <MainDrawer.Navigator 
-    drawerContent={(props) => <CustomDrawerContent {...props}
-    state={props.state} navigation={props.navigation} descriptors={props.descriptors}
-     />}
-     screenOptions={{
+    <MainDrawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props}
+        state={props.state} navigation={props.navigation} descriptors={props.descriptors}
+      />}
+      screenOptions={{
         drawerStyle: {
           backgroundColor: "#fff",
           width: 250
@@ -66,61 +66,63 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
         headerTintColor: "black",
         headerTitleStyle: {
           fontWeight: "bold",
-          color:"black"
+          color: "black"
         },
         drawerLabelStyle: {
           color: "#111"
         },
-        headerLeft: ( tintColor?: string | undefined, pressColor?: string | undefined, pressOpacity?: number | undefined )=>{
-          return isWeb(currentWindowWidth) 
-          ? <></> 
-          : <View>
+        headerLeft: (tintColor?: string | undefined, pressColor?: string | undefined, pressOpacity?: number | undefined) => {
+          return isWeb(currentWindowWidth)
+            ? <></>
+            : <View>
               <DrawerToggleButton></DrawerToggleButton>
-          </View>;
+            </View>;
         },
         drawerType: getDrawerType(currentWindowWidth),
       }}>
       {/* <MainDrawer.Screen name="MainTabs" component={Tab} /> */}
 
-      <MainDrawer.Screen name="MainTabs" component={MainTabScreen}   options={{
-            drawerLabel: "Home",
-            title: "Home",
-            drawerIcon: () => (
-              <SimpleLineIcons name="home" size={20} color="#808080" />
-            )
-          }}
-      
+      <MainDrawer.Screen name="MainTabs" component={MainTabScreen} options={{
+        sceneContainerStyle: { overflow: 'hidden' },
+        drawerLabel: "Home",
+        title: "Home",
+        drawerIcon: () => (
+          <SimpleLineIcons name="home" size={20} color="#808080" />
+        )
+      }}
+
       />
 
-<MainDrawer.Screen
-          name="people"
-          options={{
-            drawerLabel: "Friends",
-            title: "people",
-            drawerIcon: () => (
-              <Ionicons name="people-outline" size={20} color="#808080" />
-            )
-          }}
-          listeners={{
-            drawerItemPress : (e)=>{
-              dispatch(setPersonsPage({ComponentType : "ProButton"}))
-            }
-          }}
-          component={SearchTabNavigator}
-          initialParams={dataProfessions}
-          
-        />
+      <MainDrawer.Screen
+        name="people"
+        options={{
+          drawerLabel: "Friends",
+          title: "people",
+          drawerIcon: () => (
+            <Ionicons name="people-outline" size={20} color="#808080" />
+          )
+        }}
+        listeners={{
+          drawerItemPress: (e) => {
+            dispatch(setPersonsPage({ ComponentType: "ProButton" }))
+          }
+        }}
+        component={SearchTabNavigator}
+        initialParams={dataProfessions}
+
+      />
       {/* <MainDrawer.Screen name="test" component={JobsList} /> */}
 
-      
+
       <MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
-        
+
         drawerIcon: () => (
-              <Ionicons name="settings-outline" size={20} color="#808080" />
-            )}} />
-      <MainDrawer.Screen name="Profile" component={ProfileViewScreen}/>
-      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle:{display:"none"} }}/>
-      <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle:{display:"none"}, headerLeft:backButton }}/>
+          <Ionicons name="settings-outline" size={20} color="#808080" />
+        )
+      }} />
+      <MainDrawer.Screen name="Profile" component={ProfileViewScreen} />
+      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" } }} />
+      <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />
     </MainDrawer.Navigator>
   );
 };
