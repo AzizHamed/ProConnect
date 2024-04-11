@@ -77,7 +77,7 @@ const SignInScreen = () => {
     )
   }
   return (
-    <BackgroundView
+    <BackgroundView hasSafeAreaView
       children={
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.root} padding-20 paddingB-50 bg>

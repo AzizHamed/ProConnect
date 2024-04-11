@@ -66,7 +66,7 @@ const SignUpScreen: React.FC = () => {
 
 
   return (
-    <BackgroundView
+    <BackgroundView hasSafeAreaView
       children={
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{justifyContent: "center"}}>
           <View style={styles.root}>
