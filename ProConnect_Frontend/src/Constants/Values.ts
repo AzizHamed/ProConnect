@@ -103,11 +103,22 @@ export const dataLocation = [
   
 ];
 
+
+
 export  const dataProfessions1 = [
   { label: 'Contractor', value:'1' },
   { label: 'Worker', value: '2' },
  
 ]
+
+
+export const sort = [
+  {label : "Experience" , value : '1'},
+  {label : "Rating" , value : '2'},
+  {label : "Nearest" , value : '3'},
+  {label : "Searches" , value : '4'}
+]
+
 
 export const dataProfessions2 = [
   { label: 'Carpetner', value:'1', uri : 'https://www.svgrepo.com/show/103746/carpenter.svg', component: CarpenterIcon },
@@ -135,6 +146,12 @@ export const popularProfessions = [
   { profession: "Air Conditioner", number: 20000, component: AirConditioningIcon },
   { profession: "Gardener", number: 60000, component: GardenerIcon },
 ];
+
+
+export const RequestTypes = [
+  {label : "Job offer", value : 1},
+  {label : "Job Apply", value : 2}
+]
 
 export interface IMessage {
   _id: string | number

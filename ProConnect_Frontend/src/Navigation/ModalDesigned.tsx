@@ -8,8 +8,10 @@ import ProButton from '../Components/Controls/ProButton';
 import RNPickerSelect from 'react-native-picker-select';
 import { User } from '../Services/Redux/Api';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
+import { getSortBy } from '../Services/Redux/Slices/SortBySlice';
 interface ModalDesignedProps {
-  visibleModal : ()=> void;
+  visibleModal : (bool : boolean)=> void;
   setRating : (rating : number)=>void
   setExperience : (experience : number)=>void
   setLocation : (location : string)=>void
@@ -17,13 +19,19 @@ interface ModalDesignedProps {
   experience : number
   rating : number
   location : string;
+  sortBy : string;
+  setSort : (sort : string)=>void
 }
+
 
 const ModalDesigned : React.FC<ModalDesignedProps> = (props) => {
 const [isFocusLocation, setisFocusLocation] = useState(false)
 const [Experience, setExperience] = useState([{label : '0+' , value : 0}]);
 const [Ratings, setRatings] = useState([{label : '0+' , value : 0}]);
 const [reset, setreset] = useState(false)
+
+const sort = useSelector(getSortBy)
+
 var rating = props.rating;
 var experience = props.experience;
 
@@ -120,8 +128,9 @@ useEffect(() => {
              
 
               <ProButton text={"Continue"} onPress={()=>{
+                props.setSort(sort)
                 props.filterProfessionals();
-                props.visibleModal();
+                props.visibleModal(false);
                 }} />
 
             <ProButton text={"Reset"} onPress={()=>{

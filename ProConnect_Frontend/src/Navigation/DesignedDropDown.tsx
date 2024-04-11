@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
-import {Animated, StyleSheet} from 'react-native'
+import {Animated, StyleProp, StyleSheet, ViewStyle} from 'react-native'
 import { View } from 'react-native-ui-lib';
 import { Control } from 'react-hook-form';
 
@@ -11,13 +11,14 @@ interface DropDownProps {
   control?: Control,
   name?: string
   value: string
-  dropDownData: {label : string, value :any}[]
+  dropDownData: {label : string, value :string}[]
   leftIcon: any
   setValue: (value : any) => void
   setFocus?: (value : boolean) => void
   webWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode,
   mobileWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode,
   flexShrink?: boolean,
+  containerStyle ?:StyleProp<ViewStyle>
 }
 
 
@@ -26,10 +27,12 @@ const DesignedDropDown : React.FC<DropDownProps> = (props) => {
 const [isFocus, setIsFocus] = useState(false);
 const [localValue, setLocalValue] = useState(props.value);
 
+const style = props.containerStyle === undefined ? styles.dropdown : props.containerStyle
+
 return (
   <View flexS={props.flexShrink}>
   <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+        style={[style, isFocus && { borderColor: 'blue' }]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
@@ -54,6 +57,8 @@ return (
         renderLeftIcon={() => (
           props.leftIcon
         )}
+
+        
       />
   </View>
 )

@@ -42,6 +42,13 @@ public class Profession {
 
 
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    private Category category;
+
+
+
     public Profession(String name, String description, String svg) {
         this.name = name;
         this.description = description;

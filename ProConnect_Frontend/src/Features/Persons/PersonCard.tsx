@@ -21,6 +21,7 @@ interface PersonCardProps {
 const PersonCard: React.FC<PersonCardProps> = (props) => {
   const { height, width } = Dimensions.get('window')
   return (
+
     <View style={props?.containerStyle}>
       <View style={props.cardContainerStyle}>
         <Image
@@ -42,24 +43,10 @@ export default PersonCard
 
 const styles = StyleSheet.create({
 
-  buttonsContainer: {
-    alignItems: "flex-end",
-    justifyContent: "center",
+  buttonsContainer : {
+    alignItems : "center",
+    justifyContent : "center",
   },
 
-  // CardContainer : {
-  //   backgroundColor:Colors.$backgroundDark,
-  //   // borderColor:"green",
-  //   // borderWidth:5,
-  //   width: 190,
-  //   height:220,
-  //   alignItems:"center",
-  //   justifyContent:"center",
-
-  // }
-  //,
-  container: {
-
-  }
 
 })

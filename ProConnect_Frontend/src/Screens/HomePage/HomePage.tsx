@@ -8,9 +8,14 @@ import { IS_WEB, articles, dataProfessions2, popularProfessions } from '../../Co
 import { Colors } from 'react-native-ui-lib';
 import { useGetAllUsersNumberQuery } from '../../Services/Redux/Api';
 import { ScrollView } from 'react-native-gesture-handler';
-import renderItem from '../../Components/Layout/AutoCompleteItem';
 import renderPopularProfessions from '../../Components/Layout/RenderPopularProfessionsCard';
 import { AirbnbRating } from 'react-native-ratings';
+
+import renderItem from '../../Components/Layout/AutoCompleteItem';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
+
 import ProCarousel from '../../Components/Controls/ProCarousel';
 import ProHeader, { HeaderType } from '../../Components/Layout/ProHeader';
 import HomeIcon from '../../SVG/HomeIcon';
@@ -39,6 +44,7 @@ const HomePage = () => {
   const [Value, setValue] = useState("Search")
   const [focus, setfocus] = useState(false)
   const [Query, setQuery] = useState("")
+ 
   const [dataProfessionals, setdataProfessionals] = useState([{}])
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersNumberQuery();
   const isWeb = IS_WEB();
@@ -132,6 +138,7 @@ const HomePage = () => {
             <HomeIcon width={80} height={80}></HomeIcon>
           </View>
 
+
           <View marginT-20 marginB-30 style={{ zIndex: 10 }}>
             <View center marginB-2>
               {data && <ProHeader text={`${data} App Users`} headerType={HeaderType.H3} />}
@@ -151,6 +158,7 @@ const HomePage = () => {
               </View>
             </View>
           </View>
+          
           <View style={styles.popularProfessionsContainer} >
             <Text h3 center>Popular Professions</Text>
             <View style={styles.carouselProfessions}>
@@ -179,6 +187,22 @@ const HomePage = () => {
 export default HomePage
 
 const styles = StyleSheet.create({
+  pressable : {
+    backgroundColor : "white",
+    paddingRight : 5,
+    justifyContent : "center",
+  },
+
+  autoCompleteItemsStyle: {
+    backgroundColor : "white",
+    height : 60,
+    justifyContent : "space-between",
+    borderColor:"black",
+    borderBottomWidth :1,
+    paddingLeft:10,
+    flexDirection:"row",
+    width : "100%"
+  },
 
   ratingContainer: {
     alignItems: "center",

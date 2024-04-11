@@ -9,20 +9,25 @@ import BackgroundView from '../../Components/Layout/BackgroundView';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../../Services/Redux/Slices/ChatSlice';
+import { database, auth } from '../../Services/Firebase/Firebase';
+
 
 
 const PersonsChat = () => {
 
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
 
+  let data1 = data
+  data1 = data1?.filter((user) => user.email !== auth.currentUser?.email)
+
   const dispatch = useDispatch();
 
-  let schatNumber = data?.length
+  let schatNumber = data1?.length
   const {height,width} = Dimensions.get('window');
   var numberofImages = 0
   const navigation = useNavigation();
 
-  let chatNumber = data === undefined ? 0 : data.length
+  let chatNumber = data1 === undefined ? 0 : data1.length
   const style = style1(chatNumber);
 
   return (
@@ -38,7 +43,7 @@ const PersonsChat = () => {
       <MyTextInput onChange={()=>{} } placeHolder={'Search'} icon={<EvilIcons name='search'  size={45} style={{backgroundColor:"white"}}/>} />
     </View>
     {/* ------------------------------------------- */}
-    <View style={style.friends} >
+    {/* <View style={style.friends} >
       
       {isSuccess && data.slice(0,3).map((friend) => {
         return(
@@ -50,17 +55,18 @@ const PersonsChat = () => {
         
       })}
       
-    </View>
+    </View> */}
 
 
     <View style={style.chatPeople}>
-      {isSuccess && data.map((friend)=> {
+      {isSuccess && data1?.map((friend)=> {
         return(
           <TouchableOpacity onPress={()=>{
-            dispatch(setChat({ReceiverEmail : friend.email}))
+            dispatch(setChat({ReceiverEmail : friend.email , openModal : false}))
             navigation.navigate("Chats")
-          }}>
+          }} >
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
+
 
           </TouchableOpacity>
         )
@@ -83,13 +89,13 @@ export default PersonsChat
 const style1 = (chatsNumber : number) =>{
 
   return StyleSheet.create({
+    
 
     containerStyle : {
       display : "flex",
       flexDirection : "row",
       justifyContent :"flex-start",
-      borderWidth: 1,
-      borderColor : "silver",
+      
     },
   
     chatPeople : {

@@ -5,20 +5,17 @@ import SettingsScreen from "../Screens/SettingsScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors, Icon } from "react-native-ui-lib";
 import JobsList from "../Features/Jobs/JobsList";
-import Search from "./OldNav-TabsAndSideBars/Search";
 import Friends from "../Screens/Friends/Friends";
 import { da } from "date-fns/locale";
 import { dataLocation, dataProfessions } from "../Constants/ConstantData";
-import ProfessionalSearcPage from "./OldNav-TabsAndSideBars/ProfessionalSearchPage";
 import PersonsPage from "../Features/Persons/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
 import { useDispatch } from "react-redux";
-import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 import PostJobScreen from "../Features/Jobs/PostJobScreen";
-import { dataProfessions1 } from "../Constants/Values";
-import HomePage from "../Screens/HomePage/HomePage";
 import PersonsChat from "../Screens/Chat/PersonsChat";
-import HomeScreen from "../Screens/HomeScreen";
+import HomePage from "../Screens/HomePage/HomePage";
+
+
 
 export type MainTabParamList = {
   Home: undefined;
@@ -32,11 +29,6 @@ export type MainTabParamList = {
 };
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
-
-
-
-
-
 
 export const MainTabScreen: React.FC = () => {
 
