@@ -64,7 +64,7 @@ const PersonsChat = () => {
           <TouchableOpacity onPress={()=>{
             dispatch(setChat({ReceiverEmail : friend.email , openModal : false}))
             navigation.navigate("Chats")
-          }}>
+          }} >
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} compnentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
 
           </TouchableOpacity>
@@ -88,6 +88,7 @@ export default PersonsChat
 const style1 = (chatsNumber : number) =>{
 
   return StyleSheet.create({
+    
 
     containerStyle : {
       display : "flex",

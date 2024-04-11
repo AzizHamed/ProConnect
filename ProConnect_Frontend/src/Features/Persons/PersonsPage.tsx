@@ -25,6 +25,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getSortBy, setSortBy } from '../../Services/Redux/Slices/SortBySlice';
 import { setChat } from '../../Services/Redux/Slices/ChatSlice';
+import { database, auth } from '../../Services/Firebase/Firebase';
 
 
 
@@ -42,7 +43,8 @@ const PersonsPage = () => {
   const  [sortby, setsort] = useState("0")
   var textInput = "";
   const componentType = useSelector(getSelectedPersonsPage)
-
+  let data1 = data
+  data1 = data1?.filter((user) => user.email !== auth.currentUser?.email)
 
   const dispatch = useDispatch();
 
@@ -98,7 +100,7 @@ const PersonsPage = () => {
 
   function filterProfessionals(){
 
-    setProfessionals(data?.filter((professional)=> {
+    setProfessionals(data1?.filter((professional)=> {
      
       if (professional.rating === undefined)
       professional.rating = 0;
