@@ -23,7 +23,7 @@ const ForgotPasswordScreen: React.FC = () => {
   };
 
   return (
-    <BackgroundView
+    <BackgroundView hasSafeAreaView
       children={
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.root}>
