@@ -27,6 +27,8 @@ export function updateAuthState(user: FBUser | null,
         // console.log(user, userDetails);
         if(isNewUser){
           await createUser(user, dispatch, navigation);
+          dispatch(setUserCredential(userDetails));
+          return;
         }
         dispatch(setUserCredential(userDetails));
         if(navigation)
