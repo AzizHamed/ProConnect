@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import BackgroundView from '../../Components/Layout/BackgroundView'
-import { StyleSheet, Image, Linking } from 'react-native'
+import { StyleSheet, Image, Linking, TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native-ui-lib';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import AutocompleteInput from 'react-native-autocomplete-input'
@@ -8,25 +8,20 @@ import { IS_WEB, articles, dataProfessions2, popularProfessions } from '../../Co
 import { Colors } from 'react-native-ui-lib';
 import { useGetAllUsersNumberQuery } from '../../Services/Redux/Api';
 import { ScrollView } from 'react-native-gesture-handler';
+import renderItem from '../../Components/Layout/AutoCompleteItem';
 import renderPopularProfessions from '../../Components/Layout/RenderPopularProfessionsCard';
 import { AirbnbRating } from 'react-native-ratings';
-
-import renderItem from '../../Components/Layout/AutoCompleteItem';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
-
 import ProCarousel from '../../Components/Controls/ProCarousel';
 import ProHeader, { HeaderType } from '../../Components/Layout/ProHeader';
 import HomeIcon from '../../SVG/HomeIcon';
 import ProList from '../../Components/Layout/ProList';
 import ProButton from '../../Components/Controls/ProButton';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { setPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
+import SVGIconContainer from '../../Components/Layout/SVGIconContainer';
 
-interface Item {
-  label: string;
-  value: string;
-  uri: string;
-}
+
 
 interface article {
   title: string
@@ -37,6 +32,12 @@ interface article {
   author: string;
 }
 
+interface Item {
+  label: string;
+  value: string;
+  component: React.FC
+}
+
 
 
 const HomePage = () => {
@@ -44,10 +45,12 @@ const HomePage = () => {
   const [Value, setValue] = useState("Search")
   const [focus, setfocus] = useState(false)
   const [Query, setQuery] = useState("")
- 
   const [dataProfessionals, setdataProfessionals] = useState([{}])
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersNumberQuery();
   const isWeb = IS_WEB();
+  const navigation = useNavigation();
+  
+  const dispatch = useDispatch()
 
   const findData = (query: string) => {
     if (query === '') {
@@ -90,6 +93,35 @@ const HomePage = () => {
 
     return <Text>{newText}</Text>;
   };
+
+  const renderAutoCompleteItem = ({ item }: { item: Item }) => (
+     
+  
+      
+    <TouchableOpacity style={styles.pressable} onPress={()=>{
+      dispatch(setPersonsPage({ComponentType : "Rating"}))
+      navigation.navigate("PersonsPage")
+    }}>
+      
+      <View invisible style={styles.autoCompleteItemsStyle}>
+        <View invisible style={{height:"100%", justifyContent :"center"}}>
+        <Text style={{color :"black"}}>{item?.label}</Text>
+        </View>
+  
+        <View invisible style={{height:"100%", justifyContent :"center"}}>
+        <SVGIconContainer iconComponent={item.component} color={Colors.$backgroundDarkActive} width={40} height={40}/>
+  
+        {/* <SvgUri
+        width="40"
+        height="40"
+        uri={item.uri}
+        fill={Colors.$backgroundDarkActive}
+      /> */}
+        
+        </View>
+      </View>
+    </TouchableOpacity>
+    );
 
 
   const renderCarouselItem = ({ item }: { item: article }) => (
@@ -138,7 +170,6 @@ const HomePage = () => {
             <HomeIcon width={80} height={80}></HomeIcon>
           </View>
 
-
           <View marginT-20 marginB-30 style={{ zIndex: 10 }}>
             <View center marginB-2>
               {data && <ProHeader text={`${data} App Users`} headerType={HeaderType.H3} />}
@@ -149,7 +180,7 @@ const HomePage = () => {
                 <AutocompleteInput listContainerStyle={{ marginTop: 5, width: "100%" }} data={data1} onChangeText={(text) => setQuery(text)} value={Query} style={{ paddingLeft: 40 }}
                   flatListProps={{
                     keyExtractor: (item) => item.value,
-                    renderItem: renderItem,
+                    renderItem: renderAutoCompleteItem,
                     disableVirtualization: true,
                   }}
                   scrollEnabled={false}
@@ -158,7 +189,6 @@ const HomePage = () => {
               </View>
             </View>
           </View>
-          
           <View style={styles.popularProfessionsContainer} >
             <Text h3 center>Popular Professions</Text>
             <View style={styles.carouselProfessions}>
@@ -187,22 +217,6 @@ const HomePage = () => {
 export default HomePage
 
 const styles = StyleSheet.create({
-  pressable : {
-    backgroundColor : "white",
-    paddingRight : 5,
-    justifyContent : "center",
-  },
-
-  autoCompleteItemsStyle: {
-    backgroundColor : "white",
-    height : 60,
-    justifyContent : "space-between",
-    borderColor:"black",
-    borderBottomWidth :1,
-    paddingLeft:10,
-    flexDirection:"row",
-    width : "100%"
-  },
 
   ratingContainer: {
     alignItems: "center",
