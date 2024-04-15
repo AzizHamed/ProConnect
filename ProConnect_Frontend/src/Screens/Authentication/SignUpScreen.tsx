@@ -58,7 +58,7 @@ const SignUpScreen: React.FC = () => {
 
   if(isLoadingAuthState){
     return (
-      <BackgroundView children={(
+      <BackgroundView hasSafeAreaView children={(
         <ProLoading/>
       )}></BackgroundView>
     )
