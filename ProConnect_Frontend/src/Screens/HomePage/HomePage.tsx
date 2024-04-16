@@ -125,7 +125,7 @@ const HomePage = () => {
 
 
   const renderCarouselItem = ({ item }: { item: article }) => (
-    <View style={{ backgroundColor: Colors.$backgroundDark, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10 }}>
+    <View style={{ paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10 }} bg>
       <View style={styles.overflow} invisible marginV-10>
         <Text h4 numberOfLines={3} adjustsFontSizeToFit allowFontScaling>{item.title}</Text>
       </View>

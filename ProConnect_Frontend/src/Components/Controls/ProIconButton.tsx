@@ -62,8 +62,8 @@ interface ProIconButtonProps {
     const style = [styles.button, displayBackground ? {backgroundColor: disabled ? Colors.transparent : Colors.controlBackground}: {}, props.style || {}];
   return (
     <View style={style} > 
-      <IconComponent onPress={(e)=>{e.preventDefault(); props.onPress();}} disabled={disabled} name={iconName} size={28} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} />
-      {props.showAddIcon && <MaterialIcons name="add-circle" size={14} color={disabled ? Colors.$iconDisabled : Colors.textPrimary} style={styles.plus}/>}
+      <IconComponent onPress={(e)=>{e.preventDefault(); props.onPress();}} disabled={disabled} name={iconName} size={28} color={disabled ? Colors.$iconDisabled : Colors.controlText} />
+      {props.showAddIcon && <MaterialIcons name="add-circle" size={14} color={disabled ? Colors.$iconDisabled : Colors.controlText} style={styles.plus}/>}
     </View>
   );
 };
