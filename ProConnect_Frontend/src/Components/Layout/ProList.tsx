@@ -31,6 +31,7 @@ const ProList: React.FC<ProListProps> = (props) => {
   const scrollViewRef = useRef(null);
   // const scrollSteps = props.scrollSteps || (props.data !== undefined ? props.data.length : 1);
   const scrollStepSize = width * 0.7;
+  const scrollWidth = scrollViewRef.current !== null ? scrollViewRef.current.scrollWidth : width;
 
   const scrollToTop = () => {
     if (scrollViewRef.current) {
@@ -64,7 +65,7 @@ const ProList: React.FC<ProListProps> = (props) => {
 
   return (
     <View invisible style={{ alignItems: 'center', justifyContent: 'center', overflow: "hidden" }} row center flex>
-      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={scrollToTop} displayBackground style={leftArrowStyle}/>}
+      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-back" onPress={scrollToTop} displayBackground style={leftArrowStyle} disabled={scrollOffset === 0}/>}
 
       {/* <FlashList renderItem={props.renderItems} data={props.data} indicatorStyle='black' estimatedItemSize={250} horizontal scrollEnabled zoomScale={0.8} showsHorizontalScrollIndicator></FlashList> */}
     <ScrollView
@@ -82,7 +83,7 @@ const ProList: React.FC<ProListProps> = (props) => {
            </View>
         ))}
       </ScrollView>
-      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={scrollToBottom} displayBackground style={rightArrowStyle}/>}
+      {displayArrows && <ProIconButton materialIcon materialIconName="arrow-forward" onPress={scrollToBottom} displayBackground style={rightArrowStyle} disabled={scrollOffset === scrollWidth}/>}
 
       </View>
   );
