@@ -5,7 +5,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { SafeAreaView } from "react-native";
-import { View, Image, Text } from "react-native-ui-lib";
+import { View, Image, Text, Colors } from "react-native-ui-lib";
 import { emailSignOut } from "../Services/Firebase/Firebase";
 import { useNavigation } from "@react-navigation/native";
 import { getUserAccount, getUserCredential, setUserCredential } from "../Services/Redux/Slices/AuthSlice";
@@ -28,6 +28,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
             alignItems: "center",
             borderBottomColor: "#f4f4f4",
             borderBottomWidth: 1,
+            backgroundColor: Colors.backgroundDark
           }}
         >
           <Image
