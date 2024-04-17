@@ -19,6 +19,7 @@ const PersonsChat = () => {
 
   let data1 = data
   data1 = data1?.filter((user) => user.email !== auth.currentUser?.email)
+  
 
   const dispatch = useDispatch();
 

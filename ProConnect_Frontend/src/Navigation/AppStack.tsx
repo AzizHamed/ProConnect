@@ -9,6 +9,7 @@ import Chat from "../Screens/Chat/Chat";
 import {Image, StyleSheet, View,Text, Dimensions} from 'react-native'
 import { Colors } from "react-native-ui-lib";
 import { color } from "react-native-elements/dist/helpers";
+import FullMapScreen from "../Screens/Chat/FullMapScreen";
 
 
 const AppStack = createNativeStackNavigator();
@@ -42,6 +43,8 @@ export const AppStackScreen: React.FC = () => {
         
           </View>
             ),}} />
+
+            <AppStack.Screen name="FullMapScreen" component={FullMapScreen} options={{headerShown : true,headerTintColor : "white", headerStyle :styles.header}} />
 
     </AppStack.Navigator>
 
