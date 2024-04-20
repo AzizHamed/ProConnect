@@ -121,7 +121,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
         )
       }} />
       <MainDrawer.Screen name="Profile" component={ProfileViewScreen} />
-      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" } }} />
+      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: "Profile" }} />
       <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />
     </MainDrawer.Navigator>
   );
