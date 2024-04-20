@@ -29,7 +29,7 @@ const ProImagePicker: React.FC<ProImagePickerProps> = (props) => {
         <ProIconButton ionicon ioniconName="camera" showAddIcon onPress={() => selectPictures('CAMERA', true)}></ProIconButton>
 
       </View>
-      <ProCarousel data={Array.from(selectedFiles || [])} 
+      <ProCarousel data={Array.from(selectedFiles || [])}  mode='parallax'
         renderItems={({ item, index }) => (
           <View key={index}  style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }} >
             <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
