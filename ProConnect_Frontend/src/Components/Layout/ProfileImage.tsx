@@ -1,4 +1,4 @@
-import { Image } from 'react-native-ui-lib'
+import { Image } from 'react-native'
 import React from 'react'
 
 interface ProfileImageProps {
@@ -9,14 +9,13 @@ interface ProfileImageProps {
 const ProfileImage: React.FC<ProfileImageProps> = (props) => {
     const imageSource = { uri: (props.photoUrl !== undefined && props.photoUrl !== null && props.photoUrl !== '') ? props.photoUrl : 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png' };
     const size = props.size || 130;
-    console.log(props.photoUrl);
     return (
-        <Image
+        <Image 
             source={imageSource}
             style={{
                 height: size,
                 width: size,
-                borderRadius: "50%",
+                borderRadius: size/2,
             }}
         />
     )
