@@ -35,9 +35,9 @@ const SignInScreen = () => {
   const dispatch = useDispatch();
   const passwordRef = useRef(null);
 
-  useEffect(() => {
-    setupAuthStateListener(setIsLoadingAuthState, dispatch, navigation);
-  }, [])
+  // useEffect(() => {
+  //   setupAuthStateListener(setIsLoadingAuthState, dispatch, navigation);
+  // }, [])
 
   const onSignInPressed = async (data: any) => {
     const { email, password } = data;
@@ -49,13 +49,13 @@ const SignInScreen = () => {
     emailSignIn(email, password).then((userCredential: UserCredential)=> {
       const user = userCredential.user;      
       updateAuthState(user, dispatch, navigation);
-      setResultText(user.email + ' Logged in!'|| 'Logged In')
-      setIsVisible(true);
-      navigateToMainStack(navigation);
+      // setResultText(user.email + ' Logged in!'|| 'Logged In')
+      // setIsVisible(true);
+      // navigateToMainStack(navigation);
     }).catch((error: any) => {
       console.log(error);
-      setResultText(error.message)
-      setIsVisible(true);
+      // setResultText(error.message)
+      // setIsVisible(true);
   }) ;
     setLoading(false);
   };
@@ -69,13 +69,13 @@ const SignInScreen = () => {
   };
 
 
-  if(isLoadingAuthState){
-    return (
-      <BackgroundView hasSafeAreaView children={(
-        <ProLoading/>
-      )}></BackgroundView>
-    )
-  }
+  // if(isLoadingAuthState){
+  //   return (
+  //     <BackgroundView hasSafeAreaView children={(
+  //       <ProLoading/>
+  //     )}></BackgroundView>
+  //   )
+  // }
   return (
     <BackgroundView hasSafeAreaView
       children={

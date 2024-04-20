@@ -50,10 +50,11 @@ const createUser = async (user: FBUser, dispatch: any, navigation: any)=>{
   const createdUser:CreateUserApiArg = {user: {
     id: user.uid,
     email: user.email || 'Error',
-    name:{firstName:user.displayName || 'Error', lastName: ''}}
+    name:{firstName:user.displayName || '', lastName: ''}}
   };
   const promise = dispatch(api.endpoints.createUser.initiate(createdUser))
   const {data} = await promise;
+  console.log('New User Data:', data);
   dispatch(setUserAccount(data as User));
   // await createUser(createdUser).unwrap().then((res)=>{
   //   console.log(res);

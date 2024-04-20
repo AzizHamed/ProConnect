@@ -24,7 +24,7 @@ export const store = configureStore({
         [api.reducerPath]: api.reducer
     } as any, 
     middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(api.middleware).concat(fetchUserDataMiddleware)
+    getDefaultMiddleware().concat(api.middleware)//.concat(fetchUserDataMiddleware)
 })
 
 store.dispatch(initializePreferences());

@@ -16,7 +16,7 @@ import ProPopup from "../../Components/Layout/ProPopup";
 import { EMAIL_REGEX } from "../../Constants/Values";
 import { UserDetails, setUserAccount, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
 import { useDispatch } from "react-redux";
-import { CreateUserApiArg, User, useCreateUserMutation } from "../../Services/Redux/Api";
+import { CreateUserApiArg, User, api, useCreateUserMutation } from "../../Services/Redux/Api";
 import { navigateToMainStack, navigateToProfileEditor, updateAuthState } from "./UpdateAuthState";
 import { User as FBUser } from "firebase/auth";
 import ProLoading from "../../Components/Layout/ProLoading";
@@ -40,8 +40,23 @@ const SignUpScreen: React.FC = () => {
     setIsLoadingAuthState(true);
     emailSignUp(email, password).then(async (userCredential: UserCredential)=> {
         const user = userCredential.user;
-        await updateAuthState(user, dispatch, navigation, true);         
+        // await updateAuthState(user, dispatch, navigation, true);         
         console.log(user);
+        const userToCreate: CreateUserApiArg = {user: {
+          id: user.uid,
+          email: user.email || 'Error',
+          name:{firstName: user.displayName || '', lastName: ''},
+          phoneNumber: user.phoneNumber || '',
+          accountStatus: 'SETUP',
+          photoUrl: user.photoURL || 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png',                  
+        },
+          
+        };
+        console.log('User not found, creating new user', userToCreate);
+        const createUserPromise = dispatch(api.endpoints.createUser.initiate(userToCreate))
+        const {data: newUser} = await createUserPromise;
+        console.log('New User Data:', newUser);
+        dispatch(setUserAccount(newUser as User));
         setResultText(user.email + ' Created!'|| 'Signed up')
         setIsVisible(true);
       }).catch((error: any) => {
