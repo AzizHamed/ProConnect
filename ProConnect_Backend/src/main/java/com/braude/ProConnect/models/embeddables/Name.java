@@ -18,6 +18,8 @@ public class Name {
     }
 
     public Name() {
+        firstName = "";
+        lastName = "";
     }
 
     public String getFirstName() {
