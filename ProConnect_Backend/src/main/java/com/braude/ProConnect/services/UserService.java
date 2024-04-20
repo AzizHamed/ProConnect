@@ -84,8 +84,9 @@ public class UserService {
         user.setPhoneNumber(request.getPhoneNumber());
         user.setRoles(request.getRoles());
         user.setAccountStatus(AccountStatus.ACTIVE);
+        user.setPhotoUrl(request.getPhotoUrl());
         user = userRepository.save(user);
-        return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles());
+        return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles(), user.getPhotoUrl());
     }
 
     public int getAllUsersNumber() {

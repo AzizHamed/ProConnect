@@ -17,4 +17,5 @@ public class UpdateProfileRequest {
     private String phoneNumber;
     private AccountStatus accountStatus;
     private List<Role> roles;
+    private String photoUrl;
 }

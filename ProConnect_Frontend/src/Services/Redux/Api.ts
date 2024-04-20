@@ -138,7 +138,11 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/professions/create`,
           method: "POST",
-          params: { name: queryArg.name, description: queryArg.description },
+          params: {
+            name: queryArg.name,
+            description: queryArg.description,
+            svg: queryArg.svg,
+          },
         }),
         invalidatesTags: ["Professions"],
       }),
@@ -259,6 +263,7 @@ export type CreateService1ApiResponse = /** status 200 OK */ Profession;
 export type CreateService1ApiArg = {
   name: string;
   description: string;
+  svg: string;
 };
 export type PostJobsApiResponse = /** status 200 OK */ Job;
 export type PostJobsApiArg = {
@@ -335,11 +340,17 @@ export type Property = {
   owner?: User;
   location?: Location;
 };
+export type Category = {
+  id?: number;
+  name?: string;
+  professionList?: Profession[];
+};
 export type Profession = {
   id?: number;
   name: string;
   description: string;
   svg: string;
+  category: Category;
 };
 export type Job = {
   id?: number;
@@ -376,6 +387,7 @@ export type UpdateProfileRequest = {
   phoneNumber?: string;
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
   roles?: Role[];
+  photoUrl?: string;
 };
 export type Service = {
   id?: number;
@@ -403,8 +415,8 @@ export type PageableObject = {
   sort?: SortObject;
   pageNumber?: number;
   pageSize?: number;
-  paged?: boolean;
   unpaged?: boolean;
+  paged?: boolean;
 };
 export type PageJob = {
   totalPages?: number;
@@ -413,9 +425,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
-  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
+  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
