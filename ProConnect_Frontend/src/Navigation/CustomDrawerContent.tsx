@@ -10,12 +10,13 @@ import { emailSignOut } from "../Services/Firebase/Firebase";
 import { useNavigation } from "@react-navigation/native";
 import { getUserAccount, getUserCredential, setUserCredential } from "../Services/Redux/Slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ProfileImage from "../Components/Layout/ProfileImage";
 
 export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( props ) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector(getUserAccount);
-  const imageSource = (user?.photoUrl !== undefined && user?.photoUrl !== '') ? {uri: user?.photoUrl} : {uri: 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png'} ;
+  
   return (
     <DrawerContentScrollView {...props}>
       {/* Your custom drawer header, if needed */}
@@ -32,14 +33,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
             backgroundColor: Colors.backgroundDark
           }}
         >
-          <Image 
-            source={imageSource}
-            style={{
-              height: 130,
-              width: 130,
-              borderRadius: 65,
-            }}
-          />
+          <ProfileImage size={130} photoUrl={user?.photoUrl}/>
           <Text
             style={{
               fontSize: 20,
