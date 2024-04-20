@@ -93,7 +93,7 @@ const ProfileEditorScreen: React.FC = () =>
       <View style={{alignItems:"center"}}>
         <ProHeader text={"Edit Profile"} headerType={HeaderType.H3}/>
         <View>
-          <ProfileImage photoUrl={selectedProfilePictureUri} size={150}/>
+          <ProfileImage photoUrl={selectedProfilePictureUri} size={125}/>
           <ProIconButton displayBackground ionicon ioniconName="camera" showAddIcon onPress={() => {clear(); selectPictures('GALLERY');}} style={{position: 'absolute', right: 5, bottom: 5}}/>
         </View>
 

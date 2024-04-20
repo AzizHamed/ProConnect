@@ -7,6 +7,7 @@ import ProButton from '../../Components/Controls/ProButton';
 import { useNavigation } from '@react-navigation/native';
 import ProTextView from '../../Components/Layout/ProTextView';
 import { Colors, Text, View } from 'react-native-ui-lib';
+import ProfileImage from '../../Components/Layout/ProfileImage';
 
 const ProfileViewScreen: React.FC = () =>
 {
@@ -21,6 +22,7 @@ const ProfileViewScreen: React.FC = () =>
   return (
     <BackgroundView children={(
       <View bg style={styles.container}>
+        <ProfileImage photoUrl={user?.photoUrl} size={125}/>
 
         <ProTextView text={`Email`} isLabel/>
         <ProTextView text={`${user?.email}`}/>
