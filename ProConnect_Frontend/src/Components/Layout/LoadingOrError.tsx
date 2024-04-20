@@ -8,7 +8,7 @@ interface LoadingOrErrorProps{
 }
 
 const LoadingOrError: React.FC<LoadingOrErrorProps & LoadingProps & ErrorProps> = (props) => {
-  const loadingProps: LoadingProps = {loadingDisplayMessage: props.loadingDisplayMessage, loadingMessage: props.loadingMessage, small: props.small};
+  const loadingProps: LoadingProps = {displayLoadingMessage: props.displayLoadingMessage, loadingMessage: props.loadingMessage, small: props.small};
   const errorProps: ErrorProps = {errorDisplayMessage: props.errorDisplayMessage, errorMessage: props.errorMessage};
   const isError = props.isError;
   const isSuccess = props.isSuccess;
