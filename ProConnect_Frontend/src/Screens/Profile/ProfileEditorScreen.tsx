@@ -8,7 +8,7 @@ import ProTextInput from '../../Components/Controls/ProTextInput';
 import { EMAIL_REGEX, IS_WEB, PHONE_REGEX, defaultWidthValues } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { UpdateProfileApiArg, User, useUpdateProfileMutation } from '../../Services/Redux/Api';
+import { UpdateProfileApiArg, User, useGetUserRolesQuery, useUpdateProfileMutation } from '../../Services/Redux/Api';
 import ProHeader, { HeaderType } from '../../Components/Layout/ProHeader';
 import { Keyboard } from 'react-native';
 import ProTextView from '../../Components/Layout/ProTextView';
@@ -17,6 +17,7 @@ import ProImagePicker from '../../Components/Controls/ProImagePicker';
 import ProIconButton from '../../Components/Controls/ProIconButton';
 import { useImagePicker } from '../../Hooks/useImagePicker';
 import { uploadSelectedFiles } from '../../Services/Firebase/Firebase';
+import ProRadioGroup from "../../Components/Controls/ProRadioGroup";
 
 const ProfileEditorScreen: React.FC = () =>
 {
@@ -28,6 +29,8 @@ const ProfileEditorScreen: React.FC = () =>
   const lastName = user?.name?.lastName || '';
   const phone = user?.phoneNumber || '';
   const email = user?.email || '';
+  const { data } = useGetUserRolesQuery({});
+  const accountTypeOptions = data?.map((role) => role.name) || [];
 
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -37,6 +40,7 @@ const ProfileEditorScreen: React.FC = () =>
 
 
   const [error, setError] = useState(null)
+  const [selectedRoleIndex, setSelectedRoleIndex] = useState(0)
   const [selectedProfilePictureUri, setSelectedProfilePictureUri] = useState(user?.photoUrl || '')
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: useMemo(() =>
@@ -59,15 +63,20 @@ const ProfileEditorScreen: React.FC = () =>
       // console.log('Selected:',selectedProfilePictureUri);
   }, [selectedFiles])
 
-  const onSavePressed = async (data: any) =>
+  const onSavePressed = async (profileData: any) =>
   {
-    const { email, firstName, lastName, phone } = data;
+    const { email, firstName, lastName, phone } = profileData;
     // navigation.dispatch(DrawerActions.openDrawer());
     let profilePicDownloadUrl = ''
     if(selectedProfilePictureUri !== ''){
-      await uploadSelectedFiles('profiles', [{uri: selectedProfilePictureUri, fileName: 'profile.jpg'}], user as User).then((res)=>{profilePicDownloadUrl = res[0]}).catch((error)=>{setError(error.message); return;})
+      await uploadSelectedFiles('profiles', [{uri: selectedProfilePictureUri, fileName: 'profile.jpg'}], user as User)
+        .then((res)=>{profilePicDownloadUrl = res[0]})
+        .catch((error)=>{setError(error.message); return;})
     }
-    const updateRequest:UpdateProfileApiArg = {updateProfileRequest:{name: {firstName:firstName, lastName:lastName}, phoneNumber: phone, photoUrl: profilePicDownloadUrl}};
+    console.log(data, selectedRoleIndex)
+    const roles = data === undefined ? [] : [data[selectedRoleIndex]];
+    console.log('New User Roles:', roles)
+    const updateRequest:UpdateProfileApiArg = {updatePersonalInfoRequest:{name: {firstName:firstName, lastName:lastName}, phoneNumber: phone, photoUrl: profilePicDownloadUrl, roles: roles}};
     console.log(updateRequest);
     
     updateProfile(updateRequest).unwrap()
@@ -141,7 +150,10 @@ const ProfileEditorScreen: React.FC = () =>
           ref={phoneRef}
           onSubmitEditing={() => Keyboard.dismiss() }
         />
-
+        {user?.accountStatus === 'SETUP' && <ProRadioGroup options={accountTypeOptions} title="Are you a homeowner or a professional?" setSelectedIndex={function (index: number): void {
+          console.log(index);
+        } }></ProRadioGroup>
+}
         {/* <ProButton
           text={"Cancel"}
           onPress={cancel}
