@@ -44,7 +44,7 @@ const StartupScreen:React.FC = () => {
                   name:{firstName: firebaseUser.displayName || '', lastName: ''},
                   phoneNumber: firebaseUser.phoneNumber || '',
                   accountStatus: 'SETUP',
-                  photoUrl: firebaseUser.photoURL || 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png',                  
+                  photoUrl: firebaseUser.photoURL || '',                  
                 },
                   
                 };
@@ -53,6 +53,10 @@ const StartupScreen:React.FC = () => {
                 const {data: newUser} = await createUserPromise;
                 console.log('New User Data:', newUser);
                 dispatch(setUserAccount(newUser as User));
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Main" }],
+                });
               }
               else if (user.accountStatus === 'SETUP') {
                 // This is a new user, load profile creation screen
