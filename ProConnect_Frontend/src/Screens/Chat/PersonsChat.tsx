@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { View,StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 import { database, auth } from '../../Services/Firebase/Firebase';
+import { collection, orderBy, query, where, limit, onSnapshot,or } from 'firebase/firestore';
 
 
 
@@ -19,6 +20,44 @@ const PersonsChat = () => {
 
   let data1 = data
   data1 = data1?.filter((user) => user.email !== auth.currentUser?.email)
+
+  const collectionRef = collection(database, 'chats');
+
+  const q = query(collectionRef, orderBy('createdAt', 'desc'));
+
+  const uniqueResults = new Set();
+
+
+  useLayoutEffect(() => {
+
+    const user = { _id: auth.currentUser?.email };
+    const results = query(
+      collectionRef,
+      or(
+      where('user', 'in', [user]),
+      where('ReceiverUser', 'in', [user])),
+      orderBy('createdAt', 'asc'),
+    );
+
+
+    const unsubscribe = onSnapshot(results, querySnapshot => {
+
+      querySnapshot.docs.forEach((doc) => {
+        if(!uniqueResults.has(doc.data().ReceiverUser._id) && doc.data().ReceiverUser._id !== auth.currentUser?.email)
+          uniqueResults.add(doc.data().ReceiverUser._id);
+
+        if(!uniqueResults.has(doc.data().user._id) && doc.data().user._id !== auth.currentUser?.email)
+          uniqueResults.add(doc.data().user._id);
+      })
+
+      console.log(uniqueResults.forEach((result) => console.log(result)))
+    });
+
+    return unsubscribe;
+  },[]);
+
+
+
   
 
   const dispatch = useDispatch();
@@ -43,20 +82,7 @@ const PersonsChat = () => {
     <View style={style.searchTextInput}>
       <MyTextInput onChange={()=>{} } placeHolder={'Search'} icon={<EvilIcons name='search'  size={45} style={{backgroundColor:"white"}}/>} />
     </View>
-    {/* ------------------------------------------- */}
-    {/* <View style={style.friends} >
-      
-      {isSuccess && data.slice(0,3).map((friend) => {
-        return(
-
-         
-
-          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} cardContainerStyle={style.cardContainer} />
-        )
-        
-      })}
-      
-    </View> */}
+   
 
 
     <View style={style.chatPeople}>

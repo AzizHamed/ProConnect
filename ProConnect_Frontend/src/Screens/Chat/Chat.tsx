@@ -15,7 +15,7 @@ import {
   doc,
   AddPrefixToKeys
 } from 'firebase/firestore';
-import { database, auth, uploadSelectedFiles } from '../../Services/Firebase/Firebase';
+import { listFiles,storage ,database, auth, uploadSelectedFiles } from '../../Services/Firebase/Firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedChatEmail, getSelectedChatModal } from '../../Services/Redux/Slices/ChatSlice';
 import ModalD from '../../Features/Persons/ModalD';
@@ -36,6 +36,11 @@ import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { setFullScreenMap } from '../../Services/Redux/Slices/FullScreenMapSlice';
 import LocationModal from './LocationModal';
+import * as Contacts from 'expo-contacts';
+import ContactsModal from './ContactsModal';
+import * as DocumentPicker from 'expo-document-picker';
+
+
 
 
 interface ChatProps {
@@ -44,17 +49,24 @@ interface ChatProps {
 }
 const Chat: React.FC<ChatProps> = (props) => {
 
- const naviagtion = useNavigation()
 
- const dispatch = useDispatch();
-  const filesRef = useRef<any>([]);
+    const [contacts, setcontacts] = useState<any[]>([])
 
-  const [messages, setMessages] = useState<IMessage[]>([])
+   const naviagtion = useNavigation()
 
-  const ReceiverEmail = useSelector(getSelectedChatEmail)
+   const dispatch = useDispatch();
+    const filesRef = useRef<any>([]);
 
-  const modalOpened = useSelector(getSelectedChatModal)
-  const { selectPictures, selectedFiles, removeSelectedPicture, clear } = useImagePicker();
+    // const docRef = useRef<any>([]);
+
+
+
+    const [messages, setMessages] = useState<IMessage[]>([])
+
+    const ReceiverEmail = useSelector(getSelectedChatEmail)
+
+    const modalOpened = useSelector(getSelectedChatModal)
+    const { selectPictures, selectedFiles, removeSelectedPicture, clear } = useImagePicker();
 
 
   const [ModalVisible, setModalVisible] = useState(modalOpened)
@@ -66,12 +78,18 @@ const Chat: React.FC<ChatProps> = (props) => {
 
   const [longitude1, setlongitude1] = useState(0)
 
+  const [VisibleContactModal, setVisibleContactModal] = useState(false)
+
 
 
   useEffect(() => {
-    // THIS IS THE MAGIC PART
     filesRef.current = selectedFiles;
   }, [selectedFiles]);
+
+
+  // useEffect(() => {
+  //   docRef.current = selectedFiles;
+  // }, [selectedFiles]);
 
 
   useLayoutEffect(() => {
@@ -109,6 +127,14 @@ const Chat: React.FC<ChatProps> = (props) => {
           location: doc.data().location,
           latitude: doc.data().latitude,
           longitude: doc.data().longitude,
+          isContact: doc.data().isContact,
+          contactName : doc.data().contactName,
+          contactNumber : doc.data().contactNumber,
+          // isDocument : doc.data().isDocument,
+          // documentUrl : doc.data().documentUrl,
+          // documentName : doc.data().documentName,
+          // documentSize : doc.data().documentSize,
+          // documentType : doc.data().documentType,
         }))
       );
     });
@@ -117,16 +143,11 @@ const Chat: React.FC<ChatProps> = (props) => {
 
   const onSend = useCallback((messages: IMessage[] = []) => {
     setMessages((previousMessages) => {
-      // console.log("----------------------------------") 
-      // console.log(previousMessages)
-      // console.log("_____________________________________")
-      // console.log(messages)
-      // console.log("----------------------------------")
       return GiftedChat.append(previousMessages, messages)}
       
     );
 
-    const { createdAt, text, user, ReceiverUser, GoldMessage, isAccepted, isRejected, image,location, latitude, longitude } = messages[0];
+    const { createdAt, text, user, ReceiverUser, GoldMessage, isAccepted, isRejected, image,location, latitude, longitude,isContact,contactName, contactNumber, isDocument, documentName, documentSize, documentUrl, documentType } = messages[0];
     addDoc(collection(database, 'chats'), {
       createdAt,
       text,
@@ -139,11 +160,68 @@ const Chat: React.FC<ChatProps> = (props) => {
       location,
       latitude,
       longitude,
-
-
+      isContact,
+      contactName,
+      contactNumber,
+      // isDocument,
+      // documentUrl,
+      // documentName,
+      // documentSize,
+      // documentType,
     });
 
   }, []);
+
+  const getContacts = async () => {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status === 'granted') {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.Name, Contacts.Fields.PhoneNumbers],
+      });
+      if (data.length > 0) {
+        setcontacts(data);
+      }
+    } else {
+      console.error('Permission to access contacts was denied');
+    }
+
+    setVisibleContactModal(true)
+
+
+  
+  };
+
+//   const getDocuments = async () => {
+    
+//     clear();
+//     await selectPictures('DOCUMENT');
+//     //setShowOptions(!showOptions)
+//     setTimeout(async () => {
+
+//       let i = 0
+//       const user = auth.currentUser;
+//       uploadSelectedFiles('chats', Array.from(filesRef.current), user).then((downloadUrls) => {
+        
+//         for (i = 0; i < downloadUrls.length; i++) {
+
+//           sendDocument(downloadUrls[i], 0, "", "");
+//         }
+
+//       }).catch((error) => {
+//         console.log('Error posting job:', error);
+//       });
+
+//     }, 100)
+
+
+  
+// };
+
+
+
+
+
+  
 
 
 
@@ -172,6 +250,14 @@ const Chat: React.FC<ChatProps> = (props) => {
       location : false,
       latitude : undefined,
       longitude : undefined,
+      isContact : false,
+      contactName : "",
+      contactNumber : "",
+      // isDocument : false,
+      // documentUrl : "",
+      // documentName : "",
+      // documentSize : 0,
+      // documentType : "",
     };
     return newMessage;
   };
@@ -190,6 +276,42 @@ const Chat: React.FC<ChatProps> = (props) => {
       location : true,
       latitude : latitude,
       longitude : longitude,
+      isContact : false,
+      contactName : "",
+      contactNumber : "",
+      // isDocument : false,
+      // documentUrl : "",
+      // documentName : "",
+      // documentSize : 0,
+      // documentType : "",
+
+    };
+    return newMessage;
+  };
+
+  const convertContactToMessage = (contact : any) => {
+    const newMessage = {
+      _id : Math.random().toString(36).substring(7),
+      text: contact.phoneNumbers === undefined ? `${contact.name}` : `${contact.name}\n${contact.phoneNumbers[0].number}`, 
+      createdAt: new Date(), // The timestamp of when the message was created
+      user: { _id: auth?.currentUser?.email || '' }, // The user object representing the sender of the message
+      ReceiverUser: { _id: ReceiverEmail },
+      GoldMessage: false,
+      isAccepted: false,
+      isRejected: false,
+      image: "",
+      location : false,
+      latitude : 0,
+      longitude : 0,
+      isContact : true,
+      contactName : contact.name,
+      contactNumber : contact.phoneNumbers !== undefined ? contact.phoneNumbers[0].number : "",
+      // isDocument : false,
+      // documentUrl : "",
+      // documentName : "",
+      // documentSize : 0,
+      // documentType : "",
+
     };
     return newMessage;
   };
@@ -206,11 +328,48 @@ const Chat: React.FC<ChatProps> = (props) => {
       isRejected: false,
       image: uri,
       location : false,
-      latitude : undefined,
-      longitude : undefined,
+      latitude : 0,
+      longitude : 0,
+      isContact : false,
+      contactName : "",
+      contactNumber : "",
+      // isDocument : false,
+      // documentUrl : "",
+      // documentName : "",
+      // documentSize : 0,
+      // documentType : "",
     };
     return newMessage;
   };
+
+  // const convertDocumentToMessage = (url: string, size : number, type : string, name : string) => {
+  //   const newMessage = {
+  //     _id : Math.random().toString(36).substring(7),
+  //     text: '', // The message text
+  //     createdAt: new Date(), // The timestamp of when the message was created
+  //     user: { _id: auth?.currentUser?.email || '' }, // The user object representing the sender of the message
+  //     ReceiverUser: { _id: ReceiverEmail },
+  //     GoldMessage: false,
+  //     isAccepted: false,
+  //     isRejected: false,
+  //     image: "",
+  //     location : false,
+  //     latitude : 0,
+  //     longitude : 0,
+  //     isContact : false,
+  //     contactName : "",
+  //     contactNumber : "",
+  //     isDocument : true,
+  //     documentUrl : url,
+  //     documentName : name,
+  //     documentSize : size,
+  //     documentType : type,
+  //   };
+  //   return newMessage;
+  // };
+
+
+  
 
   const sendMessage = (text: string) => {
     const message = convertToIMessage(text);
@@ -223,6 +382,12 @@ const Chat: React.FC<ChatProps> = (props) => {
     const message = convertPhotoToIMessage(uri);;
     onSend([message]);
   }
+
+
+  // const sendDocument = (url: string, size : number, type : string, name : string) => {
+  //   const message = convertDocumentToMessage(url, size, type, name);
+  //   onSend([message]);
+  // }
 
 
 
@@ -267,7 +432,6 @@ const Chat: React.FC<ChatProps> = (props) => {
       : "transparent";
     const renderButtons = () => {
       let messageId = props.currentMessage?._id;
-      console.log(messageId)
 
       return (
         <View style={styles.buttonContainer}>
@@ -305,6 +469,8 @@ const Chat: React.FC<ChatProps> = (props) => {
         />
       );
     };
+
+    
 
 
     const renderTimeLocation = (props: Readonly<BubbleProps<IMessage>>) => {
@@ -345,27 +511,9 @@ const Chat: React.FC<ChatProps> = (props) => {
     };
 
 
-    // const renderMessage = (props: any) => {
-    //   const { currentMessage } = props;
-
-    //   if (currentMessage.video) {
-    //     return <Video source={{ uri: currentMessage.video }} style={{ width: 200, height: 150 }} />;
-    //   } else if (currentMessage.image) {
-    //     return <Image source={{ uri: currentMessage.image }} style={{ width: 200, height: 150 }} />;
-    //   }
-
-    //   return <Bubble {...props} />;
-    // };
-
-
-
-
-    
-
     const renderBubble = (props: Readonly<BubbleProps<IMessage>>) => {
       
       if(props.currentMessage?.location === true){
-        console.log("Location")
         return (
           
           <View>
@@ -576,14 +724,12 @@ const Chat: React.FC<ChatProps> = (props) => {
 
 
   async function openCamera (){
-    console.log(filesRef.current)
     clear();
     await selectPictures('CAMERA', true);
     setShowOptions(!showOptions)
     setTimeout(async () => {
 
-      console.log(filesRef.current)
-      console.log(554654654)
+    
       let i = 0
       const user = auth.currentUser;
       uploadSelectedFiles('chats', Array.from(filesRef.current), user).then((downloadUrls) => {
@@ -659,13 +805,13 @@ const Chat: React.FC<ChatProps> = (props) => {
         </View>
         <Text>Location</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.actionContainer}>
+      <TouchableOpacity style={styles.actionContainer} onPress={getContacts}>
         <View style={styles.actions}>
           <MaterialIcons name='contacts' size={40} color={Colors.$backgroundDarkElevated} />
         </View>
         <Text>Contacts</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.actionContainer}>
+      <TouchableOpacity style={styles.actionContainer} onPress={()=>{}}>
         <View style={styles.actions}>
           <Ionicons name='document' size={40} color={Colors.$backgroundDarkElevated} />
         </View>
@@ -704,6 +850,15 @@ const Chat: React.FC<ChatProps> = (props) => {
     )
   }
 
+
+  function getContactsModal(){
+    return (
+      <Modal visible={VisibleContactModal} transparent={true}>
+        <ContactsModal setVisble={setVisibleContactModal} contacts={contacts} onSendContact={onSend} convertContactToMessage={convertContactToMessage}  />
+      </Modal>
+      )
+  }
+
   return (
     <View style={{ flex: 1 }}>
 
@@ -714,8 +869,7 @@ const Chat: React.FC<ChatProps> = (props) => {
 
       {getLocationModal()}
 
-
-
+      {getContactsModal()}
       <GiftedChat
 
         messages={messages}
