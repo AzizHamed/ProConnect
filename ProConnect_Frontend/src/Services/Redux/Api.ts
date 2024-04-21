@@ -48,7 +48,7 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/users/update-profile`,
           method: "POST",
-          body: queryArg.updateProfileRequest,
+          body: queryArg.updatePersonalInfoRequest,
         }),
         invalidatesTags: ["Users"],
       }),
@@ -172,6 +172,10 @@ const injectedRtkApi = api
         query: () => ({ url: `/users/get-all` }),
         providesTags: ["Users"],
       }),
+      getUserRoles: build.query<GetUserRolesApiResponse, GetUserRolesApiArg>({
+        query: () => ({ url: `/roles/get-roles` }),
+        providesTags: ["Roles"],
+      }),
       getAllRoles: build.query<GetAllRolesApiResponse, GetAllRolesApiArg>({
         query: () => ({ url: `/roles/get-all` }),
         providesTags: ["Roles"],
@@ -185,6 +189,13 @@ const injectedRtkApi = api
       getLocations: build.query<GetLocationsApiResponse, GetLocationsApiArg>({
         query: () => ({ url: `/properties/get-locations` }),
         providesTags: ["Properties"],
+      }),
+      getAllProfessions: build.query<
+        GetAllProfessionsApiResponse,
+        GetAllProfessionsApiArg
+      >({
+        query: () => ({ url: `/professions/get-all` }),
+        providesTags: ["Professions"],
       }),
       getJobs: build.query<GetJobsApiResponse, GetJobsApiArg>({
         query: (queryArg) => ({
@@ -219,9 +230,9 @@ export type CommentOnPostApiArg = {
   comment: Comment;
 };
 export type UpdateProfileApiResponse =
-  /** status 200 OK */ UpdateProfileRequest;
+  /** status 200 OK */ UpdatePersonalInfoRequest;
 export type UpdateProfileApiArg = {
-  updateProfileRequest: UpdateProfileRequest;
+  updatePersonalInfoRequest: UpdatePersonalInfoRequest;
 };
 export type CreateUserApiResponse = /** status 200 OK */ User;
 export type CreateUserApiArg = {
@@ -277,12 +288,16 @@ export type GetUserApiArg = {
 };
 export type GetAllUsersApiResponse = /** status 200 OK */ User[];
 export type GetAllUsersApiArg = void;
+export type GetUserRolesApiResponse = /** status 200 OK */ Role[];
+export type GetUserRolesApiArg = void;
 export type GetAllRolesApiResponse = /** status 200 OK */ Role[];
 export type GetAllRolesApiArg = void;
 export type GetPropertiesApiResponse = /** status 200 OK */ Property[];
 export type GetPropertiesApiArg = void;
 export type GetLocationsApiResponse = /** status 200 OK */ Location[];
 export type GetLocationsApiArg = void;
+export type GetAllProfessionsApiResponse = /** status 200 OK */ Profession[];
+export type GetAllProfessionsApiArg = void;
 export type GetJobsApiResponse = /** status 200 OK */ PageJob;
 export type GetJobsApiArg = {
   jobPage: JobPage;
@@ -308,6 +323,18 @@ export type Review = {
   roleReviewed: Role;
   timestamp?: string;
 };
+export type Category = {
+  id?: number;
+  name?: string;
+  professionList?: Profession[];
+};
+export type Profession = {
+  id?: number;
+  name: string;
+  description: string;
+  svg: string;
+  category: Category;
+};
 export type User = {
   id?: string;
   name: Name;
@@ -316,12 +343,12 @@ export type User = {
   dateOfBirth?: string;
   reviewsGiven?: Review[];
   reviewsReceived?: Review[];
-  rating?: number;
-  experience?: number;
   roles?: Role[];
   contractors?: User[];
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
   photoUrl?: string;
+  profession?: Profession;
+  experience?: number;
 };
 export type Point = {
   x?: number;
@@ -339,18 +366,6 @@ export type Property = {
   name: string;
   owner?: User;
   location?: Location;
-};
-export type Category = {
-  id?: number;
-  name?: string;
-  professionList?: Profession[];
-};
-export type Profession = {
-  id?: number;
-  name: string;
-  description: string;
-  svg: string;
-  category: Category;
 };
 export type Job = {
   id?: number;
@@ -382,7 +397,7 @@ export type Comment = {
   numberOfReports?: number;
   jobId?: number;
 };
-export type UpdateProfileRequest = {
+export type UpdatePersonalInfoRequest = {
   name?: Name;
   phoneNumber?: string;
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
@@ -413,21 +428,21 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  pageNumber?: number;
   pageSize?: number;
+  pageNumber?: number;
   unpaged?: boolean;
   paged?: boolean;
 };
 export type PageJob = {
-  totalPages?: number;
   totalElements?: number;
+  totalPages?: number;
   size?: number;
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -467,9 +482,11 @@ export const {
   useGetAllUsersNumberQuery,
   useGetUserQuery,
   useGetAllUsersQuery,
+  useGetUserRolesQuery,
   useGetAllRolesQuery,
   useGetPropertiesQuery,
   useGetLocationsQuery,
+  useGetAllProfessionsQuery,
   useGetJobsQuery,
   useInitQuery,
 } = injectedRtkApi;

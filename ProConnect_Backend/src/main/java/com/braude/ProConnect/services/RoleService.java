@@ -29,4 +29,10 @@ public class RoleService {
     public Role addRole(Role role) {
         return roleRepository.save(role);
     }
+
+    public List<Role> getUserRoles() {
+        generateRoles();
+        List<Role> roles = roleRepository.findAll();
+        return roles.stream().filter(role -> role.getCode().equals("HO") || role.getCode().equals("PRO")).toList();
+    }
 }
