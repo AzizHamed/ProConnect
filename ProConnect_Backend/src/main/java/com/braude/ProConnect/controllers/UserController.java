@@ -2,7 +2,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
-import com.braude.ProConnect.requests.UpdateProfileRequest;
+import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -67,9 +67,9 @@ public class UserController {
     }
 
     @PostMapping(value = "update-profile")
-    public ResponseEntity<UpdateProfileRequest> updateProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
+    public ResponseEntity<UpdatePersonalInfoRequest> updateProfile(@Valid @RequestBody UpdatePersonalInfoRequest updatePersonalInfoRequest){
         try {
-            return ResponseEntity.ok(userService.updateProfile(updateProfileRequest));
+            return ResponseEntity.ok(userService.updateProfile(updatePersonalInfoRequest));
         } catch (ProConnectException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

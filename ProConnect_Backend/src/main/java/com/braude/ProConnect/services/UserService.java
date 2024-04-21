@@ -6,7 +6,7 @@ import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserRepository;
-import com.braude.ProConnect.requests.UpdateProfileRequest;
+import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +76,7 @@ public class UserService {
         return newUsers;
     }
 
-    public UpdateProfileRequest updateProfile(UpdateProfileRequest request){
+    public UpdatePersonalInfoRequest updateProfile(UpdatePersonalInfoRequest request){
         User user = authenticationService.getAuthorizedUser();
         if(user == null)
             throw new ProConnectException("User not found.");
@@ -86,7 +86,7 @@ public class UserService {
         user.setAccountStatus(AccountStatus.ACTIVE);
         user.setPhotoUrl(request.getPhotoUrl());
         user = userRepository.save(user);
-        return new UpdateProfileRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles(), user.getPhotoUrl());
+        return new UpdatePersonalInfoRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles(), user.getPhotoUrl());
     }
 
     public int getAllUsersNumber() {
