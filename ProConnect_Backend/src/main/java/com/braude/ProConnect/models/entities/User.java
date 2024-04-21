@@ -4,6 +4,7 @@ import com.braude.ProConnect.models.embeddables.Name;
 import com.braude.ProConnect.models.enums.AccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,8 +30,6 @@ public class User {
     @NotEmpty(message = "Email cannot be empty.")
     @Column(unique = true)
     private String email;
-
-    @Column(unique = true)
     private String phoneNumber;
     private Date dateOfBirth;
 
@@ -40,15 +39,11 @@ public class User {
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
 
-    private double rating=0;
-
-    private int experience=0;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role>  roles;
+    private List<Role> roles;
 
 
     @ManyToMany()
@@ -62,11 +57,11 @@ public class User {
 
     private String photoUrl;
 
-//    @OneToMany()
-//    @JoinTable(name = "user_professions",
-//            joinColumns = @JoinColumn(name = "user_id" ),
-//            inverseJoinColumns = @JoinColumn(name = "profession-id"))
-//    private List<Profession> professions;
+    @ManyToOne
+    private Profession profession;
+
+    @Min(0)
+    private float experience;
 
     //private List<User> workers;
 
