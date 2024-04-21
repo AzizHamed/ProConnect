@@ -14,13 +14,9 @@ import { emailSignUp } from "../../Services/Firebase/Firebase";
 import { UserCredential } from "firebase/auth";
 import ProPopup from "../../Components/Layout/ProPopup";
 import { EMAIL_REGEX } from "../../Constants/Values";
-import { UserDetails, setUserAccount, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
+import { UserDetails, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
 import { useDispatch } from "react-redux";
-import { CreateUserApiArg, User, api, useCreateUserMutation } from "../../Services/Redux/Api";
-import { navigateToMainStack, navigateToProfileEditor, updateAuthState } from "./UpdateAuthState";
-import { User as FBUser } from "firebase/auth";
 import ProLoading from "../../Components/Layout/ProLoading";
-import { set } from "date-fns";
 
 const SignUpScreen: React.FC = () => {
   const { control, handleSubmit, watch } = useForm();
@@ -29,40 +25,22 @@ const SignUpScreen: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
   const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(false);
-
   const dispatch = useDispatch();
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-
 
   const onRegisterPressed = async (data: any) => {
     const { email, password } = data;
     setIsLoadingAuthState(true);
     emailSignUp(email, password).then(async (userCredential: UserCredential)=> {
         const user = userCredential.user;
-        // await updateAuthState(user, dispatch, navigation, true);         
-        console.log(user);
-        const userToCreate: CreateUserApiArg = {user: {
-          id: user.uid,
-          email: user.email || 'Error',
-          name:{firstName: user.displayName || '', lastName: ''},
-          phoneNumber: user.phoneNumber || '',
-          accountStatus: 'SETUP',
-          photoUrl: user.photoURL || 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png',                  
-        },
-          
-        };
-        console.log('User not found, creating new user', userToCreate);
-        const createUserPromise = dispatch(api.endpoints.createUser.initiate(userToCreate))
-        const {data: newUser} = await createUserPromise;
-        console.log('New User Data:', newUser);
-        dispatch(setUserAccount(newUser as User));
-        setResultText(user.email + ' Created!'|| 'Signed up')
-        setIsVisible(true);
+        dispatch(setUserCredential(user as UserDetails));
+        // The rest of the sign up process is handled in the StartupScreen component - this part only handles the initial sign up process in Firebase
       }).catch((error: any) => {
         console.log(error);
-        setResultText(error.message)
-        setIsVisible(true);
+        // TODO: Error handling/notification
+        // setResultText(error.message)
+        // setIsVisible(true);
         setIsLoadingAuthState(false);  
     });
   };
@@ -132,7 +110,7 @@ const SignUpScreen: React.FC = () => {
                 textContentType="password"
                 ref={confirmPasswordRef}
               />
-
+              
               <ProButton
                 text="Register"
                 onPress={handleSubmit(onRegisterPressed)}
