@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { View, Text, Image, Keyboard, TouchableWithoutFeedback, Modal, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, Keyboard, TouchableWithoutFeedback, Modal, StyleSheet, TouchableOpacity, KeyboardAvoidingView, PermissionsAndroid } from 'react-native'
 import { GiftedChat, Bubble, BubbleProps, IMessage, MessageProps, Time, InputToolbar, Send, Composer } from 'react-native-gifted-chat'
 import {
   collection,
@@ -38,6 +38,7 @@ import { setFullScreenMap } from '../../Services/Redux/Slices/FullScreenMapSlice
 import LocationModal from './LocationModal';
 import * as Contacts from 'expo-contacts';
 import * as DocumentPicker from 'expo-document-picker';
+import ContactsModal from './ContactsModal';
 
 
 
@@ -191,6 +192,9 @@ const Chat: React.FC<ChatProps> = (props) => {
 
   
   };
+
+
+  
 
 //   const getDocuments = async () => {
     
@@ -852,13 +856,13 @@ const Chat: React.FC<ChatProps> = (props) => {
   }
 
 
-  // function getContactsModal(){
-  //   return (
-  //     <Modal visible={VisibleContactModal} transparent={true}>
-  //       <ContactsModal setVisble={setVisibleContactModal} contacts={contacts} onSendContact={onSend} convertContactToMessage={convertContactToMessage}  />
-  //     </Modal>
-  //     )
-  // }
+  function getContactsModal(){
+    return (
+      <Modal visible={VisibleContactModal} transparent={false}>
+        <ContactsModal setVisble={setVisibleContactModal} contacts={contacts} onSendContact={onSend} convertContactToMessage={convertContactToMessage}  />
+      </Modal>
+      )
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -870,7 +874,7 @@ const Chat: React.FC<ChatProps> = (props) => {
 
       {getLocationModal()}
 
-      {/* {getContactsModal()} */}
+      {getContactsModal()}
       <GiftedChat
 
         messages={messages}
