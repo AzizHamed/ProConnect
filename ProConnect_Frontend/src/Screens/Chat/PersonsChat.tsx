@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { View,StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 import { database, auth } from '../../Services/Firebase/Firebase';
 import { collection, orderBy, query, where, limit, onSnapshot,or } from 'firebase/firestore';
+import { checkName } from '../../Constants/Functions/Functions';
 
 
 
@@ -18,44 +19,49 @@ const PersonsChat = () => {
 
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
 
-  let data1 = data
-  data1 = data1?.filter((user) => user.email !== auth.currentUser?.email)
+  const [data1, setdata1] = useState(data?.filter((user) => user.email !== auth.currentUser?.email))
 
-  const collectionRef = collection(database, 'chats');
+  let textInput = ""
 
-  const q = query(collectionRef, orderBy('createdAt', 'desc'));
+  // const collectionRef = collection(database, 'chats');
 
-  const uniqueResults = new Set();
+  // const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
-
-  useLayoutEffect(() => {
-
-    const user = { _id: auth.currentUser?.email };
-    const results = query(
-      collectionRef,
-      or(
-      where('user', 'in', [user]),
-      where('ReceiverUser', 'in', [user])),
-      orderBy('createdAt', 'asc'),
-    );
+  // const uniqueResults = new Set();
 
 
-    const unsubscribe = onSnapshot(results, querySnapshot => {
+  // useLayoutEffect(() => {
 
-      querySnapshot.docs.forEach((doc) => {
-        if(!uniqueResults.has(doc.data().ReceiverUser._id) && doc.data().ReceiverUser._id !== auth.currentUser?.email)
-          uniqueResults.add(doc.data().ReceiverUser._id);
+  //   const user = { _id: auth.currentUser?.email };
+  //   const results = query(
+  //     collectionRef,
+  //     or(
+  //     where('user', 'in', [user]),
+  //     where('ReceiverUser', 'in', [user])),
+  //     orderBy('createdAt', 'asc'),
+  //   );
 
-        if(!uniqueResults.has(doc.data().user._id) && doc.data().user._id !== auth.currentUser?.email)
-          uniqueResults.add(doc.data().user._id);
-      })
 
-      console.log(uniqueResults.forEach((result) => console.log(result)))
-    });
+  //   const unsubscribe = onSnapshot(results, querySnapshot => {
 
-    return unsubscribe;
-  },[]);
+  //     querySnapshot.docs.forEach((doc) => {
+  //       if(!uniqueResults.has(doc.data().ReceiverUser._id) && doc.data().ReceiverUser._id !== auth.currentUser?.email)
+  //         uniqueResults.add(doc.data().ReceiverUser._id);
 
+  //       if(!uniqueResults.has(doc.data().user._id) && doc.data().user._id !== auth.currentUser?.email)
+  //         uniqueResults.add(doc.data().user._id);
+  //     })
+
+  //     console.log(uniqueResults.forEach((result) => console.log(result)))
+  //   });
+
+  //   return unsubscribe;
+  // },[]);
+
+
+  useEffect(() => {
+    filterUsers()
+  } ,[data])
 
 
   
@@ -70,6 +76,23 @@ const PersonsChat = () => {
   let chatNumber = data1 === undefined ? 0 : data1.length
   const style = style1(chatNumber);
 
+
+  function filterUsers (){
+    if(textInput === "")
+      setdata1(data?.filter((user) => user.email !== auth.currentUser?.email))
+    else
+      setdata1(data?.filter((user) => user.email !== auth.currentUser?.email && checkName(textInput, user.name.firstName, user.name.lastName)))
+
+  }
+
+  
+  function onChangeText(text : string){ 
+
+    textInput = text;
+    filterUsers()
+    
+    }
+
   return (
 
     <BackgroundView children={
@@ -80,7 +103,7 @@ const PersonsChat = () => {
 
    <View style={style.container}> 
     <View style={style.searchTextInput}>
-      <MyTextInput onChange={()=>{} } placeHolder={'Search'} icon={<EvilIcons name='search'  size={45} style={{backgroundColor:"white"}}/>} />
+      <MyTextInput onChange={(onChangeText)} placeHolder={'Search'} icon={<EvilIcons name='search'  size={45} style={{backgroundColor:"white"}}/>} />
     </View>
    
 
@@ -89,7 +112,7 @@ const PersonsChat = () => {
       {isSuccess && data1?.map((friend)=> {
         return(
           <TouchableOpacity onPress={()=>{
-            dispatch(setChat({ReceiverEmail : friend.email , openModal : false}))
+            dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName}))
             navigation.navigate("Chats")
           }} >
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>

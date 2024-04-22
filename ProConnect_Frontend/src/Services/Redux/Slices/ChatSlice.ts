@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ReactElement, ReactNode } from "react";
 import { ImageStyle, ViewStyle } from "react-native";
+import { User } from "../Api";
 
 export interface ChatState {
     ReceiverEmail : string,
-    openModal  :boolean
+    openModal  :boolean,
+    receiverUserName : String
 }
 const initialState: ChatState = {
  ReceiverEmail : "",
- openModal : false
+ openModal : false,
+ receiverUserName : "",
 }
 
 export const ChatSlice = createSlice({
@@ -19,6 +22,7 @@ export const ChatSlice = createSlice({
         setChat: (state, action: PayloadAction<ChatState>) => {
             state.ReceiverEmail = action.payload.ReceiverEmail
             state.openModal = action.payload.openModal
+            state.receiverUserName = action.payload.receiverUserName
         },
     },
     selectors:{
@@ -29,10 +33,14 @@ export const ChatSlice = createSlice({
         getSelectedChatModal: (state) =>{
             return state.openModal
         },
+
+        getSelectedReceiverUserName: (state) =>{
+            return state.receiverUserName
+        }
         
     },
 })
 
 export const { setChat } = ChatSlice.actions
-export const { getSelectedChatEmail, getSelectedChatModal } = ChatSlice.selectors
+export const { getSelectedChatEmail, getSelectedChatModal, getSelectedReceiverUserName } = ChatSlice.selectors
 export default ChatSlice.reducer

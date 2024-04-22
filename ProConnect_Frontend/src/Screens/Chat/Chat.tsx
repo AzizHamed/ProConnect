@@ -17,7 +17,7 @@ import {
 } from 'firebase/firestore';
 import { listFiles,storage ,database, auth, uploadSelectedFiles } from '../../Services/Firebase/Firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedChatEmail, getSelectedChatModal } from '../../Services/Redux/Slices/ChatSlice';
+import { getSelectedChatEmail, getSelectedChatModal, getSelectedReceiverUserName } from '../../Services/Redux/Slices/ChatSlice';
 import ModalD from '../../Features/Persons/ModalD';
 import { User } from '../../Services/Redux/Api';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -37,7 +37,6 @@ import { useNavigation } from '@react-navigation/native';
 import { setFullScreenMap } from '../../Services/Redux/Slices/FullScreenMapSlice';
 import LocationModal from './LocationModal';
 import * as Contacts from 'expo-contacts';
-import ContactsModal from './ContactsModal';
 import * as DocumentPicker from 'expo-document-picker';
 
 
@@ -57,6 +56,8 @@ const Chat: React.FC<ChatProps> = (props) => {
    const dispatch = useDispatch();
     const filesRef = useRef<any>([]);
 
+
+    const receiverUser = useSelector(getSelectedReceiverUserName)
     // const docRef = useRef<any>([]);
 
 
@@ -248,8 +249,8 @@ const Chat: React.FC<ChatProps> = (props) => {
       isRejected: false,
       image: "", 
       location : false,
-      latitude : undefined,
-      longitude : undefined,
+      latitude : 0,
+      longitude : 0,
       isContact : false,
       contactName : "",
       contactNumber : "",
@@ -404,7 +405,7 @@ const Chat: React.FC<ChatProps> = (props) => {
             <TouchableWithoutFeedback>
               <View style={styles.modalBackground} />
             </TouchableWithoutFeedback>
-            <ModalD send={sendMessage} setModalVisible={setModalVisible} />
+            <ModalD send={sendMessage} setModalVisible={setModalVisible} userName={receiverUser} />
           </Modal>
         </View>
       )
@@ -851,13 +852,13 @@ const Chat: React.FC<ChatProps> = (props) => {
   }
 
 
-  function getContactsModal(){
-    return (
-      <Modal visible={VisibleContactModal} transparent={true}>
-        <ContactsModal setVisble={setVisibleContactModal} contacts={contacts} onSendContact={onSend} convertContactToMessage={convertContactToMessage}  />
-      </Modal>
-      )
-  }
+  // function getContactsModal(){
+  //   return (
+  //     <Modal visible={VisibleContactModal} transparent={true}>
+  //       <ContactsModal setVisble={setVisibleContactModal} contacts={contacts} onSendContact={onSend} convertContactToMessage={convertContactToMessage}  />
+  //     </Modal>
+  //     )
+  // }
 
   return (
     <View style={{ flex: 1 }}>
@@ -869,7 +870,7 @@ const Chat: React.FC<ChatProps> = (props) => {
 
       {getLocationModal()}
 
-      {getContactsModal()}
+      {/* {getContactsModal()} */}
       <GiftedChat
 
         messages={messages}

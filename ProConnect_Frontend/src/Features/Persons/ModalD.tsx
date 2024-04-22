@@ -13,6 +13,7 @@ import { ka } from 'date-fns/locale';
 interface ModalDProps {
   send : (message : string) => void;
   setModalVisible : (visible : boolean) => void;
+  userName : string;
 }
 
 
@@ -57,10 +58,16 @@ const ModalD :React.FC<ModalDProps> =  (props) => {
       <View style={{alignItems : "center", width : "90%"}}>
       <Text style={{color : "black", fontSize : 20, fontWeight : "bold"}}>Send a Request</Text>
       </View>
+
+      <View style={{alignItems : "center", width : "100%", right : 20}}>
+
+      <Text style={{color : "green"}}>Increase your chances</Text>
+      </View>
      
       <View style={{width : "90%"}}>
         <View style={styles.RequestTypeContainer}>
-          <Text style={styles.textStyle}> Request Type:</Text>
+          <Text style={styles.textStyle}>Request Type:</Text>
+          
           <ProRNPickerSelect  data={RequestTypes} onValueChange={(value) => { onChange(value, Budget, Number(value) - 1)} } index={Index} />
         </View>
 
@@ -68,7 +75,7 @@ const ModalD :React.FC<ModalDProps> =  (props) => {
 
           <Text style={styles.textStyle}>To:  </Text>
 
-          <Text style={styles.textStyle}>Aziz Hamed</Text>
+          <Text style={styles.textStyle}>{props.userName}</Text>
         </View>
 
         <View style={styles.BudgetContainerContainer}>
@@ -123,7 +130,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     // Change the width here
     width: 375, // Adjust this value as needed
-    height: 675, // Adjust this value as needed
+    height: 700, // Adjust this value as needed
   },
 
   RequestTypeContainer: {
