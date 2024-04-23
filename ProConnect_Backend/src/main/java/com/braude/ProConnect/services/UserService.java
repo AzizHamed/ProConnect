@@ -3,14 +3,18 @@ package com.braude.ProConnect.services;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.entities.UserProfession;
 import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
+import com.braude.ProConnect.requests.UpdateProfessionsRequest;
+import com.braude.ProConnect.requests.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,7 +80,7 @@ public class UserService {
         return newUsers;
     }
 
-    public UpdatePersonalInfoRequest updateProfile(UpdatePersonalInfoRequest request){
+    public User updatePersonalInfo(UpdatePersonalInfoRequest request){
         User user = authenticationService.getAuthorizedUser();
         if(user == null)
             throw new ProConnectException("User not found.");
@@ -86,7 +90,18 @@ public class UserService {
         user.setAccountStatus(AccountStatus.ACTIVE);
         user.setPhotoUrl(request.getPhotoUrl());
         user = userRepository.save(user);
-        return new UpdatePersonalInfoRequest(user.getName(), user.getPhoneNumber(), user.getAccountStatus(), user.getRoles(), user.getPhotoUrl());
+        return user;
+    }
+    public User updateProfessions(UpdateProfessionsRequest request){
+        User user = authenticationService.getAuthorizedUser();
+        user.setUserProfessions(Arrays.stream(request.getProfessions()).toList());
+        user = userRepository.save(user);
+        return user;
+    }
+
+    public User updateProfile(UpdateProfileRequest updateProfileRequest) {
+        updatePersonalInfo(updateProfileRequest.getUpdatePersonalInfoRequest());
+        return updateProfessions(updateProfileRequest.getUpdateProfessionsRequest());
     }
 
     public int getAllUsersNumber() {
