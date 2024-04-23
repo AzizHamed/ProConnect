@@ -57,11 +57,9 @@ public class User {
 
     private String photoUrl;
 
-    @ManyToOne
-    private Profession profession;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserProfession> userProfessions;
 
-    @Min(0)
-    private float experience;
 
     //private List<User> workers;
 
