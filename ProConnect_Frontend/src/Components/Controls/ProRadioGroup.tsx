@@ -56,7 +56,6 @@ const ProRadioGroup: React.FC<ProRadioGroupProps> = (props) => {
                     <Text>{option}</Text>
                 </TouchableOpacity>
             ))}
-
             </View>
         </View>
     );
