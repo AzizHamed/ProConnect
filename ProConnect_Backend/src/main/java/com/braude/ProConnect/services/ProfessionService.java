@@ -17,8 +17,8 @@ public class ProfessionService {
     }
 
 
-    public Profession addProfessions(String name, String description, String svg) {
-        Profession profession = new Profession(name, description,svg);
+    public Profession addProfessions(String name, String description, String iconUrl) {
+        Profession profession = new Profession(name, description, iconUrl);
         return professionRepository.save(profession);
     }
 
