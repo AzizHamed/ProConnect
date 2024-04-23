@@ -27,19 +27,19 @@ public class JobService {
     private final JobProposalRepository jobProposalRepository;
     private final JobCriteriaRepository jobCriteriaRepository;
     private final UserService userService;
-    private final PropertyService propertyService;
+//    private final PropertyService propertyService;
     private final CommentRepository commentRepository;
     private final AuthenticationService authenticationService;
 
     @Autowired
     public JobService(JobRepository jobRepository, JobRepositoryPaging jobRepositoryPaging, JobProposalRepository jobProposalRepository,
-                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository, AuthenticationService authenticationService) {
+                      JobCriteriaRepository jobCriteriaRepository, UserService userService, CommentRepository commentRepository, AuthenticationService authenticationService) {
         this.jobRepository = jobRepository;
         this.jobProposalRepository = jobProposalRepository;
         this.jobRepositoryPaging = jobRepositoryPaging;
         this.jobCriteriaRepository = jobCriteriaRepository;
 
-        this.propertyService = propertyService;
+//        this.propertyService = propertyService;
         this.userService = userService;
         this.commentRepository = commentRepository;
         this.authenticationService = authenticationService;
@@ -48,11 +48,11 @@ public class JobService {
     public Job postJob(CreateJobRequest createJobRequest){
         User user = authenticationService.getAuthorizedUser();
         Job job = createJobRequest.getJob();
-        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
-        if(property == null)
-            throw new ProConnectException("Invalid property id");
+//        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
+//        if(property == null)
+//            throw new ProConnectException("Invalid property id");
         job.setOwner(user);
-        job.setProperty(property);
+//        job.setProperty(property);
 
         job.setDatePosted(OffsetDateTime.now());
         job.setJobStatus(JobStatus.PUBLISHED);

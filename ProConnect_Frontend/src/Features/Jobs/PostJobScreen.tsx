@@ -24,11 +24,11 @@ const PostJobScreen: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([])
     const user = useSelector(getUserAccount);
-    const properties = useGetPropertiesQuery();
-    const propertiesOptions = properties.data?.map((property: Property) => ({
-        value: property.id,
-        label: property.name,
-      })) || [];
+    // const properties = useGetPropertiesQuery();
+    // const propertiesOptions = properties.data?.map((property: Property) => ({
+    //     value: property.id,
+    //     label: property.name,
+    //   })) || [];
     const [postJob] = usePostJobsMutation();
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -50,7 +50,9 @@ const PostJobScreen: React.FC = () => {
             uploadSelectedFiles('jobs', selectedFiles, user).then((downloadUrls) => {
                     // Handle the downloadUrls
                     console.log(downloadUrls);
-                    const postJobRequest: CreateJobRequest = { propertyId: data.validatedDropdown, job: { title: data.title, description: data.description, budget: data.budget, photos: downloadUrls }};
+                    const postJobRequest: CreateJobRequest = { 
+                        // propertyId: data.validatedDropdown, 
+                        job: { title: data.title, description: data.description, budget: data.budget, photos: downloadUrls }};
                     console.log('Posting job:', postJobRequest);
                     postJob({createJobRequest: postJobRequest}).unwrap().then((response) => {
                         console.log('Job posted:', response);
@@ -88,7 +90,7 @@ const PostJobScreen: React.FC = () => {
                     maxLength: { value: 200, message: "Title is too long" },
                 }}
             />
-            <ValidatedDropDown control={control} setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} value='Select Property' values={propertiesOptions} errorMessage='Property is required.'></ValidatedDropDown>
+            {/* <ValidatedDropDown control={control} setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} value='Select Property' values={propertiesOptions} errorMessage='Property is required.'></ValidatedDropDown> */}
             <ProTextInput
                 name="budget"
                 control={control}
