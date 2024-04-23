@@ -8,6 +8,7 @@ import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -90,6 +91,22 @@ public class UserService {
 
     public int getAllUsersNumber() {
         return userRepository.findAll().size();
+    }
+
+    public List<User> getUsersByEmails(String[] emails) {
+
+
+        List<User> users = new ArrayList<>();
+        for(String email : emails){
+            users.add(userRepository.findByEmail(email));
+        }
+
+        return users;
+    }
+
+    public User getUserByEmail(String email) {
+
+        return userRepository.findByEmail(email);
     }
 
 //    public void addProfession(String userId, String professionName) {
