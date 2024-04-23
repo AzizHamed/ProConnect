@@ -41,6 +41,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
   const navigation = useNavigation();
   const currentWindowWidth = useSelector(getWindowWidth);
   const user = useSelector(getUserAccount);
+
   if (user === undefined || user === null) {
     //return <BackgroundView children={<ProLoading/>}/>
   }
@@ -120,8 +121,8 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
           <Ionicons name="settings-outline" size={20} color="#808080" />
         )
       }} />
-      <MainDrawer.Screen name="Profile" component={ProfileViewScreen} />
-      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: "Profile" }} />
+      <MainDrawer.Screen name="Profile" component={ProfileViewScreen} options={{title: 'Profile'}}/>
+      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: 'Profile' }} />
       <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />
     </MainDrawer.Navigator>
   );
