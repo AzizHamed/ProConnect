@@ -23,40 +23,43 @@ const PersonsChat = () => {
 
   let textInput = ""
 
-  // const collectionRef = collection(database, 'chats');
+  const collectionRef = collection(database, 'chats');
 
-  // const q = query(collectionRef, orderBy('createdAt', 'desc'));
+  const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
-  // const uniqueResults = new Set();
-
-
-  // useLayoutEffect(() => {
-
-  //   const user = { _id: auth.currentUser?.email };
-  //   const results = query(
-  //     collectionRef,
-  //     or(
-  //     where('user', 'in', [user]),
-  //     where('ReceiverUser', 'in', [user])),
-  //     orderBy('createdAt', 'asc'),
-  //   );
+  const uniqueResults = new Set();
 
 
-  //   const unsubscribe = onSnapshot(results, querySnapshot => {
+  useLayoutEffect(() => {
 
-  //     querySnapshot.docs.forEach((doc) => {
-  //       if(!uniqueResults.has(doc.data().ReceiverUser._id) && doc.data().ReceiverUser._id !== auth.currentUser?.email)
-  //         uniqueResults.add(doc.data().ReceiverUser._id);
+    const user = { _id: auth.currentUser?.email };
+    const results = query(
+      collectionRef,
+      or(
+      where('user', 'in', [user]),
+      where('ReceiverUser', 'in', [user])),
+      orderBy('createdAt', 'asc'),
+    );
 
-  //       if(!uniqueResults.has(doc.data().user._id) && doc.data().user._id !== auth.currentUser?.email)
-  //         uniqueResults.add(doc.data().user._id);
-  //     })
 
-  //     console.log(uniqueResults.forEach((result) => console.log(result)))
-  //   });
+    
 
-  //   return unsubscribe;
-  // },[]);
+
+    const unsubscribe = onSnapshot(results, querySnapshot => {
+
+      querySnapshot.docs.forEach((doc) => {
+        if(!uniqueResults.has(doc.data().ReceiverUser._id) && doc.data().ReceiverUser._id !== auth.currentUser?.email)
+          uniqueResults.add(doc.data().ReceiverUser._id);
+
+        if(!uniqueResults.has(doc.data().user._id) && doc.data().user._id !== auth.currentUser?.email)
+          uniqueResults.add(doc.data().user._id);
+      })
+
+      console.log(uniqueResults.forEach((result) => console.log(result)))
+    });
+
+    return unsubscribe;
+  },[]);
 
 
   useEffect(() => {
