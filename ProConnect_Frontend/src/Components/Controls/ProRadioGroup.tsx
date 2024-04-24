@@ -15,6 +15,7 @@ const ProRadioGroup: React.FC<ProRadioGroupProps> = (props) => {
     const options = props.options;
     const handleSelectOption = (index: number) => {
         setSelectedIndex(index);
+        if(props.setSelectedIndex) props.setSelectedIndex(index);
     };
     return (
         <View invisible>
