@@ -1,8 +1,9 @@
 import { LayoutAnimation, Platform, UIManager, TouchableOpacity, Animated } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { View, Text, Colors } from 'react-native-ui-lib';
-import { defaultWidthValues } from '../../Constants/Values';
+import { IS_WEB, defaultWidthValues } from '../../Constants/Values';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Easing } from 'react-native-reanimated';
 
 interface ProExpandableViewProps {
   title: string;
@@ -19,7 +20,8 @@ const ProExpandableView = ({ title, children, height }: ProExpandableViewProps) 
   const [expanded, setExpanded] = useState(false);
   const [animation] = useState(new Animated.Value(0));
   const width = defaultWidthValues();
-
+  const isWeb = IS_WEB();
+  console.log(width)
   useEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   }, [expanded]);
@@ -28,8 +30,9 @@ const ProExpandableView = ({ title, children, height }: ProExpandableViewProps) 
     setExpanded(!expanded);
     Animated.timing(animation, {
       toValue: expanded ? 0 : 1,
-      duration: 300,
+      duration: 175,
       useNativeDriver: false,
+      easing: Easing.ease
     }).start();
   };
 
@@ -45,15 +48,15 @@ const ProExpandableView = ({ title, children, height }: ProExpandableViewProps) 
   };
 
   return (
-    <View width={width} invisible>
+    <View invisible width={width} style={{borderWidth: 1, borderRadius: 5, marginVertical: 10, borderColor: expanded ? Colors.radioColorSelected : Colors.radioColorDeselected}}>
       <TouchableOpacity onPress={handleTitleClick}>
-        <View row spread invisible>            
-            <Text h4 style={{fontWeight: 'bold', marginBottom: expanded ? 20 : 0, textAlign: 'left'}}>{title}</Text>
+        <View row spread invisible center marginH-10>            
+            <Text h4 style={{fontWeight: 'bold', marginBottom: expanded ? 20 : 0, textAlign: 'left', width: "90%"}}>{title}</Text>
             <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={30} color={Colors.textPrimary} style={{alignSelf: 'center', marginBottom: expanded ? 10 : 0}} />
         </View>
       </TouchableOpacity>
-      <Animated.View style={[containerStyle, contentStyle, {marginTop: 20}]}>{children}</Animated.View>
-      <View height={1} style={{transform:[{translateY:-10}]}}></View>
+      {expanded && <View height={1} style={{transform:[{translateY:-10}]}}></View>}
+      <Animated.View style={[containerStyle, contentStyle, {marginTop: 20}, isWeb ? {width: width} : {} ]}>{children}</Animated.View>
     </View>
   );
 };
