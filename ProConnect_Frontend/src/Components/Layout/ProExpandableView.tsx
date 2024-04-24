@@ -22,7 +22,7 @@ const ProExpandableView = ({ title, children, height, isInitiallyExpanded }: Pro
   const [animation] = useState(new Animated.Value(isInitiallyExpanded ? 1 : 0));
   const width = defaultWidthValues();
   const isWeb = IS_WEB();
-  console.log(width)
+  // console.log(width)
   useEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   }, [expanded]);
@@ -49,7 +49,7 @@ const ProExpandableView = ({ title, children, height, isInitiallyExpanded }: Pro
   };
 
   return (
-    <View invisible width={width} style={{borderWidth: 1, borderRadius: 5, marginVertical: 10, borderColor: expanded ? Colors.radioColorSelected : Colors.radioColorDeselected}}>
+    <View invisible width={width} style={{borderWidth: 1, borderRadius: 5, marginVertical: 10, borderColor: expanded ? Colors.radioColorSelected : Colors.radioColorDeselected, padding: 10}}>
       <TouchableOpacity onPress={handleTitleClick}>
         <View row spread invisible center marginH-10>            
             <Text h4 style={{fontWeight: 'bold', marginBottom: expanded ? 20 : 0, textAlign: 'left', width: "90%"}}>{title}</Text>

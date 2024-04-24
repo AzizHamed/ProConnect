@@ -19,7 +19,7 @@ const ProImagePicker: React.FC<ProImagePickerProps> = (props) => {
 
   useEffect(() => {
     props.setSelectedFiles(Array.from(selectedFiles || []));
-    console.log('Set selected files: ', selectedFiles)
+    // console.log('Set selected files: ', selectedFiles)
   },[selectedFiles])
 
   return (

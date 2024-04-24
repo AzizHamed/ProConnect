@@ -41,8 +41,8 @@ const ProWizard: React.FC<ProWizardProps> = ({ control, steps, stepLabels, onAct
                     <View height={"100%"}>
                         <Wizard containerStyle={{ backgroundColor: 'transparent' }} activeIndex={value} onActiveIndexChanged={(index) => {
                             setMaxIndex(index > maxIndex ? index : maxIndex);
-                            console.log('On Change Active index:', index);
-                            console.log('On Change Max index:', maxIndex);
+                            // console.log('On Change Active index:', index);
+                            // console.log('On Change Max index:', maxIndex);
                             onChange(index);
                             onActiveIndexChanged?.(index);
                         }}>

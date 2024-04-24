@@ -47,7 +47,7 @@ const ProList: React.FC<ProListProps> = (props) => {
 
   const updateScrollPosition = (offset: number) => {
     setTimeout(() => {
-      console.log('scrollOffset:', scrollOffset)
+      // console.log('scrollOffset:', scrollOffset)
       if (scrollViewRef.current) {
         scrollViewRef.current.scrollTo({ x: offset, y: 0, animated: true });
       }      
