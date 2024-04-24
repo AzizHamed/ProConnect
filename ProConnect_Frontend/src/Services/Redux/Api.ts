@@ -48,6 +48,28 @@ const injectedRtkApi = api
         query: (queryArg) => ({
           url: `/users/update-profile`,
           method: "POST",
+          body: queryArg.updateProfileRequest,
+        }),
+        invalidatesTags: ["Users"],
+      }),
+      updateProfessions: build.mutation<
+        UpdateProfessionsApiResponse,
+        UpdateProfessionsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/update-professions`,
+          method: "POST",
+          body: queryArg.updateProfessionsRequest,
+        }),
+        invalidatesTags: ["Users"],
+      }),
+      updatePersonalInfo: build.mutation<
+        UpdatePersonalInfoApiResponse,
+        UpdatePersonalInfoApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/update-personal-info`,
+          method: "POST",
           body: queryArg.updatePersonalInfoRequest,
         }),
         invalidatesTags: ["Users"],
@@ -229,9 +251,16 @@ export type CommentOnPostApiResponse = /** status 200 OK */ Comment;
 export type CommentOnPostApiArg = {
   comment: Comment;
 };
-export type UpdateProfileApiResponse =
-  /** status 200 OK */ UpdatePersonalInfoRequest;
+export type UpdateProfileApiResponse = /** status 200 OK */ User;
 export type UpdateProfileApiArg = {
+  updateProfileRequest: UpdateProfileRequest;
+};
+export type UpdateProfessionsApiResponse = /** status 200 OK */ User;
+export type UpdateProfessionsApiArg = {
+  updateProfessionsRequest: UpdateProfessionsRequest;
+};
+export type UpdatePersonalInfoApiResponse = /** status 200 OK */ User;
+export type UpdatePersonalInfoApiArg = {
   updatePersonalInfoRequest: UpdatePersonalInfoRequest;
 };
 export type CreateUserApiResponse = /** status 200 OK */ User;
@@ -335,6 +364,12 @@ export type Profession = {
   svg: string;
   category: Category;
 };
+export type UserProfession = {
+  user?: User;
+  profession?: Profession;
+  startDate?: string;
+  endDate?: string;
+};
 export type User = {
   id?: string;
   name: Name;
@@ -347,31 +382,12 @@ export type User = {
   contractors?: User[];
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
   photoUrl?: string;
-  profession?: Profession;
-  experience?: number;
-};
-export type Point = {
-  x?: number;
-  y?: number;
-};
-export type Location = {
-  country?: string;
-  city?: string;
-  address?: string;
-  postalCode?: string;
-  point?: Point;
-};
-export type Property = {
-  id?: number;
-  name: string;
-  owner?: User;
-  location?: Location;
+  userProfessions?: UserProfession[];
 };
 export type Job = {
   id?: number;
   budget?: number;
   owner?: User;
-  property?: Property;
   datePosted?: string;
   jobStatus?:
     | "Draft"
@@ -404,6 +420,13 @@ export type UpdatePersonalInfoRequest = {
   roles?: Role[];
   photoUrl?: string;
 };
+export type UpdateProfessionsRequest = {
+  professions?: UserProfession[];
+};
+export type UpdateProfileRequest = {
+  updatePersonalInfoRequest?: UpdatePersonalInfoRequest;
+  updateProfessionsRequest?: UpdateProfessionsRequest;
+};
 export type Service = {
   id?: number;
   name: string;
@@ -415,6 +438,23 @@ export type UserServiceEntity = {
   service: Service;
   user: User;
   cost?: number;
+};
+export type Point = {
+  x?: number;
+  y?: number;
+};
+export type Location = {
+  country?: string;
+  city?: string;
+  address?: string;
+  postalCode?: string;
+  point?: Point;
+};
+export type Property = {
+  id?: number;
+  name: string;
+  owner?: User;
+  location?: Location;
 };
 export type CreateJobRequest = {
   job?: Job;
@@ -428,10 +468,10 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  pageSize?: number;
-  pageNumber?: number;
-  unpaged?: boolean;
   paged?: boolean;
+  unpaged?: boolean;
+  pageNumber?: number;
+  pageSize?: number;
 };
 export type PageJob = {
   totalElements?: number;
@@ -469,6 +509,8 @@ export const {
   useLikePostMutation,
   useCommentOnPostMutation,
   useUpdateProfileMutation,
+  useUpdateProfessionsMutation,
+  useUpdatePersonalInfoMutation,
   useCreateUserMutation,
   useCreateUsersMutation,
   useAddRoleMutation,
