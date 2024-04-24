@@ -9,6 +9,7 @@ interface ProExpandableViewProps {
   title: string;
   children: React.ReactNode;
   height: number;
+  isInitiallyExpanded?: boolean;
 }
 
 // Enable LayoutAnimation on Android
@@ -16,9 +17,9 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const ProExpandableView = ({ title, children, height }: ProExpandableViewProps) => {
-  const [expanded, setExpanded] = useState(false);
-  const [animation] = useState(new Animated.Value(0));
+const ProExpandableView = ({ title, children, height, isInitiallyExpanded }: ProExpandableViewProps) => {
+  const [expanded, setExpanded] = useState(isInitiallyExpanded || false);
+  const [animation] = useState(new Animated.Value(isInitiallyExpanded ? 1 : 0));
   const width = defaultWidthValues();
   const isWeb = IS_WEB();
   console.log(width)

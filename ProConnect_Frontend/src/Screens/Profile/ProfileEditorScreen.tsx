@@ -24,7 +24,6 @@ import ProDatePicker from '../../Components/Controls/ProDatePicker';
 const ProfileEditorScreen: React.FC = () =>
   {
     const isWeb = IS_WEB();
-    console.log(isWeb)
   // API calls
   const { data: userRolesData } = useGetUserRolesQuery({});
   const { data: professionsData } = useGetAllProfessionsQuery({});
@@ -139,10 +138,10 @@ const ProfileEditorScreen: React.FC = () =>
     <BackgroundView hasScroll children={(
       <View style={{alignItems:"center", paddingTop: 20}}>
         {/* <ProHeader text={"Edit Profile"} headerType={HeaderType.H3}/> */}
-        <ProExpandableView title='Personal Information' height={320 + (user?.accountStatus === 'SETUP' ? 100 : 0)}
+        <ProExpandableView title='Personal Information' height={320 + (user?.accountStatus === 'SETUP' ? 100 : 0)} isInitiallyExpanded
          children={
           (
-            <View style={{alignItems:"center", marginHorizontal: isWeb ? 100 : 0}}>
+            <View style={{alignItems:"center"}}>
               
               <View style={{alignItems:'center', alignSelf:'center', width: 150}}>
                       <ProfileImage photoUrl={selectedProfilePictureUri} size={125}/>
