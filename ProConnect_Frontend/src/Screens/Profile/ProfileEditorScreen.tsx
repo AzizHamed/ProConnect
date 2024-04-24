@@ -8,7 +8,7 @@ import ProTextInput from '../../Components/Controls/ProTextInput';
 import { IS_WEB, PHONE_REGEX, defaultWidthValues } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
 import { useNavigation } from '@react-navigation/native';
-import { Profession, UpdatePersonalInfoRequest, UpdateProfessionsRequest, User, useGetAllProfessionsQuery, useGetUserRolesQuery, useUpdateProfileMutation } from '../../Services/Redux/Api';
+import { Profession, UpdatePersonalInfoRequest, UpdateProfessionsRequest, User, UserProfession, useGetAllProfessionsQuery, useGetUserRolesQuery, useUpdateProfileMutation } from '../../Services/Redux/Api';
 import { Keyboard } from 'react-native';
 import ProTextView from '../../Components/Layout/ProTextView';
 import ProfileImage from '../../Components/Layout/ProfileImage';
@@ -19,43 +19,29 @@ import ProRadioGroup from "../../Components/Controls/ProRadioGroup";
 import ProExpandableView from '../../Components/Layout/ProExpandableView';
 import ValidatedDropDown from '../../Components/Controls/ValidatedDropdown';
 import { Colors } from 'react-native-ui-lib';
-import { createElement } from 'react-native';
 import ProDatePicker from '../../Components/Controls/ProDatePicker';
 
 const ProfileEditorScreen: React.FC = () =>
-{
-  const dispatch = useDispatch();
+  {
+    const isWeb = IS_WEB();
+    console.log(isWeb)
+  // API calls
+  const { data: userRolesData } = useGetUserRolesQuery({});
+  const { data: professionsData } = useGetAllProfessionsQuery({});
   const [updateProfile] = useUpdateProfileMutation();
+  
+  // Navigation
   const navigation = useNavigation();
+  // Redux
+  const dispatch = useDispatch();
   const user  = useSelector(getUserAccount);
+  
+  // Form
   const firstName = user?.name?.firstName || '';
   const lastName = user?.name?.lastName || '';
   const phone = user?.phoneNumber || '';
   const email = user?.email || '';
-  const { data: userRolesData } = useGetUserRolesQuery({});
-  const { data: professionsData } = useGetAllProfessionsQuery({});
-  const accountTypeOptions = userRolesData?.map((role) => role.name) || [];
-
-  const firstNameRef = useRef(null);
-  const lastNameRef = useRef(null);
-  const phoneRef = useRef(null);
-
-  const { selectPictures, selectedFiles, removeSelectedPicture, clear } = useImagePicker();
-  const [selectedProfilePictureUri, setSelectedProfilePictureUri] = useState(user?.photoUrl || '')
-
-
-  
-  // The role index that is selected in the radio group (Homeowner or Professional)
-  const [selectedRoleIndex, setSelectedRoleIndex] = useState(0)
-  // Profession Dropdown Validation
-  const [isDropdownValid, setIsDropdownValid] = useState(false);
-  const [triggerValidation, setTriggerValidation] = useState(false);
-    const professionsOptions = professionsData?.map((profession: Profession) => ({
-        value: profession.id,
-        label: profession.name,
-      })) || [];
-      console.log('Professions', professionsData);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: useMemo(() =>
@@ -64,19 +50,58 @@ const ProfileEditorScreen: React.FC = () =>
       // console.log(email, firstName, lastName, phone );
       return { email, firstName, lastName, phone };
     }, [user])
-  });
+  });  
   
+  // Form Refs
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const [isDropdownValid, setIsDropdownValid] = useState(false);
+  
+  // Personal Information
+  const { selectPictures, selectedFiles, removeSelectedPicture, clear } = useImagePicker();
+  const [selectedProfilePictureUri, setSelectedProfilePictureUri] = useState(user?.photoUrl || '')
+  const accountTypeOptions = userRolesData?.map((role) => role.name) || [];
+  const [selectedRoleIndex, setSelectedRoleIndex] = useState(0)
+
+  // Professions
+  const [userProfessions, setUserProfessions] = useState<UserProfession[]>([])
+  // The role index that is selected in the radio group (Homeowner or Professional)
+  // Profession Dropdown Validation
+  const [triggerValidation, setTriggerValidation] = useState(false);
+  const professionsOptions = professionsData?.map((profession: Profession) => ({
+        value: profession.id,
+        label: profession.name,
+      })) || [];
+      console.log('Professions', professionsData);
+
+  // Create new profession
   useEffect(() => {
-      // console.log(selectedFiles);
+        if(selectedRoleIndex === 1 && userProfessions.length === 0)
+        {
+          setUserProfessions([{user: user as User}]);
+        }
+  }, [selectedRoleIndex])
+  
+  
+  // Profile Picture
+  useEffect(() => {
       if(selectedFiles.size === 0) return;
       const entry = selectedFiles.entries().next();
       if(entry.done)
         setSelectedProfilePictureUri('');
       else 
         setSelectedProfilePictureUri(entry.value[entry.value.length - 1].uri || '');
-      // console.log('Value:',entry.value[entry.value.length - 1].uri);
-      // console.log('Selected:',selectedProfilePictureUri);
   }, [selectedFiles])
+
+  const isProfessionalUser: boolean = (selectedRoleIndex == 1 || (user && user.roles !== undefined && user?.roles.length > 0 && user.roles[0].code === "PRO")) || false;
+
+  const setProfessionDate = (date: Date) => {
+    if(userProfessions.length === 0) return;
+    userProfessions[0].startDate = date.toISOString();
+    setUserProfessions([...userProfessions]);
+    console.log(userProfessions)
+  }
 
   const onSavePressed = async (profileData: any) =>
   {
@@ -90,7 +115,7 @@ const ProfileEditorScreen: React.FC = () =>
     }
     const roles = userRolesData === undefined ? [] : [userRolesData[selectedRoleIndex]];
     const updatePersonalInfoRequest : UpdatePersonalInfoRequest = {name: {firstName:firstName, lastName:lastName}, phoneNumber: phone, photoUrl: profilePicDownloadUrl, roles: roles};
-    const updateProfessionsRequest : UpdateProfessionsRequest = {professions: []};
+    const updateProfessionsRequest : UpdateProfessionsRequest = {professions: userProfessions};
     
     updateProfile({updateProfileRequest: { updatePersonalInfoRequest: updatePersonalInfoRequest, updateProfessionsRequest: updateProfessionsRequest}}).unwrap()
     .then((res)=>{
@@ -117,7 +142,7 @@ const ProfileEditorScreen: React.FC = () =>
         <ProExpandableView title='Personal Information' height={320 + (user?.accountStatus === 'SETUP' ? 100 : 0)}
          children={
           (
-            <View>
+            <View style={{alignItems:"center", marginHorizontal: isWeb ? 100 : 0}}>
               
               <View style={{alignItems:'center', alignSelf:'center', width: 150}}>
                       <ProfileImage photoUrl={selectedProfilePictureUri} size={125}/>
@@ -175,15 +200,15 @@ const ProfileEditorScreen: React.FC = () =>
           )
          }
         />
-        {/* {(selectedRoleIndex == 1 || (user && user.roles !== undefined && user?.roles.length > 0 && user.roles[0].code === "PRO") ) &&  */}
+        {/* {isProfessionalUser &&  */}
         <ProExpandableView title='Profession' height={320}
          children={
           (
-            <View style={{flexBasis: 0}}>
-              <ValidatedDropDown control={control} setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} value='Select Profession' values={professionsOptions} errorMessage='Profession is required.'></ValidatedDropDown>
-              <ProDatePicker></ProDatePicker>
+            <View style={{alignItems: 'center'}}>
+              {/* <ValidatedDropDown control={control} setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} value='Select Profession' values={professionsOptions} errorMessage='Profession is required.'></ValidatedDropDown> */}
+              <ProDatePicker control={control} name={'When did you start working in this field?'} placeholder='Start Date' setValue={setProfessionDate}/>
               <Image resizeMode='contain'
-                style={{ width: 200, height: 200 }}
+                style={{ width: 50, height: 50 }}
 
 source={{uri: 'https://res.cloudinary.com/hcti/image/fetch/c_limit,f_auto,q_auto:good,w_800/https://docs.htmlcsstoimage.com/assets/images/cat.png'}}
 tintColor={Colors.secondary} 
