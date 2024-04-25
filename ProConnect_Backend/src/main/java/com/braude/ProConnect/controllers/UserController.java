@@ -90,7 +90,6 @@ public class UserController {
 //        return userService.findByProfession(professionId);
 //    }
 
-
     @GetMapping(value = "usersByEmails")
     public ResponseEntity<List<User>> getUsersByEmail(@RequestParam String [] emails){
         List<User> users = userService.getUsersByEmails(emails);
@@ -105,4 +104,5 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
+
 }
