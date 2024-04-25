@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 import ProLoading from "../../Components/Layout/ProLoading";
 
 const SignUpScreen: React.FC = () => {
-  const { control, handleSubmit, watch } = useForm();
+  const { control, handleSubmit, watch, formState: {isValid} } = useForm();
   const pwd = watch("password");
   const navigation = useNavigation();
   const [isVisible, setIsVisible] = useState(false);
@@ -112,6 +112,7 @@ const SignUpScreen: React.FC = () => {
               />
               
               <ProButton
+                disabled={!isValid}
                 text="Register"
                 onPress={handleSubmit(onRegisterPressed)}
               />

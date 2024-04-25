@@ -28,7 +28,7 @@ const SignInScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, formState: { errors, isValid } } = useForm();
   
   // Auth state
   const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(true);
@@ -122,6 +122,7 @@ const SignInScreen = () => {
             />
 
             <ProButton
+              disabled={!isValid}
               text={loading ? "Loading..." : "Sign In"}
               onPress={handleSubmit(onSignInPressed)}
             />
