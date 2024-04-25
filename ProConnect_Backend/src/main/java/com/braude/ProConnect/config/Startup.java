@@ -51,20 +51,23 @@ public class Startup {
     private static void initializeFirebase() {
         try {
             FirebaseOptions options;
-            if(FIREBASE_CONFIG == null || FIREBASE_CONFIG.isEmpty()) {
+          
+            if(FIREBASE_CONFIG == null || FIREBASE_CONFIG.isEmpty() || FIREBASE_CONFIG.equals("null")) {
+
+
 
                 ResourceLoader resourceLoader = new DefaultResourceLoader();
                 Resource resource = resourceLoader.getResource("classpath:proconnect-6173c-firebase-adminsdk-msam9-1ff2a5bffd.json");
                 options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
                         .build();
-            } else {
+             } else {
                 JSONObject jsonObject = new JSONObject(FIREBASE_CONFIG);
                 InputStream inputStream = new ByteArrayInputStream(jsonObject.toString().getBytes());
                 options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream((inputStream)))
                         .build();
-            }
+              }
             FirebaseApp.initializeApp(options);
 
         } catch (FileNotFoundException ex) {
