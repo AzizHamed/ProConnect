@@ -23,6 +23,8 @@ const PersonsChat = () => {
 
   const [data1, setdata1] = useState(data?.filter((user) => user.email !== auth.currentUser?.email))
 
+  console.log(data1)
+
   let textInput = ""
 
   const collectionRef = collection(database, 'chats');
@@ -61,7 +63,6 @@ const PersonsChat = () => {
           uniqueResults.add(doc.data().user._id);
       })
 
-      console.log(uniqueResults.forEach((result) => console.log(result)))
     });
 
     return unsubscribe;
