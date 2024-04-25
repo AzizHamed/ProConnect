@@ -822,6 +822,9 @@ const Chat: React.FC<ChatProps> = (props) => {
         </View>
         <Text>Document</Text>
       </TouchableOpacity>
+
+
+      
     </View>
   )
 

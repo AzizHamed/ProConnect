@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View,StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import { View,StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView, Modal } from 'react-native'
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
 import PersonCard from '../../Features/Persons/PersonCard';
@@ -12,6 +12,8 @@ import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 import { database, auth } from '../../Services/Firebase/Firebase';
 import { collection, orderBy, query, where, limit, onSnapshot,or } from 'firebase/firestore';
 import { checkName } from '../../Constants/Functions/Functions';
+import ProButton from '../../Components/Controls/ProButton';
+import RateModal from './RateModal';
 
 
 
@@ -28,6 +30,10 @@ const PersonsChat = () => {
   const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
   const uniqueResults = new Set();
+
+  const [rateModalVisible, setrateModalVisible] = useState(false)
+
+  const [selectedUser, setselectedUser] = useState(null)
 
 
   useLayoutEffect(() => {
@@ -82,9 +88,9 @@ const PersonsChat = () => {
 
   function filterUsers (){
     if(textInput === "")
-      setdata1(data?.filter((user) => user.email !== auth.currentUser?.email))
+      setdata1(data?.filter((user) => user.email !== auth.currentUser?.email && user.name.lastName!== "Admin" && user.name.firstName !== ""))
     else
-      setdata1(data?.filter((user) => user.email !== auth.currentUser?.email && checkName(textInput, user.name.firstName, user.name.lastName)))
+      setdata1(data?.filter((user) =>  user.email !== auth.currentUser?.email && user.name.lastName!== "Admin" && user.name.firstName !== "" && checkName(textInput, user.name.firstName, user.name.lastName)))
 
   }
 
@@ -99,8 +105,21 @@ const PersonsChat = () => {
   return (
 
     <BackgroundView children={
+     
 
       <ScrollView>
+
+        <View style={{ flex: 1,justifyContent: 'center',alignItems: 'center'  }}>
+                              
+                               
+
+      <Modal style={{alignItems : "center"}} visible={rateModalVisible} transparent={true} >
+
+    <RateModal setModalVisible={setrateModalVisible} user={selectedUser} />
+        </Modal>
+        </View>
+
+
 
      
 
@@ -111,14 +130,23 @@ const PersonsChat = () => {
    
 
 
+
     <View style={style.chatPeople}>
       {isSuccess && data1?.map((friend)=> {
         return(
-          <TouchableOpacity onPress={()=>{
+          <TouchableOpacity style={{flexDirection : "row", justifyContent: "space-between" , paddingRight : 25}} onPress={()=>{
             dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName}))
+            
             navigation.navigate("Chats")
           }} >
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
+
+
+          <ProButton text={"Rate"} width={50} onPress={()=>{setselectedUser(friend)
+             setrateModalVisible(true)}}/>
+
+
+          
 
 
           </TouchableOpacity>

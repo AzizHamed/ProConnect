@@ -44,7 +44,6 @@ export const AppStackScreen: React.FC = () => {
     
             <View style={{width : "87%"}}>
             <Text style={{color : "white"}}>{receiverName}</Text>
-            {/* <Text style={{color : "white"}}> Available</Text> */}
             </View>
           </View>
         

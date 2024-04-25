@@ -171,6 +171,16 @@ const injectedRtkApi = api
         query: () => ({ url: `/users/users-num` }),
         providesTags: ["Users"],
       }),
+      getUserByEmail: build.query<
+        GetUserByEmailApiResponse,
+        GetUserByEmailApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/userByEmail`,
+          params: { email: queryArg.email },
+        }),
+        providesTags: ["Users"],
+      }),
       getUser: build.query<GetUserApiResponse, GetUserApiArg>({
         query: (queryArg) => ({
           url: `/users/get`,
@@ -285,6 +295,10 @@ export type GetUsersByEmailApiArg = {
 };
 export type GetAllUsersNumberApiResponse = /** status 200 OK */ number;
 export type GetAllUsersNumberApiArg = void;
+export type GetUserByEmailApiResponse = /** status 200 OK */ User;
+export type GetUserByEmailApiArg = {
+  email: string;
+};
 export type GetUserApiResponse = /** status 200 OK */ User;
 export type GetUserApiArg = {
   userId: string;
@@ -414,16 +428,16 @@ export type CreateJobRequest = {
 };
 export type SortObject = {
   empty?: boolean;
-  sorted?: boolean;
   unsorted?: boolean;
+  sorted?: boolean;
 };
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  pageNumber?: number;
-  pageSize?: number;
   paged?: boolean;
   unpaged?: boolean;
+  pageNumber?: number;
+  pageSize?: number;
 };
 export type PageJob = {
   totalPages?: number;
@@ -432,9 +446,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -473,6 +487,7 @@ export const {
   usePostJobsMutation,
   useGetUsersByEmailQuery,
   useGetAllUsersNumberQuery,
+  useGetUserByEmailQuery,
   useGetUserQuery,
   useGetAllUsersQuery,
   useGetAllRolesQuery,
