@@ -88,13 +88,13 @@ useEffect(() => {
 
                 <View >
                   <Text style={{color : "white"}}>Location</Text>
-                  {!reset && <DesignedDropDown value={props.location} setValue={props.setLocation} dropDownData={dataLocation} leftIcon={<FontAwesome
+                  {!reset && <DesignedDropDown initialValue={props.location} setValue={props.setLocation} values={dataLocation} leftIcon={<FontAwesome
                   style={styles.icon}
                    color={isFocusLocation ? 'tomato' : 'black'}
                    name="map-marker"
                   size={20}
             />}/> }
-                  {reset &&<DesignedDropDown value={"choose location"} setValue={props.setLocation} dropDownData={dataLocation} leftIcon={ <FontAwesome
+                  {reset &&<DesignedDropDown initialValue={"choose location"} setValue={props.setLocation} values={dataLocation} leftIcon={ <FontAwesome
                   style={styles.icon}
                    color={isFocusLocation ? 'tomato' : 'black'}
                    name="map-marker"
