@@ -94,21 +94,21 @@ public class UserService {
         return userRepository.findAll().size();
     }
 
-    public List<User> getUsersByEmails(String[] emails) {
-
-
-        List<User> users = new ArrayList<>();
-        for(String email : emails){
-            users.add(userRepository.findByEmail(email));
-        }
-
-        return users;
-    }
-
-    public User getUserByEmail(String email) {
-
-        return userRepository.findByEmail(email);
-    }
+//    public List<User> getUsersByEmails(String[] emails) {
+//
+//
+//        List<User> users = new ArrayList<>();
+//        for(String email : emails){
+//            users.add(userRepository.findByEmail(email));
+//        }
+//
+//        return users;
+//    }
+//
+//    public User getUserByEmail(String email) {
+//
+//        return userRepository.findByEmail(email);
+//    }
 
 //    public void addProfession(String userId, String professionName) {
 //        User user = userRepository.findById(userId).get();
@@ -116,18 +116,18 @@ public class UserService {
 //        userRepository.save(user);
 //    }
 
-    public List<User> getUsersByEmails1(String[] emails) {
-
-
-        return userRepository.findAllByEmailList(Arrays.stream(emails).toList());
-
-
-    }
-
-    public User getUserByEmail1(String email) {
-
-        return userRepository.findByEmail(email);
-    }
+//    public List<User> getUsersByEmails1(String[] emails) {
+//
+//
+//        return userRepository.findAllByEmailList(Arrays.stream(emails).toList());
+//
+//
+//    }
+//
+//    public User getUserByEmail1(String email) {
+//
+//        return userRepository.findByEmail(email);
+//    }
 
 
 }
