@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,6 +115,19 @@ public class UserService {
 //        user.getProfessions().add(professionService.getProfessionByName(professionName));
 //        userRepository.save(user);
 //    }
+
+    public List<User> getUsersByEmails1(String[] emails) {
+
+
+        return userRepository.findAllByEmailList(Arrays.stream(emails).toList());
+
+
+    }
+
+    public User getUserByEmail1(String email) {
+
+        return userRepository.findByEmail(email);
+    }
 
 
 }
