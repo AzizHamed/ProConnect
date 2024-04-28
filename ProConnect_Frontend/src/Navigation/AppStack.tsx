@@ -12,6 +12,8 @@ import { color } from "react-native-elements/dist/helpers";
 import FullMapScreen from "../Screens/Chat/FullMapScreen";
 import { useSelector } from "react-redux";
 import { getSelectedReceiverUserName } from "../Services/Redux/Slices/ChatSlice";
+import ProButton from "../Components/Controls/ProButton";
+import { AirbnbRating } from "react-native-ratings";
 
 
 const AppStack = createNativeStackNavigator();
@@ -43,11 +45,28 @@ export const AppStackScreen: React.FC = () => {
             />
     
             <View style={{width : "87%"}}>
+              {/* <View style={{paddingLeft : 2}}> */}
+
             <Text style={{color : "white"}}>{receiverName}</Text>
+              {/* </View> */}
+            {/* <View style={{ alignItems : "flex-start"}}>
+
+            <AirbnbRating
+              defaultRating={5}
+              count={5}
+              size={15}
+              isDisabled={true}
+              
+              showRating={false}  starContainerStyle={{marginRight : 2}}/>
+            </View> */}
             </View>
           </View>
         
           </View>
+            ), headerRight: () => (
+              <View style={{ marginRight: 20 }}>
+                
+              </View>
             ),}} />
 
             <AppStack.Screen name="FullMapScreen" component={FullMapScreen} options={{headerShown : true,headerTintColor : "white", headerStyle :styles.header}} />

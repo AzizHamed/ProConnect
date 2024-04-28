@@ -5,6 +5,11 @@ import { MainTabScreen } from "./MainTabScreen";
 import JobsList from "../Features/Jobs/JobsList";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+
+
 import SearchTabNavigator from "./SearchTabNavigator";
 import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
 import SettingsScreen from "../Screens/SettingsScreen";
@@ -18,6 +23,7 @@ import BackgroundView from "../Components/Layout/BackgroundView";
 import { useNavigation } from "@react-navigation/native";
 import JobPage from "../Features/Jobs/JobPage";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import UserJobs from "../Screens/UserJobs";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -26,16 +32,16 @@ interface MainDrawerProps {
 
 
 export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
-  const dataProfessions = [
-    { label: 'Carpenter', value: '1' },
-    { label: 'Painter', value: '2' },
-    { label: 'Constructor', value: '3' },
-    { label: 'Pavor', value: '4' },
-    { label: 'Electric service', value: '5' },
-    { label: 'Security', value: '6' },
-    { label: 'Designer', value: '7' },
-    { label: 'Garden', value: '8' },
-  ]
+  // const dataProfessions = [
+  //   { label: 'Carpenter', value: '1' },
+  //   { label: 'Painter', value: '2' },
+  //   { label: 'Constructor', value: '3' },
+  //   { label: 'Pavor', value: '4' },
+  //   { label: 'Electric service', value: '5' },
+  //   { label: 'Security', value: '6' },
+  //   { label: 'Designer', value: '7' },
+  //   { label: 'Garden', value: '8' },
+  // ]
 
   const dispatch = useDispatch()
   const navigation = useNavigation();
@@ -93,7 +99,13 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
 
       />
 
-      <MainDrawer.Screen
+<MainDrawer.Screen name="Posts"  component={UserJobs} options={{  headerLeft: backButton, 
+        drawerIcon: () => (
+          <MaterialCommunityIcons name="post-outline" size={20} color="#808080" />
+        )
+      }} />
+
+      {/* <MainDrawer.Screen
         name="people"
         options={{
           drawerLabel: "Friends",
@@ -110,19 +122,28 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
         component={SearchTabNavigator}
         initialParams={dataProfessions}
 
-      />
+      /> */}
       {/* <MainDrawer.Screen name="test" component={JobsList} /> */}
 
 
-      <MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
+      
+      <MainDrawer.Screen name="Profile" component={ProfileViewScreen} options={{
 
-        drawerIcon: () => (
-          <Ionicons name="settings-outline" size={20} color="#808080" />
-        )
-      }} />
-      <MainDrawer.Screen name="Profile" component={ProfileViewScreen} />
+                  drawerIcon: () => (
+                    <AntDesign name="profile" size={20} color="#808080" />
+                    
+                  )}} />
+
+<MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
+
+drawerIcon: () => (
+  <Ionicons name="settings-outline" size={20} color="#808080" />
+)
+}} />
+                  
       <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" } }} />
       <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />
+     
     </MainDrawer.Navigator>
   );
 };

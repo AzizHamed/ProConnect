@@ -6,7 +6,7 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 import AutocompleteInput from 'react-native-autocomplete-input'
 import { IS_WEB, articles, dataProfessions2, popularProfessions } from '../../Constants/Values';
 import { Colors } from 'react-native-ui-lib';
-import { useGetAllUsersNumberQuery } from '../../Services/Redux/Api';
+import { useGetAllArticlesQuery, useGetAllUsersNumberQuery, useGetSearchesNumbersQuery } from '../../Services/Redux/Api';
 import { ScrollView } from 'react-native-gesture-handler';
 import renderItem from '../../Components/Layout/AutoCompleteItem';
 import renderPopularProfessions from '../../Components/Layout/RenderPopularProfessionsCard';
@@ -49,6 +49,12 @@ const HomePage = () => {
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersNumberQuery();
   const isWeb = IS_WEB();
   const navigation = useNavigation();
+  // const Articles = useGetAllArticlesQuery({})
+
+  const searches = useGetSearchesNumbersQuery()
+
+
+  
   
   const dispatch = useDispatch()
 
@@ -99,7 +105,7 @@ const HomePage = () => {
   
       
     <TouchableOpacity style={styles.pressable} onPress={()=>{
-      dispatch(setPersonsPage({ComponentType : "Rating"}))
+      dispatch(setPersonsPage({ComponentType : "Rating", profession : item.label}))
       navigation.navigate("PersonsPage")
     }}>
       
@@ -172,7 +178,7 @@ const HomePage = () => {
 
           <View marginT-20 marginB-30 style={{ zIndex: 10 }}>
             <View center marginB-2>
-              {data && <ProHeader text={`${data} App Users`} headerType={HeaderType.H3} />}
+              {data && <ProHeader text={`${searches.currentData} Searches done`} headerType={HeaderType.H3} />}
             </View>
             <View center style={styles.autoCompleteAndIcon}>
               <View style={styles.autocompleteContainer} flexG >

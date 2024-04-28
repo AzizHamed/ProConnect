@@ -428,7 +428,7 @@ const Chat: React.FC<ChatProps> = (props) => {
     const isRejected = props.currentMessage?.isRejected;
 
     // Set the background color based on whether the message is from the current user or not
-    let BackgroundColor = isCurrentUser ? 'green' : 'white';
+    let BackgroundColor = isCurrentUser ? 'blue' : 'white';
     BackgroundColor = goldMessage && isAccepted ? '#27ae60' : goldMessage && isRejected ? '#e62143' : goldMessage ? '#FFE373' : BackgroundColor;
     let containerBackgroundColor = goldMessage && isAccepted ? '#27ae60' : goldMessage && isRejected ? '#e62143' : goldMessage ? '#FFE373'
 
@@ -527,7 +527,7 @@ const Chat: React.FC<ChatProps> = (props) => {
             dispatch(setFullScreenMap({latitude : props.currentMessage?.latitude, longitude : props.currentMessage?.longitude}))
             naviagtion.navigate("FullMapScreen")
            }}>
-            <View style={{width : 150, height : 110, backgroundColor:  "green", alignItems : "center", justifyContent : "center"}}>
+            <View style={{width : 150, height : 110, backgroundColor:  "blue", alignItems : "center", justifyContent : "center"}}>
               
 
             <MapView
@@ -816,12 +816,12 @@ const Chat: React.FC<ChatProps> = (props) => {
         </View>
         <Text>Contacts</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.actionContainer} onPress={()=>{}}>
+      {/* <TouchableOpacity style={styles.actionContainer} onPress={()=>{}}>
         <View style={styles.actions}>
           <Ionicons name='document' size={40} color={Colors.$backgroundDarkElevated} />
         </View>
         <Text>Document</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
 
       
@@ -840,8 +840,15 @@ const Chat: React.FC<ChatProps> = (props) => {
         <AntDesign name='camera' size={30} color={Colors.$backgroundDarkElevated} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => { setShowOptions(!showOptions) }}>
+      <TouchableOpacity onPress={() => {
+         Keyboard.dismiss();
+         setShowOptions(!showOptions) }}>
+          {!showOptions &&
         <Ionicons name='add-outline' size={30} color={Colors.$backgroundDarkElevated} />
+          }
+          {showOptions &&
+        <AntDesign name='minus' size={30} color={Colors.$backgroundDarkElevated} />
+          }
       </TouchableOpacity>
     </View>
   )
@@ -898,6 +905,10 @@ const Chat: React.FC<ChatProps> = (props) => {
           location : false,
           latitude: 0,
           longitude: 0,
+          isContact: false,
+          contactName : "",
+          contactNumber : "",
+
 
 
         })))}

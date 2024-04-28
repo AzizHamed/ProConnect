@@ -14,6 +14,7 @@ import { collection, orderBy, query, where, limit, onSnapshot,or } from 'firebas
 import { checkName } from '../../Constants/Functions/Functions';
 import ProButton from '../../Components/Controls/ProButton';
 import RateModal from './RateModal';
+import { AirbnbRating } from 'react-native-ratings';
 
 
 
@@ -22,6 +23,7 @@ const PersonsChat = () => {
   const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
 
   const [data1, setdata1] = useState(data?.filter((user) => user.email !== auth.currentUser?.email))
+  
 
   console.log(data1)
 
@@ -116,7 +118,7 @@ const PersonsChat = () => {
 
       <Modal style={{alignItems : "center"}} visible={rateModalVisible} transparent={true} >
 
-    <RateModal setModalVisible={setrateModalVisible} user={selectedUser} />
+    <RateModal setModalVisible={setrateModalVisible} reviewrUser={auth.currentUser} reviewdUser={selectedUser} />
         </Modal>
         </View>
 
@@ -135,16 +137,23 @@ const PersonsChat = () => {
     <View style={style.chatPeople}>
       {isSuccess && data1?.map((friend)=> {
         return(
-          <TouchableOpacity style={{flexDirection : "row", justifyContent: "space-between" , paddingRight : 25}} onPress={()=>{
+          <TouchableOpacity key={friend.id} style={{flexDirection : "row", justifyContent: "space-between" , paddingRight : 25}} onPress={()=>{
             dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName}))
             
             navigation.navigate("Chats")
           }} >
+
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
 
-
-          <ProButton text={"Rate"} width={50} onPress={()=>{setselectedUser(friend)
-             setrateModalVisible(true)}}/>
+          
+          {/* <AirbnbRating
+            defaultRating={friend.rating}
+            count={5}
+            size={25}
+            isDisabled={true}
+            showRating={false}  starContainerStyle={{marginRight : 2}}/> */}
+          {/* <ProButton text={"Rate"} width={50} onPress={()=>{setselectedUser(friend)
+             setrateModalVisible(true)}}/> */}
 
 
           
@@ -198,6 +207,7 @@ const style1 = (chatsNumber : number) =>{
     },
   
     searchTextInput : {
+
   
     },
     friends : {
