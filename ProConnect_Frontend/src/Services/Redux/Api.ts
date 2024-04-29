@@ -163,7 +163,7 @@ const injectedRtkApi = api
           params: {
             name: queryArg.name,
             description: queryArg.description,
-            svg: queryArg.svg,
+            iconUrl: queryArg.iconUrl,
           },
         }),
         invalidatesTags: ["Professions"],
@@ -190,8 +190,25 @@ const injectedRtkApi = api
         }),
         providesTags: ["Users"],
       }),
+      getUserProfessions: build.query<
+        GetUserProfessionsApiResponse,
+        GetUserProfessionsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/get-user-professions`,
+          params: { userId: queryArg.userId },
+        }),
+        providesTags: ["Users"],
+      }),
       getAllUsers: build.query<GetAllUsersApiResponse, GetAllUsersApiArg>({
         query: () => ({ url: `/users/get-all` }),
+        providesTags: ["Users"],
+      }),
+      userExists: build.query<UserExistsApiResponse, UserExistsApiArg>({
+        query: (queryArg) => ({
+          url: `/users/exists`,
+          params: { userId: queryArg.userId },
+        }),
         providesTags: ["Users"],
       }),
       getUserRoles: build.query<GetUserRolesApiResponse, GetUserRolesApiArg>({
@@ -303,7 +320,7 @@ export type CreateService1ApiResponse = /** status 200 OK */ Profession;
 export type CreateService1ApiArg = {
   name: string;
   description: string;
-  svg: string;
+  iconUrl: string;
 };
 export type PostJobsApiResponse = /** status 200 OK */ Job;
 export type PostJobsApiArg = {
@@ -315,8 +332,17 @@ export type GetUserApiResponse = /** status 200 OK */ User;
 export type GetUserApiArg = {
   userId: string;
 };
+export type GetUserProfessionsApiResponse =
+  /** status 200 OK */ UserProfession[];
+export type GetUserProfessionsApiArg = {
+  userId?: string;
+};
 export type GetAllUsersApiResponse = /** status 200 OK */ User[];
 export type GetAllUsersApiArg = void;
+export type UserExistsApiResponse = /** status 200 OK */ boolean;
+export type UserExistsApiArg = {
+  userId: string;
+};
 export type GetUserRolesApiResponse = /** status 200 OK */ Role[];
 export type GetUserRolesApiArg = void;
 export type GetAllRolesApiResponse = /** status 200 OK */ Role[];
@@ -352,23 +378,18 @@ export type Review = {
   roleReviewed: Role;
   timestamp?: string;
 };
-export type Category = {
-  id?: number;
-  name?: string;
-  professionList?: Profession[];
-};
 export type Profession = {
   id?: number;
   name: string;
   description: string;
-  svg: string;
-  category: Category;
+  iconUrl: string;
 };
 export type UserProfession = {
   user?: User;
   profession?: Profession;
   startDate?: string;
   endDate?: string;
+  services?: string[];
 };
 export type User = {
   id?: string;
@@ -468,19 +489,19 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  paged?: boolean;
-  unpaged?: boolean;
-  pageNumber?: number;
   pageSize?: number;
+  pageNumber?: number;
+  unpaged?: boolean;
+  paged?: boolean;
 };
 export type PageJob = {
   totalElements?: number;
   totalPages?: number;
+  numberOfElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
   sort?: SortObject;
-  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
   pageable?: PageableObject;
@@ -523,7 +544,9 @@ export const {
   usePostJobsMutation,
   useGetAllUsersNumberQuery,
   useGetUserQuery,
+  useGetUserProfessionsQuery,
   useGetAllUsersQuery,
+  useUserExistsQuery,
   useGetUserRolesQuery,
   useGetAllRolesQuery,
   useGetPropertiesQuery,
