@@ -21,7 +21,7 @@ In order to run and update the front end project:
 1. Clone the repository.
 2. Navigate to the `ProConnect_Frontend` folder in your code editor of choice.
 3. In the terminal, run the command `npm install` to install all dependencies.
-4. Update the .env file to have the correct URL for the server (`REACT_APP_BASE_URL`), which can point to a local server or the Heroku server.
+4. Update the .env file to have the correct URL for the server (`REACT_APP_BASE_URL`), which can point to a local server or the Heroku server and the Firebase configuration (`apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId`).
 5. In the terminal, run the command `npx expo start` to run the project on a local development server using Expo. You can then press `a` or `w` after the project loads to run on an Android emulator or on the web (or alternatively scan the QR code on your Android phone to run on your device).
 
 ##### Project Structure
