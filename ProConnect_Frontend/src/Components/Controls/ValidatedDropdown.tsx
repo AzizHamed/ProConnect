@@ -31,13 +31,14 @@ const ValidatedDropDown: React.FC<ValidatedDropDownProps & DropDownProps> = (pro
                 setHasError(false);
         }
         if (!wasSubmitted) setWasSubmitted(true);
-        console.log(hasError, selectedValue)
+        // console.log(hasError, selectedValue)
     }
 
     const updateSelectedValue = (value: any) => {
         if (!wasSubmitted) setWasSubmitted(true);
         setSelectedValue(value);
         validateDropdown();
+        if(props.setValue) props.setValue(value);
     }
     useEffect(() => {
         if (props.triggerValidation || wasSubmitted)
