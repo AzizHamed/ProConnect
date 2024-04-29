@@ -2,6 +2,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.entities.UserProfession;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.requests.UpdateProfessionsRequest;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
@@ -29,6 +30,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping(value = "/exists")
+    public ResponseEntity<Boolean> userExists(@RequestParam String userId){
+        return new ResponseEntity<>(userService.exists(userId), HttpStatus.OK);
+    }
     @GetMapping(value = "/get")
     public ResponseEntity<User> getUser(@RequestParam String userId){
         User user = userService.getUser(userId);
@@ -87,14 +92,21 @@ public class UserController {
     }
 
     @PostMapping(value = "update-profile")
-    public ResponseEntity<User> updateProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
+    public ResponseEntity<User> updateProfile(@RequestBody UpdateProfileRequest updateProfileRequest){
         try {
             return ResponseEntity.ok(userService.updateProfile(updateProfileRequest));
         } catch (ProConnectException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
+    @GetMapping(value = "get-user-professions")
+    public ResponseEntity<List<UserProfession>> getUserProfessions(@RequestParam(required = false) String userId) {
+        List<UserProfession> userProfessions = userId != null ? userService.getUserProfessions(userId) : userService.getUserProfessions();
+        if(userProfessions != null)
+            return new ResponseEntity<>(userProfessions, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     @GetMapping(value = "users-num")
     public int getAllUsersNumber(){
         return userService.getAllUsersNumber();

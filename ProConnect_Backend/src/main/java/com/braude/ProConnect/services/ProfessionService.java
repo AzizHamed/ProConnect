@@ -29,4 +29,6 @@ public class ProfessionService {
     public List<Profession> getProfessions() {
         return professionRepository.findAll();
     }
+
+    public Profession getProfessionById(long id) { return professionRepository.findById(id).orElse(null); }
 }

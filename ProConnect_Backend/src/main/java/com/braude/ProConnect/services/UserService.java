@@ -1,11 +1,13 @@
 package com.braude.ProConnect.services;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
+import com.braude.ProConnect.models.entities.Profession;
 import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.entities.UserProfession;
 import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.repositories.RoleRepository;
+import com.braude.ProConnect.repositories.UserProfessionsRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.requests.UpdateProfessionsRequest;
@@ -14,20 +16,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final UserProfessionsRepository userProfessionsRepository;
     private final RoleRepository roleRepository;
     private final ProfessionService professionService;
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService) {
+    public UserService(UserRepository userRepository, UserProfessionsRepository userProfessionsRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService) {
         this.userRepository = userRepository;
+        this.userProfessionsRepository = userProfessionsRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
         this.professionService = professionService;
@@ -94,7 +97,18 @@ public class UserService {
     }
     public User updateProfessions(UpdateProfessionsRequest request){
         User user = authenticationService.getAuthorizedUser();
-        user.setUserProfessions(Arrays.stream(request.getProfessions()).toList());
+        if(user.getUserProfessions() != null) {
+            user.getUserProfessions().clear();
+        } else {
+            user.setUserProfessions(new ArrayList<>());
+        }
+        for(UserProfession userProfessionToAdd : request.getProfessions()){
+            Profession profession = professionService.getProfessionById(userProfessionToAdd.getProfession().getId());
+            if(profession == null)
+                throw new ProConnectException("Profession not found.");
+            user.getUserProfessions().add(new UserProfession(user, profession, userProfessionToAdd.getStartDate(), userProfessionToAdd.getEndDate(), userProfessionToAdd.getServices()));
+
+        }
         user = userRepository.save(user);
         return user;
     }
@@ -106,6 +120,14 @@ public class UserService {
 
     public int getAllUsersNumber() {
         return userRepository.findAll().size();
+    }
+
+    public List<UserProfession> getUserProfessions() {
+        return userProfessionsRepository.findAllByUser(authenticationService.getAuthorizedUser());
+    }
+
+    public List<UserProfession> getUserProfessions(String userId) {
+        return userProfessionsRepository.findAllByUser(userRepository.findById(userId).get());
     }
 
 //    public void addProfession(String userId, String professionName) {
