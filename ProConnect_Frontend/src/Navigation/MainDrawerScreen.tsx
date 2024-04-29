@@ -98,12 +98,12 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
       }}
 
       />
-
+{/* 
 <MainDrawer.Screen name="Posts"  component={UserJobs} options={{  headerLeft: backButton, 
         drawerIcon: () => (
           <MaterialCommunityIcons name="post-outline" size={20} color="#808080" />
         )
-      }} />
+      }} /> */}
 
       {/* <MainDrawer.Screen
         name="people"

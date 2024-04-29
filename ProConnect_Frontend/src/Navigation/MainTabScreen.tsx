@@ -96,14 +96,13 @@ export const MainTabScreen: React.FC = () => {
     
     />
 
-{user?.profession!==null&&
     <MainTab.Screen 
 
     name="Jobs"
     component={JobsList}
     options={{ headerShown: false }} 
     />
-}
+
       {/* <MainTab.Screen
         name="Friends"
         options={{ headerShown: false }} listeners={{
@@ -115,15 +114,14 @@ export const MainTabScreen: React.FC = () => {
       {(props) => <PersonsPage   />}
 
 </MainTab.Screen> */}
-{
-  user?.profession===null &&
+
 
       <MainTab.Screen
         name="Post"
         component={PostJobScreen}
         options={{ headerShown: false }}
       />
-    }
+    
     </MainTab.Navigator>
   );
 };

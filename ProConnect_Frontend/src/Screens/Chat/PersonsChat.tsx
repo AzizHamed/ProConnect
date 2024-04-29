@@ -3,7 +3,7 @@ import { View,StyleSheet, Text, Dimensions, TouchableOpacity, ScrollView, Modal 
 import MyTextInput from '../../Components/Controls/MyTextInput'
 import { Ionicons,EvilIcons } from '@expo/vector-icons';
 import PersonCard from '../../Features/Persons/PersonCard';
-import { useGetAllUsersQuery } from '../../Services/Redux/Api';
+import { useGetAllUsersQuery, useGetUsersByEmailQuery } from '../../Services/Redux/Api';
 import { Colors } from 'react-native-ui-lib';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 import { useNavigation } from '@react-navigation/native';
@@ -25,7 +25,6 @@ const PersonsChat = () => {
   const [data1, setdata1] = useState(data?.filter((user) => user.email !== auth.currentUser?.email))
   
 
-  console.log(data1)
 
   let textInput = ""
 
@@ -33,7 +32,7 @@ const PersonsChat = () => {
 
   const q = query(collectionRef, orderBy('createdAt', 'desc'));
 
-  const uniqueResults = new Set();
+  const uniqueResults = new Set<String>();
 
   const [rateModalVisible, setrateModalVisible] = useState(false)
 
@@ -71,6 +70,8 @@ const PersonsChat = () => {
   },[]);
 
 
+
+  console.log("users ::: " + users)
   useEffect(() => {
     filterUsers()
   } ,[data])
