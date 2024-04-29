@@ -18,11 +18,27 @@ interface ProDatePickerProps {
 const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
     const isWeb = IS_WEB();
     const [date, setDate] = useState(new Date());
+    const [value, setValue] = useState<string>("");
+
     const [showDatePicker, setShowDatePicker] = useState(false);
     const style = { color: Colors.black, fontSize: 16, height: 45, borderColor: Colors.controlText, borderWidth: 1, borderRadius: 50 };
     const dateTitle = props.name !== undefined ? <Text marginB-10 style={{ width: "100%" }}>{props.name}</Text> : <></>;
 
     const errorText = (error: FieldError | undefined) => <Text style={{color: Colors.failure, alignSelf: 'stretch'}}>{error?.message || ' '}</Text>
+
+    const onBlur = (dateString: string) => {
+        console.log('OnBlur', dateString)
+        if (dateString === "") return;
+        let date = new Date(dateString);
+        if (date === undefined) {
+          setValue("");
+        } else {
+          setValue(date.toISOString().split("T")[0]);
+          setDate(date);
+        }
+        props.setDateValue(date);
+        if (props.setFormattedDateString) props.setFormattedDateString(formatDate(date));
+      };
 
     // format the date to dd-mm-yyyy
     const formatDate = (date: Date) => {
@@ -47,19 +63,20 @@ const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
     return (
         <Controller
             control={props.control}
-            defaultValue={''}
-            name={props.name} rules={{ required: true }}
+            defaultValue={value}
+            name={props.name} rules={{ required: true, minLength: 1 }}
             render={({ field: { onChange:onFormChange }, fieldState: {error} }) => (
                 isWeb
                     ? <View style={{ width: "100%" }}>
                         {dateTitle}
                         {createElement('input', {
                             type: 'date',
-                            value: date.toISOString().split("T")[0],
+                            value: value,
                             onChange: (event: any) => {
-                                setDate(new Date(event.target.value));
+                                setValue(event.target.value);
                                 onFormChange(event.target.value);
                             },
+                            onBlur: (event: any) => onBlur(event.target.value),
                             style: { marginTop: 5, padding: 5, paddingLeft: 20, border: "1px solid #677788", ...style }
                         })}
                         {errorText(error)}
