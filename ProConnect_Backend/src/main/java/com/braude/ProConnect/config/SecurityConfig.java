@@ -37,6 +37,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             // other public endpoints of your API may be appended to this array
             "/users/create",
+            "/users/exists",
             "/users/get",
             "/roles/get-roles"
     };
