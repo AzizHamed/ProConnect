@@ -2,9 +2,7 @@ import { DrawerToggleButton, createDrawerNavigator } from "@react-navigation/dra
 import React, { useState } from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
-import JobsList from "../Features/Jobs/JobsList";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SearchTabNavigator from "./SearchTabNavigator";
 import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
 import SettingsScreen from "../Screens/SettingsScreen";
@@ -13,8 +11,6 @@ import { Platform, View } from "react-native";
 import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
-import ProLoading from "../Components/Layout/ProLoading";
-import BackgroundView from "../Components/Layout/BackgroundView";
 import { useNavigation } from "@react-navigation/native";
 import JobPage from "../Features/Jobs/JobPage";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
