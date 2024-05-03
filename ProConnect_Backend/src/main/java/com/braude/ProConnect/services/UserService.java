@@ -1,6 +1,7 @@
 package com.braude.ProConnect.services;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
+import com.braude.ProConnect.models.embeddables.Name;
 import com.braude.ProConnect.models.entities.Profession;
 import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.models.entities.User;
@@ -26,14 +27,16 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final ProfessionService professionService;
     private final AuthenticationService authenticationService;
+    private final ReviewService reviewService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserProfessionsRepository userProfessionsRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService) {
+    public UserService(UserRepository userRepository, UserProfessionsRepository userProfessionsRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService, ReviewService reviewService) {
         this.userRepository = userRepository;
         this.userProfessionsRepository = userProfessionsRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
         this.professionService = professionService;
+        this.reviewService = reviewService;
     }
 
     public User createUser(User user){
@@ -50,15 +53,33 @@ public class UserService {
      * @return {@link User} with the given userId, or null if not found.
      */
     public User getUser(String userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return user.orElse(null);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.orElse(null);
+        if(user == null) return null;
+        setUserRatings(user);
+        return user;
+    }
+    public List<User> getAllUsers(){
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            setUserRatings(user);
+        }
+        return users;
+    }
+
+    private void setUserRatings(User user) {
+        Float averageRatingByReviewedUser = reviewService.getAverageRatingByReviewedUser(user);
+        Integer countRatingByReviewedUser = reviewService.getCountRatingByReviewedUser(user);
+        if(averageRatingByReviewedUser == null)
+            averageRatingByReviewedUser = 0f;
+        if(countRatingByReviewedUser == null)
+            countRatingByReviewedUser = 0;
+        user.setAverageRating(averageRatingByReviewedUser);
+        user.setRatingsCount(countRatingByReviewedUser);
     }
 
     public boolean exists(String userId){
         return userRepository.existsById(userId);
-    }
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
     }
 
     public boolean addRole(String userId, long roleId) {
@@ -87,7 +108,9 @@ public class UserService {
         User user = authenticationService.getAuthorizedUser();
         if(user == null)
             throw new ProConnectException("User not found.");
-        user.setName(request.getName());
+        Name name = request.getName();
+        name.toUpperCase();
+        user.setName(name);
         user.setPhoneNumber(request.getPhoneNumber());
         user.setRoles(request.getRoles());
         user.setAccountStatus(AccountStatus.ACTIVE);

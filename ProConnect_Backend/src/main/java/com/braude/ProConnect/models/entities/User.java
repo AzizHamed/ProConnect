@@ -38,7 +38,10 @@ public class User {
 
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
-
+    @Transient
+    private float averageRating;
+    @Transient
+    private int ratingsCount;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
