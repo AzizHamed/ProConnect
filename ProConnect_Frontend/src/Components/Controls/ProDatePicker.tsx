@@ -11,13 +11,14 @@ interface ProDatePickerProps {
     control: any,
     name: string,
     placeholder?: string,
+    date?: string,
     setDateValue: (value: Date) => void,
     setFormattedDateString?: (value: string) => void,
 }
 
 const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
     const isWeb = IS_WEB();
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(props.date !== undefined ? new Date(props.date) : new Date());
     const [value, setValue] = useState<string>("");
 
     const [showDatePicker, setShowDatePicker] = useState(false);

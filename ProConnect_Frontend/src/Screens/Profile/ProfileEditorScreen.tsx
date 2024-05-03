@@ -232,7 +232,7 @@ const ProfileEditorScreen: React.FC = () => {
                 <View style={{ alignItems: 'center' }}>
                   <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.' 
                   values={professionsOptions} setValue={setSelectedProfession} />
-                  <ProDatePicker control={control} name={'When did you start working in this field?'} placeholder='Start Date' setDateValue={setProfessionDate} />
+                  <ProDatePicker date={userProfession.startDate} control={control} name={'When did you start working in this field?'} placeholder='Start Date' setDateValue={setProfessionDate} />
                   <ProChipInput label='Which services do you offer?' items={userProfession.services} placeholder='Enter new service...'
                     setComponentHeight={setChipComponentHeight}
                     onAddItem={addService} onRemoveItem={removeService}
