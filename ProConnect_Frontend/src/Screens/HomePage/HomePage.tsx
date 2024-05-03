@@ -193,7 +193,7 @@ const HomePage = () => {
             <Text h3 center>Popular Professions</Text>
             <View style={styles.carouselProfessions}>
               {isWeb ?
-                <ProList data={[...popularProfessions, ...popularProfessions]} renderItems={renderPopularProfessions} itemScale={0.8} />
+                <ProList data={popularProfessions} renderItems={renderPopularProfessions} itemScale={0.8} />
                 :
                 <ProCarousel displayArrows data={popularProfessions} renderItems={renderPopularProfessions} width={250} height={250} overflow='visible' mode='parallax' />
               }
