@@ -385,7 +385,6 @@ export type Profession = {
   iconUrl: string;
 };
 export type UserProfession = {
-  user?: User;
   profession?: Profession;
   startDate?: string;
   endDate?: string;
@@ -399,6 +398,8 @@ export type User = {
   dateOfBirth?: string;
   reviewsGiven?: Review[];
   reviewsReceived?: Review[];
+  averageRating?: number;
+  ratingsCount?: number;
   roles?: Role[];
   contractors?: User[];
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
@@ -491,17 +492,17 @@ export type PageableObject = {
   sort?: SortObject;
   pageSize?: number;
   pageNumber?: number;
-  unpaged?: boolean;
   paged?: boolean;
+  unpaged?: boolean;
 };
 export type PageJob = {
   totalElements?: number;
   totalPages?: number;
-  numberOfElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
   pageable?: PageableObject;
