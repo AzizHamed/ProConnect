@@ -97,7 +97,6 @@ const ProfileEditorScreen: React.FC = () => {
   const isProfessionalUser: boolean = (selectedRoleIndex == 1 || (user && user.roles !== null && user.roles !== undefined && user?.roles.length > 0 && user.roles[0].code === "PRO")) || false;
 
   const setProfessionDate = (date: Date) => {
-    console.log('DATEEEE')
     if(date !== null || userProfession !== null || userProfession !== undefined) {
       const newDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('/', '-');
       console.log('Date', newDate)
@@ -106,10 +105,10 @@ const ProfileEditorScreen: React.FC = () => {
   }
 
   const setSelectedProfession = (professionId: number) => {
-    console.log('Selected Profession Index', professionId)
+    // console.log('Selected Profession Index', professionId)
     if (professionsData === undefined) return;
     const profession = professionsData.find((profession, i) => profession.id === professionId);
-    console.log(profession)
+    // console.log(profession)
     setUserProfession({ ...userProfession, profession: profession });
   }
 
@@ -231,7 +230,7 @@ const ProfileEditorScreen: React.FC = () => {
               (
                 <View style={{ alignItems: 'center' }}>
                   <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.' 
-                  values={professionsOptions} setValue={setSelectedProfession} />
+                  values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id}/>
                   <ProDatePicker date={userProfession.startDate} control={control} name={'When did you start working in this field?'} placeholder='Start Date' setDateValue={setProfessionDate} />
                   <ProChipInput label='Which services do you offer?' items={userProfession.services} placeholder='Enter new service...'
                     setComponentHeight={setChipComponentHeight}

@@ -42,7 +42,7 @@ return (
         valueField="value"
         placeholder={!isFocus ? localValue : '...'}
         searchPlaceholder="Search..."
-        value={localValue}
+        value={localValue || props.selectedValue}
         onFocus={() => {if(props.setFocus) props.setFocus(true)}}
         onBlur={() => {if(props.setFocus) props.setFocus(false)}}
         onChange={item => {

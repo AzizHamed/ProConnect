@@ -5,7 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { defaultWidthValues } from '../../Constants/Values';
 
 interface ChipInputProps {
-    items: string[];
+    items: string[] | undefined;
     maxItems?: number;
     maxItemLength?: number;
     label?: string;

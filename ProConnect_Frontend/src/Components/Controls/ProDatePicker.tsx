@@ -6,6 +6,7 @@ import { createElement } from 'react';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Controller, FieldError } from 'react-hook-form';
+import { dateFromString_dd_MM_yyyy, formatDate, formatDateString } from '../../Utility/Formatter';
 
 interface ProDatePickerProps {
     control: any,
@@ -18,8 +19,8 @@ interface ProDatePickerProps {
 
 const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
     const isWeb = IS_WEB();
-    const [date, setDate] = useState(props.date !== undefined ? new Date(props.date) : new Date());
-    const [value, setValue] = useState<string>("");
+    const [date, setDate] = useState(props.date !== undefined ? dateFromString_dd_MM_yyyy(props.date) : new Date());
+    const [value, setValue] = useState<string>(props.date !== undefined ? formatDate(date) : "");
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const style = { color: Colors.black, fontSize: 16, height: 45, borderColor: Colors.controlText, borderWidth: 1, borderRadius: 50 };
@@ -28,7 +29,6 @@ const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
     const errorText = (error: FieldError | undefined) => <Text style={{color: Colors.failure, alignSelf: 'stretch'}}>{error?.message || ' '}</Text>
 
     const onBlur = (dateString: string) => {
-        console.log('OnBlur', dateString)
         if (dateString === "") return;
         let date = new Date(dateString);
         if (date === undefined) {
@@ -41,10 +41,6 @@ const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
         if (props.setFormattedDateString) props.setFormattedDateString(formatDate(date));
       };
 
-    // format the date to dd-mm-yyyy
-    const formatDate = (date: Date) => {
-        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-    }
     const toggleDatePicker = () => {
         setShowDatePicker(!showDatePicker);
     }
@@ -86,7 +82,7 @@ const ProDatePicker: React.FC<ProDatePickerProps> = (props) => {
                     <View>
                         {dateTitle}
                         <TouchableOpacity onPress={() => { if (!showDatePicker) toggleDatePicker(); }}>
-                            <TextInput style={[style, { paddingLeft: 60, backgroundColor: 'white' }]} editable={false} placeholder={props.placeholder} value={date.toDateString()} />
+                            <TextInput style={[style, { paddingLeft: 60, backgroundColor: 'white' }]} editable={false} placeholder={props.placeholder} value={date.toLocaleDateString()} />
                             <Ionicons name="calendar" size={24} style={{ position: 'absolute', top: 10, left: 20 }} color={Colors.textPrimary} />
                         </TouchableOpacity>
                         {showDatePicker && <RNDateTimePicker value={date} mode='date' display='spinner' onChange={(event: any, selectedDate: any) => {onChange(event, selectedDate); onFormChange(selectedDate);}} />}
