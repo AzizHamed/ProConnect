@@ -76,6 +76,7 @@ export function initTheme() {
     h4l: { fontSize: 30, fontWeight: "300", lineHeight: 40 },
     h5: { fontSize: 12, fontWeight: "heavy", lineHeight: 32 },
     body: { fontSize: 18, fontWeight: "400", lineHeight: 18 },
+    bold: { fontWeight: "600" },
   });
 
   Spacings.loadSpacings({
