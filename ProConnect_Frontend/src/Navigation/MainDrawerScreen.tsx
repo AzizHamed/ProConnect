@@ -14,6 +14,7 @@ import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
 import { useNavigation } from "@react-navigation/native";
 import JobPage from "../Features/Jobs/JobPage";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
+import JobsTable from "../Features/Jobs/JobsTable";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -118,8 +119,9 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
         )
       }} />
       <MainDrawer.Screen name="Profile" component={ProfileViewScreen} options={{title: 'Profile'}}/>
-      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: 'Profile' }} />
+      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: 'Profile', headerLeft: backButton }} />
       <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />
+      <MainDrawer.Screen name="JobTable" component={JobsTable} options={{ headerLeft: backButton }} />
     </MainDrawer.Navigator>
   );
 };
