@@ -49,7 +49,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
     // console.log('current index:', index);
     setIndexString(generateIndexString());
     setIsFirst(index === 0);
-    setIsLast(index === props.data.length - 1);
+    setIsLast((index === props.data.length - 1 || props.data.length === 0));
 
   }
   const handleNext = () => {
@@ -103,7 +103,7 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   );
 
   function generateIndexString(): string {
-    return `${(carouselRef.current?.getCurrentIndex() + 1)}/${(props.data.length)}`;
+    return (props.data && props.data?.length > 0) ? `${(carouselRef.current?.getCurrentIndex() + 1)}/${(props.data?.length)}` : ``;
   }
 };
 
