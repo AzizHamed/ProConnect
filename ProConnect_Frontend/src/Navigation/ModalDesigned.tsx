@@ -10,6 +10,7 @@ import { User } from '../Services/Redux/Api';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import { getSortBy } from '../Services/Redux/Slices/SortBySlice';
+import { Colors } from 'react-native-ui-lib';
 interface ModalDesignedProps {
   visibleModal : (bool : boolean)=> void;
   setRating : (rating : number)=>void
@@ -91,7 +92,7 @@ useEffect(() => {
                 </View> */}
 
                 <View>
-                  <Text style={{color : "white"}}>Experience</Text>
+                  <Text style={{color : Colors.textPrimary}}>Experience</Text>
                   <RNPickerSelect
                       onValueChange={(value) => props.setExperience(value)}
                       items={Experience}
@@ -101,7 +102,7 @@ useEffect(() => {
 
 
                     <View>
-                  <Text style={{color : "white"}}>Rating</Text>
+                  <Text style={{color : Colors.textPrimary}}>Rating</Text>
                   <RNPickerSelect
                       onValueChange={(value) => props.setRating(value)}
                       items={Ratings}
