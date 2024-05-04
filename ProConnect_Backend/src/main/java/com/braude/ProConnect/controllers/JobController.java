@@ -47,6 +47,16 @@ public class JobController {
         return new ResponseEntity<>(jobService.getJobs(jobPage,jobSearchCriteria),
                 HttpStatus.OK);
     }
+   @GetMapping("/get-user-jobs")
+    public ResponseEntity<List<Job>> getUserJobs(){
+        return new ResponseEntity<>(jobService.getUserJobs(),
+                HttpStatus.OK);
+    }
+    @GetMapping("/get-user-jobs-id")
+    public ResponseEntity<List<Job>> getUserJobsById(String userId){
+        return new ResponseEntity<>(jobService.getUserJobs(userId),
+                HttpStatus.OK);
+    }
 
 
     @GetMapping("/getJobByUser")

@@ -10,15 +10,18 @@ import { emailSignOut } from "../Services/Firebase/Firebase";
 import { useNavigation } from "@react-navigation/native";
 import { getUserAccount, getUserCredential, setUserCredential } from "../Services/Redux/Slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ProfileImage from "../Components/Layout/ProfileImage";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( props ) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector(getUserAccount);
+
   function renderIcon(props : {focused: boolean, size: number, color: string}) {
     return <MaterialIcons name="logout" size={props.size} color={props.color} />;
   }
+
   return (
     <DrawerContentScrollView {...props}>
       {/* Your custom drawer header, if needed */}
@@ -35,14 +38,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
             backgroundColor: Colors.backgroundDark
           }}
         >
-          <Image
-            source={require("../../R.jpg")}
-            style={{
-              height: 130,
-              width: 130,
-              borderRadius: 65,
-            }}
-          />
+          <ProfileImage size={130} photoUrl={user?.photoUrl}/>
           <Text
             style={{
               fontSize: 20,

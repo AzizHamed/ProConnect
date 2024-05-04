@@ -1,6 +1,6 @@
 package com.braude.ProConnect.requests;
 
-
+import com.braude.ProConnect.models.entities.UserProfession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateProfileRequest {
-    private UpdatePersonalInfoRequest updatePersonalInfoRequest;
-    private UpdateProfessionsRequest updateProfessionsRequest;
+public class UpdateProfessionsRequest {
+    private UserProfession[] professions;
 }

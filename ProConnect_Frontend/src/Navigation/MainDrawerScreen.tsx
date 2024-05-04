@@ -2,14 +2,11 @@ import { DrawerToggleButton, createDrawerNavigator } from "@react-navigation/dra
 import React, { useState } from "react";
 import { CustomDrawerContent } from "./CustomDrawerContent";
 import { MainTabScreen } from "./MainTabScreen";
-import JobsList from "../Features/Jobs/JobsList";
 import { SimpleLineIcons, Ionicons } from "@expo/vector-icons";
+
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-
-
 import SearchTabNavigator from "./SearchTabNavigator";
 import ProfileEditorScreen from "../Screens/Profile/ProfileEditorScreen";
 import SettingsScreen from "../Screens/SettingsScreen";
@@ -18,8 +15,6 @@ import { Platform, View } from "react-native";
 import { getWindowWidth } from "../Services/Redux/Slices/DimensionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
-import ProLoading from "../Components/Layout/ProLoading";
-import BackgroundView from "../Components/Layout/BackgroundView";
 import { useNavigation } from "@react-navigation/native";
 import JobPage from "../Features/Jobs/JobPage";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
@@ -47,6 +42,7 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
   const navigation = useNavigation();
   const currentWindowWidth = useSelector(getWindowWidth);
   const user = useSelector(getUserAccount);
+
   if (user === undefined || user === null) {
     //return <BackgroundView children={<ProLoading/>}/>
   }
@@ -123,27 +119,20 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
         initialParams={dataProfessions}
 
       /> */}
-      {/* <MainDrawer.Screen name="test" component={JobsList} /> */}
-
 
       
       <MainDrawer.Screen name="Profile" component={ProfileViewScreen} options={{
-
+                  title: 'Profile',
                   drawerIcon: () => (
-                    <AntDesign name="profile" size={20} color="#808080" />
-                    
-                  )}} />
+                    <AntDesign name="profile" size={20} color="#808080" />                    
+      )}} />
 
-<MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
-
-drawerIcon: () => (
-  <Ionicons name="settings-outline" size={20} color="#808080" />
-)
-}} />
-                  
-      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" } }} />
-      <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />
-     
+      <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: 'Profile', headerLeft: backButton }} />
+      <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />       
+      <MainDrawer.Screen name="Settings" component={SettingsScreen} options={{
+                  drawerIcon: () => (
+                    <Ionicons name="settings-outline" size={20} color="#808080" />
+      )}} />                      
     </MainDrawer.Navigator>
   );
 };

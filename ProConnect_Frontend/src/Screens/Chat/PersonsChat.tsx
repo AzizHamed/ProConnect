@@ -260,7 +260,7 @@ const PersonsChat = () => {
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[
             <View>
 
-              <Text style={{color : "white", marginBottom: 7, fontWeight : '500'}}>{friend.name.firstName} {friend.name.lastName}</Text>
+              <Text style={{color : Colors.textPrimary, marginBottom: 7, fontWeight : '500'}}>{friend.name.firstName} {friend.name.lastName}</Text>
               {lastMessagesU?.get(friend.email).location === true ? (
                 <View style={{flexDirection :"row", alignItems : "center"}}>
                   <Ionicons name='location' size={20} color={Colors.controlBackground} />
@@ -287,14 +287,6 @@ const PersonsChat = () => {
             </View>
           </View>
 }
-          
-          
-
-         
-
-          
-
-
           </TouchableOpacity>
         )
       })}

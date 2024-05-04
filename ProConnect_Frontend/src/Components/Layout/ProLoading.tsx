@@ -3,13 +3,13 @@ import { Colors, View, Text } from "react-native-ui-lib";
 
 export interface LoadingProps{
     small?: boolean,
-    loadingDisplayMessage?: boolean,
+    displayLoadingMessage?: boolean,
     loadingMessage?: string,
 }
 
 const ProLoading: React.FC<LoadingProps> = (props) => {
     const small = props.small || false;
-    const displayMessage = props.loadingDisplayMessage || true;
+    const displayMessage = props.displayLoadingMessage === undefined ? true : props.displayLoadingMessage;
     const message = props.loadingMessage || "Loading...";
 
 

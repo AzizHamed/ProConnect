@@ -38,7 +38,10 @@ export function initTheme() {
       backgroundTertiary: "#d5dbe0",
       backgroundDark: "#313131",
       controlBackground: "#414141",
+      controlBackgroundDisabled: "#a1a1a1",
       controlText: "#d5dbe0",
+      radioColorSelected: "#414141",
+      radioColorDeselected: "#555555",
       success: "#27ae60",
       failure: "#e74c3c",
       highlight: "#cecece",
@@ -54,7 +57,10 @@ export function initTheme() {
       backgroundTertiary: "#2c3e50",
       backgroundDark: "#20303c",
       controlBackground: "#4b6e91",
+      controlBackgroundDisabled: "#707070",
       controlText: "#d5e0d6",
+      radioColorSelected: "#d5e0d6",
+      radioColorDeselected: "#4b6e91",
       success: "#27ae60",
       failure: "#f37964",
       highlight: "#384f66",
@@ -70,6 +76,7 @@ export function initTheme() {
     h4l: { fontSize: 30, fontWeight: "300", lineHeight: 40 },
     h5: { fontSize: 12, fontWeight: "heavy", lineHeight: 32 },
     body: { fontSize: 18, fontWeight: "400", lineHeight: 18 },
+    bold: { fontWeight: "600" },
   });
 
   Spacings.loadSpacings({

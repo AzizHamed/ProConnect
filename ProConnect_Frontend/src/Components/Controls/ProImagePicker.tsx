@@ -19,23 +19,23 @@ const ProImagePicker: React.FC<ProImagePickerProps> = (props) => {
 
   useEffect(() => {
     props.setSelectedFiles(Array.from(selectedFiles || []));
-    console.log('Set selected files: ', selectedFiles)
+    // console.log('Set selected files: ', selectedFiles)
   },[selectedFiles])
 
   return (
     <View>
       <View style={styles.buttonContainer}>
-        {!isWeb && <ProIconButton materialIcon materialIconName="photo-album" showAddIcon onPress={() => selectPictures('GALLERY')}></ProIconButton>}
-        <ProIconButton ionicon ioniconName="camera" showAddIcon onPress={() => selectPictures('CAMERA', true)}></ProIconButton>
+        {!isWeb && <ProIconButton displayBackground materialIcon materialIconName="photo-album" showAddIcon onPress={() => selectPictures('GALLERY')}></ProIconButton>}
+        <ProIconButton ionicon displayBackground ioniconName="camera" showAddIcon onPress={() => selectPictures('CAMERA', true)}></ProIconButton>
 
       </View>
-      <ProCarousel data={Array.from(selectedFiles || [])}
-      renderItems={({ item, index }) => (
-        <View key={index} style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }}>
-          <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
-          <MaterialIcons name="close" size={24} style={{ position: 'absolute', top: 5, right: 5 }} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
-        </View>
-      )} mode={'parallax'} />
+      <ProCarousel data={Array.from(selectedFiles || [])}  mode='parallax' width={isWeb ? 300 : undefined} displayArrows arrowOffset={isWeb? undefined : 0}
+        renderItems={({ item, index }) => (
+          <View key={index}  style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }} >
+            <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+            <MaterialIcons name="close" size={24} style={{ position: 'absolute', top: 5, right: 5 }} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
+          </View>
+      )} />
 
 
       {/* <Button label="Upload" onPress={handleUpload} /> */}

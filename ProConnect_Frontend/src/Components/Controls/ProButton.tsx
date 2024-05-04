@@ -36,7 +36,7 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
           backgroundColor={Colors.controlBackground}
           color={Colors.controlText}
           onPress={onPress}
-          
+          disabledBackgroundColor={Colors.controlBackgroundDisabled} 
           borderRadius={borderRadius}
           supportRTL={true} 
           label={text} 

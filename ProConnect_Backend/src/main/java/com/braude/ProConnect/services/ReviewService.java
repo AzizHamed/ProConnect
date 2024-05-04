@@ -14,17 +14,13 @@ import java.util.List;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final UserService userService;
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, UserService userService) {
+    public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
-        this.userService = userService;
     }
 
     public Review createReview(Review review)
     {
-
-
         User user = review.getReviewedUser();
         user.addRating(review.getScore());
         userService.createUser(user);
@@ -37,7 +33,6 @@ public class ReviewService {
     {
         List<Review> newReviews = new ArrayList<>();
         for (Review review : reviews) {
-            review.setId(0);
             review.setTimestamp(ZonedDateTime.now());
             reviewRepository.save(review);
             newReviews.add(review);
@@ -45,8 +40,11 @@ public class ReviewService {
         return newReviews;
     }
 
-    public List<Review> getReviewsByReviewerUserId(String reviewerUserId){
-        User user = userService.getUser(reviewerUserId);
-        return null;
+    public Float getAverageRatingByReviewedUser(User reviewedUser){
+        return reviewRepository.getReviewScoreAverage(reviewedUser.getId());
+    }
+
+    public Integer getCountRatingByReviewedUser(User reviewedUser){
+        return reviewRepository.countReviewsByReviewedUser(reviewedUser);
     }
 }

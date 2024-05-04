@@ -1,23 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 import AuthReducer from "./Slices/AuthSlice";
 import JobReducer from "./Slices/JobSlice";
+import UserReducer from "./Slices/UserSlice";
 import PersonsPageReducer from "./Slices/PersonsPageSlice";
 import DimensionReducer from "./Slices/DimensionSlice";
 import PreferencesReducer, { initializePreferences } from "./Slices/PreferencesSlice";
 import { api } from "./Api";
 import { fetchUserDataMiddleware } from "./fetchUserDataMiddleware";
-import { Dropdown } from "react-native-element-dropdown";
-import Chat from "../../Screens/Chat/Chat";
-
 import ChatReducer from "./Slices/ChatSlice";
 import SortByReducer from "./Slices/SortBySlice";
 import FullMapScreenReducer from "./Slices/FullScreenMapSlice";
+
 export const store = configureStore({
     reducer: {
 
         auth: AuthReducer,
         chat : ChatReducer,
         job: JobReducer,
+        user: UserReducer,
         PersonsPage : PersonsPageReducer,
         FullMapScreen : FullMapScreenReducer,
         SortBy : SortByReducer,
@@ -26,7 +26,7 @@ export const store = configureStore({
         [api.reducerPath]: api.reducer
     } as any, 
     middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(api.middleware).concat(fetchUserDataMiddleware)
+    getDefaultMiddleware().concat(api.middleware)//.concat(fetchUserDataMiddleware)
 })
 
 store.dispatch(initializePreferences());

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -44,16 +45,15 @@ public class User {
 
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
-
-    private double rating=0;
-
-    private int experience=0;
-
+    @Transient
+    private float averageRating;
+    @Transient
+    private int ratingsCount;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role>  roles;
+    private List<Role> roles;
 
 
     @JoinColumn(
@@ -75,9 +75,8 @@ public class User {
 
     private String photoUrl;
 
-
-
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<UserProfession> userProfessions;
 
     @Enumerated(EnumType.STRING)
     private WorkAreas workAreas;

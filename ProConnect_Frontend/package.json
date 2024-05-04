@@ -37,6 +37,7 @@
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "expo": "~49.0.7",
+    "expo-dev-client": "~2.4.13",
     "expo-contacts": "~12.2.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "~12.3.0",
@@ -80,7 +81,6 @@
     "react-native-web": "~0.19.6",
     "react-native-web-refresh-control": "^1.1.1",
     "react-redux": "^9.0.4",
-
     "react-router-dom": "^6.15.0",
     "expo-dev-client": "~2.4.13"
   },
