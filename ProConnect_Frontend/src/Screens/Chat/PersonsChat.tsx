@@ -65,7 +65,7 @@ const PersonsChat = () => {
             dispatch(setChat({ReceiverEmail : friend.email , openModal : false}))
             navigation.navigate("Chats")
           }} >
-          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : "white"}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
+          <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[<Text style={{color : Colors.textPrimary}}>{friend.name.firstName} {friend.name.lastName}</Text>]} containerStyle={style.containerStyle}/>
 
 
           </TouchableOpacity>
