@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Colors, Text } from 'react-native-ui-lib';
+import { Text } from 'react-native';
+import { Colors } from 'react-native-ui-lib';
 import DesignedDropDown, { DropDownProps } from '../../Navigation/DesignedDropDown';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Control, Controller } from 'react-hook-form';
-import { set } from 'date-fns';
 
 const icon = <Ionicons name="home" size={20} style={{ marginLeft: 5, marginRight: 10 }} />
 
@@ -57,7 +57,7 @@ const ValidatedDropDown: React.FC<ValidatedDropDownProps & DropDownProps> = (pro
             control={props.control}
             defaultValue={props.selectedValue || ''}
             name="validatedDropdown"
-            render={({ field: { onChange, value }, fieldState: { error} }) => (
+            render={({ field: { onChange, value }, fieldState: { error, invalid } }) => (
                 <DesignedDropDown
                     leftIcon={props.leftIcon}
                     selectedValue={value}
@@ -66,7 +66,7 @@ const ValidatedDropDown: React.FC<ValidatedDropDownProps & DropDownProps> = (pro
                     flexShrink={props.flexShrink}
                     containerStyle={props.containerStyle}
                     values={values}
-                    componentAfterDropdown={error !== undefined ? <Text style={{ color: Colors.failure, alignSelf: 'stretch' }}>{props.errorMessage}</Text> : <></>}
+                    componentAfterDropdown={(selectedValue === undefined) ? <Text style={{ color: Colors.failure, alignSelf: 'stretch' }}>{props.errorMessage}</Text> : <></>}
                 >
                 </DesignedDropDown>
             )} />
