@@ -125,12 +125,15 @@ public class UserService {
         } else {
             user.setUserProfessions(new ArrayList<>());
         }
-        for(UserProfession userProfessionToAdd : request.getProfessions()){
-            Profession profession = professionService.getProfessionById(userProfessionToAdd.getProfession().getId());
-            if(profession == null)
-                throw new ProConnectException("Profession not found.");
-            user.getUserProfessions().add(new UserProfession(user, profession, userProfessionToAdd.getStartDate(), userProfessionToAdd.getEndDate(), userProfessionToAdd.getServices()));
+        UserProfession[] professions = request.getProfessions();
+        if(professions != null) {
+            for (UserProfession userProfessionToAdd : professions) {
+                Profession profession = professionService.getProfessionById(userProfessionToAdd.getProfession().getId());
+                if (profession == null)
+                    throw new ProConnectException("Profession not found.");
+                user.getUserProfessions().add(new UserProfession(user, profession, userProfessionToAdd.getStartDate(), userProfessionToAdd.getEndDate(), userProfessionToAdd.getServices()));
 
+            }
         }
         user = userRepository.save(user);
         return user;
