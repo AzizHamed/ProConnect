@@ -153,9 +153,9 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Properties"],
       }),
-      createService1: build.mutation<
-        CreateService1ApiResponse,
-        CreateService1ApiArg
+      createProfession: build.mutation<
+        CreateProfessionApiResponse,
+        CreateProfessionApiArg
       >({
         query: (queryArg) => ({
           url: `/professions/create`,
@@ -235,6 +235,20 @@ const injectedRtkApi = api
       >({
         query: () => ({ url: `/professions/get-all` }),
         providesTags: ["Professions"],
+      }),
+      getUserJobs: build.query<GetUserJobsApiResponse, GetUserJobsApiArg>({
+        query: () => ({ url: `/jobs/get-user-jobs` }),
+        providesTags: ["Jobs"],
+      }),
+      getUserJobsById: build.query<
+        GetUserJobsByIdApiResponse,
+        GetUserJobsByIdApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/jobs/get-user-jobs-id`,
+          params: { userId: queryArg.userId },
+        }),
+        providesTags: ["Jobs"],
       }),
       getJobs: build.query<GetJobsApiResponse, GetJobsApiArg>({
         query: (queryArg) => ({
@@ -316,8 +330,8 @@ export type CreatePropertyApiResponse = /** status 200 OK */ Property;
 export type CreatePropertyApiArg = {
   property: Property;
 };
-export type CreateService1ApiResponse = /** status 200 OK */ Profession;
-export type CreateService1ApiArg = {
+export type CreateProfessionApiResponse = /** status 200 OK */ Profession;
+export type CreateProfessionApiArg = {
   name: string;
   description: string;
   iconUrl: string;
@@ -353,6 +367,12 @@ export type GetLocationsApiResponse = /** status 200 OK */ Location[];
 export type GetLocationsApiArg = void;
 export type GetAllProfessionsApiResponse = /** status 200 OK */ Profession[];
 export type GetAllProfessionsApiArg = void;
+export type GetUserJobsApiResponse = /** status 200 OK */ Job[];
+export type GetUserJobsApiArg = void;
+export type GetUserJobsByIdApiResponse = /** status 200 OK */ Job[];
+export type GetUserJobsByIdApiArg = {
+  userId: string;
+};
 export type GetJobsApiResponse = /** status 200 OK */ PageJob;
 export type GetJobsApiArg = {
   jobPage: JobPage;
@@ -496,8 +516,8 @@ export type PageableObject = {
   unpaged?: boolean;
 };
 export type PageJob = {
-  totalElements?: number;
   totalPages?: number;
+  totalElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
@@ -541,7 +561,7 @@ export const {
   useCreateServiceMutation,
   useCreateRoleMutation,
   useCreatePropertyMutation,
-  useCreateService1Mutation,
+  useCreateProfessionMutation,
   usePostJobsMutation,
   useGetAllUsersNumberQuery,
   useGetUserQuery,
@@ -553,6 +573,8 @@ export const {
   useGetPropertiesQuery,
   useGetLocationsQuery,
   useGetAllProfessionsQuery,
+  useGetUserJobsQuery,
+  useGetUserJobsByIdQuery,
   useGetJobsQuery,
   useInitQuery,
 } = injectedRtkApi;

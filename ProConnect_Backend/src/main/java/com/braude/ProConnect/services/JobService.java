@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class JobService {
@@ -126,4 +127,12 @@ public class JobService {
         return comment;
     }
 
+    public List<Job> getUserJobs() {
+        User owner = authenticationService.getAuthorizedUser();
+        return jobRepository.findAllByOwner(owner);
+    }
+    public List<Job> getUserJobs(String userId) {
+        User owner = userService.getUser(userId);
+        return jobRepository.findAllByOwner(owner);
+    }
 }

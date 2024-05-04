@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("jobs")
 @CrossOrigin
@@ -41,6 +43,16 @@ public class JobController {
     @GetMapping("/get-job-page")
     public ResponseEntity<Page<Job>> getJobs(JobPage jobPage, JobSearchCriteria jobSearchCriteria){
         return new ResponseEntity<>(jobService.getJobs(jobPage,jobSearchCriteria),
+                HttpStatus.OK);
+    }
+   @GetMapping("/get-user-jobs")
+    public ResponseEntity<List<Job>> getUserJobs(){
+        return new ResponseEntity<>(jobService.getUserJobs(),
+                HttpStatus.OK);
+    }
+    @GetMapping("/get-user-jobs-id")
+    public ResponseEntity<List<Job>> getUserJobsById(String userId){
+        return new ResponseEntity<>(jobService.getUserJobs(userId),
                 HttpStatus.OK);
     }
 
