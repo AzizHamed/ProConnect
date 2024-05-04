@@ -19,19 +19,21 @@ const JobsTable: React.FC<JobsTableProps> = (props) => {
     const isLoggedInUser = loggedInUser?.id === selectedUser?.id;
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { data, isSuccess, isError, error, refetch } = props.userId ? useGetUserJobsByIdQuery({userId: props.userId}) : useGetUserJobsQuery();
+    const { data, isSuccess, isError, error, refetch } = props.userId ? useGetUserJobsByIdQuery({ userId: props.userId }) : useGetUserJobsQuery();
 
     const jobs = data || [];
     const jobTitles = jobs.map((job) => `${job.neededProfessions && job.neededProfessions[0]?.name + ' - '}${job.title}`);
-    const onOpen = (index: number) => { selectJobIndex(index); navigation.navigate("Job");};
+    const onOpen = (index: number) => { selectJobIndex(index); navigation.navigate("Job"); };
     const onEdit = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
-    const onDelete = isLoggedInUser ? (index: number) => { selectJob(index);} : undefined;
-    const selectJobIndex = (index: number) => { dispatch(selectJob(jobs[index]));}
-  return (
-    <BackgroundView children={
-        <ProTable onOpen={onOpen} onEdit={onEdit} onDelete={onDelete}  title='Jobs Table' rows={jobTitles} />
-    }/>
-  )
+    const onDelete = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
+    const selectJobIndex = (index: number) => { dispatch(selectJob(jobs[index])); }
+
+    console.log(jobs)
+    return (
+        <BackgroundView children={
+            <ProTable onOpen={onOpen} onEdit={onEdit} onDelete={onDelete} title='Jobs Table' rows={jobTitles} />
+        } />
+    )
 }
 
 export default JobsTable
