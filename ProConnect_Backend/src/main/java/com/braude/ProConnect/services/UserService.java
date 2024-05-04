@@ -13,9 +13,11 @@ import com.braude.ProConnect.repositories.SearchesRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,12 +134,6 @@ public class UserService {
 
         return users;
     }
-
-//    public void addProfession(String userId, String professionName) {
-//        User user = userRepository.findById(userId).get();
-//        user.getProfessions().add(professionService.getProfessionByName(professionName));
-//        userRepository.save(user);
-//    }
 
 
 }

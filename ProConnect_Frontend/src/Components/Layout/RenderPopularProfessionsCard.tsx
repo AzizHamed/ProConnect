@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Colors, Text } from 'react-native-ui-lib'
+import { StyleSheet } from 'react-native'
+import { Colors, Text, View } from 'react-native-ui-lib'
 import SVGIconContainer from './SVGIconContainer';
 
 interface RenderPopularProfessionsProps {
@@ -11,15 +11,13 @@ interface RenderPopularProfessionsProps {
 
 const renderPopularProfessions = ({ item }: { item: RenderPopularProfessionsProps }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.cardContainerStyle}>
-        <SVGIconContainer iconComponent={item.component} color={Colors.textPrimary} width={100} height={100}/>
-        <Text marginT-20> {item.profession}</Text>
+    <View style={styles.container}> 
+      <View style={styles.cardContainerStyle} backgroundColor={Colors.backgroundDark}>
+        <SVGIconContainer iconComponent={item.component} color={Colors.white} width={100} height={100}/>
+        <Text marginT-20 color={Colors.white}> {item.profession}</Text>
       </View>
-      <View style={{ height: 50, alignItems: "center", justifyContent: "center" }}>
-        <View>
-          <Text style={{ fontSize: 18, fontWeight: "bold", color: Colors.backgroundPrimary }}>{item.number} Users</Text>
-        </View>
+      <View style={{ height: 50, alignItems: "center", justifyContent: "center", backgroundColor: Colors.transparent }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: Colors.backgroundDark  }}>{item.number} Users</Text>
       </View>
     </View>
   )
@@ -37,7 +35,6 @@ const styles = StyleSheet.create({
     height: 200,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.$backgroundDark
   },
   container: {
     backgroundColor: "white",

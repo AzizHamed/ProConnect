@@ -51,10 +51,8 @@ public class Startup {
     private static void initializeFirebase() {
         try {
             FirebaseOptions options;
-          
+
             if(FIREBASE_CONFIG == null || FIREBASE_CONFIG.isEmpty() || FIREBASE_CONFIG.equals("null")) {
-
-
 
                 ResourceLoader resourceLoader = new DefaultResourceLoader();
                 Resource resource = resourceLoader.getResource("classpath:proconnect-6173c-firebase-adminsdk-msam9-1ff2a5bffd.json");

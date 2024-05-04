@@ -71,7 +71,7 @@ const SignInScreen = () => {
 
   if(isLoadingAuthState){
     return (
-      <BackgroundView children={(
+      <BackgroundView hasSafeAreaView children={(
         <ProLoading/>
       )}></BackgroundView>
     )
