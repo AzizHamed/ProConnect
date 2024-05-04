@@ -2,6 +2,9 @@ package com.braude.ProConnect.models.entities;
 
 import com.braude.ProConnect.models.embeddables.Name;
 import com.braude.ProConnect.models.enums.AccountStatus;
+import com.braude.ProConnect.models.enums.WorkAreas;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -30,6 +33,10 @@ public class User {
     @NotEmpty(message = "Email cannot be empty.")
     @Column(unique = true)
     private String email;
+
+    private int numOfRates=0;
+
+    @Column(unique = true)
     private String phoneNumber;
     private Date dateOfBirth;
 
@@ -49,11 +56,19 @@ public class User {
     private List<Role> roles;
 
 
-    @ManyToMany()
-    @JoinTable(name = "professional_contractor",
-            joinColumns = @JoinColumn(name = "professional_id"),
-            inverseJoinColumns = @JoinColumn(name = "contractor_id"))
-    private List<User> contractors;
+    @JoinColumn(
+            name = "profession_id",
+            referencedColumnName = "profession_id"
+    )
+    @ManyToOne()
+    private Profession profession;
+
+
+//    @ManyToMany()
+//    @JoinTable(name = "professional_contractor",
+//            joinColumns = @JoinColumn(name = "professional_id"),
+//            inverseJoinColumns = @JoinColumn(name = "contractor_id"))
+//    private List<User> contractors;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
@@ -63,8 +78,29 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<UserProfession> userProfessions;
 
+    @Enumerated(EnumType.STRING)
+    private WorkAreas workAreas;
 
-    //private List<User> workers;
+
+//    @JsonIgnore
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "receiverUser", fetch = FetchType.LAZY)
+//    private List<JobOffer> offersReceived;
+//
+//
+////    @JsonIgnore
+////    @JsonManagedReference
+//    @OneToMany(mappedBy = "senderUser", fetch = FetchType.LAZY)
+//    private List<JobOffer> offersSent;
+
+
+
+
+
+    public void addRating(int rating){
+        setRating(((getRating() * getNumOfRates()) + rating)/(getNumOfRates() + 1));
+        setNumOfRates(getNumOfRates() + 1);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -85,4 +121,14 @@ public class User {
     public boolean removeRole(Role role) {
         return roles.remove(role);
     }
+
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id='" + id + '\'' +
+//                ", name=" + name +
+//                ", email='" + email + '\'' +
+//                ", accountStatus=" + accountStatus +
+//                '}';
+//    }
 }

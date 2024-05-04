@@ -37,4 +37,14 @@ public class ProfessionController {
             return new ResponseEntity<>(professions, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping(value = "/get")
+    public ResponseEntity<List<Profession>> getProfession(){
+        List<Profession> profession = professionService.findAll();
+        if(profession != null)
+            return new ResponseEntity<>(profession, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
 }

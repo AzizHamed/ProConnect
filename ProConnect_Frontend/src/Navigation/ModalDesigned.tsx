@@ -35,19 +35,6 @@ const sort = useSelector(getSortBy)
 var rating = props.rating;
 var experience = props.experience;
 
-const dataLocation = [
-  { label: 'Haifa', value:'1' },
-  { label: 'Nazareth', value: '2' },
-  { label: 'Kfar yasif', value: '3' },
-  { label: 'Nahareya', value: '4' },
-  { label: 'Acre', value: '5' },
-  { label: 'Elat', value: '6' },
-  { label: 'Karmiel', value: '7' },
-  { label: 'Ramla', value: '8' },
-
-  
-];
-
 useEffect(() => {
   function createYears() {
     var i;
@@ -85,7 +72,7 @@ useEffect(() => {
             <View style={styles.container}>
 
               <View style={styles.textAndComponentStyle}>
-
+{/* 
                 <View >
                   <Text style={{color : "white"}}>Location</Text>
                   {!reset && <DesignedDropDown initialValue={props.location} setValue={props.setLocation} values={dataLocation} leftIcon={<FontAwesome
@@ -101,7 +88,7 @@ useEffect(() => {
                   size={20}
             />}/> }
                   
-                </View>
+                </View> */}
 
                 <View>
                   <Text style={{color : "white"}}>Experience</Text>
@@ -125,7 +112,8 @@ useEffect(() => {
 
               </View>
 
-             
+              <View style={{alignItems : "center"}}>
+
 
               <ProButton text={"Continue"} onPress={()=>{
                 props.setSort(sort)
@@ -140,6 +128,9 @@ useEffect(() => {
                experience=0
                setreset(true);
                 }} />
+              </View>
+
+             
            
             
           </View>
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
   },
 
   textAndComponentStyle : {
-    height : 250,
+    height : 175,
      justifyContent : "space-between",
   },
 

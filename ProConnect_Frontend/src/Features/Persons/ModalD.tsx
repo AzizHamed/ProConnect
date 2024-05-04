@@ -8,22 +8,34 @@ import { Colors } from 'react-native-ui-lib';
 import ProButton from '../../Components/Controls/ProButton';
 import { set } from 'date-fns';
 import { ka } from 'date-fns/locale';
+import { PostJobOfferApiArg, User, usePostJobOfferMutation } from '../../Services/Redux/Api';
+import { auth } from '../../Services/Firebase/Firebase';
+import { useSelector } from 'react-redux';
+import { getSelectedJob1, getSelectedReceiverUser } from '../../Services/Redux/Slices/ChatSlice';
+import { getUserAccount } from '../../Services/Redux/Slices/AuthSlice';
 
 
 interface ModalDProps {
   send : (message : string) => void;
   setModalVisible : (visible : boolean) => void;
+  userName : string;
 }
 
 
 const ModalD :React.FC<ModalDProps> =  (props) => {
   const [displayText, setDisplayText] = useState('');
+
   let budget = 0;
   const [RequestType, setRequestType] = useState("Job Offer")
   const [Budget, setBudget] = useState("0")
   const [Index, setIndex] = useState(0)
   const text = "This is a " + RequestType + "\n Budget :" + Budget
   const words = text.split(' ');
+
+  const ReceiverUser = useSelector(getSelectedReceiverUser);
+  const job = useSelector(getSelectedJob1)
+  const senderUser = useSelector(getUserAccount)
+  const [postJobOffer] = usePostJobOfferMutation();
 
   useEffect(() => {
     let currentIndex = 0;
@@ -57,10 +69,16 @@ const ModalD :React.FC<ModalDProps> =  (props) => {
       <View style={{alignItems : "center", width : "90%"}}>
       <Text style={{color : "black", fontSize : 20, fontWeight : "bold"}}>Send a Request</Text>
       </View>
+
+      <View style={{alignItems : "center", width : "100%", right : 20}}>
+
+      <Text style={{color : "green"}}>Increase your chances</Text>
+      </View>
      
       <View style={{width : "90%"}}>
         <View style={styles.RequestTypeContainer}>
-          <Text style={styles.textStyle}> Request Type:</Text>
+          <Text style={styles.textStyle}>Request Type:</Text>
+          
           <ProRNPickerSelect  data={RequestTypes} onValueChange={(value) => { onChange(value, Budget, Number(value) - 1)} } index={Index} />
         </View>
 
@@ -68,7 +86,7 @@ const ModalD :React.FC<ModalDProps> =  (props) => {
 
           <Text style={styles.textStyle}>To:  </Text>
 
-          <Text style={styles.textStyle}>Aziz Hamed</Text>
+          <Text style={styles.textStyle}>{props.userName}</Text>
         </View>
 
         <View style={styles.BudgetContainerContainer}>
@@ -84,6 +102,9 @@ const ModalD :React.FC<ModalDProps> =  (props) => {
 
         <View style={styles.buttonsContainer}>
         <ProButton text={"Send"} mobileWidth={150} onPress={()=>{
+          const jobOffer = {jobOffer : {senderUser : senderUser, receiverUser : ReceiverUser, job : job, description : displayText, bid : Number(Budget)}}
+          console.log(jobOffer)
+          postJobOffer(jobOffer)
           props.send(text);
           props.setModalVisible(false);
         }}/>
@@ -123,7 +144,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     // Change the width here
     width: 375, // Adjust this value as needed
-    height: 675, // Adjust this value as needed
+    height: 700, // Adjust this value as needed
   },
 
   RequestTypeContainer: {

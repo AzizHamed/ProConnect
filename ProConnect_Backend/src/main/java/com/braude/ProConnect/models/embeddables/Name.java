@@ -54,8 +54,8 @@ public class Name {
         return Objects.hash(firstName, lastName);
     }
 
-    @Override
-    public String toString() {
-        return firstName + " " + lastName;
-    }
+//    @Override
+//    public String toString() {
+//        return firstName + " " + lastName;
+//    }
 }

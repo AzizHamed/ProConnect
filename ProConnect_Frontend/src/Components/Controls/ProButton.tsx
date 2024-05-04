@@ -10,6 +10,7 @@ interface ProButtonProps {
     onPress?: () => void
     webWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode;
     mobileWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode;
+    width?:number
   }
 
 const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
@@ -22,8 +23,12 @@ const ProButton: React.FC<ProButtonProps & ButtonProps> = (props) => {
         alert("Pressed")
     }
 
+    let widthStyle
+  if(props.width!==undefined)
+    widthStyle = { width: props.width };
 
-  const widthStyle = { width: width };
+  else 
+  widthStyle = { width: width };
   return (
     <View center backgroundColor={props.backgroundColor} style={widthStyle}>      
       <Button 

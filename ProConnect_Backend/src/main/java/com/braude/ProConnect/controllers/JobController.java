@@ -3,6 +3,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.models.entities.Comment;
 import com.braude.ProConnect.models.entities.Job;
+import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.requests.CreateJobRequest;
@@ -35,6 +36,7 @@ public class JobController {
 
     @PostMapping("/post")
     public ResponseEntity<Job> postJobs(@RequestBody CreateJobRequest createJobRequest){
+
         Job returnedJob = jobService.postJob(createJobRequest);
         return new ResponseEntity<>(returnedJob, HttpStatus.CREATED);
     }
@@ -54,6 +56,17 @@ public class JobController {
     public ResponseEntity<List<Job>> getUserJobsById(String userId){
         return new ResponseEntity<>(jobService.getUserJobs(userId),
                 HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getJobByUser")
+    public ResponseEntity<List<Job>> findJobByOwner(@RequestBody User owner){
+        System.out.println("Owner " + owner);
+        List<Job> jobs = jobService.findJobByOwner(owner);
+        if(jobs.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(jobs,HttpStatus.OK);
     }
 
     @PutMapping("/like")

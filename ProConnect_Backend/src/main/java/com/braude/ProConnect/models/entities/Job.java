@@ -32,7 +32,6 @@ public class Job {
 //    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    private Property property;
 
-
     private OffsetDateTime datePosted;
 
     //private OffsetDateTime datePosted;
@@ -69,6 +68,11 @@ public class Job {
     inverseJoinColumns = @JoinColumn(name = "profession_id", referencedColumnName = "profession_id"))
     private List<Profession> neededProfessions;
 
+
+
+//    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
+//    private List<JobOffer> jobOffers;
+
     private int numberOfReports=0;
 
 
@@ -84,4 +88,16 @@ public class Job {
     public int hashCode() {
         return Objects.hash(id, budget, owner, jobStatus, title, description, likedUsers, commentedUsers, neededProfessions, numberOfReports);
     }
+
+//    @Override
+//    public String toString() {
+//        return "Job{" +
+//                "id=" + id +
+//                ", budget=" + budget +
+//                ", datePosted=" + datePosted +
+//                ", jobStatus=" + jobStatus +
+//                ", title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                '}';
+//    }
 }

@@ -136,4 +136,7 @@ public class JobService {
         User owner = userService.getUser(userId);
         return jobRepository.findAllByOwner(owner);
     }
+//     public List<Job> findJobByOwner(User owner) {
+//         return jobRepository.findByOwner(owner);
+//     }
 }

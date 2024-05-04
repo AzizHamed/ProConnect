@@ -162,7 +162,7 @@ const ProfileEditorScreen: React.FC = () => {
 
   return (
     <BackgroundView hasScroll children={(
-      <View style={{ alignItems: "center", paddingTop: 20 }}>
+      <View style={{ alignItems: "center", paddingTop: 20 }} onTouchStart={()=>{Keyboard.dismiss();}}>
         {/* <ProHeader text={"Edit Profile"} headerType={HeaderType.H3}/> */}
         <ProExpandableView title='Personal Information' height={320 + (user?.accountStatus === 'SETUP' ? 75 : 0)} isInitiallyExpanded
           children={

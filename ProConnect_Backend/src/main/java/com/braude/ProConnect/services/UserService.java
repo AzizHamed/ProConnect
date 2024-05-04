@@ -4,19 +4,24 @@ import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.embeddables.Name;
 import com.braude.ProConnect.models.entities.Profession;
 import com.braude.ProConnect.models.entities.Role;
+import com.braude.ProConnect.models.entities.Searches;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.entities.UserProfession;
 import com.braude.ProConnect.models.enums.AccountStatus;
+import com.braude.ProConnect.models.enums.WorkAreas;
 import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserProfessionsRepository;
+import com.braude.ProConnect.repositories.SearchesRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.requests.UpdateProfessionsRequest;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,14 +34,18 @@ public class UserService {
     private final AuthenticationService authenticationService;
     private final ReviewService reviewService;
 
+    private final SearchesRepository searchesRepository;
+
     @Autowired
-    public UserService(UserRepository userRepository, UserProfessionsRepository userProfessionsRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService, ReviewService reviewService) {
+    public UserService(UserRepository userRepository, UserProfessionsRepository userProfessionsRepository, RoleRepository roleRepository, 
+                       AuthenticationService authenticationService, ProfessionService professionService, SearchesRepository searchesRepository, ReviewService reviewService) {
         this.userRepository = userRepository;
         this.userProfessionsRepository = userProfessionsRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
         this.professionService = professionService;
         this.reviewService = reviewService;
+        this.searchesRepository = searchesRepository;
     }
 
     public User createUser(User user){
@@ -161,6 +170,36 @@ public class UserService {
 //        user.getProfessions().add(professionService.getProfessionByName(professionName));
 //        userRepository.save(user);
 //    }
+    public void rateUser(String userId, int rating) {
+        User user = userRepository.findById(userId).get();
+        user.addRating(rating);
+        userRepository.save(user);
+    }
+
+    public List<User> findByWorkAreas(WorkAreas workAreas) {
+        return userRepository.findByWorkAreas(workAreas);
+    }
 
 
+
+    public List<User> findUserByProfession(String professionName, WorkAreas workAreas) {
+        Profession profession = professionService.getProfessionByName(professionName);
+        Searches searches = searchesRepository.findAll().get(0);
+        searches.setSearches(searches.getSearches()+1);
+        searchesRepository.save(searches);
+        return userRepository.findByProfessionAndWorkAreas(profession, workAreas);
+
+    }
+
+    public List<User> getUsersByEmails(String[] emails) {
+
+        List<User> users = new ArrayList<>();
+
+        for (String email : emails) {
+
+            users.add(userRepository.findByEmail(email));
+        }
+
+        return users;
+    }
 }

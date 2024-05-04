@@ -21,6 +21,10 @@ public class ReviewService {
 
     public Review createReview(Review review)
     {
+        User user = review.getReviewedUser();
+        user.addRating(review.getScore());
+        userService.createUser(user);
+        //review.setId(0);
         review.setTimestamp(ZonedDateTime.now());
         return reviewRepository.save(review);
     }

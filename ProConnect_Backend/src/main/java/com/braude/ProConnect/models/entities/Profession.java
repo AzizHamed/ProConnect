@@ -46,14 +46,11 @@ public class Profession {
 //    private Category category;
 //
 
-
     public Profession(String name, String description, String iconUrl) {
         this.name = name;
         this.description = description;
         this.iconUrl = iconUrl;
     }
-
-
 
 
     @Override
