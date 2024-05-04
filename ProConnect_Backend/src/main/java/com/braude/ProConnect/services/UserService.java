@@ -184,10 +184,15 @@ public class UserService {
 
     public List<User> findUserByProfession(String professionName, WorkAreas workAreas) {
         Profession profession = professionService.getProfessionByName(professionName);
+        List<UserProfession> userProfessions = userProfessionsRepository.findAllByProfession(profession);
+        List<User> users = userProfessions.stream().map(UserProfession::getUser).toList()
+                .stream().filter(user -> user.getWorkAreas().equals(workAreas)).toList();
+
         Searches searches = searchesRepository.findAll().get(0);
         searches.setSearches(searches.getSearches()+1);
         searchesRepository.save(searches);
-        return userRepository.findByProfessionAndWorkAreas(profession, workAreas);
+        return users;
+//        return userRepository.findByProfessionAndWorkAreas(profession, workAreas);
 
     }
 

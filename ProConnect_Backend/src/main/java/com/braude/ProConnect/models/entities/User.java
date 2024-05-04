@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -34,8 +35,6 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private int numOfRates=0;
-
     @Column(unique = true)
     private String phoneNumber;
     private Date dateOfBirth;
@@ -49,6 +48,12 @@ public class User {
     private float averageRating;
     @Transient
     private int ratingsCount;
+    @Transient
+    private double experience;
+
+    private double rating;
+    private int numOfRates;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -81,6 +86,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private WorkAreas workAreas;
 
+    public double getExperience() {
+        if(userProfessions.isEmpty())
+            return 0;
+
+        UserProfession userProfession = userProfessions.get(0);
+        LocalDate startDate = userProfession.getStartDate();
+        LocalDate now = LocalDate.now();
+        // Calculate difference in years between now and startDate as a double
+        return now.getYear() - startDate.getYear();
+    }
 
 //    @JsonIgnore
 //    @JsonManagedReference

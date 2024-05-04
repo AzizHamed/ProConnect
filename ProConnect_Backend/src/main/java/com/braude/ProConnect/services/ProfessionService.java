@@ -34,4 +34,5 @@ public class ProfessionService {
     public List<Profession> findAll() {
         return professionRepository.findAll();
     }
+
 }
