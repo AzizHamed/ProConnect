@@ -57,7 +57,7 @@ public class Job {
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "job_photos", joinColumns = @JoinColumn(name = "job_id"))
-    @Column(name = "photo_url", nullable = false)
+    @Column(name = "photo_url", nullable = false, length = 1000)
     private List<String> photos;
 
     @OneToMany(mappedBy = "job")
