@@ -119,11 +119,15 @@ public class UserController {
 //    }
 
 
-//    @GetMapping(value = "usersByEmails")
-//    public ResponseEntity<List<User>> getUsersByEmail(@RequestParam String [] emails){
-//        List<User> users = userService.getUsersByEmails(emails);
-//        return new ResponseEntity<>(users,HttpStatus.OK);
-//    }
+    @GetMapping(value = "usersByEmails")
+    public ResponseEntity<List<User>> getUsersByEmail(@RequestParam String [] emails){
+        List<User> users = userService.getUsersByEmails(emails);
+        System.out.println("users ::: " + users);
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
+
+
+
 //
 //
 //    @GetMapping(value = "userByEmail")

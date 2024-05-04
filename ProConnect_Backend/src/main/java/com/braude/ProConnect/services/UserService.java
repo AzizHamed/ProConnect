@@ -121,6 +121,18 @@ public class UserService {
 
     }
 
+    public List<User> getUsersByEmails(String[] emails) {
+
+        List<User> users = new ArrayList<>();
+
+        for (String email : emails) {
+
+            users.add(userRepository.findByEmail(email));
+        }
+
+        return users;
+    }
+
 //    public void addProfession(String userId, String professionName) {
 //        User user = userRepository.findById(userId).get();
 //        user.getProfessions().add(professionService.getProfessionByName(professionName));

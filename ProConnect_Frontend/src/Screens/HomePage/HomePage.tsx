@@ -52,6 +52,7 @@ const HomePage = () => {
   // const Articles = useGetAllArticlesQuery({})
 
   const searches = useGetSearchesNumbersQuery()
+  
 
 
   
@@ -171,14 +172,17 @@ const HomePage = () => {
   return (
     <BackgroundView children={
       <ScrollView>
-        <View padding-8 paddingT-20 spread height='100%'>
+        <View padding-8 paddingT-20 spread height='100%' >
           <View center height='100' >
             <HomeIcon width={80} height={80}></HomeIcon>
+            <Text>ProConnect</Text>
           </View>
+          
+          
 
           <View marginT-20 marginB-30 style={{ zIndex: 10 }}>
             <View center marginB-2>
-              {data && <ProHeader text={`${searches.currentData} Searches done`} headerType={HeaderType.H3} />}
+              {data && <ProHeader text={`${searches.currentData}`} headerType={HeaderType.H3} />}
             </View>
             <View center style={styles.autoCompleteAndIcon}>
               <View style={styles.autocompleteContainer} flexG >

@@ -133,19 +133,20 @@ export const dataProfessions2 = [
 export const articles = [{title : "11 Construction Industry Trends for 2020 – Bigrentz" , description : "After a turbulent period of adjusting forecasts and changing expectations, 2022 will be a year of reemergence and growth in the construction industry. Rising construction costs and labor shortages persist, challenging the industry to innovate competitive new ideas, while stricter regulations contribute to a reduced margin for error and waste." , date : "November 28, 2023" , author : "BigRentz", ref : "https://www.bigrentz.com/blog/construction-trends", imageuri : "https://acropolis-wp-content-uploads.s3.us-west-1.amazonaws.com/what-is-a-submittal-hero.webp"}, 
 
 
-{title : "Economists Make 2020 Construction Predictions" , description : "The transportation infrastructure market is expected to grow at least 5 percent next year, according the American Road & Transportation Builders Association. Increased transportation investments from federal, state, and local governments are helping to grow the sector." , date : "JANUARY 06, 2020" , author : "LUCY PERRY", ref : "https://www.constructionequipmentguide.com/economists-make-2020-construction-predictions/46986", imageuri : "https://dmt55mxnkgbz2.cloudfront.net/800x0_s3-46986-MNSW-413_19-LP-1.jpg"} ]
+{title : "Economists Make 2020 Construction Predictions" , description : "The transportation infrastructure market is expected to grow at least 5 percent next year, according the American Road & Transportation Builders Association. Increased transportation investments from federal, state, and local governments are helping to grow the sector." , date : "JANUARY 06, 2020" , author : "LUCY PERRY", ref : "https://www.constructionequipmentguide.com/economists-make-2020-construction-predictions/46986", imageuri : "https://dmt55mxnkgbz2.cloudfront.net/800x0_s3-46986-MNSW-413_19-LP-1.jpg"}, {title : "What contractors need to know for 2024", description : "As the new year begins, construction pros across the country face a range of challenges and opportunities. Amid the continuing labor shortage and high interest rates, it’s anyone’s guess what will happen in 2024, but Construction Dive has the insights and information that can help bring the year into focus.", date : "Jan. 25, 2024" , author : "Dive Staff" , ref : "https://www.constructiondive.com/news/construction-trends-outlook-2024/705471/" , imageuri : "https://www.constructiondive.com/imgproxy/gyNNaNMZZRktXQuUy2hdHkbxkVK4JGBpfN39BqK6Vhs/g:ce/rs:fill:800:450:1/bG9jYWw6Ly8vZGl2ZWltYWdlL0dldHR5SW1hZ2VzLTEzMzQxMzgyNjkuanBn.webp"}]
 
 
 
 export const popularProfessions = [ 
-  { profession: "Carpenter", number: 10000, component: CarpenterIcon },
-  { profession: "Electrical", number: 10000, component: ElectricianIcon },
-  { profession: "Constructor", number: 50000, component: ConstructorIcon },
-  { profession: "Painter", number: 75000, component: PainterIcon },
-  { profession: "Plumber", number: 10000, component: PlumberIcon },
-  { profession: "Air Conditioner", number: 20000, component: AirConditioningIcon },
-  { profession: "Gardener", number: 60000, component: GardenerIcon },
+  { profession: "Carpenter", number: 50, component: CarpenterIcon },
+  { profession: "Electrical", number: 20, component: ElectricianIcon },
+  { profession: "Constructor", number: 30, component: ConstructorIcon },
+  { profession: "Painter", number: 40, component: PainterIcon },
+  { profession: "Plumber", number: 70, component: PlumberIcon },
+  { profession: "Air Conditioner", number: 20, component: AirConditioningIcon },
+  { profession: "Gardener", number: 5, component: GardenerIcon },
 ];
+
 
 
 export const RequestTypes = [

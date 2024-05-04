@@ -114,32 +114,35 @@ const Chat: React.FC<ChatProps> = (props) => {
 
 
     const unsubscribe = onSnapshot(results, querySnapshot => {
-
       setMessages(
-        querySnapshot.docs.map(doc => ({
-          _id: doc.id,
-          createdAt: doc.data().createdAt.toDate(),
-          text: doc.data().text,
-          user: doc.data().user,
-          ReceiverUser: doc.data().ReceiverUser,
-          isAccepted: doc.data().isAccepted,
-          isRejected: doc.data().isRejected,
-          GoldMessage: doc.data().GoldMessage,
-          image: doc.data().image,
-          location: doc.data().location,
-          latitude: doc.data().latitude,
-          longitude: doc.data().longitude,
-          isContact: doc.data().isContact,
-          contactName : doc.data().contactName,
-          contactNumber : doc.data().contactNumber,
-          // isDocument : doc.data().isDocument,
-          // documentUrl : doc.data().documentUrl,
-          // documentName : doc.data().documentName,
-          // documentSize : doc.data().documentSize,
-          // documentType : doc.data().documentType,
-        }))
+        querySnapshot.docs.map(doc => {
+          const isCurrentUserReceiver = auth.currentUser?.email === doc.data().ReceiverUser._id;
+          if (isCurrentUserReceiver && !doc.data().seen) {
+            
+            updateDoc(doc.ref, { seen: true })
+          }
+          return {
+            _id: doc.id,
+            createdAt: doc.data().createdAt.toDate(),
+            text: doc.data().text ==="File" ? "" : doc.data().text,
+            user: doc.data().user,
+            ReceiverUser: doc.data().ReceiverUser,
+            isAccepted: doc.data().isAccepted,
+            isRejected: doc.data().isRejected,
+            GoldMessage: doc.data().GoldMessage,
+            image: doc.data().image,
+            location: doc.data().location,
+            latitude: doc.data().latitude,
+            longitude: doc.data().longitude,
+            isContact: doc.data().isContact,
+            contactName: doc.data().contactName,
+            contactNumber: doc.data().contactNumber,
+            seen: isCurrentUserReceiver ? true : doc.data().seen,
+          };
+        })
       );
     });
+    
     return unsubscribe;
   }, []);
 
@@ -149,7 +152,8 @@ const Chat: React.FC<ChatProps> = (props) => {
       
     );
 
-    const { createdAt, text, user, ReceiverUser, GoldMessage, isAccepted, isRejected, image,location, latitude, longitude,isContact,contactName, contactNumber, isDocument, documentName, documentSize, documentUrl, documentType } = messages[0];
+
+    const { createdAt, text, user, ReceiverUser, GoldMessage, isAccepted, isRejected, image,location, latitude, longitude,isContact,contactName, contactNumber, seen } = messages[0];
     addDoc(collection(database, 'chats'), {
       createdAt,
       text,
@@ -165,11 +169,7 @@ const Chat: React.FC<ChatProps> = (props) => {
       isContact,
       contactName,
       contactNumber,
-      // isDocument,
-      // documentUrl,
-      // documentName,
-      // documentSize,
-      // documentType,
+      seen,
     });
 
   }, []);
@@ -193,40 +193,6 @@ const Chat: React.FC<ChatProps> = (props) => {
   
   };
 
-
-  
-
-//   const getDocuments = async () => {
-    
-//     clear();
-//     await selectPictures('DOCUMENT');
-//     //setShowOptions(!showOptions)
-//     setTimeout(async () => {
-
-//       let i = 0
-//       const user = auth.currentUser;
-//       uploadSelectedFiles('chats', Array.from(filesRef.current), user).then((downloadUrls) => {
-        
-//         for (i = 0; i < downloadUrls.length; i++) {
-
-//           sendDocument(downloadUrls[i], 0, "", "");
-//         }
-
-//       }).catch((error) => {
-//         console.log('Error posting job:', error);
-//       });
-
-//     }, 100)
-
-
-  
-// };
-
-
-
-
-
-  
 
 
 
@@ -258,11 +224,8 @@ const Chat: React.FC<ChatProps> = (props) => {
       isContact : false,
       contactName : "",
       contactNumber : "",
-      // isDocument : false,
-      // documentUrl : "",
-      // documentName : "",
-      // documentSize : 0,
-      // documentType : "",
+      seen : false,
+     
     };
     return newMessage;
   };
@@ -284,11 +247,7 @@ const Chat: React.FC<ChatProps> = (props) => {
       isContact : false,
       contactName : "",
       contactNumber : "",
-      // isDocument : false,
-      // documentUrl : "",
-      // documentName : "",
-      // documentSize : 0,
-      // documentType : "",
+      seen : false,
 
     };
     return newMessage;
@@ -311,11 +270,7 @@ const Chat: React.FC<ChatProps> = (props) => {
       isContact : true,
       contactName : contact.name,
       contactNumber : contact.phoneNumbers !== undefined ? contact.phoneNumbers[0].number : "",
-      // isDocument : false,
-      // documentUrl : "",
-      // documentName : "",
-      // documentSize : 0,
-      // documentType : "",
+      seen : false,
 
     };
     return newMessage;
@@ -324,7 +279,7 @@ const Chat: React.FC<ChatProps> = (props) => {
   const convertPhotoToIMessage = (uri: string) => {
     const newMessage = {
       _id : Math.random().toString(36).substring(7),
-      text: '', // The message text
+      text: 'File', // The message text
       createdAt: new Date(), // The timestamp of when the message was created
       user: { _id: auth?.currentUser?.email || '' }, // The user object representing the sender of the message
       ReceiverUser: { _id: ReceiverEmail },
@@ -338,40 +293,10 @@ const Chat: React.FC<ChatProps> = (props) => {
       isContact : false,
       contactName : "",
       contactNumber : "",
-      // isDocument : false,
-      // documentUrl : "",
-      // documentName : "",
-      // documentSize : 0,
-      // documentType : "",
+      seen : false,
     };
     return newMessage;
   };
-
-  // const convertDocumentToMessage = (url: string, size : number, type : string, name : string) => {
-  //   const newMessage = {
-  //     _id : Math.random().toString(36).substring(7),
-  //     text: '', // The message text
-  //     createdAt: new Date(), // The timestamp of when the message was created
-  //     user: { _id: auth?.currentUser?.email || '' }, // The user object representing the sender of the message
-  //     ReceiverUser: { _id: ReceiverEmail },
-  //     GoldMessage: false,
-  //     isAccepted: false,
-  //     isRejected: false,
-  //     image: "",
-  //     location : false,
-  //     latitude : 0,
-  //     longitude : 0,
-  //     isContact : false,
-  //     contactName : "",
-  //     contactNumber : "",
-  //     isDocument : true,
-  //     documentUrl : url,
-  //     documentName : name,
-  //     documentSize : size,
-  //     documentType : type,
-  //   };
-  //   return newMessage;
-  // };
 
 
   
@@ -388,11 +313,6 @@ const Chat: React.FC<ChatProps> = (props) => {
     onSend([message]);
   }
 
-
-  // const sendDocument = (url: string, size : number, type : string, name : string) => {
-  //   const message = convertDocumentToMessage(url, size, type, name);
-  //   onSend([message]);
-  // }
 
 
 
@@ -908,6 +828,8 @@ const Chat: React.FC<ChatProps> = (props) => {
           isContact: false,
           contactName : "",
           contactNumber : "",
+          seen : false,
+
 
 
 
