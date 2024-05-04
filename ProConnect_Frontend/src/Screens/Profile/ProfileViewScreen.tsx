@@ -18,6 +18,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { getSelectedUser } from '../../Services/Redux/Slices/UserSlice';
 import JobsTable from '../../Features/Jobs/JobsTable';
+import ProTable from '../../Components/Layout/ProTable';
 
 const ProfileViewScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -95,14 +96,15 @@ const ProfileViewScreen: React.FC = () => {
 
 
   return (
-    <BackgroundView children={(
+    <BackgroundView hasScroll children={(
       <View bg style={styles.container} paddingT-30 center>
         <View row={isWeb} spread={isWeb} invisible width={"100%"} center>
           {BasicInfo}
           <View height={2} width={"95%"} marginV-20></View>
           {ContactInfo}
         </View>
-        <JobsTable userId={user?.id}/>
+        {user?.roles && user.roles[0].code==="HO" && <JobsTable userId={user?.id}/>}
+        {user?.roles && user.roles[0].code==="PRO" && <ProTable title='Services' rows={userProfession?.services || []}/>}
         {/* 
         <ProTextView text={`Name`} isLabel/>
         <ProTextView text={`Phone`} isLabel/> */}
