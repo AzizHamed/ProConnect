@@ -5,6 +5,8 @@ import com.braude.ProConnect.repositories.ProfessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProfessionService {
     private final ProfessionRepository professionRepository;
@@ -22,5 +24,9 @@ public class ProfessionService {
 
     public Profession getProfessionByName(String name){
         return professionRepository.findByName(name);
+    }
+
+    public List<Profession> findAll() {
+        return professionRepository.findAll();
     }
 }

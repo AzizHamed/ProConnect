@@ -11,6 +11,7 @@ import Chat from "../../Screens/Chat/Chat";
 
 import ChatReducer from "./Slices/ChatSlice";
 import SortByReducer from "./Slices/SortBySlice";
+import FullMapScreenReducer from "./Slices/FullScreenMapSlice";
 export const store = configureStore({
     reducer: {
 
@@ -18,6 +19,7 @@ export const store = configureStore({
         chat : ChatReducer,
         job: JobReducer,
         PersonsPage : PersonsPageReducer,
+        FullMapScreen : FullMapScreenReducer,
         SortBy : SortByReducer,
         dimension: DimensionReducer,
         preferences: PreferencesReducer,

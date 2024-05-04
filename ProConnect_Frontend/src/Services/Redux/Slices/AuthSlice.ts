@@ -8,7 +8,7 @@ export interface UserDetails {
   idToken?: string | null
   uid?: string | null
   photoURL?: string | null
-  user?: User | null
+  user?: User | null | undefined
 }
 
 const initialState: UserDetails = {

@@ -65,7 +65,7 @@ const ProfileEditorScreen: React.FC = () =>
 
   return (
     <BackgroundView children={(
-      <View style={{alignItems:"center"}}>
+      <View style={{alignItems:"center"}} onTouchStart={()=>{Keyboard.dismiss();}}>
         <ProHeader text={"Edit Profile"} headerType={HeaderType.H3}/>
         <ProTextInput
           name="email"

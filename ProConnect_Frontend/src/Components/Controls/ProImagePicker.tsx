@@ -29,13 +29,13 @@ const ProImagePicker: React.FC<ProImagePickerProps> = (props) => {
         <ProIconButton ionicon ioniconName="camera" showAddIcon onPress={() => selectPictures('CAMERA', true)}></ProIconButton>
 
       </View>
-      <ProCarousel data={Array.from(selectedFiles || [])} 
-        renderItems={({ item, index }) => (
-          <View key={index}  style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }} >
-            <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
-            <MaterialIcons name="close" size={24} style={{ position: 'absolute', top: 5, right: 5 }} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
-          </View>
-      )} />
+      <ProCarousel data={Array.from(selectedFiles || [])}
+      renderItems={({ item, index }) => (
+        <View key={index} style={{ flex: 1, borderWidth: 1, justifyContent: 'center' }}>
+          <Image source={{ uri: item.uri }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+          <MaterialIcons name="close" size={24} style={{ position: 'absolute', top: 5, right: 5 }} color={Colors.failure} onPress={() => removeSelectedPicture(item)} />
+        </View>
+      )} mode={'parallax'} />
 
 
       {/* <Button label="Upload" onPress={handleUpload} /> */}

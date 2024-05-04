@@ -2,6 +2,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.enums.WorkAreas;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
 import com.braude.ProConnect.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -80,29 +81,37 @@ public class UserController {
         return userService.getAllUsersNumber();
     }
 
-//    @PutMapping(value = "add-profession")
-//    public void addProfession(String userId, String professionName ){
-//         userService.addProfession(userId,professionName);
-//    }
 
-//    @GetMapping(value = "Profession")
-//    public List<User> findUserByProfession(String professionId){
-//        return userService.findByProfession(professionId);
-//    }
+    @PutMapping(value = "RateUser")
+    public void RateUser (String userId, int rating){
+        userService.rateUser(userId,rating);
+    }
 
-//    @GetMapping(value = "usersByEmails")
-//    public ResponseEntity<List<User>> getUsersByEmail(@RequestParam String [] emails){
-//        List<User> users = userService.getUsersByEmails(emails);
-//        return new ResponseEntity<>(users,HttpStatus.OK);
-//    }
-//
-//
-//    @GetMapping(value = "userByEmail")
-//    public ResponseEntity<User> getUserByEmail(@RequestParam String email){
-//        User user = userService.getUserByEmail(email);
-//        if(user==null)
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        return new ResponseEntity<>(user,HttpStatus.OK);
-//    }
+    @GetMapping(value = "FindByWorkArea")
+    public ResponseEntity<List<User>> getAllUsersByWorkArea (@RequestParam WorkAreas workAreas){
+        List<User> users = userService.findByWorkAreas(workAreas);
+        if(users==null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "UserByProfession")
+    public ResponseEntity<List<User>> findUserByProfession(@RequestParam String professionName, @RequestParam WorkAreas workAreas){
+        List<User> users = userService.findUserByProfession(professionName, workAreas);
+        if(users==null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
+
+
+
+    @GetMapping(value = "usersByEmails")
+    public ResponseEntity<List<User>> getUsersByEmail(@RequestParam String [] emails){
+        List<User> users = userService.getUsersByEmails(emails);
+        System.out.println("users ::: " + users);
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
 
 }

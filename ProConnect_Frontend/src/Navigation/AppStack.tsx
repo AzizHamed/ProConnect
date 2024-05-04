@@ -9,6 +9,11 @@ import Chat from "../Screens/Chat/Chat";
 import {Image, StyleSheet, View,Text, Dimensions} from 'react-native'
 import { Colors } from "react-native-ui-lib";
 import { color } from "react-native-elements/dist/helpers";
+import FullMapScreen from "../Screens/Chat/FullMapScreen";
+import { useSelector } from "react-redux";
+import { getSelectedReceiverUserName } from "../Services/Redux/Slices/ChatSlice";
+import ProButton from "../Components/Controls/ProButton";
+import { AirbnbRating } from "react-native-ratings";
 
 
 const AppStack = createNativeStackNavigator();
@@ -16,6 +21,11 @@ const AppStack = createNativeStackNavigator();
 const {width, height} = Dimensions.get('window');
 
 export const AppStackScreen: React.FC = () => {
+
+  const receiverName = useSelector(getSelectedReceiverUserName)
+ 
+
+  
 
  
   return (
@@ -34,14 +44,32 @@ export const AppStackScreen: React.FC = () => {
               style={{ width: 40, height: 40,  borderRadius : 40}}
             />
     
-            <View>
-            <Text style={{color : "white"}}>Aziz Hamed</Text>
-            <Text style={{color : "white"}}> Available</Text>
+            <View style={{width : "87%"}}>
+              {/* <View style={{paddingLeft : 2}}> */}
+
+            <Text style={{color : "white"}}>{receiverName}</Text>
+              {/* </View> */}
+            {/* <View style={{ alignItems : "flex-start"}}>
+
+            <AirbnbRating
+              defaultRating={5}
+              count={5}
+              size={15}
+              isDisabled={true}
+              
+              showRating={false}  starContainerStyle={{marginRight : 2}}/>
+            </View> */}
             </View>
           </View>
         
           </View>
+            ), headerRight: () => (
+              <View style={{ marginRight: 20 }}>
+                
+              </View>
             ),}} />
+
+            <AppStack.Screen name="FullMapScreen" component={FullMapScreen} options={{headerShown : true,headerTintColor : "white", headerStyle :styles.header}} />
 
     </AppStack.Navigator>
 
@@ -53,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection : "row",
    justifyContent : "space-between",
    alignItems : "center",
-   width : 130,
+   width : "auto",
   },
   header : {
     backgroundColor : Colors.$backgroundDark,

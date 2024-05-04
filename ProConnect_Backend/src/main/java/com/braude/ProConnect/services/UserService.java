@@ -1,10 +1,15 @@
 package com.braude.ProConnect.services;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
+import com.braude.ProConnect.models.embeddables.Name;
+import com.braude.ProConnect.models.entities.Profession;
 import com.braude.ProConnect.models.entities.Role;
+import com.braude.ProConnect.models.entities.Searches;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.enums.AccountStatus;
+import com.braude.ProConnect.models.enums.WorkAreas;
 import com.braude.ProConnect.repositories.RoleRepository;
+import com.braude.ProConnect.repositories.SearchesRepository;
 import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +28,15 @@ public class UserService {
     private final ProfessionService professionService;
     private final AuthenticationService authenticationService;
 
+    private final SearchesRepository searchesRepository;
+
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, AuthenticationService authenticationService, ProfessionService professionService, SearchesRepository searchesRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationService = authenticationService;
         this.professionService = professionService;
+        this.searchesRepository = searchesRepository;
     }
 
     public User createUser(User user){
@@ -94,40 +102,38 @@ public class UserService {
         return userRepository.findAll().size();
     }
 
-//    public List<User> getUsersByEmails(String[] emails) {
-//
-//
-//        List<User> users = new ArrayList<>();
-//        for(String email : emails){
-//            users.add(userRepository.findByEmail(email));
-//        }
-//
-//        return users;
-//    }
-//
-//    public User getUserByEmail(String email) {
-//
-//        return userRepository.findByEmail(email);
-//    }
+    public void rateUser(String userId, int rating) {
+        User user = userRepository.findById(userId).get();
+        user.addRating(rating);
+        userRepository.save(user);
+    }
 
-//    public void addProfession(String userId, String professionName) {
-//        User user = userRepository.findById(userId).get();
-//        user.getProfessions().add(professionService.getProfessionByName(professionName));
-//        userRepository.save(user);
-//    }
+    public List<User> findByWorkAreas(WorkAreas workAreas) {
+        return userRepository.findByWorkAreas(workAreas);
+    }
 
-//    public List<User> getUsersByEmails1(String[] emails) {
-//
-//
-//        return userRepository.findAllByEmailList(Arrays.stream(emails).toList());
-//
-//
-//    }
-//
-//    public User getUserByEmail1(String email) {
-//
-//        return userRepository.findByEmail(email);
-//    }
+
+
+    public List<User> findUserByProfession(String professionName, WorkAreas workAreas) {
+        Profession profession = professionService.getProfessionByName(professionName);
+        Searches searches = searchesRepository.findAll().get(0);
+        searches.setSearches(searches.getSearches()+1);
+        searchesRepository.save(searches);
+        return userRepository.findByProfessionAndWorkAreas(profession, workAreas);
+
+    }
+
+    public List<User> getUsersByEmails(String[] emails) {
+
+        List<User> users = new ArrayList<>();
+
+        for (String email : emails) {
+
+            users.add(userRepository.findByEmail(email));
+        }
+
+        return users;
+    }
 
 
 }

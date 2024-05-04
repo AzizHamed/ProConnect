@@ -46,7 +46,6 @@ const ProCarousel: React.FC<ProCarouselProps> = (props) => {
   const onSnapToItem = (index: number) => {
     if (props.onSnapToItem)
       props.onSnapToItem(index);
-    console.log('current index:', index);
     setIndexString(generateIndexString());
     setIsFirst(index === 0);
     setIsLast(index === props.data.length - 1);

@@ -42,10 +42,10 @@ public class Profession {
 
 
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "category", referencedColumnName = "id")
-    private Category category;
+//    @NotNull
+//    @ManyToOne
+//    @JoinColumn(name = "category", referencedColumnName = "id")
+//    private Category category;
 
 
 

@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { View,Text, Modal, Button, TextInput, ImageStyle, ViewStyle, StyleProp } from 'react-native'
 import {ScrollView, StyleSheet} from 'react-native'
-import { User, useGetAllUsersQuery } from '../../Services/Redux/Api';
+import { User, useFindUserByProfessionQuery, useGetAllUsersByWorkAreaQuery, useGetAllUsersQuery } from '../../Services/Redux/Api';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 
 import { TouchableOpacity } from 'react-native';
@@ -15,7 +15,7 @@ import { AirbnbRating } from 'react-native-ratings';
 import { Colors } from 'react-native-ui-lib';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedPersonsPage } from '../../Services/Redux/Slices/PersonsPageSlice';
+import { getSelectedPersonsPage, getSelectedProfession } from '../../Services/Redux/Slices/PersonsPageSlice';
 import { PersonPage1, PersonPage2, sort } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
 import { checkName } from '../../Constants/Functions/Functions';
@@ -33,7 +33,9 @@ import { database, auth } from '../../Services/Firebase/Firebase';
 
 
 const PersonsPage = () => {
-  const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
+  let profession = useSelector(getSelectedProfession);
+  const { data, isSuccess, isError, error, refetch } = useFindUserByProfessionQuery({professionName : profession, workAreas : "North"});
+
   const [modalVisible, setModalVisible] = useState(false);
   const [Professionals, setProfessionals] = useState(data)
   const [rating, setrating] = useState(0)
@@ -49,6 +51,8 @@ const PersonsPage = () => {
   const dispatch = useDispatch();
 
   let sortBy = useSelector(getSortBy)
+
+
   
   let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
@@ -242,12 +246,12 @@ const PersonsPage = () => {
         return(
           <View>
         <TouchableOpacity style={styles.touchableOpacityStyle} onPress={()=>{
-          dispatch(setChat({ReceiverEmail : Professional.email , openModal : true}))
+          dispatch(setChat({ReceiverEmail : Professional.email , openModal : true, receiverUserName : Professional.name.firstName + " " + Professional.name.lastName}))
           navigation.navigate("Chats")
         }}>
           <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} componentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
 
-              <Text style={{ color: "white" }}>Software Engineering</Text>,
+              <Text style={{ color: "white" }}>{Professional.profession?.name}</Text>,
               <Text style={{ color: "white" }}>{Professional.experience} years experience</Text>
 
             

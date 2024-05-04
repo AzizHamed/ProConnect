@@ -10,10 +10,11 @@ import { da } from "date-fns/locale";
 import { dataLocation, dataProfessions } from "../Constants/ConstantData";
 import PersonsPage from "../Features/Persons/PersonsPage";
 import ProButton from "../Components/Controls/ProButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PostJobScreen from "../Features/Jobs/PostJobScreen";
 import PersonsChat from "../Screens/Chat/PersonsChat";
 import HomePage from "../Screens/HomePage/HomePage";
+import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
 
 
 
@@ -31,6 +32,8 @@ export type MainTabParamList = {
 const MainTab = createBottomTabNavigator<MainTabParamList>();
 
 export const MainTabScreen: React.FC = () => {
+
+  const user = useSelector(getUserAccount)
 
   const dispatch = useDispatch();
 
@@ -99,6 +102,7 @@ export const MainTabScreen: React.FC = () => {
     component={JobsList}
     options={{ headerShown: false }} 
     />
+
       {/* <MainTab.Screen
         name="Friends"
         options={{ headerShown: false }} listeners={{
@@ -110,11 +114,14 @@ export const MainTabScreen: React.FC = () => {
       {(props) => <PersonsPage   />}
 
 </MainTab.Screen> */}
+
+
       <MainTab.Screen
         name="Post"
         component={PostJobScreen}
         options={{ headerShown: false }}
       />
+    
     </MainTab.Navigator>
   );
 };
