@@ -2,10 +2,7 @@ package com.braude.ProConnect.services;
 
 
 import com.braude.ProConnect.exceptions.ProConnectException;
-import com.braude.ProConnect.models.entities.Comment;
-import com.braude.ProConnect.models.entities.Job;
-import com.braude.ProConnect.models.entities.Property;
-import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.entities.*;
 import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
@@ -29,12 +26,13 @@ public class JobService {
     private final JobCriteriaRepository jobCriteriaRepository;
     private final UserService userService;
 //    private final PropertyService propertyService;
+    private final ProfessionRepository professionRepository;
     private final CommentRepository commentRepository;
     private final AuthenticationService authenticationService;
 
     @Autowired
     public JobService(JobRepository jobRepository, JobRepositoryPaging jobRepositoryPaging, JobProposalRepository jobProposalRepository,
-                      JobCriteriaRepository jobCriteriaRepository, UserService userService, CommentRepository commentRepository, AuthenticationService authenticationService) {
+                      JobCriteriaRepository jobCriteriaRepository, UserService userService, ProfessionRepository professionRepository, CommentRepository commentRepository, AuthenticationService authenticationService) {
         this.jobRepository = jobRepository;
         this.jobProposalRepository = jobProposalRepository;
         this.jobRepositoryPaging = jobRepositoryPaging;
@@ -42,6 +40,7 @@ public class JobService {
 
 //        this.propertyService = propertyService;
         this.userService = userService;
+        this.professionRepository = professionRepository;
         this.commentRepository = commentRepository;
         this.authenticationService = authenticationService;
     }
@@ -49,10 +48,12 @@ public class JobService {
     public Job postJob(CreateJobRequest createJobRequest){
         User user = authenticationService.getAuthorizedUser();
         Job job = createJobRequest.getJob();
+        Profession profession = professionRepository.findById(createJobRequest.getProfession().getId()).get();
 //        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
 //        if(property == null)
 //            throw new ProConnectException("Invalid property id");
         job.setOwner(user);
+        job.setNeededProfessions(List.of(profession));
 //        job.setProperty(property);
 
         job.setDatePosted(OffsetDateTime.now());
