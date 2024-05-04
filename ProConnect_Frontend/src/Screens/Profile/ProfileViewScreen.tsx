@@ -10,35 +10,42 @@ import { Colors, Text, View } from 'react-native-ui-lib';
 import ProfileImage from '../../Components/Layout/ProfileImage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useGetUserProfessionsQuery } from '../../Services/Redux/Api';
+import { useGetUserJobsByIdQuery, useGetUserProfessionsQuery } from '../../Services/Redux/Api';
 import { yearsFromDate } from '../../Utility/Formatter';
 import { IS_WEB } from '../../Constants/Values';
 import { AirbnbRating } from 'react-native-ratings';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { getSelectedUser } from '../../Services/Redux/Slices/UserSlice';
+import JobsTable from '../../Features/Jobs/JobsTable';
 
 const ProfileViewScreen: React.FC = () => {
   const navigation = useNavigation();
-  const user = useSelector(getUserAccount);
+  const loggedInUser = useSelector(getUserAccount);
   const selectedUser = useSelector(getSelectedUser);
-  const { data: userProfessionsData, isLoading: isLoadingUserProfessionsData } = useGetUserProfessionsQuery({});
+  const user = selectedUser !== null ? selectedUser : loggedInUser;
+  const { data: userProfessionsData, isLoading: isLoadingUserProfessionsData } = useGetUserProfessionsQuery({userId: user?.id});
+  // const { data: userJobsData } = useGetUserJobsByIdQuery({userId: user?.id || ''});
   const isWeb = IS_WEB();
 
-  const yearsOfExperience = userProfessionsData !== undefined ? yearsFromDate(userProfessionsData[0].startDate) : 0;
-  const professionName = userProfessionsData !== undefined ? userProfessionsData[0].profession?.name : "";
-  const userProfession = userProfessionsData !== undefined ? userProfessionsData[0] : undefined;
+  const hasProfession = userProfessionsData !== undefined && userProfessionsData.length > 0 && userProfessionsData[0].startDate !== undefined;
+  const yearsOfExperience = hasProfession ? yearsFromDate(userProfessionsData[0].startDate || '2000-01-01') : 0;
+  const professionName = hasProfession ? userProfessionsData[0].profession?.name : "";
+  const userProfession = hasProfession ? userProfessionsData[0] : undefined;
 
   const edit = () => {
     navigation.navigate("ProfileEditor");
   }
 
   const horizontalMargin = { marginHorizontal: isWeb ? 50 : 0 };
+  // console.log(selectedUser)
+  // console.log(loggedInUser)
+  // console.log(user)
 
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count
-    if (selectedUser !== null && user.id !== selectedUser?.id) {
+    if (selectedUser !== null && loggedInUser?.id !== selectedUser?.id) {
       navigation.setOptions({
         headerRight: () => (
           <Entypo size={24} style={{ marginRight: 20 }} name="chat" onPress={() => navigation.navigate('ProfileEditor')} />
@@ -69,10 +76,10 @@ const ProfileViewScreen: React.FC = () => {
 
   const Ratings = <View invisible center>
     <View row invisible>
-      <AirbnbRating isDisabled defaultRating={user.averageRating} showRating={false} reviewSize={0} size={20} starContainerStyle={{ marginLeft: 2 }} />
-      <Text bold marginL-10>{`${user.averageRating} stars `}</Text>
+      <AirbnbRating isDisabled defaultRating={user?.averageRating} showRating={false} reviewSize={0} size={20} starContainerStyle={{ marginLeft: 2 }} />
+      <Text bold marginL-10>{`${user?.averageRating} stars `}</Text>
     </View>
-    <Text marginT-5 style={{ fontSize: 16 }}>{`(Out of ${user.ratingsCount} ratings)`}</Text>
+    <Text marginT-5 style={{ fontSize: 16 }}>{`(Out of ${user?.ratingsCount} ratings)`}</Text>
   </View>
 
   const BasicInfo =
@@ -87,8 +94,6 @@ const ProfileViewScreen: React.FC = () => {
     </View>
 
 
-
-
   return (
     <BackgroundView children={(
       <View bg style={styles.container} paddingT-30 center>
@@ -96,8 +101,8 @@ const ProfileViewScreen: React.FC = () => {
           {BasicInfo}
           <View height={2} width={"95%"} marginV-20></View>
           {ContactInfo}
-
         </View>
+        <JobsTable userId={user?.id}/>
         {/* 
         <ProTextView text={`Name`} isLabel/>
         <ProTextView text={`Phone`} isLabel/> */}
