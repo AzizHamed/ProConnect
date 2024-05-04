@@ -48,7 +48,7 @@ const ProWizard: React.FC<ProWizardProps> = ({ control, steps, stepLabels, onAct
                         }}>
 
                             {stepLabels.map((label, index) => (
-                                <Wizard.Step key={index} label={label} state={getState(index, value)}
+                                <Wizard.Step key={index} label={label} state={getState(index, value)} indexLabelStyle={{ color: Colors.controlText }}
                                     circleBackgroundColor={Colors.controlBackground} circleColor='transparent' color={Colors.controlText}
                                     circleSize={30} connectorStyle={{ height: 2, backgroundColor: Colors.controlText, borderWidth: 0 }} />
                             ))}
