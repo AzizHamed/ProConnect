@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Touchable, TouchableOpacity } from "react-native";
 import {
   View,
   Text,
@@ -24,51 +24,10 @@ interface JobCardProps {
 }
 
 // TODO: User picture, like comment share buttons
-function generateCardChildren(job: Job) {
-  if(IS_WEB())
-  return (
-    <View>
-      <View row>
-        <View flex-1 flexG>
-          <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
-          <Text ellipsizeMode="tail" numberOfLines={3}>
-            {job.description}
-          </Text>
-        </View>
-        <View flexS>
-          {job.photos && job.photos.length > 0 && <ProCarousel displayArrows data={job.photos} renderItems={({ item, index }) => {
-            return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
-          }} marginT-20 />}
-        </View>
-      </View>
-      <Text t2 textAlign="right" marginT-20 style={styles.date}>
-        {formatDateString(job.datePosted)}
-      </Text>
-    </View>
-  );
-  return (
-    <View>
-        <View flex-1 flexG>
-          <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
-          <Text ellipsizeMode="tail" numberOfLines={3}>
-            {job.description}
-          </Text>
-        </View>
-        <View flexS>
-          {job.photos && job.photos.length > 0 && <ProCarousel displayArrows data={job.photos} renderItems={({ item, index }) => {
-            return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
-          }} marginT-20 />}
-        </View>
-      <Text t2 textAlign="right" marginT-20 style={styles.date}>
-        {formatDateString(job.datePosted)}
-      </Text>
-    </View>
-  );
-}
 
 function generateCardContent(job: Job): CardSectionContent[] {
   const content: CardSectionContent[] = [];
-
+  
   content.push({ text: job.title, "marginB-30": true, h3: true })
   content.push({ text: job.description })
   // content.push({text: job.datePosted, "marginT-20":true, textAlign:"right", flex:true})
@@ -80,11 +39,56 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   const children = generateCardChildren(job);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
   const onPress = props.onPress !== undefined ? props.onPress : () => {
     dispatch(selectJob(job));
     navigation.navigate("Job");
   };
-
+  
+  function generateCardChildren(job: Job) {
+    if(IS_WEB())
+    return (
+      <View>
+        <View row>
+          <View flex-1 flexG>
+            <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
+            <Text ellipsizeMode="tail" numberOfLines={3}>
+              {job.description}
+            </Text>
+          </View>
+          <TouchableOpacity onPress={()=>{}}>
+          <View width={300} height={300} center flex>
+            {job.photos && job.photos.length > 0 && <ProCarousel onSnapToItem={setSelectedImageIndex}
+             width={300} mode="parallax" blockClicks overflow="hidden" arrowOffset={10} displayArrows data={job.photos} renderItems={({ item, index }) => {
+              return <Image source={{ uri: item }} style={{ width: 300, height: 300 }} resizeMode='contain' />
+            }} marginT-20 />}
+          </View>
+          </TouchableOpacity>
+        </View>
+        <Text t2 textAlign="right" marginT-20 style={styles.date}>
+          {formatDateString(job.datePosted)}
+        </Text>
+      </View>
+    );
+    return (
+      <View>
+          <View flex-1 flexG>
+            <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
+            <Text ellipsizeMode="tail" numberOfLines={3}>
+              {job.description}
+            </Text>
+          </View>
+          <View flexS>
+            {job.photos && job.photos.length > 0 && <ProCarousel mode="parallax" arrowOffset={10} displayArrows data={job.photos} renderItems={({ item, index }) => {
+              return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
+            }} marginT-20 />}
+          </View>
+        <Text t2 textAlign="right" marginT-20 style={styles.date}>
+          {formatDateString(job.datePosted)}
+        </Text>
+      </View>
+    );
+  }
   return (
     <ProCard style={{ minWidth: 10, width: "95%" }} webWidth={"95%"} children={children} radius={props.radius} onPress={onPress} />
   );
