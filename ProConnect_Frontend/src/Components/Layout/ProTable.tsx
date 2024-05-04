@@ -7,6 +7,7 @@ import { defaultWidthValues } from '../../Constants/Values';
 
 interface ProTableProps {
     title?: string;
+    hasScroll?: boolean;
     rows: string[];
     onOpen?: (index: number) => void;
     onEdit?: (index: number) => void;
@@ -25,7 +26,7 @@ const ProTable: React.FC<ProTableProps> = (props) => {
                 {props.rows.map((row, rowIndex) => (
                     <View invisible key={rowIndex}>
                         <View invisible style={{ flexDirection: 'row' }}>
-                            <View  style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} marginV-10>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} marginV-10>
                                 <Text flex marginL-10>{row}</Text>
                                 {props.onOpen && <TouchableOpacity onPress={() => { props.onOpen(rowIndex) }}>
                                     <Ionicons style={{ marginHorizontal: 5 }} size={20} name="open-outline" color={Colors.textPrimary} />
