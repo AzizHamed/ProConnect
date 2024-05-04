@@ -500,7 +500,7 @@ export type Property = {
 };
 export type CreateJobRequest = {
   job?: Job;
-  propertyId?: number;
+  profession?: Profession;
 };
 export type SortObject = {
   empty?: boolean;
@@ -516,8 +516,8 @@ export type PageableObject = {
   unpaged?: boolean;
 };
 export type PageJob = {
-  totalPages?: number;
   totalElements?: number;
+  totalPages?: number;
   size?: number;
   content?: Job[];
   number?: number;
