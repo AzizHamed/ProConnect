@@ -3,6 +3,7 @@ import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { ScrollView } from 'react-native-gesture-handler';
+import { defaultWidthValues } from '../../Constants/Values';
 
 interface ProTableProps {
     title?: string;
@@ -13,16 +14,18 @@ interface ProTableProps {
 }
 
 const ProTable: React.FC<ProTableProps> = (props) => {
+    const width = defaultWidthValues();
     return (
         <ScrollView>
 
             <View invisible margin-20 padding-10 style={{borderColor: Colors.controlText}}>
                 {props.title && <Text h4l center>{props.title}</Text>}
-                <View height={2} width={"100%"}></View>
+                <View height={2} width={width}></View>
+                {props.rows.length === 0 && <Text center>No data</Text>}
                 {props.rows.map((row, rowIndex) => (
                     <View invisible key={rowIndex}>
                         <View invisible style={{ flexDirection: 'row' }}>
-                            <View invisible style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} marginV-10>
+                            <View  style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} marginV-10>
                                 <Text flex marginL-10>{row}</Text>
                                 {props.onOpen && <TouchableOpacity onPress={() => { props.onOpen(rowIndex) }}>
                                     <Ionicons style={{ marginHorizontal: 5 }} size={20} name="open-outline" color={Colors.textPrimary} />
