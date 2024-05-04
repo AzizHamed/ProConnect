@@ -46,16 +46,21 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   };
   
   function generateCardChildren(job: Job) {
+    const CardHeader = <View flex-1 flexG>
+      <ProHeader text={job.title} marginB-5 headerType={HeaderType.H3} />
+      {/* <TouchableOpacity onPress={()=>{dispatch}}> */}
+        <Text marginT-0 marginB-20>{`by ${job.owner?.name.firstName} ${job.owner?.name.lastName}`}</Text>
+      {/* </TouchableOpacity> */}
+      <Text ellipsizeMode="tail" numberOfLines={3}>
+        {job.description}
+      </Text>
+    </View>;
+
     if(IS_WEB())
     return (
       <View>
         <View row>
-          <View flex-1 flexG>
-            <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
-            <Text ellipsizeMode="tail" numberOfLines={3}>
-              {job.description}
-            </Text>
-          </View>
+          {CardHeader}
           <TouchableOpacity onPress={()=>{}}>
           <View width={300} height={300} center flex>
             {job.photos && job.photos.length > 0 && <ProCarousel onSnapToItem={setSelectedImageIndex}
@@ -72,12 +77,7 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
     );
     return (
       <View>
-          <View flex-1 flexG>
-            <ProHeader text={job.title} marginB-30 headerType={HeaderType.H3} />
-            <Text ellipsizeMode="tail" numberOfLines={3}>
-              {job.description}
-            </Text>
-          </View>
+          {CardHeader}
           <View flexS>
             {job.photos && job.photos.length > 0 && <ProCarousel mode="parallax" arrowOffset={10} displayArrows data={job.photos} renderItems={({ item, index }) => {
               return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
