@@ -9,6 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { formatDateString } from "../../Utility/Formatter";
 import BackgroundView from "../../Components/Layout/BackgroundView";
+import JobCard from "./JobCard";
+import ProButton from "../../Components/Controls/ProButton";
 
 function generateCardChildren(job: Job | null) {
   if (job == null)
@@ -28,11 +30,11 @@ function generateCardChildren(job: Job | null) {
   );
 }
 
-const JobCard: React.FC = () => {
+const JobPage: React.FC = () => {
   const job = useSelector(getSelectedJob);
   const navigation = useNavigation();
   const children = generateCardChildren(job);
-
+  const defaultJob: Job = { title: "", description: "" };
   const dispatch = useDispatch();
   useEffect(() => {
     navigation.addListener("beforeRemove", (e) => {
@@ -43,20 +45,21 @@ const JobCard: React.FC = () => {
   return (
     <BackgroundView children={(
       <ScrollView>
-      <View style={styles.cardContainer} bg>
-        <ProCard children={children}></ProCard>
+        <View style={styles.cardContainer} bg>
+          <JobCard job={job}></JobCard>
+          <ProButton center text="Get Best Offer" onPress={()=>{console.log('Best Offer')}}></ProButton>
+          {/* <ProCard children={children}></ProCard>
         <ProCard children={(
           <ProHeader text="Comments" headerType={HeaderType.H2}/>
-          )}></ProCard>
-        {/* textContent={content} */}
-      </View>
-    </ScrollView>
-    )}/>
-    
+          )}></ProCard> */}
+        </View>
+      </ScrollView>
+    )} />
+
   );
 };
 
-export default JobCard;
+export default JobPage;
 
 const styles = StyleSheet.create({
   date: {
@@ -65,6 +68,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     alignContent: "center",
+    alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "center",
     alignSelf: "center",
