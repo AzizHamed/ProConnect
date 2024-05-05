@@ -24,11 +24,12 @@ public class JobMatchingAlgorithm {
 
          for(int i=0 ; i< jobOffers.size() ; i++){
              score = calculateScore(jobOffers.get(i).getSenderUser(),jobOffers.get(i).getBid());
-             if(score < bestScore){
+             if(score > bestScore){
                  bestScore = score;
                  bestOffer = jobOffers.get(i);
              }
          }
+
 
          return bestOffer;
 

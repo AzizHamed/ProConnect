@@ -26,6 +26,7 @@ public class JobOfferService {
     public JobOffer findBest(Job job) {
 
         List<JobOffer> jobOffers = jobOfferRepository.findByJob(job);
+        System.out.println(jobOffers.size());
         return  jobMatchingAlgorithm.chooseOffer(jobOffers);
 
     }
