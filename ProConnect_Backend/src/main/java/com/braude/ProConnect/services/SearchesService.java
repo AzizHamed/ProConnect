@@ -17,8 +17,8 @@ public class SearchesService {
     }
 
     public void init (){
-        Searches searches = searchesRepository.findAll().get(0);
-        if(searches == null){
+        Long searches = searchesRepository.count();
+        if(searches == 0L){
             searchesRepository.save(Searches.builder().searches(0).id(0L).build());
     }
     }
