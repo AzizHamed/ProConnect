@@ -30,6 +30,12 @@ public class ProfessionController {
         return new ResponseEntity<>(profession, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/create-professions")
+    public ResponseEntity<List<Profession>> createProfessions(@RequestBody List<Profession> professions) {
+        List<Profession> addedProfessions = professionService.addProfessions(professions);
+        return new ResponseEntity<>(addedProfessions, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/get-all")
     public ResponseEntity<List<Profession>> getAllProfessions(){
         List<Profession> professions = professionService.getProfessions();
