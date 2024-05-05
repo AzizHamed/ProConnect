@@ -16,6 +16,7 @@ import com.braude.ProConnect.repositories.UserRepository;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.requests.UpdateProfessionsRequest;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -190,14 +191,23 @@ public class UserService {
         List<UserProfession> userProfessions = userProfessionsRepository.findAllByProfession(profession);
         List<User> users = userProfessions.stream().map(UserProfession::getUser).toList()
                 .stream().filter(user -> {
-                    if(workAreas == null) return false;
-                    return user.getWorkAreas().equals(workAreas);
+                    WorkAreas userWorkAreas = user.getWorkAreas();
+                    if(workAreas == null || userWorkAreas == null) return false;
+                    return userWorkAreas.equals(workAreas);
                 }).toList();
 
         Searches searches = searchesRepository.findAll().get(0);
         searches.setSearches(searches.getSearches()+1);
         searchesRepository.save(searches);
-        return users;
+        List<User> dtos = new ArrayList<>();
+        for (User user : users) {
+            try {
+                dtos.add((User) user.clone());
+            } catch (CloneNotSupportedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return dtos;
 //        return userRepository.findByProfessionAndWorkAreas(profession, workAreas);
 
     }

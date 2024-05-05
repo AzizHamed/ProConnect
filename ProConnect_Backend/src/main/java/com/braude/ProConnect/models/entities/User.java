@@ -137,6 +137,31 @@ public class User {
         return roles.remove(role);
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        User clonedUser = new User();
+        clonedUser.setId(this.id);
+        clonedUser.setName(new Name(this.name.getFirstName(), this.name.getLastName())); // Assuming Name is immutable
+        clonedUser.setEmail(this.email);
+        clonedUser.setPhoneNumber(this.phoneNumber);
+        clonedUser.setDateOfBirth(this.dateOfBirth);
+        clonedUser.setReviewsGiven(new ArrayList<>(this.reviewsGiven));
+        clonedUser.setReviewsReceived(new ArrayList<>(this.reviewsReceived));
+        clonedUser.setAverageRating(this.averageRating);
+        clonedUser.setRatingsCount(this.ratingsCount);
+        clonedUser.setExperience(this.experience);
+        clonedUser.setRating(this.rating);
+        clonedUser.setNumOfRates(this.numOfRates);
+        clonedUser.setRoles(new ArrayList<>(this.roles));
+        clonedUser.setProfession(this.profession); // Assuming Profession is immutable
+        clonedUser.setAccountStatus(this.accountStatus);
+        clonedUser.setPhotoUrl(this.photoUrl);
+        clonedUser.setUserProfessions(new ArrayList<>(this.userProfessions));
+        clonedUser.setWorkAreas(this.workAreas);
+        return clonedUser;
+
+    }
+
 //    @Override
 //    public String toString() {
 //        return "User{" +
