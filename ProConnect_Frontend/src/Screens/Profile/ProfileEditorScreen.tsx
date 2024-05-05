@@ -41,6 +41,7 @@ const ProfileEditorScreen: React.FC = () => {
   const lastName = user?.name?.lastName || '';
   const phone = user?.phoneNumber || '';
   const email = user?.email || '';
+  const [selectedWorkArea, setSelectedWorkArea] = useState<string>(user?.workAreas || "North")
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,6 +55,7 @@ const ProfileEditorScreen: React.FC = () => {
   const lastNameRef = useRef(null);
   const phoneRef = useRef(null);
   const [isDropdownValid, setIsDropdownValid] = useState(false);
+  const [isDropdownValid2, setIsDropdownValid2] = useState(false);
 
   // Personal Information
   const { selectPictures, selectedFiles, clear } = useImagePicker();
@@ -64,6 +66,7 @@ const ProfileEditorScreen: React.FC = () => {
   // Professions;
   const [userProfession, setUserProfession] = useState<UserProfession>({ services: [], startDate: "01-01-2001" });
   const [chipComponentHeight, setChipComponentHeight] = useState<number>(0);
+
   // The role index that is selected in the radio group (Homeowner or Professional)
   // Profession Dropdown Validation
   const [triggerValidation, setTriggerValidation] = useState(false);
@@ -71,6 +74,15 @@ const ProfileEditorScreen: React.FC = () => {
     value: profession.id,
     label: profession.name,
   })) || [];
+
+  const workAreas = [ 
+    {label: "North", value: "North" },
+                    {label: "Haifa", value: "Haifa"},
+                    {label: "Center", value: "Center"},
+                    {label: "BeerShevaa", value: "BeerShevaa"},
+                    {label: "South", value: "South"}
+  ]
+
 
   useEffect(() => {
     if (userProfessionsData !== undefined && userProfessionsData !== null && userProfessionsData.length > 0) {
@@ -134,7 +146,7 @@ const ProfileEditorScreen: React.FC = () => {
         .then((res) => { profilePicDownloadUrl = res[0] })
         .catch((error) => { setError(error.message); return; })
     }
-    const roles = userRolesData === undefined ? [] : [userRolesData[selectedRoleIndex]];
+    const roles = isProfessionalUser ? [userRolesData[1]] : (userRolesData === undefined ? [] : [userRolesData[selectedRoleIndex]]);
     const updatePersonalInfoRequest: UpdatePersonalInfoRequest = { name: { firstName: firstName, lastName: lastName }, phoneNumber: phone, photoUrl: profilePicDownloadUrl, roles: roles };
     const updateProfessionsRequest: UpdateProfessionsRequest = { professions: [userProfession] };
     const updateProfileRequest = { updateProfileRequest: { updatePersonalInfoRequest: updatePersonalInfoRequest, updateProfessionsRequest: isProfessionalUser ? updateProfessionsRequest : {} } };
@@ -225,17 +237,21 @@ const ProfileEditorScreen: React.FC = () => {
           }
         />
         { isProfessionalUser &&
-          <ProExpandableView title='Profession' height={200 + chipComponentHeight + 50} isInitiallyExpanded
+          <ProExpandableView title='Profession' height={200 + chipComponentHeight + 100} isInitiallyExpanded
             children={
               (
                 <View style={{ alignItems: 'center' }}>
                   <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.' 
                   values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id}/>
+                  <ValidatedDropDown setIsValid={setIsDropdownValid2} triggerValidation={triggerValidation} control={control} errorMessage='You must select a work area.' 
+                  values={workAreas} setValue={setSelectedWorkArea} selectedValue={"North"}/>
+                  
                   <ProDatePicker date={userProfession.startDate} control={control} name={'When did you start working in this field?'} placeholder='Start Date' setDateValue={setProfessionDate} />
                   <ProChipInput label='Which services do you offer?' items={userProfession.services} placeholder='Enter new service...'
                     setComponentHeight={setChipComponentHeight}
                     onAddItem={addService} onRemoveItem={removeService}
                   />
+
 
                   {/* <Image resizeMode='contain'
                   style={{ width: 50, height: 50 }}
@@ -256,7 +272,7 @@ const ProfileEditorScreen: React.FC = () => {
         /> */}
 
         <ProButton
-          disabled={!isValid || (!isDropdownValid && isProfessionalUser)}
+          disabled={!isValid || (!isDropdownValid && isDropdownValid2 && isProfessionalUser)}
           text={"Save"}
           onPress={handleOnSubmit}
         />

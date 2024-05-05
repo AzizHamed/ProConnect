@@ -104,6 +104,7 @@ const ProfileViewScreen: React.FC = () => {
           {ContactInfo}
         </View>
         {user?.roles && user.roles[0].code==="HO" && <JobsTable userId={user?.id}/>}
+        {user?.roles && user.roles[0].code==="PRO" && user.workAreas && <Text>Works in the {user.workAreas} area</Text>}
         {user?.roles && user.roles[0].code==="PRO" && <ProTable title='Services' rows={userProfession?.services || []}/>}
         {/* 
         <ProTextView text={`Name`} isLabel/>
