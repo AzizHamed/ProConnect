@@ -34,7 +34,7 @@ export const AppStackScreen: React.FC = () => {
         <AppStack.Screen name="Main" component={MainDrawerScreen} />
 
         <AppStack.Screen options={{headerShown: true}}  name="Job" component={JobPage}  />
-        <AppStack.Screen name="PersonsPage" component={PersonsPage} />
+        <AppStack.Screen name="PersonsPage" component={PersonsPage} options={{headerShown : true}}  />
         <AppStack.Screen name="Chats" component={Chat} options={{headerShown : true,headerTintColor : "white", headerStyle :styles.header, headerTitle: () => (
           <View style={styles.container}>
 

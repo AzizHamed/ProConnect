@@ -115,7 +115,6 @@ export  const dataProfessions1 = [
 export const sort = [
   {label : "Experience" , value : '1'},
   {label : "Rating" , value : '2'},
-  {label : "Nearest" , value : '3'},
   {label : "Searches" , value : '4'}
 ]
 
