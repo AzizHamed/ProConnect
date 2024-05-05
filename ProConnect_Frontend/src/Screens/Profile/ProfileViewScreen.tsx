@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, getUserCredential } from '../../Services/Redux/Slices/AuthSlice';
@@ -100,7 +100,9 @@ const ProfileViewScreen: React.FC = () => {
 
 
   return (
-    <BackgroundView hasScroll children={(
+    <BackgroundView  children={(
+      <ScrollView>
+        
       <View bg style={styles.container} paddingT-30 center>
         <View row={isWeb} spread={isWeb} invisible width={"100%"} center>
           {BasicInfo}
@@ -108,17 +110,22 @@ const ProfileViewScreen: React.FC = () => {
           {ContactInfo}
         </View>
         {user?.roles && user.roles[0].code==="HO" && <JobsTable userId={user?.id}/>}
-        {user?.roles && user.roles[0].code==="PRO" && user.workAreas && <Text>Works in the {user.workAreas} area</Text>}
+        {user.workAreas && <Text>Available in {user.workAreas} area</Text>}
         {user?.roles && user.roles[0].code==="PRO" && <ProTable title='Services' rows={userProfession?.services || []}/>}
         {/* 
         <ProTextView text={`Name`} isLabel/>
         <ProTextView text={`Phone`} isLabel/> */}
 
+        {
+        loggedInUser?.id === user?.id &&
         <ProButton marginT-20
           text={"Edit"}
           onPress={edit}
         />
+
+    }
       </View>
+      </ScrollView>
 
     )}
     />

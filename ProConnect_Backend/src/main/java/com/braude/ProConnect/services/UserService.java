@@ -125,6 +125,9 @@ public class UserService {
         user.setRoles(request.getRoles());
         user.setAccountStatus(AccountStatus.ACTIVE);
         user.setPhotoUrl(request.getPhotoUrl());
+        WorkAreas workAreas = request.getWorkAreas();
+        if(workAreas == null) workAreas = WorkAreas.North;
+        user.setWorkAreas(workAreas);
         user = userRepository.save(user);
         return user;
     }
@@ -145,9 +148,7 @@ public class UserService {
 
             }
         }
-        WorkAreas workAreas = request.getWorkAreas();
-        if(workAreas == null) workAreas = WorkAreas.North;
-        user.setWorkAreas(workAreas);
+
         user = userRepository.save(user);
         return user;
     }

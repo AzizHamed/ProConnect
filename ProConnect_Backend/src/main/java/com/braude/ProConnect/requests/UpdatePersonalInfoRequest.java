@@ -3,6 +3,7 @@ package com.braude.ProConnect.requests;
 import com.braude.ProConnect.models.embeddables.Name;
 import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.models.enums.AccountStatus;
+import com.braude.ProConnect.models.enums.WorkAreas;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,7 @@ public class UpdatePersonalInfoRequest {
     private AccountStatus accountStatus;
     private List<Role> roles;
     private String photoUrl;
+
+    private WorkAreas workAreas;
+
 }

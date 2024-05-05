@@ -148,8 +148,8 @@ const ProfileEditorScreen: React.FC = () => {
         .catch((error) => { setError(error.message); return; })
     }
     const roles = isProfessionalUser ? [userRolesData[1]] : (userRolesData === undefined ? [] : [userRolesData[selectedRoleIndex]]);
-    const updatePersonalInfoRequest: UpdatePersonalInfoRequest = { name: { firstName: firstName, lastName: lastName }, phoneNumber: phone, photoUrl: profilePicDownloadUrl, roles: roles };
-    const updateProfessionsRequest: UpdateProfessionsRequest = { professions: [userProfession], workAreas: selectedWorkArea };
+    const updatePersonalInfoRequest: UpdatePersonalInfoRequest = { name: { firstName: firstName, lastName: lastName }, phoneNumber: phone, photoUrl: profilePicDownloadUrl, roles: roles, workAreas: selectedWorkArea };
+    const updateProfessionsRequest: UpdateProfessionsRequest = { professions: [userProfession] };
     const updateProfileRequest = { updateProfileRequest: { updatePersonalInfoRequest: updatePersonalInfoRequest, updateProfessionsRequest: isProfessionalUser ? updateProfessionsRequest : {} } };
     console.log(JSON.stringify(updateProfileRequest));
     setIsLoading(true);
@@ -176,7 +176,7 @@ const ProfileEditorScreen: React.FC = () => {
   return (
     <BackgroundView hasScroll children={(
       <View style={{ alignItems: "center", paddingTop: 20 }} onTouchStart={() => { Keyboard.dismiss(); }}>
-        <ProExpandableView title='Personal Information' height={320 + (user?.accountStatus === 'SETUP' ? 75 : 0)} isInitiallyExpanded
+        <ProExpandableView title='Personal Information' height={400 + (user?.accountStatus === 'SETUP' ? 75 : 0)} isInitiallyExpanded
           children={
             (
               <View style={{ alignItems: "center" }}>
@@ -228,6 +228,9 @@ const ProfileEditorScreen: React.FC = () => {
                   ref={phoneRef}
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
+
+                <ValidatedDropDown setIsValid={setIsDropdownValid2} triggerValidation={triggerValidation} control={control} errorMessage='You must select an area.'
+                  values={workAreas} setValue={setSelectedWorkArea} selectedValue={"North"} />
                 {user?.accountStatus === 'SETUP' && <ProRadioGroup options={accountTypeOptions} title="Are you a homeowner or a professional?" setSelectedIndex={function (index: number): void {
                   setSelectedRoleIndex(index);
                 }}></ProRadioGroup>

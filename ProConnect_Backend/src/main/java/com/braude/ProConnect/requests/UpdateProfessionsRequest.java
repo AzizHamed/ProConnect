@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateProfessionsRequest {
     private UserProfession[] professions;
-    private WorkAreas workAreas;
 }
