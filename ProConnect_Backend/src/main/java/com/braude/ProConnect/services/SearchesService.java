@@ -15,4 +15,11 @@ public class SearchesService {
         Searches searches = searchesRepository.findAll().get(0);
         return searches.getSearches();
     }
+
+    public void init (){
+        Searches searches = searchesRepository.findAll().get(0);
+        if(searches == null){
+            searchesRepository.save(Searches.builder().searches(0).build());
+    }
+    }   
 }

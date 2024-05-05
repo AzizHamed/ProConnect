@@ -3,6 +3,7 @@ package com.braude.ProConnect.config;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.embeddables.Name;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.services.SearchesService;
 import com.braude.ProConnect.services.UserService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -26,10 +27,17 @@ import java.io.InputStream;
 public class Startup {
     private static UserService userService;
 
+    private static SearchesService searchesService;
+
     @Autowired
-    public Startup(UserService userService) {
+    public Startup(UserService userService, SearchesService searchesService) {
         this.userService = userService;
+        this.searchesService = searchesService;
     }
+
+
+
+
 
     private static String FIREBASE_CONFIG;
 
@@ -46,6 +54,7 @@ public class Startup {
         System.out.println("App INIT");
         initializeFirebase();
         createAdminUserIfNotExists();
+        searchesService.init();
     }
 
     private static void initializeFirebase() {
