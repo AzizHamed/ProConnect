@@ -33,8 +33,8 @@ const SignUpScreen: React.FC = () => {
     const { email, password } = data;
     setIsLoadingAuthState(true);
     emailSignUp(email, password).then(async (userCredential: UserCredential)=> {
-        const user = userCredential.user;
-        dispatch(setUserCredential(user as UserDetails));
+        // const user = userCredential.user;
+        // dispatch(setUserCredential(user as UserDetails));
         // The rest of the sign up process is handled in the StartupScreen component - this part only handles the initial sign up process in Firebase
       }).catch((error: any) => {
         console.log(error);

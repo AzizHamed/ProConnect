@@ -148,7 +148,7 @@ const ProfileEditorScreen: React.FC = () => {
     }
     const roles = isProfessionalUser ? [userRolesData[1]] : (userRolesData === undefined ? [] : [userRolesData[selectedRoleIndex]]);
     const updatePersonalInfoRequest: UpdatePersonalInfoRequest = { name: { firstName: firstName, lastName: lastName }, phoneNumber: phone, photoUrl: profilePicDownloadUrl, roles: roles };
-    const updateProfessionsRequest: UpdateProfessionsRequest = { professions: [userProfession] };
+    const updateProfessionsRequest: UpdateProfessionsRequest = { professions: [userProfession], workAreas: selectedWorkArea };
     const updateProfileRequest = { updateProfileRequest: { updatePersonalInfoRequest: updatePersonalInfoRequest, updateProfessionsRequest: isProfessionalUser ? updateProfessionsRequest : {} } };
     console.log(JSON.stringify(updateProfileRequest));
     setIsLoading(true);
@@ -237,7 +237,7 @@ const ProfileEditorScreen: React.FC = () => {
           }
         />
         { isProfessionalUser &&
-          <ProExpandableView title='Profession' height={200 + chipComponentHeight + 100} isInitiallyExpanded
+          <ProExpandableView title='Profession' height={200 + chipComponentHeight + 110} isInitiallyExpanded
             children={
               (
                 <View style={{ alignItems: 'center' }}>

@@ -87,7 +87,7 @@ public class User {
     private WorkAreas workAreas;
 
     public double getExperience() {
-        if(userProfessions.isEmpty())
+        if(userProfessions == null || userProfessions.isEmpty())
             return 0;
 
         UserProfession userProfession = userProfessions.get(0);
