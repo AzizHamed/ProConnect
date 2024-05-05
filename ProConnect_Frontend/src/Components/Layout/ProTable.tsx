@@ -2,8 +2,8 @@ import { View, Text, TouchableOpacity, Colors } from 'react-native-ui-lib'
 import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { ScrollView } from 'react-native-gesture-handler';
 import { defaultWidthValues } from '../../Constants/Values';
+import { ScrollView } from 'react-native';
 
 interface ProTableProps {
     title?: string;

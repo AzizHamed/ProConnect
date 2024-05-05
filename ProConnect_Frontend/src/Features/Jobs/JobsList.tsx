@@ -11,6 +11,7 @@ import LoadingOrError from "../../Components/Layout/LoadingOrError";
 import ProRefreshControl from "../../Components/Controls/ProRefreshControl";
 import ProButton from "../../Components/Controls/ProButton";
 import { setChat } from "../../Services/Redux/Slices/ChatSlice";
+import { auth } from "../../Services/Firebase/Firebase";
 
 // TODO: Filter by budget, job status, JobDateSearch
 
@@ -58,26 +59,21 @@ const [job, setjob] = useState<Job | undefined> (undefined)
                   // <View style={styles.container} bg>
                   <View bg style={{width:"100%"}}>
                     {jobs.map((job) => { 
+                      if(job.owner?.email !== auth.currentUser?.email)
                       return (
-                        <View>
+                        <View key={job.id}>
                           <JobCard
                             autoAdjustWidth
-                            key={job.id}
                             job={job}
                           ></JobCard>
 
                           <View style={{alignItems : "center", width : "100%"}}>
 
-                          <ProButton text={"Send Offer"} onPress={()=>{
-                          
-                            dispatch(setChat({receiverUserName: job.owner.name.firstName + " " + job.owner?.name.lastName, ReceiverEmail: job.owner?.email, openModal: true, receiverUser: job.owner, job: job, receiverPhotoUrl: job.owner?.photoUrl}))
-                            navigation.navigate("Chats")
-                          }}/>
-                          <ProButton text={"Get best Offer"} onPress={()=>{
+                          {/* <ProButton text={"Get best Offer"} onPress={()=>{
                            
                            setjob(job)
                             
-                          }}/>
+                          }}/> */}
                           </View>
 
                           </View> 

@@ -15,6 +15,8 @@ import { selectJob } from "../../Services/Redux/Slices/JobSlice"
 import { Job } from "../../Services/Redux/Api";
 import ProCarousel from "../../Components/Controls/ProCarousel";
 import { IS_WEB } from "../../Constants/Values";
+import ProButton from "../../Components/Controls/ProButton";
+import { setChat } from "../../Services/Redux/Slices/ChatSlice";
 
 interface JobCardProps {
   job: Job;
@@ -44,8 +46,15 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
     dispatch(selectJob(job));
     navigation.navigate("Job");
   };
+
+  
   
   function generateCardChildren(job: Job) {
+    const SendOfferButton =  <ProButton text={"Send Offer"} onPress={()=>{
+      console.log(job?.owner)
+      dispatch(setChat({receiverUserName: job.owner?.name.firstName + " " + job.owner?.name.lastName, ReceiverEmail: job.owner?.email, openModal: true, receiverUser: job.owner, job: job, receiverPhotoUrl: job.owner?.photoUrl}))
+      navigation.navigate("Chats")
+    }}/>
     const CardHeader = <View flex-1 flexG>
       <ProHeader text={job.title} marginB-5 headerType={HeaderType.H3} />
       {/* <TouchableOpacity onPress={()=>{dispatch}}> */}
@@ -61,12 +70,15 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
       <View>
         <View row>
           {CardHeader}
+
           <TouchableOpacity onPress={()=>{}}>
           <View width={300} height={300} center flex>
             {job.photos && job.photos.length > 0 && <ProCarousel onSnapToItem={setSelectedImageIndex}
              width={300} mode="parallax" blockClicks overflow="hidden" arrowOffset={10} displayArrows data={job.photos} renderItems={({ item, index }) => {
               return <Image source={{ uri: item }} style={{ width: 300, height: 300 }} resizeMode='contain' />
             }} marginT-20 />}
+
+            {SendOfferButton}
           </View>
           </TouchableOpacity>
         </View>
@@ -78,14 +90,19 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
     return (
       <View>
           {CardHeader}
-          <View flexS>
+          
+         
+          <View flexS center>
             {job.photos && job.photos.length > 0 && <ProCarousel mode="parallax" arrowOffset={10} displayArrows data={job.photos} renderItems={({ item, index }) => {
               return <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode='contain' />
             }} marginT-20 />}
+             {SendOfferButton}
           </View>
+         
         <Text t2 textAlign="right" marginT-20 style={styles.date}>
           {formatDateString(job.datePosted)}
         </Text>
+
       </View>
     );
   }
