@@ -19,7 +19,7 @@ public class SearchesService {
     public void init (){
         Searches searches = searchesRepository.findAll().get(0);
         if(searches == null){
-            searchesRepository.save(Searches.builder().searches(0).build());
+            searchesRepository.save(Searches.builder().searches(0).id(0L).build());
     }
-    }   
+    }
 }
