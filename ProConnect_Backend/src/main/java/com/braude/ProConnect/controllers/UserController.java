@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
-@CrossOrigin()
+@CrossOrigin("*")
 @Validated
 @Tag(name = "Users")
 public class UserController {
