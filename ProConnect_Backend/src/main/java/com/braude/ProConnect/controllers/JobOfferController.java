@@ -29,7 +29,7 @@ public class JobOfferController {
         jobOfferService.save(jobOffer);
     }
 
-    @GetMapping(value = "getBestOffer")
+    @PostMapping(value = "getBestOffer")
     public JobOffer getBestOffer(@RequestBody Job job){
         if(job==null){
             return null;
