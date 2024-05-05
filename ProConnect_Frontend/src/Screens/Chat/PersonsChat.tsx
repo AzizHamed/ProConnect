@@ -252,7 +252,7 @@ const PersonsChat = () => {
         
         return(
           <TouchableOpacity key={friend.id} style={{flexDirection : "row", justifyContent: "space-between" , paddingRight : 25}} onPress={()=>{
-            dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName}))
+            dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName, receiverPhotoUrl: friend.photoUrl}))
             // messageNotSeenS?.set(friend.email, 0)
             navigation.navigate("Chats")
           }} >

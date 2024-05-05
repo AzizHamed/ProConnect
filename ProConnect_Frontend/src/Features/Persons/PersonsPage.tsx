@@ -224,7 +224,7 @@ const PersonsPage = () => {
               return (
                 <View>
                   <TouchableOpacity style={styles.touchableOpacityStyle} onPress={() => {
-                    dispatch(setChat({ ReceiverEmail: Professional.email, openModal: true, receiverUserName: Professional.name.firstName + " " + Professional.name.lastName }))
+                    dispatch(setChat({ ReceiverEmail: Professional.email, openModal: true, receiverUserName: Professional.name.firstName + " " + Professional.name.lastName, receiverPhotoUrl: Professional.photoUrl }))
                     navigation.navigate("Chats")
                   }}>
                     <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} componentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,

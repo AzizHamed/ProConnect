@@ -8,6 +8,7 @@ export interface ChatState {
     ReceiverEmail : string,
     openModal  :boolean,
     receiverUserName : String;
+    receiverPhotoUrl? : String;
     receiverUser ?: User;
     job ?:Job
 }
@@ -15,7 +16,6 @@ const initialState: ChatState = {
  ReceiverEmail : "",
  openModal : false,
  receiverUserName : "",
- 
 }
 
 export const ChatSlice = createSlice({
@@ -39,7 +39,9 @@ export const ChatSlice = createSlice({
         getSelectedChatModal: (state) =>{
             return state.openModal
         },
-
+        getReceiverPhotoUrl: (state) =>{
+            return state.receiverPhotoUrl;
+        },
         getSelectedReceiverUserName: (state) =>{
             return state.receiverUserName
         },
@@ -54,5 +56,5 @@ export const ChatSlice = createSlice({
 })
 
 export const { setChat } = ChatSlice.actions
-export const { getSelectedChatEmail, getSelectedChatModal, getSelectedReceiverUserName, getSelectedReceiverUser, getSelectedJob1 } = ChatSlice.selectors
+export const { getReceiverPhotoUrl, getSelectedChatEmail, getSelectedChatModal, getSelectedReceiverUserName, getSelectedReceiverUser, getSelectedJob1 } = ChatSlice.selectors
 export default ChatSlice.reducer
