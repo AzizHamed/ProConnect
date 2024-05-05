@@ -20,7 +20,7 @@ public class JobOffer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "senderUser", referencedColumnName = "user_id")
 //    @JsonBackReference
 //    @JsonIgnore
@@ -28,7 +28,7 @@ public class JobOffer {
     private User senderUser;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "receiverUser", referencedColumnName = "user_id")
 //    @JsonBackReference
 //    @JsonIgnore
