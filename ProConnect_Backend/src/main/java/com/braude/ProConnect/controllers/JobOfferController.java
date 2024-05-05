@@ -30,13 +30,10 @@ public class JobOfferController {
     }
 
     @GetMapping(value = "getBestOffer")
-    public JobOffer getBestOffer(@RequestBody(required = false)  Job job){
-        System.out.println(11111);
+    public JobOffer getBestOffer(@RequestBody Job job){
         if(job==null){
-            System.out.println(555555);
             return null;
         }
-        System.out.println(666666);
         JobOffer jobOffer = jobOfferService.findBest(job);
         return jobOffer;
     }

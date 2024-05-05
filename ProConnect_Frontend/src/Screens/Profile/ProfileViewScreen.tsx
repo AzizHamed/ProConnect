@@ -110,7 +110,7 @@ const ProfileViewScreen: React.FC = () => {
           {ContactInfo}
         </View>
         {user?.roles && user.roles[0].code==="HO" && <JobsTable userId={user?.id}/>}
-        {user.workAreas && <Text>Available in {user.workAreas} area</Text>}
+        {user?.workAreas && <Text>Available in {user?.workAreas} area</Text>}
         {user?.roles && user.roles[0].code==="PRO" && <ProTable title='Services' rows={userProfession?.services || []}/>}
         {/* 
         <ProTextView text={`Name`} isLabel/>
