@@ -17,8 +17,8 @@ public class ProfessionService {
     }
 
 
-    public Profession addProfessions(String name, String description, String svg) {
-        Profession profession = new Profession(name, description,svg);
+    public Profession addProfessions(String name, String description, String iconUrl) {
+        Profession profession = new Profession(name, description, iconUrl);
         return professionRepository.save(profession);
     }
 
@@ -26,7 +26,13 @@ public class ProfessionService {
         return professionRepository.findByName(name);
     }
 
+    public List<Profession> getProfessions() {
+        return professionRepository.findAll();
+    }
+
+    public Profession getProfessionById(long id) { return professionRepository.findById(id).orElse(null); }
     public List<Profession> findAll() {
         return professionRepository.findAll();
     }
+
 }

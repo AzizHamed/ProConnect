@@ -33,6 +33,13 @@ public class RoleController {
             return new ResponseEntity<>(roles, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @GetMapping(value = "/get-roles")
+    public ResponseEntity<List<Role>> getUserRoles(){
+        List<Role> roles = roleService.getUserRoles();
+        if(roles != null)
+            return new ResponseEntity<>(roles, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
     @PostMapping(value = "/create")
     public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {

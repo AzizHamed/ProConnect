@@ -2,6 +2,9 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.entities.UserProfession;
+import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
+import com.braude.ProConnect.requests.UpdateProfessionsRequest;
 import com.braude.ProConnect.models.enums.WorkAreas;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
 import com.braude.ProConnect.services.UserService;
@@ -28,6 +31,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping(value = "/exists")
+    public ResponseEntity<Boolean> userExists(@RequestParam String userId){
+        return new ResponseEntity<>(userService.exists(userId), HttpStatus.OK);
+    }
     @GetMapping(value = "/get")
     public ResponseEntity<User> getUser(@RequestParam String userId){
         User user = userService.getUser(userId);
@@ -67,15 +74,40 @@ public class UserController {
         throw new ProConnectException("Failed to add role to user.");
     }
 
-    @PostMapping(value = "update-profile")
-    public ResponseEntity<UpdateProfileRequest> updateProfile(@Valid @RequestBody UpdateProfileRequest updateProfileRequest){
+    @PostMapping(value = "update-personal-info")
+    public ResponseEntity<User> updatePersonalInfo(@Valid @RequestBody UpdatePersonalInfoRequest updatePersonalInfoRequest){
         try {
-            return ResponseEntity.ok(userService.updateProfile(updateProfileRequest));
+            return ResponseEntity.ok(userService.updatePersonalInfo(updatePersonalInfoRequest));
         } catch (ProConnectException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
+    @PostMapping(value = "update-professions")
+    public ResponseEntity<User> updateProfessions(@Valid @RequestBody UpdateProfessionsRequest updateProfessionsRequest){
+        try {
+            return ResponseEntity.ok(userService.updateProfessions(updateProfessionsRequest));
+        } catch (ProConnectException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping(value = "update-profile")
+    public ResponseEntity<User> updateProfile(@RequestBody UpdateProfileRequest updateProfileRequest){
+        try {
+            return ResponseEntity.ok(userService.updateProfile(updateProfileRequest));
+        } catch (ProConnectException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping(value = "get-user-professions")
+    public ResponseEntity<List<UserProfession>> getUserProfessions(@RequestParam(required = false) String userId) {
+        List<UserProfession> userProfessions = userId != null ? userService.getUserProfessions(userId) : userService.getUserProfessions();
+        if(userProfessions != null)
+            return new ResponseEntity<>(userProfessions, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     @GetMapping(value = "users-num")
     public int getAllUsersNumber(){
         return userService.getAllUsersNumber();

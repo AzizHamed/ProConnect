@@ -11,9 +11,10 @@ import { Colors } from "react-native-ui-lib";
 import { color } from "react-native-elements/dist/helpers";
 import FullMapScreen from "../Screens/Chat/FullMapScreen";
 import { useSelector } from "react-redux";
-import { getSelectedReceiverUserName } from "../Services/Redux/Slices/ChatSlice";
+import { getSelectedReceiverUserName, getReceiverPhotoUrl } from "../Services/Redux/Slices/ChatSlice";
 import ProButton from "../Components/Controls/ProButton";
 import { AirbnbRating } from "react-native-ratings";
+import ProfileImage from "../Components/Layout/ProfileImage";
 
 
 const AppStack = createNativeStackNavigator();
@@ -22,8 +23,8 @@ const {width, height} = Dimensions.get('window');
 
 export const AppStackScreen: React.FC = () => {
 
-  const receiverName = useSelector(getSelectedReceiverUserName)
- 
+  const receiverName = useSelector(getSelectedReceiverUserName);
+  const receiverPhotoUrl = useSelector(getReceiverPhotoUrl);
 
   
 
@@ -39,10 +40,7 @@ export const AppStackScreen: React.FC = () => {
           <View style={styles.container}>
 
             <View style={styles.chatHeader}>
-              <Image
-              source={require('../../gardner2.png')}
-              style={{ width: 40, height: 40,  borderRadius : 40}}
-            />
+              <ProfileImage size={40} photoUrl={receiverPhotoUrl}/>
     
             <View style={{width : "87%"}}>
               {/* <View style={{paddingLeft : 2}}> */}

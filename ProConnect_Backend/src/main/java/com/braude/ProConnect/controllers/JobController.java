@@ -47,17 +47,27 @@ public class JobController {
         return new ResponseEntity<>(jobService.getJobs(jobPage,jobSearchCriteria),
                 HttpStatus.OK);
     }
-
-
-    @GetMapping("/getJobByUser")
-    public ResponseEntity<List<Job>> findJobByOwner(@RequestBody User owner){
-        System.out.println("Owner " + owner);
-        List<Job> jobs = jobService.findJobByOwner(owner);
-        if(jobs.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(jobs,HttpStatus.OK);
+   @GetMapping("/get-user-jobs")
+    public ResponseEntity<List<Job>> getUserJobs(){
+        return new ResponseEntity<>(jobService.getUserJobs(),
+                HttpStatus.OK);
     }
+    @GetMapping("/get-user-jobs-id")
+    public ResponseEntity<List<Job>> getUserJobsById(String userId){
+        return new ResponseEntity<>(jobService.getUserJobs(userId),
+                HttpStatus.OK);
+    }
+
+
+//    @GetMapping("/getJobByUser")
+//    public ResponseEntity<List<Job>> findJobByOwner(@RequestBody User owner){
+//        System.out.println("Owner " + owner);
+//        List<Job> jobs = jobService.getUserJobs(owner);
+//        if(jobs.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(jobs,HttpStatus.OK);
+//    }
 
     @PutMapping("/like")
     public String likePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull String userId){

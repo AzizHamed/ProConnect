@@ -25,10 +25,17 @@ public class ProfessionController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Profession> createService(String name, String description,String svg) {
-        Profession profession = professionService.addProfessions(name, description,svg);
+    public ResponseEntity<Profession> createProfession(String name, String description, String iconUrl) {
+        Profession profession = professionService.addProfessions(name, description, iconUrl);
         return new ResponseEntity<>(profession, HttpStatus.OK);
+    }
 
+    @GetMapping(value = "/get-all")
+    public ResponseEntity<List<Profession>> getAllProfessions(){
+        List<Profession> professions = professionService.getProfessions();
+        if(professions != null)
+            return new ResponseEntity<>(professions, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/get")

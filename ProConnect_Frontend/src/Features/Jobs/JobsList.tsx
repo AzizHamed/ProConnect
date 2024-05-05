@@ -70,7 +70,7 @@ const [job, setjob] = useState<Job | undefined> (undefined)
 
                           <ProButton text={"Send Offer"} onPress={()=>{
                           
-                            dispatch(setChat({receiverUserName: job.owner.name.firstName + " " + job.owner?.name.lastName, ReceiverEmail: job.owner?.email, openModal: true, receiverUser: job.owner, job: job}))
+                            dispatch(setChat({receiverUserName: job.owner.name.firstName + " " + job.owner?.name.lastName, ReceiverEmail: job.owner?.email, openModal: true, receiverUser: job.owner, job: job, receiverPhotoUrl: job.owner?.photoUrl}))
                             navigation.navigate("Chats")
                           }}/>
                           <ProButton text={"Get best Offer"} onPress={()=>{

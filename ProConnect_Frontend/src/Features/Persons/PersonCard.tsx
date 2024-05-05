@@ -5,6 +5,7 @@ import { Colors } from 'react-native-ui-lib';
 import { Rating } from 'react-native-ratings';
 import { AirbnbRating } from 'react-native-elements';
 import ProButton from '../../Components/Controls/ProButton';
+import ProfileImage from '../../Components/Layout/ProfileImage';
 
 interface PersonCardProps {
   imageurl: string;
@@ -24,10 +25,12 @@ const PersonCard: React.FC<PersonCardProps> = (props) => {
 
     <View style={props?.containerStyle}>
       <View style={props.cardContainerStyle}>
-        <Image
+        {/* <Image
           source={require('../../../gardner2.png')}
           style={props.imageStyle}
-        />
+        /> */}
+        <ProfileImage size={65} photoUrl={props.user.photoUrl}/>
+
         {props.componentsUnderImage}
       </View>
       <View style={styles.buttonsContainer}>

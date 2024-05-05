@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -33,8 +35,6 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private int numOfRates=0;
-
     @Column(unique = true)
     private String phoneNumber;
     private Date dateOfBirth;
@@ -44,16 +44,21 @@ public class User {
 
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
     private List<Review> reviewsReceived;
+    @Transient
+    private float averageRating;
+    @Transient
+    private int ratingsCount;
+    @Transient
+    private double experience;
 
-    private double rating=0;
-
-    private int experience=0;
+    private double rating;
+    private int numOfRates;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role>  roles;
+    private List<Role> roles;
 
 
     @JoinColumn(
@@ -75,13 +80,22 @@ public class User {
 
     private String photoUrl;
 
-
-
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<UserProfession> userProfessions;
 
     @Enumerated(EnumType.STRING)
     private WorkAreas workAreas;
 
+    public double getExperience() {
+        if(userProfessions.isEmpty())
+            return 0;
+
+        UserProfession userProfession = userProfessions.get(0);
+        LocalDate startDate = userProfession.getStartDate();
+        LocalDate now = LocalDate.now();
+        // Calculate difference in years between now and startDate as a double
+        return now.getYear() - startDate.getYear();
+    }
 
 //    @JsonIgnore
 //    @JsonManagedReference
