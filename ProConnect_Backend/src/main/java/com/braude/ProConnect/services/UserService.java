@@ -189,7 +189,10 @@ public class UserService {
         Profession profession = professionService.getProfessionByName(professionName);
         List<UserProfession> userProfessions = userProfessionsRepository.findAllByProfession(profession);
         List<User> users = userProfessions.stream().map(UserProfession::getUser).toList()
-                .stream().filter(user -> user.getWorkAreas().equals(workAreas)).toList();
+                .stream().filter(user -> {
+                    if(workAreas == null) return false;
+                    return user.getWorkAreas().equals(workAreas);
+                }).toList();
 
         Searches searches = searchesRepository.findAll().get(0);
         searches.setSearches(searches.getSearches()+1);
