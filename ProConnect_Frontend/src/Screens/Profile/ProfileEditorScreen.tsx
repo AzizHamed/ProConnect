@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, setUserAccount } from '../../Services/Redux/Slices/AuthSlice';
@@ -21,6 +21,7 @@ import ProDatePicker from '../../Components/Controls/ProDatePicker';
 import ValidatedDropDown from '../../Components/Controls/ValidatedDropdown';
 import ProChipInput from '../../Components/Controls/ProChipInput';
 import ProLoading from '../../Components/Layout/ProLoading';
+import { Colors } from 'react-native-ui-lib';
 
 const ProfileEditorScreen: React.FC = () => {
   const isWeb = IS_WEB();
@@ -75,12 +76,12 @@ const ProfileEditorScreen: React.FC = () => {
     label: profession.name,
   })) || [];
 
-  const workAreas = [ 
-    {label: "North", value: "North" },
-                    {label: "Haifa", value: "Haifa"},
-                    {label: "Center", value: "Center"},
-                    {label: "BeerShevaa", value: "BeerShevaa"},
-                    {label: "South", value: "South"}
+  const workAreas = [
+    { label: "North", value: "North" },
+    { label: "Haifa", value: "Haifa" },
+    { label: "Center", value: "Center" },
+    { label: "BeerShevaa", value: "BeerShevaa" },
+    { label: "South", value: "South" }
   ]
 
 
@@ -109,7 +110,7 @@ const ProfileEditorScreen: React.FC = () => {
   const isProfessionalUser: boolean = (selectedRoleIndex == 1 || (user && user.roles !== null && user.roles !== undefined && user?.roles.length > 0 && user.roles[0].code === "PRO")) || false;
 
   const setProfessionDate = (date: Date) => {
-    if(date !== null || userProfession !== null || userProfession !== undefined) {
+    if (date !== null || userProfession !== null || userProfession !== undefined) {
       const newDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('/', '-');
       console.log('Date', newDate)
       setUserProfession({ ...userProfession, startDate: newDate });
@@ -153,13 +154,13 @@ const ProfileEditorScreen: React.FC = () => {
     console.log(JSON.stringify(updateProfileRequest));
     setIsLoading(true);
     updateProfile(updateProfileRequest).unwrap()
-    .then((res) => {
+      .then((res) => {
         setIsLoading(false);
         let updatedUser = res;
         dispatch(setUserAccount(updatedUser as User));
         navigation.reset({ index: 0, routes: [{ name: "Main" }] });
       }).
-      catch((error) => { console.log(error); setError(error.message); setIsLoading(false);});
+      catch((error) => { console.log(error); setError(error.message); setIsLoading(false); });
   }
 
   const cancel = async () => {
@@ -170,12 +171,11 @@ const ProfileEditorScreen: React.FC = () => {
     // navigation.dispatch(DrawerActions.closeDrawer());
   }
 
-  if(isLoading) return <BackgroundView children={(<ProLoading/>)}/>
+  if (isLoading) return <BackgroundView children={(<ProLoading />)} />
 
   return (
     <BackgroundView hasScroll children={(
-      <View style={{ alignItems: "center", paddingTop: 20 }} onTouchStart={()=>{Keyboard.dismiss();}}>
-        {/* <ProHeader text={"Edit Profile"} headerType={HeaderType.H3}/> */}
+      <View style={{ alignItems: "center", paddingTop: 20 }} onTouchStart={() => { Keyboard.dismiss(); }}>
         <ProExpandableView title='Personal Information' height={320 + (user?.accountStatus === 'SETUP' ? 75 : 0)} isInitiallyExpanded
           children={
             (
@@ -236,29 +236,28 @@ const ProfileEditorScreen: React.FC = () => {
             )
           }
         />
-        { isProfessionalUser &&
+        {isProfessionalUser &&
           <ProExpandableView title='Profession' height={200 + chipComponentHeight + 110} isInitiallyExpanded
             children={
               (
                 <View style={{ alignItems: 'center' }}>
-                  <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.' 
-                  values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id}/>
-                  <ValidatedDropDown setIsValid={setIsDropdownValid2} triggerValidation={triggerValidation} control={control} errorMessage='You must select a work area.' 
-                  values={workAreas} setValue={setSelectedWorkArea} selectedValue={"North"}/>
-                  
+                  <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.'
+                    values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id} leftIcon={
+                      <Image resizeMode='contain'
+                        style={{ width: 25, height: 25, marginLeft: 10 }}
+
+                        source={{ uri: userProfession.profession?.iconUrl || '' }}
+                        tintColor={Colors.black}
+                      />
+                    } />
+                  <ValidatedDropDown setIsValid={setIsDropdownValid2} triggerValidation={triggerValidation} control={control} errorMessage='You must select a work area.'
+                    values={workAreas} setValue={setSelectedWorkArea} selectedValue={"North"} />
+
                   <ProDatePicker date={userProfession.startDate} control={control} name={'When did you start working in this field?'} placeholder='Start Date' setDateValue={setProfessionDate} />
                   <ProChipInput label='Which services do you offer?' items={userProfession.services} placeholder='Enter new service...'
                     setComponentHeight={setChipComponentHeight}
                     onAddItem={addService} onRemoveItem={removeService}
                   />
-
-
-                  {/* <Image resizeMode='contain'
-                  style={{ width: 50, height: 50 }}
-
-                  source={{ uri: 'https://res.cloudinary.com/hcti/image/fetch/c_limit,f_auto,q_auto:good,w_800/https://docs.htmlcsstoimage.com/assets/images/cat.png' }}
-                  tintColor={Colors.secondary}
-                /> */}
                 </View>
               )
             }
