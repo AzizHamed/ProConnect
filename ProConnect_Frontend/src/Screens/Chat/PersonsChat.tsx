@@ -7,7 +7,7 @@ import { useGetAllUsersQuery, useGetUsersByEmailQuery } from '../../Services/Red
 import { Colors } from 'react-native-ui-lib';
 import BackgroundView from '../../Components/Layout/BackgroundView';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 import { database, auth } from '../../Services/Firebase/Firebase';
 import { collection, orderBy, query, where, limit, onSnapshot,or, DocumentData } from 'firebase/firestore';
@@ -22,7 +22,6 @@ import Sound from 'react-native-sound';
 
 const PersonsChat = () => {
 
-  // const { data, isSuccess, isError, error, refetch } = useGetAllUsersQuery({});
 
   const [data1, setdata1] = useState()
 
@@ -47,12 +46,16 @@ const PersonsChat = () => {
 
   const messagesNotSeen = new Map<String,number>()
 
-
   const [messageNotSeenS, setmessageNotSeenS] = useState<Map<String,number>>()
 
   let lastMessages = new Map<String, DocumentData>()
 
   const [lastMessagesU, setlastMessagesU] = useState<Map<String, DocumentData>>()
+
+
+  // const enterToCode = useSelector(getSelectedEnterToCode)
+
+
 
   // const playNotificationSound = () => {
   //   const notificationSound = new Sound('C:\Users\azizh\OneDrive\שולחן העבודה\ProConnect\ProConnect\ProConnect_Frontend\src\Screens\Chat\whatsapp-message-for-iphone.mp3', Sound.MAIN_BUNDLE, (error) => {
@@ -90,11 +93,6 @@ const PersonsChat = () => {
     const unsubscribe = onSnapshot(results, querySnapshot => {
 
       querySnapshot.docChanges().forEach(change => {
-        
-
-        // playNotificationSound()
-
-
           if(auth.currentUser?.email !== change.doc.data().user._id){
 
             if(!lastMessages.has(change.doc.data().user._id))
@@ -103,8 +101,6 @@ const PersonsChat = () => {
 
           if(change.doc.data().createdAt > lastMessages.get(change.doc.data().user._id).createdAt)
             lastMessages.set(change.doc.data().user._id, change.doc.data())
-
-
           }
 
           else{
@@ -252,9 +248,14 @@ const PersonsChat = () => {
         
         return(
           <TouchableOpacity key={friend.id} style={{flexDirection : "row", justifyContent: "space-between" , paddingRight : 25}} onPress={()=>{
-            dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName, receiverPhotoUrl: friend.photoUrl}))
-            // messageNotSeenS?.set(friend.email, 0)
-            navigation.navigate("Chats")
+            dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName, receiverPhotoUrl: friend.photoUrl, receiverUser : friend}))
+            messagesNotSeen.set(friend.email, 0)
+            setmessageNotSeenS(messagesNotSeen)
+          setTimeout(() => {
+            navigation.navigate("Chats")}
+            ,1000)
+            
+            
           }} >
 
           <PersonCard imageurl={''} imageStyle={style.imageStyle} user={friend} componentsUnderImage={[]} cardContainerStyle={style.cardContainer1} additionalComponents={[

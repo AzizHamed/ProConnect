@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import JobPage from "../Features/Jobs/JobPage";
 import { setPersonsPage } from "../Services/Redux/Slices/PersonsPageSlice";
 import UserJobs from "../Screens/UserJobs";
+import { selectUser } from "../Services/Redux/Slices/UserSlice";
 
 const MainDrawer = createDrawerNavigator();
 interface MainDrawerProps {
@@ -125,7 +126,26 @@ export const MainDrawerScreen: React.FC<MainDrawerProps> = (props) => {
                   title: 'Profile',
                   drawerIcon: () => (
                     <AntDesign name="profile" size={20} color="#808080" />                    
-      )}} />
+      )}}
+      listeners={{
+        drawerItemPress: (e) => {
+          dispatch(selectUser(null))
+        }
+      }}
+       />
+
+      {/* <MainDrawer.Screen
+        name="Friends"
+        options={{ headerShown: false }} listeners={{
+          tabPress: (e) => {
+            dispatch(setPersonsPage({ComponentType : "ProButton"}))
+          },
+        }}>
+          
+      {(props) => <PersonsPage   />}
+
+</MainDrawer.Screen> */}
+
 
       <MainDrawer.Screen name="ProfileEditor" component={ProfileEditorScreen} options={{ drawerItemStyle: { display: "none" }, title: 'Profile', headerLeft: backButton }} />
       <MainDrawer.Screen name="Job" component={JobPage} options={{ drawerItemStyle: { display: "none" }, headerLeft: backButton }} />       

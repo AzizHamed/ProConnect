@@ -17,7 +17,7 @@ import {
 } from 'firebase/firestore';
 import { listFiles,storage ,database, auth, uploadSelectedFiles } from '../../Services/Firebase/Firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedChatEmail, getSelectedChatModal, getSelectedReceiverUserName } from '../../Services/Redux/Slices/ChatSlice';
+import { getSelectedChatEmail, getSelectedChatModal, getSelectedReceiverUser, getSelectedReceiverUserName } from '../../Services/Redux/Slices/ChatSlice';
 import ModalD from '../../Features/Persons/ModalD';
 import { User } from '../../Services/Redux/Api';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -37,8 +37,9 @@ import { useNavigation } from '@react-navigation/native';
 import { setFullScreenMap } from '../../Services/Redux/Slices/FullScreenMapSlice';
 import LocationModal from './LocationModal';
 import * as Contacts from 'expo-contacts';
-import * as DocumentPicker from 'expo-document-picker';
 import ContactsModal from './ContactsModal';
+import { setPersonChat } from '../../Services/Redux/Slices/PersonChatSlice';
+import { selectUser } from '../../Services/Redux/Slices/UserSlice';
 
 
 
@@ -82,11 +83,31 @@ const Chat: React.FC<ChatProps> = (props) => {
 
   const [VisibleContactModal, setVisibleContactModal] = useState(false)
 
+  const receiverUser1 = useSelector(getSelectedReceiverUser)
 
+
+  // const reRenderPersonChat = useSelector(getSelectedReRenderFunction)
+
+  dispatch(selectUser(receiverUser1))
 
   useEffect(() => {
     filesRef.current = selectedFiles;
+    // dispatch(setPersonChat({enterToCode : true}))
+    // if(reRenderPersonChat!== undefined)
+    // reRenderPersonChat(true)
   }, [selectedFiles]);
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     // Trigger re-render of PersonsChat component when navigating to Chats screen
+  //     // Update the reRender state variable to true
+  //     // This will cause the PersonsChat component to re-render
+  //     console.log('Navigated to Chats screen');
+  //     setReRender(true);
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
 
 
   // useEffect(() => {

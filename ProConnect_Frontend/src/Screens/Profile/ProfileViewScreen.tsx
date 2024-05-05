@@ -19,12 +19,16 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { getSelectedUser } from '../../Services/Redux/Slices/UserSlice';
 import JobsTable from '../../Features/Jobs/JobsTable';
 import ProTable from '../../Components/Layout/ProTable';
+import { getSelectedReceiverUser } from '../../Services/Redux/Slices/ChatSlice';
 
 const ProfileViewScreen: React.FC = () => {
   const navigation = useNavigation();
   const loggedInUser = useSelector(getUserAccount);
   const selectedUser = useSelector(getSelectedUser);
   const user = selectedUser !== null ? selectedUser : loggedInUser;
+
+  console.log(user)
+  // const receiverUser = useSelector();
   const { data: userProfessionsData, isLoading: isLoadingUserProfessionsData } = useGetUserProfessionsQuery({userId: user?.id});
   // const { data: userJobsData } = useGetUserJobsByIdQuery({userId: user?.id || ''});
   const isWeb = IS_WEB();

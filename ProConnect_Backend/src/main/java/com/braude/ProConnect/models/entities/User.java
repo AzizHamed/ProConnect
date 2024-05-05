@@ -51,8 +51,8 @@ public class User {
     @Transient
     private double experience;
 
-    private double rating;
-    private int numOfRates;
+    private double rating=0;
+    private int numOfRates=0;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

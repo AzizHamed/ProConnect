@@ -11,6 +11,7 @@ import { formatDateString } from "../../Utility/Formatter";
 import BackgroundView from "../../Components/Layout/BackgroundView";
 import JobCard from "./JobCard";
 import ProButton from "../../Components/Controls/ProButton";
+import { setChat } from "../../Services/Redux/Slices/ChatSlice";
 
 function generateCardChildren(job: Job | null) {
   if (job == null)
@@ -36,18 +37,22 @@ const JobPage: React.FC = () => {
   const children = generateCardChildren(job);
   const defaultJob: Job = { title: "", description: "" };
   const dispatch = useDispatch();
+ 
   useEffect(() => {
     navigation.addListener("beforeRemove", (e) => {
       dispatch(selectJob(null));
     }),
       [navigation];
+
+      
   });
+
+
   return (
     <BackgroundView children={(
       <ScrollView>
         <View style={styles.cardContainer} bg>
           <JobCard job={job}></JobCard>
-          <ProButton center text="Get Best Offer" onPress={()=>{console.log('Best Offer')}}></ProButton>
           {/* <ProCard children={children}></ProCard>
         <ProCard children={(
           <ProHeader text="Comments" headerType={HeaderType.H2}/>
