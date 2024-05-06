@@ -38,7 +38,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
             backgroundColor: Colors.backgroundDark
           }}
         >
-          <ProfileImage size={130} photoUrl={user?.photoUrl}/>
+          <ProfileImage size={130} user={user}/>
           <Text
             style={{
               fontSize: 20,

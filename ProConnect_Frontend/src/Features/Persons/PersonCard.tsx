@@ -8,7 +8,6 @@ import ProButton from '../../Components/Controls/ProButton';
 import ProfileImage from '../../Components/Layout/ProfileImage';
 
 interface PersonCardProps {
-  imageurl: string;
   imageStyle: ImageStyle
   user: User;
   componentsUnderImage: React.ReactNode[]
@@ -29,7 +28,7 @@ const PersonCard: React.FC<PersonCardProps> = (props) => {
           source={require('../../../gardner2.png')}
           style={props.imageStyle}
         /> */}
-        <ProfileImage size={65} photoUrl={props.user.photoUrl}/>
+        <ProfileImage size={65} user={props.user}/>
 
         {props.componentsUnderImage}
       </View>

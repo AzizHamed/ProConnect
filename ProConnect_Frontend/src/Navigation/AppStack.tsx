@@ -53,7 +53,7 @@ export const AppStackScreen: React.FC = () => {
                 navigation.navigate("OtherUserProfile");
               }} style={{flexDirection : "row", alignItems : "center"}}>
 
-                <ProfileImage size={40} photoUrl={receiverPhotoUrl} />
+                <ProfileImage size={40} user={user} />
 
                 <View style={{ width: "87%" , marginLeft : 15}}>
                   <Text style={{ color: "white" }}>{receiverName}</Text>

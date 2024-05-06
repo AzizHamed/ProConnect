@@ -19,7 +19,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { getSelectedUser } from '../../Services/Redux/Slices/UserSlice';
 import JobsTable from '../../Features/Jobs/JobsTable';
 import ProTable from '../../Components/Layout/ProTable';
-import { getSelectedReceiverUser } from '../../Services/Redux/Slices/ChatSlice';
+import { getSelectedReceiverUser, setChat } from '../../Services/Redux/Slices/ChatSlice';
 
 const ProfileViewScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -27,9 +27,10 @@ const ProfileViewScreen: React.FC = () => {
   const selectedUser = useSelector(getSelectedUser);
   const user = selectedUser !== null ? selectedUser : loggedInUser;
 
-  console.log(user)
+  const dispatch = useDispatch();
+
   // const receiverUser = useSelector();
-  const { data: userProfessionsData, isLoading: isLoadingUserProfessionsData } = useGetUserProfessionsQuery({userId: user?.id});
+  const { data: userProfessionsData, isLoading: isLoadingUserProfessionsData } = useGetUserProfessionsQuery({ userId: user?.id });
   // const { data: userJobsData } = useGetUserJobsByIdQuery({userId: user?.id || ''});
   const isWeb = IS_WEB();
 
@@ -50,10 +51,14 @@ const ProfileViewScreen: React.FC = () => {
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count
-    if (selectedUser !== null && loggedInUser?.id !== selectedUser?.id) {
+    if (selectedUser !== null && loggedInUser?.id !== user?.id) {
       navigation.setOptions({
         headerRight: () => (
-          <Entypo size={24} style={{ marginRight: 20 }} name="chat" onPress={() => navigation.navigate('ProfileEditor')} />
+
+          <Entypo size={24} style={{ marginRight: 20 }} name="chat" onPress={() => {
+            dispatch(setChat({ receiverUserName: user?.name.firstName + " " + user?.name.lastName, ReceiverEmail: user?.email, openModal: false, receiverUser: user, receiverPhotoUrl: user?.photoUrl }))
+            navigation.navigate('Chats');
+          }} />
         ),
       });
     }
@@ -64,7 +69,7 @@ const ProfileViewScreen: React.FC = () => {
         ),
       });
     }
-  }, [navigation]);
+  }, [navigation, user]);
 
 
   const ContactInfo = <View invisible style={horizontalMargin}>
@@ -89,7 +94,7 @@ const ProfileViewScreen: React.FC = () => {
 
   const BasicInfo =
     <View row width={"95%"} invisible centerH style={horizontalMargin}>
-      <ProfileImage photoUrl={user?.photoUrl} size={110} />
+      <ProfileImage user={user} size={110} navigateToProfileDisabled />
       <View invisible centerV marginL-25>
         <Text bold h4>{`${user?.name.firstName + " " + user?.name.lastName}`}</Text>
         <Text bold>{userProfession !== undefined ? professionName : "Client"}</Text>
@@ -100,31 +105,31 @@ const ProfileViewScreen: React.FC = () => {
 
 
   return (
-    <BackgroundView  children={(
+    <BackgroundView children={(
       <ScrollView>
-        
-      <View bg style={styles.container} paddingT-30 center>
-        <View row={isWeb} spread={isWeb} invisible width={"100%"} center>
-          {BasicInfo}
-          <View height={2} width={"95%"} marginV-20></View>
-          {ContactInfo}
-        </View>
-        {user?.roles && user.roles[0].code==="HO" && <JobsTable userId={user?.id}/>}
-        {user?.workAreas && <Text>Available in {user?.workAreas} area</Text>}
-        {user?.roles && user.roles[0].code==="PRO" && <ProTable title='Services' rows={userProfession?.services || []}/>}
-        {/* 
+
+        <View bg style={styles.container} paddingT-30 center>
+          <View row={isWeb} spread={isWeb} invisible width={"100%"} center>
+            {BasicInfo}
+            <View height={2} width={"95%"} marginV-20></View>
+            {ContactInfo}
+          </View>
+          {user?.workAreas && <Text>Available in the {user?.workAreas} area</Text>}
+          {user?.roles && user.roles[0].code === "HO" && <JobsTable userId={user?.id} />}
+          {user?.roles && user.roles[0].code === "PRO" && <ProTable title='Services' rows={userProfession?.services || []} />}
+          {/* 
         <ProTextView text={`Name`} isLabel/>
         <ProTextView text={`Phone`} isLabel/> */}
 
-        {
-        loggedInUser?.id === user?.id &&
-        <ProButton marginT-20
-          text={"Edit"}
-          onPress={edit}
-        />
+          {
+            loggedInUser?.id === user?.id &&
+            <ProButton marginT-20
+              text={"Edit"}
+              onPress={edit}
+            />
 
-    }
-      </View>
+          }
+        </View>
       </ScrollView>
 
     )}

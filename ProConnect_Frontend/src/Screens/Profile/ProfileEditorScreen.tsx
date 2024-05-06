@@ -182,7 +182,7 @@ const ProfileEditorScreen: React.FC = () => {
               <View style={{ alignItems: "center" }}>
 
                 <View style={{ alignItems: 'center', alignSelf: 'center', width: 150 }}>
-                  <ProfileImage photoUrl={selectedProfilePictureUri} size={125} />
+                  <ProfileImage user={user} size={125} navigateToProfileDisabled/>
                   <ProIconButton displayBackground ionicon ioniconName="camera" showAddIcon onPress={() => { clear(); selectPictures('GALLERY'); }} style={{ position: 'absolute', right: 5, bottom: 0 }} />
                 </View>
                 <ProTextView text={`${user?.email}`} />

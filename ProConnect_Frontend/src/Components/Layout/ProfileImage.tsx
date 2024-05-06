@@ -1,22 +1,37 @@
-import { Image, ImageStyle } from 'react-native'
+import { Image, ImageStyle, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { User } from '../../Services/Redux/Api';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { selectUser } from '../../Services/Redux/Slices/UserSlice';
 
 interface ProfileImageProps {
     size?: number;
-    photoUrl?: string;
     imageStyle?: ImageStyle;
+    user: User;
+    navigateToProfileDisabled?: boolean;
 }
 
 const ProfileImage: React.FC<ProfileImageProps> = (props) => {
-    const imageSource = { uri: (props.photoUrl !== undefined && props.photoUrl !== null && props.photoUrl !== '') ? props.photoUrl : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png' };
+    const user = props.user;
+    const photoUrl = user.photoUrl;
+    const imageSource = { uri: (photoUrl !== undefined && photoUrl !== null && photoUrl !== '') ? photoUrl : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png' };
     const size = props.size || 130;
     const style = props.imageStyle || { height: size, width: size, borderRadius: size / 2 }
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
     return (
+        <TouchableOpacity onPress={()=>{
+            if(props.navigateToProfileDisabled) return;
+            dispatch(selectUser(user));
+            navigation.navigate('Profile');
+        }}>
         <Image 
             source={imageSource}
             style={style}
             
-        />
+            />
+        </TouchableOpacity>
     )
 }
 
