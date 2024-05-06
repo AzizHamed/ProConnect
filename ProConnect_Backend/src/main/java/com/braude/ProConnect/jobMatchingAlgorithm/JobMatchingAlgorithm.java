@@ -11,7 +11,7 @@ public class JobMatchingAlgorithm {
     private final double ratingWeight = 0.4;
     private final double experienceWeight = 0.3;
 //    private final double distanceWeight = 0.2;
-    private final double priceWeight = 0.1;
+    private final double priceWeight = 0.2;
 
 
 

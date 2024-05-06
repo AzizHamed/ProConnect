@@ -179,6 +179,17 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Professions"],
       }),
+      createProfessions: build.mutation<
+        CreateProfessionsApiResponse,
+        CreateProfessionsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/professions/create-professions`,
+          method: "POST",
+          body: queryArg.body,
+        }),
+        invalidatesTags: ["Professions"],
+      }),
       postJobs: build.mutation<PostJobsApiResponse, PostJobsApiArg>({
         query: (queryArg) => ({
           url: `/jobs/post`,
@@ -187,6 +198,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Jobs"],
       }),
+      getBestOffer: build.mutation<GetBestOfferApiResponse, GetBestOfferApiArg>(
+        {
+          query: (queryArg) => ({
+            url: `/jobOffers/getBestOffer`,
+            method: "POST",
+            body: queryArg.job,
+          }),
+          invalidatesTags: ["JobOffers"],
+        }
+      ),
       postJobOffer: build.mutation<PostJobOfferApiResponse, PostJobOfferApiArg>(
         {
           query: (queryArg) => ({
@@ -327,13 +348,6 @@ const injectedRtkApi = api
         }),
         providesTags: ["Jobs"],
       }),
-      getBestOffer: build.query<GetBestOfferApiResponse, GetBestOfferApiArg>({
-        query: (queryArg) => ({
-          url: `/jobOffers/getBestOffer`,
-          params: { job: queryArg.job },
-        }),
-        providesTags: ["JobOffers"],
-      }),
       init: build.query<InitApiResponse, InitApiArg>({
         query: () => ({ url: `/init` }),
         providesTags: ["test-controller"],
@@ -422,9 +436,17 @@ export type CreateProfessionApiArg = {
   description: string;
   iconUrl: string;
 };
+export type CreateProfessionsApiResponse = /** status 200 OK */ Profession[];
+export type CreateProfessionsApiArg = {
+  body: Profession[];
+};
 export type PostJobsApiResponse = /** status 200 OK */ Job;
 export type PostJobsApiArg = {
   createJobRequest: CreateJobRequest;
+};
+export type GetBestOfferApiResponse = /** status 200 OK */ JobOffer;
+export type GetBestOfferApiArg = {
+  job: Job;
 };
 export type PostJobOfferApiResponse = unknown;
 export type PostJobOfferApiArg = {
@@ -484,10 +506,6 @@ export type GetJobsApiResponse = /** status 200 OK */ PageJob;
 export type GetJobsApiArg = {
   jobPage: JobPage;
   jobSearchCriteria: JobSearchCriteria;
-};
-export type GetBestOfferApiResponse = /** status 200 OK */ JobOffer;
-export type GetBestOfferApiArg = {
-  job: Job;
 };
 export type InitApiResponse = unknown;
 export type InitApiArg = void;
@@ -578,6 +596,7 @@ export type UpdatePersonalInfoRequest = {
   accountStatus?: "SETUP" | "ACTIVE" | "DISABLED";
   roles?: Role[];
   photoUrl?: string;
+  workAreas?: "North" | "Haifa" | "Center" | "BeerShevaa" | "South";
 };
 export type UpdateProfessionsRequest = {
   professions?: UserProfession[];
@@ -637,10 +656,10 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
+  unpaged?: boolean;
+  paged?: boolean;
   pageNumber?: number;
   pageSize?: number;
-  paged?: boolean;
-  unpaged?: boolean;
 };
 export type PageJob = {
   totalElements?: number;
@@ -649,9 +668,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
-  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
+  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -699,7 +718,9 @@ export const {
   useCreateRoleMutation,
   useCreatePropertyMutation,
   useCreateProfessionMutation,
+  useCreateProfessionsMutation,
   usePostJobsMutation,
+  useGetBestOfferMutation,
   usePostJobOfferMutation,
   useGetUsersByEmailQuery,
   useGetAllUsersNumberQuery,
@@ -719,7 +740,6 @@ export const {
   useGetUserJobsQuery,
   useGetUserJobsByIdQuery,
   useGetJobsQuery,
-  useGetBestOfferQuery,
   useInitQuery,
   useGetAllArticlesQuery,
 } = injectedRtkApi;

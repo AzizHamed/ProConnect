@@ -120,7 +120,7 @@ export const sort = [
 
 
 export const dataProfessions2 = [
-  { label: 'Carpetner', value:'1', uri : 'https://www.svgrepo.com/show/103746/carpenter.svg', component: CarpenterIcon },
+  { label: 'Carpenter', value:'1', uri : 'https://www.svgrepo.com/show/103746/carpenter.svg', component: CarpenterIcon },
   { label: 'Painter', value: '2', uri : 'https://www.svgrepo.com/show/366776/painter.svg' , component: PainterIcon},
   { label: 'Constructor', value: '3', uri : 'https://www.svgrepo.com/show/65391/constructor-with-hard-hat-protection-on-his-head.svg', component: ConstructorIcon},
   { label: 'Electrical', value: '4', uri : 'https://www.svgrepo.com/show/308571/electrical-repair-kit.svg', component: ElectricianIcon },

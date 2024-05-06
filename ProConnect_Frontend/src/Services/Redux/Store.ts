@@ -10,6 +10,8 @@ import { fetchUserDataMiddleware } from "./fetchUserDataMiddleware";
 import ChatReducer from "./Slices/ChatSlice";
 import SortByReducer from "./Slices/SortBySlice";
 import FullMapScreenReducer from "./Slices/FullScreenMapSlice";
+import PersonChatReducer from "./Slices/PersonChatSlice";
+
 
 export const store = configureStore({
     reducer: {
@@ -19,6 +21,7 @@ export const store = configureStore({
         job: JobReducer,
         user: UserReducer,
         PersonsPage : PersonsPageReducer,
+        PersonChat : PersonChatReducer,
         FullMapScreen : FullMapScreenReducer,
         SortBy : SortByReducer,
         dimension: DimensionReducer,

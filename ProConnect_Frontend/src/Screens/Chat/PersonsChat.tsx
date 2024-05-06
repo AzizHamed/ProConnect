@@ -176,7 +176,7 @@ const PersonsChat = () => {
   
   
 
-  let chatNumber = users === undefined ? 0 : users.length
+  let chatNumber = users === undefined || users.length===0 ? 1 : users.length
   const style = style1(chatNumber);
 
 
@@ -227,8 +227,18 @@ const PersonsChat = () => {
    
 
 
+  
+
 
     <View style={style.chatPeople}>
+      
+
+    {data1 === undefined || data1.length === 0 && 
+    <View style={{alignItems : "center", justifyContent : "center", height : "100%"}}>
+     <Text style={{alignSelf : "center",alignItems : "center", justifyContent : "center", color : Colors.textPrimary, fontSize : 20, fontWeight : '500'}}>No chats</Text> 
+     </View>
+     }
+
       {data1?.slice().sort((a,b) => {
 
         if(lastMessagesU?.get(a.email).createdAt < lastMessagesU?.get(b.email).createdAt)
@@ -249,11 +259,11 @@ const PersonsChat = () => {
         return(
           <TouchableOpacity key={friend.id} style={{flexDirection : "row", justifyContent: "space-between" , paddingRight : 25}} onPress={()=>{
             dispatch(setChat({ReceiverEmail : friend.email , openModal : false, receiverUserName : friend.name.firstName + " " + friend.name.lastName, receiverPhotoUrl: friend.photoUrl, receiverUser : friend}))
-            messagesNotSeen.set(friend.email, 0)
-            setmessageNotSeenS(messagesNotSeen)
-          setTimeout(() => {
-            navigation.navigate("Chats")}
-            ,1000)
+            // messagesNotSeen.set(friend.email, 0)
+            // setmessageNotSeenS(messagesNotSeen)
+          
+            navigation.navigate("Chats")
+            
             
             
           }} >
@@ -280,14 +290,14 @@ const PersonsChat = () => {
       ]} containerStyle={style.containerStyle}/>
       
 
-{messageNotSeenS.get(friend.email) > 0 &&
+{/* {messageNotSeenS.get(friend.email) > 0 &&
 
           <View  style={{justifyContent : "center", alignItems : "center"}}  >
             <View style={{height : 25, width : 25, borderRadius : 12.5, backgroundColor : Colors.controlBackground, alignItems :"center",justifyContent : "center"}} >
               <Text style={{color : Colors.controlText}}>{messageNotSeenS.get(friend.email)}</Text>
             </View>
           </View>
-}
+} */}
           </TouchableOpacity>
         )
       })}
