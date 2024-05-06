@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @Tag(name = "JobOffers")
 public class JobOfferController {
-
-
     @Autowired
     private JobOfferService jobOfferService;
 
