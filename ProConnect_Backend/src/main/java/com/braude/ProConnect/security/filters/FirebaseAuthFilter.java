@@ -1,5 +1,6 @@
 package com.braude.ProConnect.security.filters;
 
+import com.braude.ProConnect.config.SecurityConfig;
 import com.braude.ProConnect.security.authentications.FirebaseAuthentication;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -14,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -32,7 +35,14 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        System.out.println("Security: In class FirebaseAuthFilter");
+        String requestURI = request.getRequestURI();
+        if(requestURI.contains("users/create")
+                || requestURI.contains("users/exists")
+                || requestURI.equals("/users/get")
+                || requestURI.contains("roles/get-roles")){
+            filterChain.doFilter(request, response);
+            return;
+        }
         var accessToken = request.getHeader("Firebase_Authorization");
         if (accessToken != null) {
             try {

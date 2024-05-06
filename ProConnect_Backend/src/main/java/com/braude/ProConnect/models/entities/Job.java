@@ -27,10 +27,10 @@ public class Job {
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User owner;
-    @JoinColumn(name = "property_id", referencedColumnName = "property_id")
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Property property;
 
+//    @JoinColumn(name = "property_id", referencedColumnName = "property_id")
+//    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    private Property property;
 
     private OffsetDateTime datePosted;
 
@@ -56,7 +56,7 @@ public class Job {
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "job_photos", joinColumns = @JoinColumn(name = "job_id"))
-    @Column(name = "photo_url", nullable = false)
+    @Column(name = "photo_url", nullable = false, length = 1000)
     private List<String> photos;
 
     @OneToMany(mappedBy = "job")
@@ -68,6 +68,11 @@ public class Job {
     inverseJoinColumns = @JoinColumn(name = "profession_id", referencedColumnName = "profession_id"))
     private List<Profession> neededProfessions;
 
+
+
+//    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY)
+//    private List<JobOffer> jobOffers;
+
     private int numberOfReports=0;
 
 
@@ -76,11 +81,23 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Job job = (Job) o;
-        return id == job.id && Double.compare(job.budget, budget) == 0 && numberOfReports == job.numberOfReports && Objects.equals(owner, job.owner) && Objects.equals(property, job.property) && jobStatus == job.jobStatus && Objects.equals(title, job.title) && Objects.equals(description, job.description) && Objects.equals(likedUsers, job.likedUsers) && Objects.equals(commentedUsers, job.commentedUsers) && Objects.equals(neededProfessions, job.neededProfessions);
+        return id == job.id && Double.compare(job.budget, budget) == 0 && numberOfReports == job.numberOfReports && Objects.equals(owner, job.owner) && jobStatus == job.jobStatus && Objects.equals(title, job.title) && Objects.equals(description, job.description) && Objects.equals(likedUsers, job.likedUsers) && Objects.equals(commentedUsers, job.commentedUsers) && Objects.equals(neededProfessions, job.neededProfessions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, budget, owner, property, jobStatus, title, description, likedUsers, commentedUsers, neededProfessions, numberOfReports);
+        return Objects.hash(id, budget, owner, jobStatus, title, description, likedUsers, commentedUsers, neededProfessions, numberOfReports);
     }
+
+//    @Override
+//    public String toString() {
+//        return "Job{" +
+//                "id=" + id +
+//                ", budget=" + budget +
+//                ", datePosted=" + datePosted +
+//                ", jobStatus=" + jobStatus +
+//                ", title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                '}';
+//    }
 }

@@ -38,17 +38,19 @@ public class Profession {
     private String description;
 
     @NotNull
-    private String svg;
+    private String iconUrl;
 
+//    @NotNull
+//    @ManyToOne
+//    @JoinColumn(name = "category", referencedColumnName = "id")
+//    private Category category;
+//
 
-
-    public Profession(String name, String description, String svg) {
+    public Profession(String name, String description, String iconUrl) {
         this.name = name;
         this.description = description;
-        this.svg = svg;
+        this.iconUrl = iconUrl;
     }
-
-
 
 
     @Override

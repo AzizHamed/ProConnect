@@ -9,9 +9,9 @@ export function useImagePicker() {
   const [selectedFiles, setSelectedFiles] = useState<Set<SelectedFile>>(new Set());
   const [downloadUrls, setDownloadUrls] = useState<Set<string>>(new Set());
 
-  const selectPictures = async (type: "CAMERA" | "GALLERY", allowsMultipleSelection: boolean = false) => {
+  const selectPictures = async (type: "CAMERA" | "GALLERY", allowsMultipleSelection: boolean = false, mediaTypes: ImagePicker.MediaTypeOptions = ImagePicker.MediaTypeOptions.Images) => {
     const imagePickerOptions = {
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: mediaTypes,
       allowsMultipleSelection: allowsMultipleSelection,
       quality: 1,
     };

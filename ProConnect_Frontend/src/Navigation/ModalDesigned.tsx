@@ -8,8 +8,11 @@ import ProButton from '../Components/Controls/ProButton';
 import RNPickerSelect from 'react-native-picker-select';
 import { User } from '../Services/Redux/Api';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
+import { getSortBy } from '../Services/Redux/Slices/SortBySlice';
+import { Colors } from 'react-native-ui-lib';
 interface ModalDesignedProps {
-  visibleModal : ()=> void;
+  visibleModal : (bool : boolean)=> void;
   setRating : (rating : number)=>void
   setExperience : (experience : number)=>void
   setLocation : (location : string)=>void
@@ -17,28 +20,21 @@ interface ModalDesignedProps {
   experience : number
   rating : number
   location : string;
+  sortBy : string;
+  setSort : (sort : string)=>void
 }
+
 
 const ModalDesigned : React.FC<ModalDesignedProps> = (props) => {
 const [isFocusLocation, setisFocusLocation] = useState(false)
 const [Experience, setExperience] = useState([{label : '0+' , value : 0}]);
 const [Ratings, setRatings] = useState([{label : '0+' , value : 0}]);
 const [reset, setreset] = useState(false)
+
+const sort = useSelector(getSortBy)
+
 var rating = props.rating;
 var experience = props.experience;
-
-const dataLocation = [
-  { label: 'Haifa', value:'1' },
-  { label: 'Nazareth', value: '2' },
-  { label: 'Kfar yasif', value: '3' },
-  { label: 'Nahareya', value: '4' },
-  { label: 'Acre', value: '5' },
-  { label: 'Elat', value: '6' },
-  { label: 'Karmiel', value: '7' },
-  { label: 'Ramla', value: '8' },
-
-  
-];
 
 useEffect(() => {
   function createYears() {
@@ -77,26 +73,26 @@ useEffect(() => {
             <View style={styles.container}>
 
               <View style={styles.textAndComponentStyle}>
-
+{/* 
                 <View >
                   <Text style={{color : "white"}}>Location</Text>
-                  {!reset && <DesignedDropDown value={props.location} setValue={props.setLocation} dropDownData={dataLocation} leftIcon={<FontAwesome
+                  {!reset && <DesignedDropDown initialValue={props.location} setValue={props.setLocation} values={dataLocation} leftIcon={<FontAwesome
                   style={styles.icon}
                    color={isFocusLocation ? 'tomato' : 'black'}
                    name="map-marker"
                   size={20}
             />}/> }
-                  {reset &&<DesignedDropDown value={"choose location"} setValue={props.setLocation} dropDownData={dataLocation} leftIcon={ <FontAwesome
+                  {reset &&<DesignedDropDown initialValue={"choose location"} setValue={props.setLocation} values={dataLocation} leftIcon={ <FontAwesome
                   style={styles.icon}
                    color={isFocusLocation ? 'tomato' : 'black'}
                    name="map-marker"
                   size={20}
             />}/> }
                   
-                </View>
+                </View> */}
 
                 <View>
-                  <Text style={{color : "white"}}>Experience</Text>
+                  <Text style={{color : Colors.textPrimary}}>Experience</Text>
                   <RNPickerSelect
                       onValueChange={(value) => props.setExperience(value)}
                       items={Experience}
@@ -106,7 +102,7 @@ useEffect(() => {
 
 
                     <View>
-                  <Text style={{color : "white"}}>Rating</Text>
+                  <Text style={{color : Colors.textPrimary}}>Rating</Text>
                   <RNPickerSelect
                       onValueChange={(value) => props.setRating(value)}
                       items={Ratings}
@@ -117,11 +113,13 @@ useEffect(() => {
 
               </View>
 
-             
+              <View style={{alignItems : "center"}}>
+
 
               <ProButton text={"Continue"} onPress={()=>{
+                props.setSort(sort)
                 props.filterProfessionals();
-                props.visibleModal();
+                props.visibleModal(false);
                 }} />
 
             <ProButton text={"Reset"} onPress={()=>{
@@ -131,6 +129,9 @@ useEffect(() => {
                experience=0
                setreset(true);
                 }} />
+              </View>
+
+             
            
             
           </View>
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
   },
 
   textAndComponentStyle : {
-    height : 250,
+    height : 175,
      justifyContent : "space-between",
   },
 

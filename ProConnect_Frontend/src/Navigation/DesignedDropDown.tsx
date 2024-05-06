@@ -1,47 +1,48 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
-import {Animated, StyleSheet} from 'react-native'
-import { View } from 'react-native-ui-lib';
-import { Control } from 'react-hook-form';
+import { StyleProp, StyleSheet, ViewStyle} from 'react-native'
+import { View, Text, Colors } from 'react-native-ui-lib';
 
-import AntDesign from '@expo/vector-icons/AntDesign';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import EvilIcons from '@expo/vector-icons/AntDesign';
-interface DropDownProps {
-  control?: Control,
-  name?: string
-  value: string
-  dropDownData: {label : string, value :any}[]
-  leftIcon: any
-  setValue: (value : any) => void
-  setFocus?: (value : boolean) => void
-  webWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode,
-  mobileWidth?: number | 'auto' | `${number}%` | Animated.AnimatedNode,
+import { defaultWidthValues } from '../Constants/Values';
+export interface DropDownProps {
+  selectedValue?: any
+  values: {label: string, value: any}[]
+  leftIcon?: React.ReactElement
+  componentAfterDropdown?: React.ReactElement
+  setValue: (value: any) => void
+  setFocus?: (value: boolean) => void
   flexShrink?: boolean,
+  containerStyle?: StyleProp<ViewStyle>
+  
 }
 
 
 const DesignedDropDown : React.FC<DropDownProps> = (props) => {
 
 const [isFocus, setIsFocus] = useState(false);
-const [localValue, setLocalValue] = useState(props.value);
+const [localValue, setLocalValue] = useState(props.selectedValue || undefined);
+const width = defaultWidthValues();
+const style = props.containerStyle === undefined ? {height: 50,
+  width: width,
+  paddingHorizontal: 8,
+  backgroundColor:"white"} : props.containerStyle
 
 return (
-  <View flexS={props.flexShrink}>
+  <View width={"100%"} center invisible margin-5>
   <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+        style={[style, isFocus && { borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={props.dropDownData}
-        search
+        data={props.values}
+        search 
         maxHeight={300}
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? localValue : '...'}
         searchPlaceholder="Search..."
-        value={localValue}
+        value={localValue || props.selectedValue}
         onFocus={() => {if(props.setFocus) props.setFocus(true)}}
         onBlur={() => {if(props.setFocus) props.setFocus(false)}}
         onChange={item => {
@@ -52,9 +53,10 @@ return (
         }}
 
         renderLeftIcon={() => (
-          props.leftIcon
-        )}
+          props.leftIcon || <></>
+        )}        
       />
+  <View marginT-10 marginB-20 invisible style={{width:width}}>{props.componentAfterDropdown && props.componentAfterDropdown}</View>
   </View>
 )
 }
@@ -64,11 +66,6 @@ export default DesignedDropDown
 
 
 const styles = StyleSheet.create({
-  dropdown: {
-    height: 50,
-    paddingHorizontal: 8,
-    backgroundColor:"white",
-  },
   border:{
     borderColor: 'gray',
     borderWidth: 0.5,
@@ -81,9 +78,11 @@ const styles = StyleSheet.create({
   placeholderStyle: {
     color:"black",
     fontSize: 16,
+    paddingHorizontal: 8
   },
   selectedTextStyle: {
     fontSize: 16,
+    paddingHorizontal: 16
   },
   iconStyle: {
     width: 20,

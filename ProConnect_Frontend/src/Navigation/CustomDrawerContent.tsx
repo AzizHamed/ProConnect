@@ -5,16 +5,23 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { SafeAreaView } from "react-native";
-import { View, Image, Text } from "react-native-ui-lib";
+import { View, Image, Text, Colors } from "react-native-ui-lib";
 import { emailSignOut } from "../Services/Firebase/Firebase";
 import { useNavigation } from "@react-navigation/native";
 import { getUserAccount, getUserCredential, setUserCredential } from "../Services/Redux/Slices/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ProfileImage from "../Components/Layout/ProfileImage";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( props ) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector(getUserAccount);
+
+  function renderIcon(props : {focused: boolean, size: number, color: string}) {
+    return <MaterialIcons name="logout" size={props.size} color={props.color} />;
+  }
+
   return (
     <DrawerContentScrollView {...props}>
       {/* Your custom drawer header, if needed */}
@@ -28,16 +35,10 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
             alignItems: "center",
             borderBottomColor: "#f4f4f4",
             borderBottomWidth: 1,
+            backgroundColor: Colors.backgroundDark
           }}
         >
-          <Image
-            source={require("../../R.jpg")}
-            style={{
-              height: 130,
-              width: 130,
-              borderRadius: 65,
-            }}
-          />
+          {user && <ProfileImage size={130} user={user}/>}
           <Text
             style={{
               fontSize: 20,
@@ -71,6 +72,14 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ( prop
             routes: [{ name: 'Auth' }],
           });}).catch((error)=>{ console.log(error); })
         }}
+
+
+        
+        // icon={(props : {focused : boolean, size : number, color : string})=>{
+        //   return <MaterialIcons name="logout" size={props.size} color={props.color} />;
+        // }}
+
+        icon={renderIcon}
       />
     </DrawerContentScrollView>
   );

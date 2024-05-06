@@ -14,40 +14,33 @@ import { emailSignUp } from "../../Services/Firebase/Firebase";
 import { UserCredential } from "firebase/auth";
 import ProPopup from "../../Components/Layout/ProPopup";
 import { EMAIL_REGEX } from "../../Constants/Values";
-import { UserDetails, setUserAccount, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
+import { UserDetails, setUserCredential } from "../../Services/Redux/Slices/AuthSlice";
 import { useDispatch } from "react-redux";
-import { CreateUserApiArg, User, useCreateUserMutation } from "../../Services/Redux/Api";
-import { navigateToMainStack, navigateToProfileEditor, updateAuthState } from "./UpdateAuthState";
-import { User as FBUser } from "firebase/auth";
 import ProLoading from "../../Components/Layout/ProLoading";
-import { set } from "date-fns";
 
 const SignUpScreen: React.FC = () => {
-  const { control, handleSubmit, watch } = useForm();
+  const { control, handleSubmit, watch, formState: {isValid} } = useForm();
   const pwd = watch("password");
   const navigation = useNavigation();
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
   const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(false);
-
   const dispatch = useDispatch();
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-
 
   const onRegisterPressed = async (data: any) => {
     const { email, password } = data;
     setIsLoadingAuthState(true);
     emailSignUp(email, password).then(async (userCredential: UserCredential)=> {
-        const user = userCredential.user;
-        await updateAuthState(user, dispatch, navigation, true);         
-        console.log(user);
-        setResultText(user.email + ' Created!'|| 'Signed up')
-        setIsVisible(true);
+        // const user = userCredential.user;
+        // dispatch(setUserCredential(user as UserDetails));
+        // The rest of the sign up process is handled in the StartupScreen component - this part only handles the initial sign up process in Firebase
       }).catch((error: any) => {
         console.log(error);
-        setResultText(error.message)
-        setIsVisible(true);
+        // TODO: Error handling/notification
+        // setResultText(error.message)
+        // setIsVisible(true);
         setIsLoadingAuthState(false);  
     });
   };
@@ -58,7 +51,7 @@ const SignUpScreen: React.FC = () => {
 
   if(isLoadingAuthState){
     return (
-      <BackgroundView children={(
+      <BackgroundView hasSafeAreaView children={(
         <ProLoading/>
       )}></BackgroundView>
     )
@@ -66,7 +59,7 @@ const SignUpScreen: React.FC = () => {
 
 
   return (
-    <BackgroundView
+    <BackgroundView hasSafeAreaView
       children={
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{justifyContent: "center"}}>
           <View style={styles.root}>
@@ -117,8 +110,9 @@ const SignUpScreen: React.FC = () => {
                 textContentType="password"
                 ref={confirmPasswordRef}
               />
-
+              
               <ProButton
+                disabled={!isValid}
                 text="Register"
                 onPress={handleSubmit(onRegisterPressed)}
               />

@@ -28,16 +28,16 @@ const SignInScreen = () => {
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [resultText, setResultText] = useState('');
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, formState: { errors, isValid } } = useForm();
   
   // Auth state
   const [isLoadingAuthState, setIsLoadingAuthState] = useState<boolean>(true);
   const dispatch = useDispatch();
   const passwordRef = useRef(null);
 
-  useEffect(() => {
-    setupAuthStateListener(setIsLoadingAuthState, dispatch, navigation);
-  }, [])
+  // useEffect(() => {
+  //   setupAuthStateListener(setIsLoadingAuthState, dispatch, navigation);
+  // }, [])
 
   const onSignInPressed = async (data: any) => {
     const { email, password } = data;
@@ -49,13 +49,13 @@ const SignInScreen = () => {
     emailSignIn(email, password).then((userCredential: UserCredential)=> {
       const user = userCredential.user;      
       updateAuthState(user, dispatch, navigation);
-      setResultText(user.email + ' Logged in!'|| 'Logged In')
-      setIsVisible(true);
-      navigateToMainStack(navigation);
+      // setResultText(user.email + ' Logged in!'|| 'Logged In')
+      // setIsVisible(true);
+      // navigateToMainStack(navigation);
     }).catch((error: any) => {
       console.log(error);
-      setResultText(error.message)
-      setIsVisible(true);
+      // setResultText(error.message)
+      // setIsVisible(true);
   }) ;
     setLoading(false);
   };
@@ -69,15 +69,15 @@ const SignInScreen = () => {
   };
 
 
-  if(isLoadingAuthState){
-    return (
-      <BackgroundView children={(
-        <ProLoading/>
-      )}></BackgroundView>
-    )
-  }
+  // if(isLoadingAuthState){
+  //   return (
+  //     <BackgroundView hasSafeAreaView children={(
+  //       <ProLoading/>
+  //     )}></BackgroundView>
+  //   )
+  // }
   return (
-    <BackgroundView
+    <BackgroundView hasSafeAreaView
       children={
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.root} padding-20 paddingB-50 bg>
@@ -122,6 +122,7 @@ const SignInScreen = () => {
             />
 
             <ProButton
+              disabled={!isValid}
               text={loading ? "Loading..." : "Sign In"}
               onPress={handleSubmit(onSignInPressed)}
             />

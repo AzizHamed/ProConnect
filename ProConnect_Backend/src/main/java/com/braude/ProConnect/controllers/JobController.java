@@ -3,6 +3,7 @@ package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.models.entities.Comment;
 import com.braude.ProConnect.models.entities.Job;
+import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.requests.CreateJobRequest;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("jobs")
@@ -33,6 +36,7 @@ public class JobController {
 
     @PostMapping("/post")
     public ResponseEntity<Job> postJobs(@RequestBody CreateJobRequest createJobRequest){
+
         Job returnedJob = jobService.postJob(createJobRequest);
         return new ResponseEntity<>(returnedJob, HttpStatus.CREATED);
     }
@@ -43,6 +47,39 @@ public class JobController {
         return new ResponseEntity<>(jobService.getJobs(jobPage,jobSearchCriteria),
                 HttpStatus.OK);
     }
+   @GetMapping("/get-user-jobs")
+    public ResponseEntity<List<Job>> getUserJobs(){
+        return new ResponseEntity<>(jobService.getUserJobs(),
+                HttpStatus.OK);
+    }
+    @GetMapping("/get-user-jobs-id")
+    public ResponseEntity<List<Job>> getUserJobsById(String userId){
+        return new ResponseEntity<>(jobService.getUserJobs(userId),
+                HttpStatus.OK);
+    }
+    @GetMapping("/get-jobs-by-profession")
+    public ResponseEntity<List<Job>> getJobsByProfession(Long professionId){
+        return new ResponseEntity<>(jobService.getJobsByProfession(professionId), HttpStatus.OK);
+    }
+    @GetMapping("/get-jobs-by-user-profession")
+    public ResponseEntity<List<Job>> getJobsByUserProfession(){
+        return new ResponseEntity<>(jobService.getJobsByProfession(), HttpStatus.OK);
+    }
+    @GetMapping("/get-jobs-by-user-profession-workarea")
+    public ResponseEntity<List<Job>> getJobsByUserProfessionAndWorkArea(){
+        return new ResponseEntity<>(jobService.getJobsByProfessionAndWorkArea(), HttpStatus.OK);
+    }
+
+
+//    @GetMapping("/getJobByUser")
+//    public ResponseEntity<List<Job>> findJobByOwner(@RequestBody User owner){
+//        System.out.println("Owner " + owner);
+//        List<Job> jobs = jobService.getUserJobs(owner);
+//        if(jobs.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(jobs,HttpStatus.OK);
+//    }
 
     @PutMapping("/like")
     public String likePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull String userId){

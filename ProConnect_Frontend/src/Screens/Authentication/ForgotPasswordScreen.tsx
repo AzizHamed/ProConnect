@@ -10,7 +10,7 @@ import { EMAIL_REGEX } from "../../Constants/Values";
 import { sendResetPasswordEmail } from "../../Services/Firebase/Firebase";
 
 const ForgotPasswordScreen: React.FC = () => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, formState: {isValid} } = useForm();
   const navigation = useNavigation();
 
   const onSendPressed = async (data: any) => {
@@ -23,7 +23,7 @@ const ForgotPasswordScreen: React.FC = () => {
   };
 
   return (
-    <BackgroundView
+    <BackgroundView hasSafeAreaView
       children={
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.root}>
@@ -42,7 +42,7 @@ const ForgotPasswordScreen: React.FC = () => {
               }}
             />
 
-            <ProButton text="Send Password Reset E-mail" onPress={handleSubmit(onSendPressed)} />
+            <ProButton text="Send Password Reset E-mail" onPress={handleSubmit(onSendPressed)} disabled={!isValid}/>
 
             <ProButton text="Back to Sign in" onPress={onSignInPress} />
           </View>

@@ -1,15 +1,31 @@
 import { TouchableOpacity, View,Text,StyleSheet } from "react-native";
 import { SvgUri } from "react-native-svg";
 import { Colors } from "react-native-ui-lib";
+import SVGIconContainer from "./SVGIconContainer";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { setPersonsPage } from "../../Services/Redux/Slices/PersonsPageSlice";
 
 interface Item {
   label: string;
   value: string;
-  uri : string;
+  component: React.FC
 }
-const renderItem = ({ item }: { item: Item }) => (
+
+
+const renderItem = ({ item }: { item: Item }) => 
+  {
+    const navigation = useNavigation();
+
+    const dispatch = useDispatch()
+    return (
+   
+
     
-  <TouchableOpacity style={styles.pressable} onPress={()=>{alert(item?.label + "" + item?.value)}}>
+  <TouchableOpacity style={styles.pressable} onPress={()=>{
+    dispatch(setPersonsPage({ComponentType : "Rating"}))
+    navigation.navigate("PersonsPage")
+  }}>
     
     <View style={styles.autoCompleteItemsStyle}>
       <View style={{height:"100%", justifyContent :"center"}}>
@@ -17,35 +33,28 @@ const renderItem = ({ item }: { item: Item }) => (
       </View>
 
       <View style={{height:"100%", justifyContent :"center"}}>
+      <SVGIconContainer iconComponent={item.component} color={Colors.$backgroundDarkActive} width={40} height={40}/>
 
-      <SvgUri
+      {/* <SvgUri
       width="40"
       height="40"
       uri={item.uri}
       fill={Colors.$backgroundDarkActive}
-    />
+    /> */}
       
       </View>
-      
-
-     
     </View>
   </TouchableOpacity>
-);
+  )};
 
 export default renderItem
 
-const styles = StyleSheet.create({
-
-  
- 
- 
-
- 
+const styles = StyleSheet.create({ 
   pressable : {
     backgroundColor : "white",
-    paddingRight : 5,
+    paddingRight : 10,
     justifyContent : "center",
+    width:"100%",
   },
 
   autoCompleteItemsStyle: {

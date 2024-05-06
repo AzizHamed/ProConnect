@@ -2,10 +2,7 @@ package com.braude.ProConnect.services;
 
 
 import com.braude.ProConnect.exceptions.ProConnectException;
-import com.braude.ProConnect.models.entities.Comment;
-import com.braude.ProConnect.models.entities.Job;
-import com.braude.ProConnect.models.entities.Property;
-import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.entities.*;
 import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
@@ -18,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class JobService {
@@ -27,20 +25,22 @@ public class JobService {
     private final JobProposalRepository jobProposalRepository;
     private final JobCriteriaRepository jobCriteriaRepository;
     private final UserService userService;
-    private final PropertyService propertyService;
+//    private final PropertyService propertyService;
+    private final ProfessionRepository professionRepository;
     private final CommentRepository commentRepository;
     private final AuthenticationService authenticationService;
 
     @Autowired
     public JobService(JobRepository jobRepository, JobRepositoryPaging jobRepositoryPaging, JobProposalRepository jobProposalRepository,
-                      JobCriteriaRepository jobCriteriaRepository, PropertyService propertyService, UserService userService, CommentRepository commentRepository, AuthenticationService authenticationService) {
+                      JobCriteriaRepository jobCriteriaRepository, UserService userService, ProfessionRepository professionRepository, CommentRepository commentRepository, AuthenticationService authenticationService) {
         this.jobRepository = jobRepository;
         this.jobProposalRepository = jobProposalRepository;
         this.jobRepositoryPaging = jobRepositoryPaging;
         this.jobCriteriaRepository = jobCriteriaRepository;
 
-        this.propertyService = propertyService;
+//        this.propertyService = propertyService;
         this.userService = userService;
+        this.professionRepository = professionRepository;
         this.commentRepository = commentRepository;
         this.authenticationService = authenticationService;
     }
@@ -48,11 +48,13 @@ public class JobService {
     public Job postJob(CreateJobRequest createJobRequest){
         User user = authenticationService.getAuthorizedUser();
         Job job = createJobRequest.getJob();
-        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
-        if(property == null)
-            throw new ProConnectException("Invalid property id");
+        Profession profession = professionRepository.findById(createJobRequest.getProfession().getId()).get();
+//        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
+//        if(property == null)
+//            throw new ProConnectException("Invalid property id");
         job.setOwner(user);
-        job.setProperty(property);
+        job.setNeededProfessions(List.of(profession));
+//        job.setProperty(property);
 
         job.setDatePosted(OffsetDateTime.now());
         job.setJobStatus(JobStatus.PUBLISHED);
@@ -126,4 +128,43 @@ public class JobService {
         return comment;
     }
 
+    public List<Job> getUserJobs() {
+        User owner = authenticationService.getAuthorizedUser();
+        return jobRepository.findAllByOwner(owner);
+    }
+    public List<Job> getUserJobs(String userId) {
+        User owner = userService.getUser(userId);
+        return jobRepository.findAllByOwner(owner);
+    }
+
+    public List<Job> getJobsByProfession(Long professionId) {
+        Profession profession = professionRepository.findById(professionId).orElse(null);
+        if(profession == null)
+            throw new ProConnectException("Profession not found");
+        return jobRepository.findAllByNeededProfessions(profession);
+    }
+    public List<Job> getJobsByProfession() {
+        User user = authenticationService.getAuthorizedUser();
+        if(user.getUserProfessions().isEmpty())
+            throw new ProConnectException("User has no professions");
+        UserProfession userProfession = user.getUserProfessions().get(0);
+        Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
+        if(profession == null)
+            throw new ProConnectException("Profession not found");
+        return jobRepository.findAllByNeededProfessions(profession);
+    }
+
+    public List<Job> getJobsByProfessionAndWorkArea() {
+        User user = authenticationService.getAuthorizedUser();
+        if(user.getUserProfessions().isEmpty())
+            throw new ProConnectException("User has no professions");
+        UserProfession userProfession = user.getUserProfessions().get(0);
+        Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
+        if(profession == null)
+            throw new ProConnectException("Profession not found");
+        return jobRepository.findAllByNeededProfessionsAndOwnerWorkAreas(profession, user.getWorkAreas());
+    }
+//     public List<Job> findJobByOwner(User owner) {
+//         return jobRepository.findByOwner(owner);
+//     }
 }
