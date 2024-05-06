@@ -8,7 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { emailSignOut, webAuth } from '../../Services/Firebase/Firebase'
 import { UserDetails, setUserAccount, setUserCredential } from '../../Services/Redux/Slices/AuthSlice'
 import { api, CreateUserApiArg, GetUserApiArg, User } from '../../Services/Redux/Api'
-import { Text } from 'react-native-ui-lib'
+import { Text, View } from 'react-native-ui-lib'
 import ProButton from '../../Components/Controls/ProButton'
 
 const StartupScreen: React.FC = () => {
@@ -101,12 +101,12 @@ const StartupScreen: React.FC = () => {
 
   return (
     <BackgroundView hasSafeAreaView children={(
-      <>
+      <View invisible center style={{alignItems: 'center'}}>
         <ProHeader style={{ marginTop: 75 }} text='ProConnect' headerType={HeaderType.H1} center />
         <Text center marginT-50>Loading user data...</Text>
         <ProLoading displayLoadingMessage={false} />
         <ProButton onPress={emailSignOut} text={'Cancel'} center></ProButton>
-      </>
+      </View>
     )}></BackgroundView>
   )
 }
