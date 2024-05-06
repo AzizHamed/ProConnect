@@ -26,7 +26,7 @@ const ProTable: React.FC<ProTableProps> = (props) => {
                 {props.rows.map((row, rowIndex) => (
                     <View invisible key={rowIndex}>
                         <View invisible style={{ flexDirection: 'row' }}>
-                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} marginV-10>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderRadius: 10, alignItems: 'center' }} marginV-10>
                                 <Text flex marginL-10>{row}</Text>
                                 {props.onOpen && <TouchableOpacity onPress={() => { props.onOpen(rowIndex) }}>
                                     <Ionicons style={{ marginHorizontal: 5 }} size={20} name="open-outline" color={Colors.textPrimary} />
@@ -37,6 +37,7 @@ const ProTable: React.FC<ProTableProps> = (props) => {
                                 {props.onDelete && <TouchableOpacity onPress={() => { props.onDelete(rowIndex) }}>
                                     <Ionicons style={{ marginHorizontal: 5 }} name="trash" size={20} color={Colors.failure} />
                                 </TouchableOpacity>}
+                                {!props.onOpen && !props.onEdit && !props.onDelete && <Text>   </Text>}
                             </View>
 
                         </View>
