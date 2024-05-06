@@ -53,6 +53,7 @@ public class UserController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){
+
         User newUser = userService.createUser(user);
         if(newUser != null)
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);

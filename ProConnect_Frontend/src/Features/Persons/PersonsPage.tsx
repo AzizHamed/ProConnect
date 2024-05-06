@@ -26,6 +26,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getSortBy, setSortBy } from '../../Services/Redux/Slices/SortBySlice';
 import { setChat } from '../../Services/Redux/Slices/ChatSlice';
 import { database, auth } from '../../Services/Firebase/Firebase';
+import { getUserAccount } from '../../Services/Redux/Slices/AuthSlice';
 
 
 
@@ -34,7 +35,11 @@ import { database, auth } from '../../Services/Firebase/Firebase';
 
 const PersonsPage = () => {
   let profession = useSelector(getSelectedProfession);
-  const { data, isSuccess, isError, error, refetch } = useFindUserByProfessionQuery({ professionName: profession, workAreas: "North" });
+  let user = useSelector(getUserAccount);
+  console.log(profession)
+  const { data, isSuccess, isError, error, refetch } = useFindUserByProfessionQuery({ professionName: profession, workAreas: user?.workAreas });
+
+  console.log(data)
 
   const [modalVisible, setModalVisible] = useState(false);
   const [Professionals, setProfessionals] = useState(data)
@@ -224,7 +229,7 @@ const PersonsPage = () => {
               return (
                 <View>
                   <TouchableOpacity style={styles.touchableOpacityStyle} onPress={() => {
-                    dispatch(setChat({ ReceiverEmail: Professional.email, openModal: true, receiverUserName: Professional.name.firstName + " " + Professional.name.lastName, receiverPhotoUrl: Professional.photoUrl }))
+                    dispatch(setChat({ ReceiverEmail: Professional.email, openModal: false, receiverUserName: Professional.name.firstName + " " + Professional.name.lastName, receiverPhotoUrl: Professional.photoUrl, receiverUser : Professional }))
                     navigation.navigate("Chats")
                   }}>
                     <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} componentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
