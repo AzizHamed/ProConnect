@@ -101,6 +101,14 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Users"],
       }),
+      addRating: build.mutation<AddRatingApiResponse, AddRatingApiArg>({
+        query: (queryArg) => ({
+          url: `/users/addRating`,
+          method: "POST",
+          params: { userId: queryArg.userId, rating: queryArg.rating },
+        }),
+        invalidatesTags: ["Users"],
+      }),
       addRole: build.mutation<AddRoleApiResponse, AddRoleApiArg>({
         query: (queryArg) => ({
           url: `/users/add-role`,
@@ -338,6 +346,30 @@ const injectedRtkApi = api
         }),
         providesTags: ["Jobs"],
       }),
+      getJobsByUserProfession: build.query<
+        GetJobsByUserProfessionApiResponse,
+        GetJobsByUserProfessionApiArg
+      >({
+        query: () => ({ url: `/jobs/get-jobs-by-user-profession` }),
+        providesTags: ["Jobs"],
+      }),
+      getJobsByUserProfessionAndWorkArea: build.query<
+        GetJobsByUserProfessionAndWorkAreaApiResponse,
+        GetJobsByUserProfessionAndWorkAreaApiArg
+      >({
+        query: () => ({ url: `/jobs/get-jobs-by-user-profession-workarea` }),
+        providesTags: ["Jobs"],
+      }),
+      getJobsByProfession: build.query<
+        GetJobsByProfessionApiResponse,
+        GetJobsByProfessionApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/jobs/get-jobs-by-profession`,
+          params: { professionId: queryArg.professionId },
+        }),
+        providesTags: ["Jobs"],
+      }),
       getJobs: build.query<GetJobsApiResponse, GetJobsApiArg>({
         query: (queryArg) => ({
           url: `/jobs/get-job-page`,
@@ -401,6 +433,11 @@ export type CreateUserApiArg = {
 export type CreateUsersApiResponse = /** status 200 OK */ User[];
 export type CreateUsersApiArg = {
   body: User[];
+};
+export type AddRatingApiResponse = /** status 200 OK */ boolean;
+export type AddRatingApiArg = {
+  userId: string;
+  rating: number;
 };
 export type AddRoleApiResponse = /** status 200 OK */ boolean;
 export type AddRoleApiArg = {
@@ -502,6 +539,15 @@ export type GetUserJobsByIdApiResponse = /** status 200 OK */ Job[];
 export type GetUserJobsByIdApiArg = {
   userId: string;
 };
+export type GetJobsByUserProfessionApiResponse = /** status 200 OK */ Job[];
+export type GetJobsByUserProfessionApiArg = void;
+export type GetJobsByUserProfessionAndWorkAreaApiResponse =
+  /** status 200 OK */ Job[];
+export type GetJobsByUserProfessionAndWorkAreaApiArg = void;
+export type GetJobsByProfessionApiResponse = /** status 200 OK */ Job[];
+export type GetJobsByProfessionApiArg = {
+  professionId: number;
+};
 export type GetJobsApiResponse = /** status 200 OK */ PageJob;
 export type GetJobsApiArg = {
   jobPage: JobPage;
@@ -524,9 +570,7 @@ export type Review = {
   id?: number;
   score: number;
   reviewText: string;
-  reviewer: User;
-  reviewedUser: User;
-  roleReviewed: Role;
+  roleReviewed?: Role;
   timestamp?: string;
 };
 export type Profession = {
@@ -650,14 +694,14 @@ export type JobOffer = {
 };
 export type SortObject = {
   empty?: boolean;
-  sorted?: boolean;
   unsorted?: boolean;
+  sorted?: boolean;
 };
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  unpaged?: boolean;
   paged?: boolean;
+  unpaged?: boolean;
   pageNumber?: number;
   pageSize?: number;
 };
@@ -668,9 +712,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
+  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -711,6 +755,7 @@ export const {
   useUpdatePersonalInfoMutation,
   useCreateUserMutation,
   useCreateUsersMutation,
+  useAddRatingMutation,
   useAddRoleMutation,
   useCreateUserServicesMutation,
   useCreateUserServiceMutation,
@@ -739,6 +784,9 @@ export const {
   useGetAllProfessionsQuery,
   useGetUserJobsQuery,
   useGetUserJobsByIdQuery,
+  useGetJobsByUserProfessionQuery,
+  useGetJobsByUserProfessionAndWorkAreaQuery,
+  useGetJobsByProfessionQuery,
   useGetJobsQuery,
   useInitQuery,
   useGetAllArticlesQuery,
