@@ -74,8 +74,8 @@ const ModalD: React.FC<ModalDProps> = (props) => {
       <TouchableOpacity style={{ position: 'absolute', top: 35, right: 30 }} onPress={() => {
         props.setModalVisible(false);
       }} >
-        <Entypo name="cross" size={24} color={Colors.black} />
-        <Entypo name="circle" size={24} color={Colors.black} style={{ position: 'absolute', transform: [{ scale: 1.3 }] }} />
+        <Entypo name="cross" size={24} color={Colors.failure} />
+        <Entypo name="circle" size={24} color={Colors.failure} style={{ position: 'absolute', transform: [{ scale: 1.3 }] }} />
       </TouchableOpacity>
 
       <View invisible style={{ alignItems: "center" }}>
