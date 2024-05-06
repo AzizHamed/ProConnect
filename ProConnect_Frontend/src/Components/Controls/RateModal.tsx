@@ -4,6 +4,7 @@ import React from 'react';
 import { AirbnbRating } from 'react-native-ratings';
 import { TouchableOpacity } from 'react-native';
 import ProHeader, { HeaderType } from '../Layout/ProHeader';
+import ProLoading from '../Layout/ProLoading';
 
 interface RateModalProps {
     onClose: () => void;
@@ -11,9 +12,10 @@ interface RateModalProps {
     initialRating?: number;
     isVisible: boolean;
     title?: string;
+    isDisabled: boolean;
 }
 
-const RateModal: React.FC<RateModalProps> = ({ onClose, onRate, initialRating, isVisible, title }) => {
+const RateModal: React.FC<RateModalProps> = ({ onClose, onRate, initialRating, isVisible, title, isDisabled }) => {
     const handleRating = (rating: number) => {
         onRate(rating);
         onClose();
@@ -26,13 +28,15 @@ const RateModal: React.FC<RateModalProps> = ({ onClose, onRate, initialRating, i
                 <TouchableOpacity delayPressIn={0} delayPressOut={0} onPress={(e)=>{e.preventDefault()}} activeOpacity={1}>
 
                 <View style={styles.container}>
-                    <ProHeader text={title || 'Rate User'} headerType={HeaderType.H3} marginT-0 marginB-30/>
+                    <ProHeader color='black' text={title || 'Rate User'} headerType={HeaderType.H3} marginT-0 marginB-30/>
                     <AirbnbRating
+                    isDisabled={isDisabled}
                         count={5}
                         showRating={false}
                         defaultRating={initialRating || 0}
                         onFinishRating={handleRating}
                         />
+                        {isDisabled && <ProLoading small displayLoadingMessage loadingMessage='Saving rating...'/>}
                 </View>
                         </TouchableOpacity>
             </View>

@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, getUserCredential } from '../../Services/Redux/Slices/AuthSlice';
 import BackgroundView from '../../Components/Layout/BackgroundView';
@@ -10,55 +10,55 @@ import { Colors, Text, View } from 'react-native-ui-lib';
 import ProfileImage from '../../Components/Layout/ProfileImage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useGetUserJobsByIdQuery, useGetUserProfessionsQuery } from '../../Services/Redux/Api';
+import { useAddRatingMutation, useGetUserProfessionsQuery } from '../../Services/Redux/Api';
 import { yearsFromDate } from '../../Utility/Formatter';
-import { IS_WEB } from '../../Constants/Values';
+import { IS_WEB, defaultWidthValues } from '../../Constants/Values';
 import { AirbnbRating } from 'react-native-ratings';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { getSelectedUser } from '../../Services/Redux/Slices/UserSlice';
 import JobsTable from '../../Features/Jobs/JobsTable';
 import ProTable from '../../Components/Layout/ProTable';
-import { getSelectedReceiverUser, setChat } from '../../Services/Redux/Slices/ChatSlice';
+import { setChat } from '../../Services/Redux/Slices/ChatSlice';
+import RateModal from '../../Components/Controls/RateModal';
 
 const ProfileViewScreen: React.FC = () => {
   const navigation = useNavigation();
   const loggedInUser = useSelector(getUserAccount);
   const selectedUser = useSelector(getSelectedUser);
   const user = selectedUser !== null ? selectedUser : loggedInUser;
-
+  const [isRatingVisible, setIsRatingVisible] = useState(false);
+  const [isRatingDisabled, setIsRatingDisabled] = useState(false);
+  const [rateUser] = useAddRatingMutation();
   const dispatch = useDispatch();
 
-  // const receiverUser = useSelector();
   const { data: userProfessionsData, isLoading: isLoadingUserProfessionsData } = useGetUserProfessionsQuery({ userId: user?.id });
-  // const { data: userJobsData } = useGetUserJobsByIdQuery({userId: user?.id || ''});
   const isWeb = IS_WEB();
 
   const hasProfession = userProfessionsData !== undefined && userProfessionsData.length > 0 && userProfessionsData[0].startDate !== undefined;
   const yearsOfExperience = hasProfession ? yearsFromDate(userProfessionsData[0].startDate || '2000-01-01') : 0;
   const professionName = hasProfession ? userProfessionsData[0].profession?.name : "";
   const userProfession = hasProfession ? userProfessionsData[0] : undefined;
-
-  const edit = () => {
-    navigation.navigate("ProfileEditor");
-  }
-
   const horizontalMargin = { marginHorizontal: isWeb ? 50 : 0 };
-  // console.log(selectedUser)
-  // console.log(loggedInUser)
-  // console.log(user)
-
+  const isDifferentUser = selectedUser !== null && loggedInUser?.id !== user?.id;
+  const userRating = (isDifferentUser && loggedInUser?.reviewsGiven) ? loggedInUser?.reviewsGiven.find(review => review.reviewer.id === loggedInUser?.id)?.score : undefined;
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count
-    if (selectedUser !== null && loggedInUser?.id !== user?.id) {
+    if (isDifferentUser) {
       navigation.setOptions({
         headerRight: () => (
+          <View row invisible>
 
+          <Feather size={24} style={{ marginRight: 20 }} name="star" onPress={() => {
+            setIsRatingVisible(true);
+          }} />
           <Entypo size={24} style={{ marginRight: 20 }} name="chat" onPress={() => {
             dispatch(setChat({ receiverUserName: user?.name.firstName + " " + user?.name.lastName, ReceiverEmail: user?.email, openModal: false, receiverUser: user, receiverPhotoUrl: user?.photoUrl }))
             navigation.navigate('Chats');
           }} />
+          </View>
         ),
       });
     }
@@ -107,28 +107,28 @@ const ProfileViewScreen: React.FC = () => {
   return (
     <BackgroundView children={(
       <ScrollView>
-
+        <RateModal isVisible={isRatingVisible} isDisabled={isRatingDisabled}
+        onRate={(rating)=>{ 
+          setIsRatingDisabled(true);
+          rateUser({rating: rating, userId: user?.id}).unwrap().then(()=> {
+            setIsRatingDisabled(false);
+            setIsRatingVisible(false);
+        }).catch((error)=>{console.log('Error rating user', error)})
+      }} 
+        onClose={()=>{setIsRatingVisible(false);}} initialRating={userRating} title={'Rate ' + user?.name.firstName}/>
         <View bg style={styles.container} paddingT-30 center>
           <View row={isWeb} spread={isWeb} invisible width={"100%"} center>
             {BasicInfo}
             <View height={2} width={"95%"} marginV-20></View>
             {ContactInfo}
           </View>
-          {user?.workAreas && <Text>Available in the {user?.workAreas} area</Text>}
-          {user?.roles && user.roles[0].code === "HO" && <JobsTable userId={user?.id} />}
-          {user?.roles && user.roles[0].code === "PRO" && <ProTable title='Services' rows={userProfession?.services || []} />}
-          {/* 
-        <ProTextView text={`Name`} isLabel/>
-        <ProTextView text={`Phone`} isLabel/> */}
+          <View style={{width: defaultWidthValues()}} invisible>
+            {user?.workAreas && <Text marginT-20>Available in the {user?.workAreas} area</Text>}
+            {user?.roles && user.roles[0].code === "HO" && <JobsTable userId={user?.id} />}
+            {user?.roles && user.roles[0].code === "PRO" && <BackgroundView  children={(<ProTable title='Services' rows={userProfession?.services || []} />)} />}
 
-          {
-            loggedInUser?.id === user?.id &&
-            <ProButton marginT-20
-              text={"Edit"}
-              onPress={edit}
-            />
-
-          }
+          </View>
+         
         </View>
       </ScrollView>
 
