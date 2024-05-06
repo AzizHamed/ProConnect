@@ -113,9 +113,23 @@ public class User {
 
 
     public void addRating(int rating){
-        setRating(((getRating() * getNumOfRates()) + rating)/(getNumOfRates() + 1));
-        setNumOfRates(getNumOfRates() + 1);
+        int numOfRates1 = getNumOfRates();
+        setRating(((getRating() * numOfRates1) + rating)/(numOfRates1 + 1));
+        setNumOfRates(numOfRates1 + 1);
     }
+    public void removeRating(int rating) {
+        int numOfRates1 = getNumOfRates();
+        if(numOfRates1 == 0)
+            return;
+        if(numOfRates1 == 1){
+            setRating(0);
+            setNumOfRates(0);
+            return;
+        }
+        setRating(((getRating() * numOfRates1) - rating)/(numOfRates1 - 1));
+        setNumOfRates(numOfRates1 - 1);
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,11 +1,9 @@
 package com.braude.ProConnect.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -16,6 +14,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,16 +35,18 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "reviewer_user_id")
     @NotNull(message = "Reviewer can't be null.")
+    @JsonIgnore
     private User reviewer;
 
     @ManyToOne
     @JoinColumn(name = "reviewed_user_id")
     @NotNull(message = "Reviewed user can't be null.")
+    @JsonIgnore
     private User reviewedUser;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    @NotNull(message = "Role of reviewed user can't be null.")
+//    @NotNull(message = "Role of reviewed user can't be null.")
     private Role roleReviewed;
 
     private ZonedDateTime timestamp;
@@ -57,11 +58,11 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return score == review.score && Objects.equals(reviewText, review.reviewText) && Objects.equals(reviewer, review.reviewer) && Objects.equals(reviewedUser, review.reviewedUser) && Objects.equals(roleReviewed, review.roleReviewed);
+        return score == review.score && Objects.equals(reviewer, review.reviewer) && Objects.equals(reviewedUser, review.reviewedUser) && Objects.equals(roleReviewed, review.roleReviewed);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(score, reviewText, reviewer, reviewedUser, roleReviewed);
+        return Objects.hash(score, reviewer, reviewedUser, roleReviewed);
     }
 }

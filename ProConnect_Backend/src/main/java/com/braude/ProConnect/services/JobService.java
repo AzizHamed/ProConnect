@@ -136,6 +136,34 @@ public class JobService {
         User owner = userService.getUser(userId);
         return jobRepository.findAllByOwner(owner);
     }
+
+    public List<Job> getJobsByProfession(Long professionId) {
+        Profession profession = professionRepository.findById(professionId).orElse(null);
+        if(profession == null)
+            throw new ProConnectException("Profession not found");
+        return jobRepository.findAllByNeededProfessions(profession);
+    }
+    public List<Job> getJobsByProfession() {
+        User user = authenticationService.getAuthorizedUser();
+        if(user.getUserProfessions().isEmpty())
+            throw new ProConnectException("User has no professions");
+        UserProfession userProfession = user.getUserProfessions().get(0);
+        Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
+        if(profession == null)
+            throw new ProConnectException("Profession not found");
+        return jobRepository.findAllByNeededProfessions(profession);
+    }
+
+    public List<Job> getJobsByProfessionAndWorkArea() {
+        User user = authenticationService.getAuthorizedUser();
+        if(user.getUserProfessions().isEmpty())
+            throw new ProConnectException("User has no professions");
+        UserProfession userProfession = user.getUserProfessions().get(0);
+        Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
+        if(profession == null)
+            throw new ProConnectException("Profession not found");
+        return jobRepository.findAllByNeededProfessionsAndOwnerWorkAreas(profession, user.getWorkAreas());
+    }
 //     public List<Job> findJobByOwner(User owner) {
 //         return jobRepository.findByOwner(owner);
 //     }

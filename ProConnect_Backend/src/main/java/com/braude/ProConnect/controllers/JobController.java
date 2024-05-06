@@ -57,6 +57,18 @@ public class JobController {
         return new ResponseEntity<>(jobService.getUserJobs(userId),
                 HttpStatus.OK);
     }
+    @GetMapping("/get-jobs-by-profession")
+    public ResponseEntity<List<Job>> getJobsByProfession(Long professionId){
+        return new ResponseEntity<>(jobService.getJobsByProfession(professionId), HttpStatus.OK);
+    }
+    @GetMapping("/get-jobs-by-user-profession")
+    public ResponseEntity<List<Job>> getJobsByUserProfession(){
+        return new ResponseEntity<>(jobService.getJobsByProfession(), HttpStatus.OK);
+    }
+    @GetMapping("/get-jobs-by-user-profession-workarea")
+    public ResponseEntity<List<Job>> getJobsByUserProfessionAndWorkArea(){
+        return new ResponseEntity<>(jobService.getJobsByProfessionAndWorkArea(), HttpStatus.OK);
+    }
 
 
 //    @GetMapping("/getJobByUser")

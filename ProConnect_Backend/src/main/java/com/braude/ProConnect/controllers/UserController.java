@@ -147,4 +147,10 @@ public class UserController {
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
+    @PostMapping(value = "addRating")
+    public ResponseEntity<Boolean> addRating(@RequestParam String userId, @RequestParam int rating){
+        userService.addRating(userId, rating);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 }

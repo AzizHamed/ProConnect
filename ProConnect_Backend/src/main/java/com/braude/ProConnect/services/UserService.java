@@ -2,11 +2,7 @@ package com.braude.ProConnect.services;
 
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.embeddables.Name;
-import com.braude.ProConnect.models.entities.Profession;
-import com.braude.ProConnect.models.entities.Role;
-import com.braude.ProConnect.models.entities.Searches;
-import com.braude.ProConnect.models.entities.User;
-import com.braude.ProConnect.models.entities.UserProfession;
+import com.braude.ProConnect.models.entities.*;
 import com.braude.ProConnect.models.enums.AccountStatus;
 import com.braude.ProConnect.models.enums.WorkAreas;
 import com.braude.ProConnect.repositories.RoleRepository;
@@ -21,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -223,5 +220,32 @@ public class UserService {
         }
 
         return users;
+    }
+
+    public void addRating(String userId, int rating) {
+        User reviewer = authenticationService.getAuthorizedUser();
+        User reviewedUser = userRepository.findById(userId).get();
+        rating = Math.min(5, Math.max(1, rating));
+        if(reviewedUser.getId().equals(reviewer.getId()))
+            throw new ProConnectException("Can't rate yourself.");
+        Review review;
+        if(reviewer.getReviewsGiven().stream().anyMatch(givenReview -> givenReview.getReviewedUser().getId().equals(userId))) {
+            System.out.println("You already rated this user.");
+            review = reviewer.getReviewsGiven().stream().filter(givenReview -> givenReview.getReviewedUser().getId().equals(userId)).findFirst().get();
+            reviewedUser.removeRating(review.getScore());
+            review.setScore(rating);
+            reviewedUser.addRating(rating);
+        }
+        else{
+            review = Review.builder().reviewer(reviewer).reviewedUser(reviewedUser)
+                    .roleReviewed(reviewedUser.getRoles().get(0)).reviewText("Sample review text because I don't want to delete the database")
+                    .score(rating).timestamp(ZonedDateTime.now()).build();
+            reviewedUser.addRating(rating);
+        }
+        reviewedUser.getReviewsReceived().add(review);
+        reviewer.getReviewsGiven().add(review);
+        reviewService.createReview(review);
+        userRepository.save(reviewedUser);
+        userRepository.save(reviewer);
     }
 }
