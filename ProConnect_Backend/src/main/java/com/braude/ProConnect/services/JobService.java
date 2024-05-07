@@ -151,7 +151,8 @@ public class JobService {
         Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
         if(profession == null)
             throw new ProConnectException("Profession not found");
-        return jobRepository.findAllByNeededProfessions(profession);
+        return jobRepository.findAllByNeededProfessions(profession)
+                .stream().filter(job -> job.getOwner().getId() != user.getId() && job.getJobStatus() != JobStatus.FINISHED).toList();
     }
 
     public List<Job> getJobsByProfessionAndWorkArea() {
@@ -162,7 +163,14 @@ public class JobService {
         Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
         if(profession == null)
             throw new ProConnectException("Profession not found");
-        return jobRepository.findAllByNeededProfessionsAndOwnerWorkAreas(profession, user.getWorkAreas());
+        return jobRepository.findAllByNeededProfessionsAndOwnerWorkAreas(profession, user.getWorkAreas())
+                .stream().filter(job -> job.getOwner().getId() != user.getId() && job.getJobStatus() != JobStatus.FINISHED).toList();
+    }
+
+    public Job updateJobStatus(Long jobId, JobStatus jobStatus) {
+        Job job = jobRepository.findById(jobId).get();
+        job.setJobStatus(jobStatus);
+        return jobRepository.save(job);
     }
 //     public List<Job> findJobByOwner(User owner) {
 //         return jobRepository.findByOwner(owner);

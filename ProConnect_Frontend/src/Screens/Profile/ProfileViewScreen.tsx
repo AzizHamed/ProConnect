@@ -47,8 +47,7 @@ const ProfileViewScreen: React.FC = () => {
     ? loggedInUser?.reviewsGiven.find(review => 
         review.id === user?.reviewsReceived?.find(review2 => review2.id === review.id)?.id)?.score 
     : undefined;
-    console.log('userRating', userRating)
-    console.log('user', user)
+        
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count

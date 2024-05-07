@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image } from 'react-native';
+import { Image, Keyboard } from 'react-native';
 import { usePostJobsMutation, CreateJobRequest, useGetAllProfessionsQuery, Profession } from '../../Services/Redux/Api';
 import ProTextInput from '../../Components/Controls/ProTextInput';
 import { useForm } from 'react-hook-form';
@@ -127,16 +127,16 @@ const PostJobScreen: React.FC = () => {
             <ValidatedDropDown control={control} setIsValid={setIsDropdownValid} triggerValidation={triggerValidation}
                 setValue={setDropdownValue} selectedValue={undefined} values={professionsOptions} errorMessage='You must select a profession.'
                 leftIcon={(
-                    <Image resizeMode='contain'
+                    selectedProfession?.iconUrl ? <Image resizeMode='contain'
                         style={{ width: 25, height: 25, marginLeft: 10 }}
 
-                        source={{ uri: selectedProfession?.iconUrl || '' }}
+                        source={{ uri: selectedProfession?.iconUrl}}
                         tintColor={Colors.black}
-                      />
+                      /> : <></>
                 )}></ValidatedDropDown>
         </View>,
 
-        <View key={1} style={{ alignItems: "center", width: "100%", }}>
+        <View key={1} style={{ alignItems: "center", width: "100%", }} onTouchStart={Keyboard.dismiss}>
             <ProTextInput
                 name="description"
                 control={control}

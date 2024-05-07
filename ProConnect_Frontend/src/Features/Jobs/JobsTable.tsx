@@ -30,14 +30,14 @@ const JobsTable: React.FC<JobsTableProps> = (props) => {
         tintColor={Colors.textPrimary}
     /> || undefined);
     const onOpen = (index: number) => { selectJobIndex(index); navigation.navigate("Job"); };
-    const onEdit = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
-    const onDelete = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
+    // const onEdit = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
+    // const onDelete = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
     const selectJobIndex = (index: number) => { dispatch(selectJob(jobs[index])); }
 
     console.log(jobs)
     return (
         <BackgroundView children={
-            <ProTable onOpen={onOpen} onEdit={onEdit} onDelete={onDelete} title='Jobs Table' rows={jobTitles} icons={icons} />
+            <ProTable onOpen={onOpen} title='Jobs Table' rows={jobTitles} icons={icons} />
         } />
     )
 }

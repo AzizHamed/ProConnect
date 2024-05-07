@@ -248,4 +248,13 @@ public class UserService {
         userRepository.save(reviewedUser);
         userRepository.save(reviewer);
     }
+
+    public List<String> getAllUserIds() {
+        List<User> users = userRepository.findAll();
+        List<String> userIds = new ArrayList<>();
+        for (User user : users) {
+            userIds.add(user.getId());
+        }
+        return userIds;
+    }
 }

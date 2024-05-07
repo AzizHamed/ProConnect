@@ -2,13 +2,10 @@ import { emptySplitApi as api } from "./EmptyApi";
 export const addTagTypes = [
   "Users",
   "Jobs",
-  "Services",
   "Roles",
-  "Properties",
   "Professions",
   "JobOffers",
   "searches",
-  "test-controller",
   "articles",
 ] as const;
 const injectedRtkApi = api
@@ -24,6 +21,17 @@ const injectedRtkApi = api
           params: { userId: queryArg.userId, rating: queryArg.rating },
         }),
         invalidatesTags: ["Users"],
+      }),
+      updateJobStatus: build.mutation<
+        UpdateJobStatusApiResponse,
+        UpdateJobStatusApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/jobs/update-job-status`,
+          method: "PUT",
+          params: { jobId: queryArg.jobId, jobStatus: queryArg.jobStatus },
+        }),
+        invalidatesTags: ["Jobs"],
       }),
       unlikePost: build.mutation<UnlikePostApiResponse, UnlikePostApiArg>({
         query: (queryArg) => ({
@@ -117,42 +125,6 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Users"],
       }),
-      createUserServices: build.mutation<
-        CreateUserServicesApiResponse,
-        CreateUserServicesApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/services/create-user-services`,
-          method: "POST",
-          body: queryArg.body,
-        }),
-        invalidatesTags: ["Services"],
-      }),
-      createUserService: build.mutation<
-        CreateUserServiceApiResponse,
-        CreateUserServiceApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/services/create-user-service`,
-          method: "POST",
-          body: queryArg.userServiceEntity,
-        }),
-        invalidatesTags: ["Services"],
-      }),
-      createService: build.mutation<
-        CreateServiceApiResponse,
-        CreateServiceApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/services/create-service`,
-          method: "POST",
-          params: {
-            serviceName: queryArg.serviceName,
-            professionId: queryArg.professionId,
-          },
-        }),
-        invalidatesTags: ["Services"],
-      }),
       createRole: build.mutation<CreateRoleApiResponse, CreateRoleApiArg>({
         query: (queryArg) => ({
           url: `/roles/create`,
@@ -160,17 +132,6 @@ const injectedRtkApi = api
           body: queryArg.role,
         }),
         invalidatesTags: ["Roles"],
-      }),
-      createProperty: build.mutation<
-        CreatePropertyApiResponse,
-        CreatePropertyApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/properties/create-property`,
-          method: "POST",
-          body: queryArg.property,
-        }),
-        invalidatesTags: ["Properties"],
       }),
       createProfession: build.mutation<
         CreateProfessionApiResponse,
@@ -309,16 +270,6 @@ const injectedRtkApi = api
         query: () => ({ url: `/roles/get-all` }),
         providesTags: ["Roles"],
       }),
-      getProperties: build.query<GetPropertiesApiResponse, GetPropertiesApiArg>(
-        {
-          query: () => ({ url: `/properties/get-properties` }),
-          providesTags: ["Properties"],
-        }
-      ),
-      getLocations: build.query<GetLocationsApiResponse, GetLocationsApiArg>({
-        query: () => ({ url: `/properties/get-locations` }),
-        providesTags: ["Properties"],
-      }),
       getProfession: build.query<GetProfessionApiResponse, GetProfessionApiArg>(
         {
           query: () => ({ url: `/professions/get` }),
@@ -380,10 +331,6 @@ const injectedRtkApi = api
         }),
         providesTags: ["Jobs"],
       }),
-      init: build.query<InitApiResponse, InitApiArg>({
-        query: () => ({ url: `/init` }),
-        providesTags: ["test-controller"],
-      }),
       getAllArticles: build.query<
         GetAllArticlesApiResponse,
         GetAllArticlesApiArg
@@ -399,6 +346,18 @@ export type RateUserApiResponse = unknown;
 export type RateUserApiArg = {
   userId: string;
   rating: number;
+};
+export type UpdateJobStatusApiResponse = /** status 200 OK */ Job;
+export type UpdateJobStatusApiArg = {
+  jobId: number;
+  jobStatus:
+    | "Draft"
+    | "Published"
+    | "In Progress"
+    | "Cancelled"
+    | "Under Review"
+    | "Requires Adjustments"
+    | "Finished";
 };
 export type UnlikePostApiResponse = /** status 200 OK */ string;
 export type UnlikePostApiArg = {
@@ -444,28 +403,9 @@ export type AddRoleApiArg = {
   userId: string;
   roleId: number;
 };
-export type CreateUserServicesApiResponse =
-  /** status 200 OK */ UserServiceEntity[];
-export type CreateUserServicesApiArg = {
-  body: UserServiceEntity[];
-};
-export type CreateUserServiceApiResponse =
-  /** status 200 OK */ UserServiceEntity;
-export type CreateUserServiceApiArg = {
-  userServiceEntity: UserServiceEntity;
-};
-export type CreateServiceApiResponse = /** status 200 OK */ Service;
-export type CreateServiceApiArg = {
-  serviceName: string;
-  professionId: number;
-};
 export type CreateRoleApiResponse = /** status 200 OK */ Role;
 export type CreateRoleApiArg = {
   role: Role;
-};
-export type CreatePropertyApiResponse = /** status 200 OK */ Property;
-export type CreatePropertyApiArg = {
-  property: Property;
 };
 export type CreateProfessionApiResponse = /** status 200 OK */ Profession;
 export type CreateProfessionApiArg = {
@@ -525,10 +465,6 @@ export type GetUserRolesApiResponse = /** status 200 OK */ Role[];
 export type GetUserRolesApiArg = void;
 export type GetAllRolesApiResponse = /** status 200 OK */ Role[];
 export type GetAllRolesApiArg = void;
-export type GetPropertiesApiResponse = /** status 200 OK */ Property[];
-export type GetPropertiesApiArg = void;
-export type GetLocationsApiResponse = /** status 200 OK */ Location[];
-export type GetLocationsApiArg = void;
 export type GetProfessionApiResponse = /** status 200 OK */ Profession[];
 export type GetProfessionApiArg = void;
 export type GetAllProfessionsApiResponse = /** status 200 OK */ Profession[];
@@ -553,8 +489,6 @@ export type GetJobsApiArg = {
   jobPage: JobPage;
   jobSearchCriteria: JobSearchCriteria;
 };
-export type InitApiResponse = unknown;
-export type InitApiArg = void;
 export type GetAllArticlesApiResponse = /** status 200 OK */ Article[];
 export type GetAllArticlesApiArg = void;
 export type Name = {
@@ -605,6 +539,14 @@ export type User = {
   userProfessions?: UserProfession[];
   workAreas?: "North" | "Haifa" | "Center" | "BeerShevaa" | "South";
 };
+export type Comment = {
+  commentId?: number;
+  date: string;
+  job?: Job;
+  user?: User;
+  numberOfReports?: number;
+  jobId?: number;
+};
 export type Job = {
   id?: number;
   budget?: number;
@@ -626,14 +568,6 @@ export type Job = {
   neededProfessions?: Profession[];
   numberOfReports?: number;
 };
-export type Comment = {
-  commentId?: number;
-  date: string;
-  job?: Job;
-  user?: User;
-  numberOfReports?: number;
-  jobId?: number;
-};
 export type UpdatePersonalInfoRequest = {
   name?: Name;
   phoneNumber?: string;
@@ -648,35 +582,6 @@ export type UpdateProfessionsRequest = {
 export type UpdateProfileRequest = {
   updatePersonalInfoRequest?: UpdatePersonalInfoRequest;
   updateProfessionsRequest?: UpdateProfessionsRequest;
-};
-export type Service = {
-  id?: number;
-  name: string;
-  profession?: Profession;
-};
-export type UserServiceEntity = {
-  id?: number;
-  description: string;
-  service: Service;
-  user: User;
-  cost?: number;
-};
-export type Point = {
-  x?: number;
-  y?: number;
-};
-export type Location = {
-  country?: string;
-  city?: string;
-  address?: string;
-  postalCode?: string;
-  point?: Point;
-};
-export type Property = {
-  id?: number;
-  name: string;
-  owner?: User;
-  location?: Location;
 };
 export type CreateJobRequest = {
   job?: Job;
@@ -712,9 +617,9 @@ export type PageJob = {
   content?: Job[];
   number?: number;
   sort?: SortObject;
-  numberOfElements?: number;
   first?: boolean;
   last?: boolean;
+  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -747,6 +652,7 @@ export type Article = {
 };
 export const {
   useRateUserMutation,
+  useUpdateJobStatusMutation,
   useUnlikePostMutation,
   useLikePostMutation,
   useCommentOnPostMutation,
@@ -757,11 +663,7 @@ export const {
   useCreateUsersMutation,
   useAddRatingMutation,
   useAddRoleMutation,
-  useCreateUserServicesMutation,
-  useCreateUserServiceMutation,
-  useCreateServiceMutation,
   useCreateRoleMutation,
-  useCreatePropertyMutation,
   useCreateProfessionMutation,
   useCreateProfessionsMutation,
   usePostJobsMutation,
@@ -778,8 +680,6 @@ export const {
   useGetSearchesNumbersQuery,
   useGetUserRolesQuery,
   useGetAllRolesQuery,
-  useGetPropertiesQuery,
-  useGetLocationsQuery,
   useGetProfessionQuery,
   useGetAllProfessionsQuery,
   useGetUserJobsQuery,
@@ -788,6 +688,5 @@ export const {
   useGetJobsByUserProfessionAndWorkAreaQuery,
   useGetJobsByProfessionQuery,
   useGetJobsQuery,
-  useInitQuery,
   useGetAllArticlesQuery,
 } = injectedRtkApi;

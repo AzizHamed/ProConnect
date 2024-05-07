@@ -153,4 +153,12 @@ public class UserController {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
+    @GetMapping(value = "get-all-user-ids")
+    public ResponseEntity<List<String>> getAllUserIds(){
+        List<String> userIds = userService.getAllUserIds();
+        if(userIds != null)
+            return new ResponseEntity<>(userIds, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }

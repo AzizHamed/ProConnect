@@ -245,14 +245,14 @@ const ProfileEditorScreen: React.FC = () => {
               (
                 <View style={{ alignItems: 'center' }}>
                   <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.'
-                    values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id} leftIcon={
-                      <Image resizeMode='contain'
-                        style={{ width: 25, height: 25, marginLeft: 10 }}
-
-                        source={{ uri: userProfession.profession?.iconUrl || '' }}
-                        tintColor={Colors.black}
-                      />
-                    } />
+                    values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id} leftIcon={(
+                      userProfession.profession?.iconUrl ? <Image resizeMode='contain'
+                          style={{ width: 25, height: 25, marginLeft: 10 }}
+  
+                          source={{ uri: userProfession.profession?.iconUrl}}
+                          tintColor={Colors.black}
+                        /> : <></>
+                  )} />
                   <ValidatedDropDown setIsValid={setIsDropdownValid2} triggerValidation={triggerValidation} control={control} errorMessage='You must select a work area.'
                     values={workAreas} setValue={setSelectedWorkArea} selectedValue={"North"} />
 
