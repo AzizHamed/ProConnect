@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserProfessionsRepository extends JpaRepository<UserProfession, Long> {
     List<UserProfession> findAllByUser(User user);
     List<UserProfession> findAllByProfession(Profession profession);
+
+    List<UserProfession> countUserProfessionByProfession(Profession profession);
 }

@@ -1,6 +1,7 @@
 package com.braude.ProConnect.controllers;
 
 import com.braude.ProConnect.models.entities.Profession;
+import com.braude.ProConnect.requests.PopularProfessions;
 import com.braude.ProConnect.services.ProfessionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,14 @@ public class ProfessionController {
         List<Profession> professions = professionService.getProfessions();
         if(professions != null)
             return new ResponseEntity<>(professions, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/get-jobs-by-profession")
+    public ResponseEntity<List<PopularProfessions>> getPopularProfessions(){
+        List<PopularProfessions> popularProfessions = professionService.getPopularProfessions();
+        if(popularProfessions != null)
+            return new ResponseEntity<>(popularProfessions, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
