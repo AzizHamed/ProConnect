@@ -178,12 +178,12 @@ public class UserService {
         Profession profession = professionService.getProfessionByName(professionName);
         List<UserProfession> userProfessions = userProfessionsRepository.findAllByProfession(profession);
         System.out.println("User Professions " + userProfessions.size() + " for profession: " + professionName);
-        List<User> users = userProfessions.stream().map(UserProfession::getUser).toList()
-                .stream().filter(user -> {
-                    WorkAreas userWorkAreas = user.getWorkAreas();
-                    if(workAreas == null || userWorkAreas == null) return false;
-                    return userWorkAreas.equals(workAreas);
-                }).toList();
+        List<User> users = userProfessions.stream().map(UserProfession::getUser).toList();
+//                .stream().filter(user -> {
+//                    WorkAreas userWorkAreas = user.getWorkAreas();
+//                    if(workAreas == null || userWorkAreas == null) return false;
+//                    return userWorkAreas.equals(workAreas);
+//                }).toList();
         System.out.println("Users " + users.size() + " for profession: " + professionName);
 
         Searches searches = searchesRepository.findAll().get(0);
