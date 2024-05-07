@@ -40,9 +40,11 @@ public class User {
     private Date dateOfBirth;
 
     @OneToMany(mappedBy = "reviewer", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Review> reviewsGiven;
 
     @OneToMany(mappedBy = "reviewedUser", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Review> reviewsReceived;
     @Transient
     private float averageRating;
@@ -92,6 +94,7 @@ public class User {
 
         UserProfession userProfession = userProfessions.get(0);
         LocalDate startDate = userProfession.getStartDate();
+        if(startDate == null) return 0;
         LocalDate now = LocalDate.now();
         // Calculate difference in years between now and startDate as a double
         return now.getYear() - startDate.getYear();
