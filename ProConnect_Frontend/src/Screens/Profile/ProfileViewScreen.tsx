@@ -92,7 +92,7 @@ const ProfileViewScreen: React.FC = () => {
   const Ratings = <View invisible center>
     <View row invisible>
       <AirbnbRating isDisabled defaultRating={user?.rating} showRating={false} reviewSize={0} size={20} starContainerStyle={{ marginLeft: 2 }} />
-      <Text bold marginL-10>{`${user?.rating} stars `}</Text>
+      <Text bold marginL-10>{`${user?.rating?.toFixed(1)} stars `}</Text>
     </View>
     <Text marginT-5 style={{ fontSize: 16 }}>{`(Out of ${user?.numOfRates} ratings)`}</Text>
   </View>
