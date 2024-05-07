@@ -170,26 +170,16 @@ public class JobService {
      * @return
      */
     public List<Job> bulkPost(List<CreateJobsBulkRequest> requests) {
-        Map<String, User> userMap = new HashMap<>();
-        Map<Long, Profession> professionMap = new HashMap<>();
         List<Job> jobs = new ArrayList<>();
         for (CreateJobsBulkRequest request : requests) {
             Profession profession;
             User user;
             Long neededProfessionId = request.getNeededProfessionId();
-            if(professionMap.containsKey(neededProfessionId)) {
-                profession = professionMap.get(neededProfessionId);
-            } else {
-                profession = professionRepository.findById(neededProfessionId).orElse(null);
-                professionMap.put(neededProfessionId, profession);
-            }
             String ownerId = request.getOwnerId();
-            if(userMap.containsKey(ownerId)) {
-                user = userMap.get(ownerId);
-            } else {
-                user = userService.getUser(ownerId);
-                userMap.put(ownerId, user);
-            }
+            profession = professionRepository.findById(neededProfessionId).orElse(null);
+            user = userService.getUser(ownerId);
+            if(profession == null || user == null)
+                throw new ProConnectException("Profession or user not found");
             Job job = new Job();
             job.setBudget(request.getBudget());
             job.setDescription(request.getDescription());
