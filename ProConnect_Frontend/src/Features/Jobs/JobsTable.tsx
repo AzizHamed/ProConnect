@@ -23,8 +23,9 @@ const JobsTable: React.FC<JobsTableProps> = (props) => {
     const { data, isSuccess, isError, error, refetch } = props.userId ? useGetUserJobsByIdQuery({ userId: props.userId }) : useGetUserJobsQuery();
 
     const jobs = data || [];
-    const jobTitles = jobs.map((job) => `${job.title}`);
-    const icons = jobs.map((job) => job.neededProfessions && <Image resizeMode='contain'
+    const filteredJobs = jobs.filter((job) => job.jobStatus !== 'FINISHED');
+    const jobTitles = filteredJobs.map((job) => `${job.title}`);
+    const icons = filteredJobs.map((job) => job.neededProfessions && <Image resizeMode='contain'
         style={{ width: 20, height: 20, marginLeft: 10, marginRight: 5 }}
         source={{ uri: job.neededProfessions[0]?.iconUrl || '' }}
         tintColor={Colors.textPrimary}

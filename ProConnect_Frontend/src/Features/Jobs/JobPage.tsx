@@ -49,22 +49,22 @@ const JobPage: React.FC = () => {
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count
-    console.log('UseEffect', user?.id, job?.owner?.id);
-    if (user?.id === job?.owner?.id) {
+    if (job && job?.owner && user?.id === job?.owner?.id) {
+      console.log('UseEffect', user?.id, job?.owner?.id);
       navigation.setOptions({
         headerRight: () => (
 
           <TouchableOpacity onPress={() => {
             if(job === undefined || job?.id == undefined) return;
-            updateJobStatus({jobId: job?.id, jobStatus: "Finished"}).unwrap()
+            updateJobStatus({jobId: job?.id, jobStatus: "FINISHED"}).unwrap()
             .then((job) => {
-              dispatch(selectJob(null));
               dispatch(setJobs(allJobs.map((j) => j.id === job.id ? job : j)));
+              dispatch(selectJob(null));
               navigation.goBack();
             })
             .catch((error) => {console.log(error); navigation.reset({index: 0, routes: [{name: "Main"}]});});
           }}>
-            <Text marginR-20>Mark Job as Done</Text>
+            <Text marginR-20 color="black">Mark Job as Done</Text>
           </TouchableOpacity>
         ),
       });

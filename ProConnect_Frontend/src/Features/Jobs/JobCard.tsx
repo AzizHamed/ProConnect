@@ -41,7 +41,7 @@ function generateCardContent(job: Job): CardSectionContent[] {
 
 const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   const job = props.job;
-  const children = generateCardChildren(job);
+  const children = (job) ? generateCardChildren(job) : <></>;
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
