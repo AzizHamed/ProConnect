@@ -62,6 +62,10 @@ public class JobService {
 
     }
 
+    public Job findById(Long id){
+        return jobRepository.findById(id).get();
+    }
+
     public String likePost(Long jobId, String userId)  {
         checkIfUserAndJobValid(userId,jobId);
         Job job = jobRepository.findById(jobId).get();

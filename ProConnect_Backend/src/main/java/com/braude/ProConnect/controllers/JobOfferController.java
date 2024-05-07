@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("jobOffers")
 @CrossOrigin
@@ -34,5 +36,10 @@ public class JobOfferController {
         }
         JobOffer jobOffer = jobOfferService.findBest(job);
         return jobOffer;
+    }
+
+    @GetMapping(value = "getOfferByJob")
+    public List<JobOffer> getJobOfferByJob(@RequestParam Long id){
+        return jobOfferService.findByJob(id);
     }
 }
