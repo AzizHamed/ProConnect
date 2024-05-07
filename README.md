@@ -10,7 +10,7 @@
 
 [Project Book](https://docs.google.com/document/d/1Y82D-w8q6yK-BIgj84vHvKnMG5XkRoL2gLmNDG9DjWw/edit?usp=sharing)
 
-[Presentation](https://1drv.ms/p/s!AoLVRGF92BcTg-dnYPoIA4lQRiqkLg?e=ktySIR)
+[Presentation](https://docs.google.com/presentation/d/1jhikXxgtVKnaPmo63ElNCczZEMQBzgPK/edit#slide=id.p39)
 
 [Maintenance Guide](https://github.com/hadiDanial/ProConnect/blob/main/Maintainer%20Guide.md)
 
