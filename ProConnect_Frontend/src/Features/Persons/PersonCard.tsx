@@ -25,7 +25,7 @@ const PersonCard: React.FC<PersonCardProps> = (props) => {
     <View style={props?.containerStyle} key={props.user.id + "_personCard"}>
       <View style={props.cardContainerStyle}>   
       <View style={{marginBottom: 10}}>        
-        <ProfileImage size={100} user={props.user}/>
+        <ProfileImage size={props.imageStyle.width} user={props.user}/>
         </View>
 
         {props.componentsUnderImage}
