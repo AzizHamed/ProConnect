@@ -9,6 +9,7 @@ import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserProfessionsRepository;
 import com.braude.ProConnect.repositories.SearchesRepository;
 import com.braude.ProConnect.repositories.UserRepository;
+import com.braude.ProConnect.requests.CreateRatingsBulkRequest;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.requests.UpdateProfessionsRequest;
 import com.braude.ProConnect.requests.UpdateProfileRequest;
@@ -225,6 +226,10 @@ public class UserService {
     public void addRating(String userId, int rating) {
         User reviewer = authenticationService.getAuthorizedUser();
         User reviewedUser = userRepository.findById(userId).get();
+        rate(userId, rating, reviewer, reviewedUser);
+    }
+
+    private void rate(String userId, int rating, User reviewer, User reviewedUser) {
         rating = Math.min(5, Math.max(1, rating));
         if(reviewedUser.getId().equals(reviewer.getId()))
             throw new ProConnectException("Can't rate yourself.");
@@ -256,5 +261,13 @@ public class UserService {
             userIds.add(user.getId());
         }
         return userIds;
+    }
+
+    public void addRatingsBulk(List<CreateRatingsBulkRequest> ratings) {
+        for (CreateRatingsBulkRequest rating : ratings) {
+            User reviewer = userRepository.findById(rating.getReviewerId()).get();
+            User reviewedUser = userRepository.findById(rating.getReviewedId()).get();
+            rate(rating.getReviewerId(), rating.getRating(), reviewer, reviewedUser);
+        }
     }
 }

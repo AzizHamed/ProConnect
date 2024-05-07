@@ -4,7 +4,7 @@ import json
 def generate_user_objects(user_ids):
     user_objects = []
     for user_id in user_ids:
-        other_users = random.sample(user_ids, k=random.randint(int(0.5 * len(user_ids)), int(0.9 * len(user_ids))))
+        other_users = random.sample(user_ids, k=random.randint(int(0.4 * len(user_ids)), int(0.9 * len(user_ids))))
         for other_user in other_users:
             if other_user != user_id:
                 rating = random.randint(1, 5)

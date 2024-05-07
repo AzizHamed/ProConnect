@@ -8,6 +8,7 @@ import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.requests.CreateJobRequest;
+import com.braude.ProConnect.requests.CreateJobsBulkRequest;
 import com.braude.ProConnect.services.JobService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nonnull;
@@ -89,9 +90,10 @@ public class JobController {
     public Comment commentOnPost(@RequestBody Comment comment){
         return jobService.addComment(comment);
     }
-    /*@GetMapping("/user")
-    public List<Job> getJobsByUser(@RequestParam String userId){
-        return jobService.getJobByUserId(userId);
-    }*/
+
+    @PostMapping(value = "/bulk-post")
+    public ResponseEntity<List<Job>> bulkPost(@RequestBody List<CreateJobsBulkRequest> requests) {
+        return new ResponseEntity<>(jobService.bulkPost(requests), HttpStatus.CREATED);
+    }
 
 }

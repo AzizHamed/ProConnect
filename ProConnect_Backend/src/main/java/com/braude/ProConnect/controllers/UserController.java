@@ -3,6 +3,7 @@ package com.braude.ProConnect.controllers;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.entities.UserProfession;
+import com.braude.ProConnect.requests.CreateRatingsBulkRequest;
 import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
 import com.braude.ProConnect.requests.UpdateProfessionsRequest;
 import com.braude.ProConnect.models.enums.WorkAreas;
@@ -150,6 +151,12 @@ public class UserController {
     @PostMapping(value = "addRating")
     public ResponseEntity<Boolean> addRating(@RequestParam String userId, @RequestParam int rating){
         userService.addRating(userId, rating);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "add-bulk-rating")
+    public ResponseEntity<Boolean> addRatingsBulk(@RequestBody List<CreateRatingsBulkRequest> ratings){
+        userService.addRatingsBulk(ratings);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
