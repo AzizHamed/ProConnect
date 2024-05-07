@@ -89,6 +89,7 @@ const ProfileEditorScreen: React.FC = () => {
     if (userProfessionsData !== undefined && userProfessionsData !== null && userProfessionsData.length > 0) {
       console.log('User Professions Data', userProfessionsData);
       setUserProfession(userProfessionsData[0]);
+      if(selectedProfilePictureUri ==='') setSelectedProfilePictureUri(user?.photoUrl || '');
     }
     setIsLoading(isLoadingUserProfessionsData);
   }, [userProfessionsData, isLoadingUserProfessionsData])
@@ -141,7 +142,7 @@ const ProfileEditorScreen: React.FC = () => {
   const onSavePressed = async (profileData: any) => {
     const { email, firstName, lastName, phone } = profileData;
     // navigation.dispatch(DrawerActions.openDrawer());
-    let profilePicDownloadUrl = ''
+    let profilePicDownloadUrl = user?.photoUrl || '';
     if (selectedProfilePictureUri !== '') {
       await uploadSelectedFiles('profiles', [{ uri: selectedProfilePictureUri, fileName: 'profile.jpg' }], user as User)
         .then((res) => { profilePicDownloadUrl = res[0] })
@@ -245,17 +246,14 @@ const ProfileEditorScreen: React.FC = () => {
               (
                 <View style={{ alignItems: 'center' }}>
                   <ValidatedDropDown setIsValid={setIsDropdownValid} triggerValidation={triggerValidation} control={control} errorMessage='You must select a profession.'
-                    values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id} leftIcon={
-                      <Image resizeMode='contain'
-                        style={{ width: 25, height: 25, marginLeft: 10 }}
-
-                        source={{ uri: userProfession.profession?.iconUrl || '' }}
-                        tintColor={Colors.black}
-                      />
-                    } />
-                  <ValidatedDropDown setIsValid={setIsDropdownValid2} triggerValidation={triggerValidation} control={control} errorMessage='You must select a work area.'
-                    values={workAreas} setValue={setSelectedWorkArea} selectedValue={"North"} />
-
+                    values={professionsOptions} setValue={setSelectedProfession} selectedValue={userProfession.profession?.id} leftIcon={(
+                      userProfession.profession?.iconUrl ? <Image resizeMode='contain'
+                          style={{ width: 25, height: 25, marginLeft: 10 }}
+  
+                          source={{ uri: userProfession.profession?.iconUrl}}
+                          tintColor={Colors.black}
+                        /> : <></>
+                  )} />
                   <ProDatePicker date={userProfession.startDate} control={control} name={'When did you start working in this field?'} placeholder='Start Date' setDateValue={setProfessionDate} />
                   <ProChipInput label='Which services do you offer?' items={userProfession.services} placeholder='Enter new service...'
                     setComponentHeight={setChipComponentHeight}

@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native-ui-lib'
+import { Image } from 'react-native'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAccount } from '../../Services/Redux/Slices/AuthSlice'
@@ -8,6 +8,7 @@ import { selectJob } from '../../Services/Redux/Slices/JobSlice'
 import { Job, useGetJobsQuery, useGetUserJobsByIdQuery, useGetUserJobsQuery } from '../../Services/Redux/Api'
 import BackgroundView from '../../Components/Layout/BackgroundView'
 import { useNavigation } from '@react-navigation/native'
+import { Colors } from 'react-native-ui-lib'
 
 interface JobsTableProps {
     userId?: string
@@ -22,16 +23,22 @@ const JobsTable: React.FC<JobsTableProps> = (props) => {
     const { data, isSuccess, isError, error, refetch } = props.userId ? useGetUserJobsByIdQuery({ userId: props.userId }) : useGetUserJobsQuery();
 
     const jobs = data || [];
-    const jobTitles = jobs.map((job) => `${job.neededProfessions && job.neededProfessions[0]?.name + ' - '}${job.title}`);
+    const filteredJobs = jobs.filter((job) => job.jobStatus !== 'FINISHED');
+    const jobTitles = filteredJobs.map((job) => `${job.title}`);
+    const icons = filteredJobs.map((job) => job.neededProfessions && <Image resizeMode='contain'
+        style={{ width: 20, height: 20, marginLeft: 10, marginRight: 5 }}
+        source={{ uri: job.neededProfessions[0]?.iconUrl || '' }}
+        tintColor={Colors.textPrimary}
+    /> || undefined);
     const onOpen = (index: number) => { selectJobIndex(index); navigation.navigate("Job"); };
-    const onEdit = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
-    const onDelete = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
+    // const onEdit = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
+    // const onDelete = isLoggedInUser ? (index: number) => { selectJob(index); } : undefined;
     const selectJobIndex = (index: number) => { dispatch(selectJob(jobs[index])); }
 
     console.log(jobs)
     return (
         <BackgroundView children={
-            <ProTable onOpen={onOpen} onEdit={onEdit} onDelete={onDelete} title='Jobs Table' rows={jobTitles} />
+            <ProTable onOpen={onOpen} title='Jobs Table' rows={jobTitles} icons={icons} />
         } />
     )
 }

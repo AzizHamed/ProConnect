@@ -8,6 +8,7 @@ import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.repositories.*;
 import com.braude.ProConnect.requests.CreateJobRequest;
+import com.braude.ProConnect.requests.CreateJobsBulkRequest;
 import com.braude.ProConnect.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class JobService {
@@ -49,30 +50,20 @@ public class JobService {
         User user = authenticationService.getAuthorizedUser();
         Job job = createJobRequest.getJob();
         Profession profession = professionRepository.findById(createJobRequest.getProfession().getId()).get();
-//        Property property = propertyService.getProperty(createJobRequest.getPropertyId());
-//        if(property == null)
-//            throw new ProConnectException("Invalid property id");
         job.setOwner(user);
         job.setNeededProfessions(List.of(profession));
-//        job.setProperty(property);
-
         job.setDatePosted(OffsetDateTime.now());
         job.setJobStatus(JobStatus.PUBLISHED);
         return jobRepository.save(job);
     }
 
     public Page<Job> getJobs(JobPage jobPage, JobSearchCriteria jobSearchCriteria){
-        /*Sort sort = Sort.by(jobPage.getSortDirection(), jobPage.getSortBy());
-        Pageable pageable = PageRequest.of(jobPage.getPageNumber(),jobPage.getPageSize(),sort);
-        return jobRepositoryPaging.findAll(pageable);*/
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getCredentials()); // Null
-        System.out.println(auth.getPrincipal()); // SecurityUser
-        System.out.println(auth.getName()); // Email
-        var securityUser = (SecurityUser)auth.getPrincipal();
-        System.out.println(securityUser.getUser().getId());
         return jobCriteriaRepository.findAllWithFilters(jobSearchCriteria, jobPage);
 
+    }
+
+    public Job findById(Long id){
+        return jobRepository.findById(id).get();
     }
 
     public String likePost(Long jobId, String userId)  {
@@ -151,7 +142,8 @@ public class JobService {
         Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
         if(profession == null)
             throw new ProConnectException("Profession not found");
-        return jobRepository.findAllByNeededProfessions(profession);
+        return jobRepository.findAllByNeededProfessions(profession)
+                .stream().filter(job -> job.getOwner().getId() != user.getId() && job.getJobStatus() != JobStatus.FINISHED).toList();
     }
 
     public List<Job> getJobsByProfessionAndWorkArea() {
@@ -162,9 +154,44 @@ public class JobService {
         Profession profession = professionRepository.findById(userProfession.getProfession().getId()).orElse(null);
         if(profession == null)
             throw new ProConnectException("Profession not found");
-        return jobRepository.findAllByNeededProfessionsAndOwnerWorkAreas(profession, user.getWorkAreas());
+        return jobRepository.findAllByNeededProfessionsAndOwnerWorkAreas(profession, user.getWorkAreas())
+                .stream().filter(job -> job.getOwner().getId() != user.getId() && job.getJobStatus() != JobStatus.FINISHED).toList();
     }
-//     public List<Job> findJobByOwner(User owner) {
-//         return jobRepository.findByOwner(owner);
-//     }
+
+    public Job updateJobStatus(Long jobId, JobStatus jobStatus) {
+        Job job = jobRepository.findById(jobId).get();
+        job.setJobStatus(jobStatus);
+        return jobRepository.save(job);
+    }
+
+    /**
+     * Bulk post jobs (for testing purposes in Swagger)
+     * @param requests
+     * @return
+     */
+    public List<Job> bulkPost(List<CreateJobsBulkRequest> requests) {
+        List<Job> jobs = new ArrayList<>();
+        for (CreateJobsBulkRequest request : requests) {
+            Profession profession;
+            User user;
+            Long neededProfessionId = request.getNeededProfessionId();
+            String ownerId = request.getOwnerId();
+            profession = professionRepository.findById(neededProfessionId).orElse(null);
+            user = userService.getUser(ownerId);
+            if(profession == null || user == null)
+                throw new ProConnectException("Profession or user not found");
+            Job job = new Job();
+            job.setBudget(request.getBudget());
+            job.setDescription(request.getDescription());
+            job.setTitle(request.getTitle());
+            job.setPhotos(request.getPhotos());
+            job.setOwner(user);
+            job.setNeededProfessions(List.of(profession));
+            job.setJobStatus(JobStatus.PUBLISHED);
+            job.setDatePosted(OffsetDateTime.now());
+            job = jobRepository.save(job);
+            jobs.add(job);
+        }
+        return jobs;
+    }
 }

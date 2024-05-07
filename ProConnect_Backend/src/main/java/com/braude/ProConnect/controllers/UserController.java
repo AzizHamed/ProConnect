@@ -3,10 +3,8 @@ package com.braude.ProConnect.controllers;
 import com.braude.ProConnect.exceptions.ProConnectException;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.models.entities.UserProfession;
-import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
-import com.braude.ProConnect.requests.UpdateProfessionsRequest;
+import com.braude.ProConnect.requests.*;
 import com.braude.ProConnect.models.enums.WorkAreas;
-import com.braude.ProConnect.requests.UpdateProfileRequest;
 import com.braude.ProConnect.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -151,6 +149,31 @@ public class UserController {
     public ResponseEntity<Boolean> addRating(@RequestParam String userId, @RequestParam int rating){
         userService.addRating(userId, rating);
         return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "add-bulk-rating")
+    public ResponseEntity<Boolean> addRatingsBulk(@RequestBody List<CreateRatingsBulkRequest> ratings){
+        userService.addRatingsBulk(ratings);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+    @PostMapping(value = "create-bulk-homeowners")
+    public ResponseEntity<Boolean> createBulkHomeowners(@RequestBody List<CreateBulkHomeownersRequest> requests){
+        userService.createBulkHomeowners(requests);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "create-bulk-professionals")
+    public ResponseEntity<Boolean> createBulkProfessionals(@RequestBody List<CreateBulkProfessionalsRequest> requests){
+        userService.createBulkProfessionals(requests);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "get-all-user-ids")
+    public ResponseEntity<List<String>> getAllUserIds(){
+        List<String> userIds = userService.getAllUserIds();
+        if(userIds != null)
+            return new ResponseEntity<>(userIds, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

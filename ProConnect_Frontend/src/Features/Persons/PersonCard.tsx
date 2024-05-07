@@ -22,7 +22,7 @@ const PersonCard: React.FC<PersonCardProps> = (props) => {
   const { height, width } = Dimensions.get('window')
   return (
 
-    <View style={props?.containerStyle}>
+    <View style={props?.containerStyle} key={props.user.id + "_personCard"}>
       <View style={props.cardContainerStyle}>
         {/* <Image
           source={require('../../../gardner2.png')}

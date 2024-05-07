@@ -9,6 +9,7 @@ interface ProTableProps {
     title?: string;
     hasScroll?: boolean;
     rows: string[];
+    icons?: React.ReactNode[];
     onOpen?: (index: number) => void;
     onEdit?: (index: number) => void;
     onDelete?: (index: number) => void;
@@ -27,6 +28,7 @@ const ProTable: React.FC<ProTableProps> = (props) => {
                     <View invisible key={rowIndex}>
                         <View invisible style={{ flexDirection: 'row' }}>
                             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderRadius: 10, alignItems: 'center' }} marginV-10>
+                                {props.icons && props.icons[rowIndex] && props.icons[rowIndex]}
                                 <Text flex marginL-10>{row}</Text>
                                 {props.onOpen && <TouchableOpacity onPress={() => { props.onOpen(rowIndex) }}>
                                     <Ionicons style={{ marginHorizontal: 5 }} size={20} name="open-outline" color={Colors.textPrimary} />

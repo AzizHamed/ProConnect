@@ -2,13 +2,10 @@ import { emptySplitApi as api } from "./EmptyApi";
 export const addTagTypes = [
   "Users",
   "Jobs",
-  "Services",
   "Roles",
-  "Properties",
   "Professions",
   "JobOffers",
   "searches",
-  "test-controller",
   "articles",
 ] as const;
 const injectedRtkApi = api
@@ -24,6 +21,17 @@ const injectedRtkApi = api
           params: { userId: queryArg.userId, rating: queryArg.rating },
         }),
         invalidatesTags: ["Users"],
+      }),
+      updateJobStatus: build.mutation<
+        UpdateJobStatusApiResponse,
+        UpdateJobStatusApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/jobs/update-job-status`,
+          method: "PUT",
+          params: { jobId: queryArg.jobId, jobStatus: queryArg.jobStatus },
+        }),
+        invalidatesTags: ["Jobs"],
       }),
       unlikePost: build.mutation<UnlikePostApiResponse, UnlikePostApiArg>({
         query: (queryArg) => ({
@@ -101,6 +109,36 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Users"],
       }),
+      createBulkProfessionals: build.mutation<
+        CreateBulkProfessionalsApiResponse,
+        CreateBulkProfessionalsApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/create-bulk-professionals`,
+          method: "POST",
+          body: queryArg.body,
+        }),
+        invalidatesTags: ["Users"],
+      }),
+      createBulkHomeowners: build.mutation<
+        CreateBulkHomeownersApiResponse,
+        CreateBulkHomeownersApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/users/create-bulk-homeowners`,
+          method: "POST",
+          body: queryArg.body,
+        }),
+        invalidatesTags: ["Users"],
+      }),
+      addRating: build.mutation<AddRatingApiResponse, AddRatingApiArg>({
+        query: (queryArg) => ({
+          url: `/users/addRating`,
+          method: "POST",
+          params: { userId: queryArg.userId, rating: queryArg.rating },
+        }),
+        invalidatesTags: ["Users"],
+      }),
       addRole: build.mutation<AddRoleApiResponse, AddRoleApiArg>({
         query: (queryArg) => ({
           url: `/users/add-role`,
@@ -109,41 +147,16 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Users"],
       }),
-      createUserServices: build.mutation<
-        CreateUserServicesApiResponse,
-        CreateUserServicesApiArg
+      addRatingsBulk: build.mutation<
+        AddRatingsBulkApiResponse,
+        AddRatingsBulkApiArg
       >({
         query: (queryArg) => ({
-          url: `/services/create-user-services`,
+          url: `/users/add-bulk-rating`,
           method: "POST",
           body: queryArg.body,
         }),
-        invalidatesTags: ["Services"],
-      }),
-      createUserService: build.mutation<
-        CreateUserServiceApiResponse,
-        CreateUserServiceApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/services/create-user-service`,
-          method: "POST",
-          body: queryArg.userServiceEntity,
-        }),
-        invalidatesTags: ["Services"],
-      }),
-      createService: build.mutation<
-        CreateServiceApiResponse,
-        CreateServiceApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/services/create-service`,
-          method: "POST",
-          params: {
-            serviceName: queryArg.serviceName,
-            professionId: queryArg.professionId,
-          },
-        }),
-        invalidatesTags: ["Services"],
+        invalidatesTags: ["Users"],
       }),
       createRole: build.mutation<CreateRoleApiResponse, CreateRoleApiArg>({
         query: (queryArg) => ({
@@ -152,17 +165,6 @@ const injectedRtkApi = api
           body: queryArg.role,
         }),
         invalidatesTags: ["Roles"],
-      }),
-      createProperty: build.mutation<
-        CreatePropertyApiResponse,
-        CreatePropertyApiArg
-      >({
-        query: (queryArg) => ({
-          url: `/properties/create-property`,
-          method: "POST",
-          body: queryArg.property,
-        }),
-        invalidatesTags: ["Properties"],
       }),
       createProfession: build.mutation<
         CreateProfessionApiResponse,
@@ -195,6 +197,14 @@ const injectedRtkApi = api
           url: `/jobs/post`,
           method: "POST",
           body: queryArg.createJobRequest,
+        }),
+        invalidatesTags: ["Jobs"],
+      }),
+      bulkPost: build.mutation<BulkPostApiResponse, BulkPostApiArg>({
+        query: (queryArg) => ({
+          url: `/jobs/bulk-post`,
+          method: "POST",
+          body: queryArg.body,
         }),
         invalidatesTags: ["Jobs"],
       }),
@@ -256,6 +266,12 @@ const injectedRtkApi = api
         query: () => ({ url: `/users/get-all` }),
         providesTags: ["Users"],
       }),
+      getAllUserIds: build.query<GetAllUserIdsApiResponse, GetAllUserIdsApiArg>(
+        {
+          query: () => ({ url: `/users/get-all-user-ids` }),
+          providesTags: ["Users"],
+        }
+      ),
       userExists: build.query<UserExistsApiResponse, UserExistsApiArg>({
         query: (queryArg) => ({
           url: `/users/exists`,
@@ -301,22 +317,19 @@ const injectedRtkApi = api
         query: () => ({ url: `/roles/get-all` }),
         providesTags: ["Roles"],
       }),
-      getProperties: build.query<GetPropertiesApiResponse, GetPropertiesApiArg>(
-        {
-          query: () => ({ url: `/properties/get-properties` }),
-          providesTags: ["Properties"],
-        }
-      ),
-      getLocations: build.query<GetLocationsApiResponse, GetLocationsApiArg>({
-        query: () => ({ url: `/properties/get-locations` }),
-        providesTags: ["Properties"],
-      }),
       getProfession: build.query<GetProfessionApiResponse, GetProfessionApiArg>(
         {
           query: () => ({ url: `/professions/get` }),
           providesTags: ["Professions"],
         }
       ),
+      getPopularProfessions: build.query<
+        GetPopularProfessionsApiResponse,
+        GetPopularProfessionsApiArg
+      >({
+        query: () => ({ url: `/professions/get-popular-professions` }),
+        providesTags: ["Professions"],
+      }),
       getAllProfessions: build.query<
         GetAllProfessionsApiResponse,
         GetAllProfessionsApiArg
@@ -338,6 +351,30 @@ const injectedRtkApi = api
         }),
         providesTags: ["Jobs"],
       }),
+      getJobsByUserProfession: build.query<
+        GetJobsByUserProfessionApiResponse,
+        GetJobsByUserProfessionApiArg
+      >({
+        query: () => ({ url: `/jobs/get-jobs-by-user-profession` }),
+        providesTags: ["Jobs"],
+      }),
+      getJobsByUserProfessionAndWorkArea: build.query<
+        GetJobsByUserProfessionAndWorkAreaApiResponse,
+        GetJobsByUserProfessionAndWorkAreaApiArg
+      >({
+        query: () => ({ url: `/jobs/get-jobs-by-user-profession-workarea` }),
+        providesTags: ["Jobs"],
+      }),
+      getJobsByProfession: build.query<
+        GetJobsByProfessionApiResponse,
+        GetJobsByProfessionApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/jobs/get-jobs-by-profession`,
+          params: { professionId: queryArg.professionId },
+        }),
+        providesTags: ["Jobs"],
+      }),
       getJobs: build.query<GetJobsApiResponse, GetJobsApiArg>({
         query: (queryArg) => ({
           url: `/jobs/get-job-page`,
@@ -348,9 +385,15 @@ const injectedRtkApi = api
         }),
         providesTags: ["Jobs"],
       }),
-      init: build.query<InitApiResponse, InitApiArg>({
-        query: () => ({ url: `/init` }),
-        providesTags: ["test-controller"],
+      getJobOfferByJob: build.query<
+        GetJobOfferByJobApiResponse,
+        GetJobOfferByJobApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/jobOffers/getOfferByJob`,
+          params: { id: queryArg.id },
+        }),
+        providesTags: ["JobOffers"],
       }),
       getAllArticles: build.query<
         GetAllArticlesApiResponse,
@@ -367,6 +410,18 @@ export type RateUserApiResponse = unknown;
 export type RateUserApiArg = {
   userId: string;
   rating: number;
+};
+export type UpdateJobStatusApiResponse = /** status 200 OK */ Job;
+export type UpdateJobStatusApiArg = {
+  jobId: number;
+  jobStatus:
+    | "Draft"
+    | "Published"
+    | "In Progress"
+    | "Cancelled"
+    | "Under Review"
+    | "Requires Adjustments"
+    | "Finished";
 };
 export type UnlikePostApiResponse = /** status 200 OK */ string;
 export type UnlikePostApiArg = {
@@ -402,33 +457,31 @@ export type CreateUsersApiResponse = /** status 200 OK */ User[];
 export type CreateUsersApiArg = {
   body: User[];
 };
+export type CreateBulkProfessionalsApiResponse = /** status 200 OK */ boolean;
+export type CreateBulkProfessionalsApiArg = {
+  body: CreateBulkProfessionalsRequest[];
+};
+export type CreateBulkHomeownersApiResponse = /** status 200 OK */ boolean;
+export type CreateBulkHomeownersApiArg = {
+  body: CreateBulkHomeownersRequest[];
+};
+export type AddRatingApiResponse = /** status 200 OK */ boolean;
+export type AddRatingApiArg = {
+  userId: string;
+  rating: number;
+};
 export type AddRoleApiResponse = /** status 200 OK */ boolean;
 export type AddRoleApiArg = {
   userId: string;
   roleId: number;
 };
-export type CreateUserServicesApiResponse =
-  /** status 200 OK */ UserServiceEntity[];
-export type CreateUserServicesApiArg = {
-  body: UserServiceEntity[];
-};
-export type CreateUserServiceApiResponse =
-  /** status 200 OK */ UserServiceEntity;
-export type CreateUserServiceApiArg = {
-  userServiceEntity: UserServiceEntity;
-};
-export type CreateServiceApiResponse = /** status 200 OK */ Service;
-export type CreateServiceApiArg = {
-  serviceName: string;
-  professionId: number;
+export type AddRatingsBulkApiResponse = /** status 200 OK */ boolean;
+export type AddRatingsBulkApiArg = {
+  body: CreateRatingsBulkRequest[];
 };
 export type CreateRoleApiResponse = /** status 200 OK */ Role;
 export type CreateRoleApiArg = {
   role: Role;
-};
-export type CreatePropertyApiResponse = /** status 200 OK */ Property;
-export type CreatePropertyApiArg = {
-  property: Property;
 };
 export type CreateProfessionApiResponse = /** status 200 OK */ Profession;
 export type CreateProfessionApiArg = {
@@ -443,6 +496,10 @@ export type CreateProfessionsApiArg = {
 export type PostJobsApiResponse = /** status 200 OK */ Job;
 export type PostJobsApiArg = {
   createJobRequest: CreateJobRequest;
+};
+export type BulkPostApiResponse = /** status 200 OK */ Job[];
+export type BulkPostApiArg = {
+  body: CreateJobsBulkRequest[];
 };
 export type GetBestOfferApiResponse = /** status 200 OK */ JobOffer;
 export type GetBestOfferApiArg = {
@@ -469,6 +526,8 @@ export type GetUserProfessionsApiArg = {
 };
 export type GetAllUsersApiResponse = /** status 200 OK */ User[];
 export type GetAllUsersApiArg = void;
+export type GetAllUserIdsApiResponse = /** status 200 OK */ string[];
+export type GetAllUserIdsApiArg = void;
 export type UserExistsApiResponse = /** status 200 OK */ boolean;
 export type UserExistsApiArg = {
   userId: string;
@@ -488,12 +547,11 @@ export type GetUserRolesApiResponse = /** status 200 OK */ Role[];
 export type GetUserRolesApiArg = void;
 export type GetAllRolesApiResponse = /** status 200 OK */ Role[];
 export type GetAllRolesApiArg = void;
-export type GetPropertiesApiResponse = /** status 200 OK */ Property[];
-export type GetPropertiesApiArg = void;
-export type GetLocationsApiResponse = /** status 200 OK */ Location[];
-export type GetLocationsApiArg = void;
 export type GetProfessionApiResponse = /** status 200 OK */ Profession[];
 export type GetProfessionApiArg = void;
+export type GetPopularProfessionsApiResponse =
+  /** status 200 OK */ PopularProfessions[];
+export type GetPopularProfessionsApiArg = void;
 export type GetAllProfessionsApiResponse = /** status 200 OK */ Profession[];
 export type GetAllProfessionsApiArg = void;
 export type GetUserJobsApiResponse = /** status 200 OK */ Job[];
@@ -502,13 +560,24 @@ export type GetUserJobsByIdApiResponse = /** status 200 OK */ Job[];
 export type GetUserJobsByIdApiArg = {
   userId: string;
 };
+export type GetJobsByUserProfessionApiResponse = /** status 200 OK */ Job[];
+export type GetJobsByUserProfessionApiArg = void;
+export type GetJobsByUserProfessionAndWorkAreaApiResponse =
+  /** status 200 OK */ Job[];
+export type GetJobsByUserProfessionAndWorkAreaApiArg = void;
+export type GetJobsByProfessionApiResponse = /** status 200 OK */ Job[];
+export type GetJobsByProfessionApiArg = {
+  professionId: number;
+};
 export type GetJobsApiResponse = /** status 200 OK */ PageJob;
 export type GetJobsApiArg = {
   jobPage: JobPage;
   jobSearchCriteria: JobSearchCriteria;
 };
-export type InitApiResponse = unknown;
-export type InitApiArg = void;
+export type GetJobOfferByJobApiResponse = /** status 200 OK */ JobOffer[];
+export type GetJobOfferByJobApiArg = {
+  id: number;
+};
 export type GetAllArticlesApiResponse = /** status 200 OK */ Article[];
 export type GetAllArticlesApiArg = void;
 export type Name = {
@@ -519,15 +588,6 @@ export type Role = {
   id?: number;
   name: string;
   code: string;
-};
-export type Review = {
-  id?: number;
-  score: number;
-  reviewText: string;
-  reviewer: User;
-  reviewedUser: User;
-  roleReviewed: Role;
-  timestamp?: string;
 };
 export type Profession = {
   id?: number;
@@ -547,8 +607,6 @@ export type User = {
   email: string;
   phoneNumber?: string;
   dateOfBirth?: string;
-  reviewsGiven?: Review[];
-  reviewsReceived?: Review[];
   averageRating?: number;
   ratingsCount?: number;
   experience?: number;
@@ -560,6 +618,14 @@ export type User = {
   photoUrl?: string;
   userProfessions?: UserProfession[];
   workAreas?: "North" | "Haifa" | "Center" | "BeerShevaa" | "South";
+};
+export type Comment = {
+  commentId?: number;
+  date: string;
+  job?: Job;
+  user?: User;
+  numberOfReports?: number;
+  jobId?: number;
 };
 export type Job = {
   id?: number;
@@ -582,14 +648,6 @@ export type Job = {
   neededProfessions?: Profession[];
   numberOfReports?: number;
 };
-export type Comment = {
-  commentId?: number;
-  date: string;
-  job?: Job;
-  user?: User;
-  numberOfReports?: number;
-  jobId?: number;
-};
 export type UpdatePersonalInfoRequest = {
   name?: Name;
   phoneNumber?: string;
@@ -605,38 +663,41 @@ export type UpdateProfileRequest = {
   updatePersonalInfoRequest?: UpdatePersonalInfoRequest;
   updateProfessionsRequest?: UpdateProfessionsRequest;
 };
-export type Service = {
-  id?: number;
-  name: string;
-  profession?: Profession;
+export type CreateBulkProfessionalsRequest = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  photoUrl?: string;
+  workAreas?: "North" | "Haifa" | "Center" | "BeerShevaa" | "South";
+  professionId?: number;
+  startDate?: string;
+  services?: string[];
 };
-export type UserServiceEntity = {
-  id?: number;
-  description: string;
-  service: Service;
-  user: User;
-  cost?: number;
+export type CreateBulkHomeownersRequest = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  photoUrl?: string;
+  workAreas?: "North" | "Haifa" | "Center" | "BeerShevaa" | "South";
 };
-export type Point = {
-  x?: number;
-  y?: number;
-};
-export type Location = {
-  country?: string;
-  city?: string;
-  address?: string;
-  postalCode?: string;
-  point?: Point;
-};
-export type Property = {
-  id?: number;
-  name: string;
-  owner?: User;
-  location?: Location;
+export type CreateRatingsBulkRequest = {
+  reviewerId?: string;
+  reviewedId?: string;
+  rating?: number;
 };
 export type CreateJobRequest = {
   job?: Job;
   profession?: Profession;
+};
+export type CreateJobsBulkRequest = {
+  budget?: number;
+  description?: string;
+  title?: string;
+  ownerId?: string;
+  neededProfessionId?: number;
+  photos?: string[];
 };
 export type JobOffer = {
   id?: number;
@@ -648,6 +709,10 @@ export type JobOffer = {
   description?: string;
   accepted?: boolean;
 };
+export type PopularProfessions = {
+  profession?: Profession;
+  count?: number;
+};
 export type SortObject = {
   empty?: boolean;
   sorted?: boolean;
@@ -656,21 +721,21 @@ export type SortObject = {
 export type PageableObject = {
   offset?: number;
   sort?: SortObject;
-  unpaged?: boolean;
-  paged?: boolean;
   pageNumber?: number;
   pageSize?: number;
+  paged?: boolean;
+  unpaged?: boolean;
 };
 export type PageJob = {
   totalElements?: number;
   totalPages?: number;
+  first?: boolean;
+  last?: boolean;
+  numberOfElements?: number;
   size?: number;
   content?: Job[];
   number?: number;
   sort?: SortObject;
-  first?: boolean;
-  last?: boolean;
-  numberOfElements?: number;
   pageable?: PageableObject;
   empty?: boolean;
 };
@@ -703,6 +768,7 @@ export type Article = {
 };
 export const {
   useRateUserMutation,
+  useUpdateJobStatusMutation,
   useUnlikePostMutation,
   useLikePostMutation,
   useCommentOnPostMutation,
@@ -711,15 +777,16 @@ export const {
   useUpdatePersonalInfoMutation,
   useCreateUserMutation,
   useCreateUsersMutation,
+  useCreateBulkProfessionalsMutation,
+  useCreateBulkHomeownersMutation,
+  useAddRatingMutation,
   useAddRoleMutation,
-  useCreateUserServicesMutation,
-  useCreateUserServiceMutation,
-  useCreateServiceMutation,
+  useAddRatingsBulkMutation,
   useCreateRoleMutation,
-  useCreatePropertyMutation,
   useCreateProfessionMutation,
   useCreateProfessionsMutation,
   usePostJobsMutation,
+  useBulkPostMutation,
   useGetBestOfferMutation,
   usePostJobOfferMutation,
   useGetUsersByEmailQuery,
@@ -727,19 +794,22 @@ export const {
   useGetUserQuery,
   useGetUserProfessionsQuery,
   useGetAllUsersQuery,
+  useGetAllUserIdsQuery,
   useUserExistsQuery,
   useFindUserByProfessionQuery,
   useGetAllUsersByWorkAreaQuery,
   useGetSearchesNumbersQuery,
   useGetUserRolesQuery,
   useGetAllRolesQuery,
-  useGetPropertiesQuery,
-  useGetLocationsQuery,
   useGetProfessionQuery,
+  useGetPopularProfessionsQuery,
   useGetAllProfessionsQuery,
   useGetUserJobsQuery,
   useGetUserJobsByIdQuery,
+  useGetJobsByUserProfessionQuery,
+  useGetJobsByUserProfessionAndWorkAreaQuery,
+  useGetJobsByProfessionQuery,
   useGetJobsQuery,
-  useInitQuery,
+  useGetJobOfferByJobQuery,
   useGetAllArticlesQuery,
 } = injectedRtkApi;

@@ -42,7 +42,12 @@ const ProfileViewScreen: React.FC = () => {
   const userProfession = hasProfession ? userProfessionsData[0] : undefined;
   const horizontalMargin = { marginHorizontal: isWeb ? 50 : 0 };
   const isDifferentUser = selectedUser !== null && loggedInUser?.id !== user?.id;
-  const userRating = (isDifferentUser && loggedInUser?.reviewsGiven) ? loggedInUser?.reviewsGiven.find(review => review.reviewer.id === loggedInUser?.id)?.score : undefined;
+  
+  const userRating = (isDifferentUser && loggedInUser?.reviewsGiven) 
+    ? loggedInUser?.reviewsGiven.find(review => 
+        review.id === user?.reviewsReceived?.find(review2 => review2.id === review.id)?.id)?.score 
+    : undefined;
+        
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count
@@ -86,10 +91,10 @@ const ProfileViewScreen: React.FC = () => {
 
   const Ratings = <View invisible center>
     <View row invisible>
-      <AirbnbRating isDisabled defaultRating={user?.averageRating} showRating={false} reviewSize={0} size={20} starContainerStyle={{ marginLeft: 2 }} />
-      <Text bold marginL-10>{`${user?.averageRating} stars `}</Text>
+      <AirbnbRating isDisabled defaultRating={user?.rating} showRating={false} reviewSize={0} size={20} starContainerStyle={{ marginLeft: 2 }} />
+      <Text bold marginL-10>{`${user?.rating?.toFixed(1)} stars `}</Text>
     </View>
-    <Text marginT-5 style={{ fontSize: 16 }}>{`(Out of ${user?.ratingsCount} ratings)`}</Text>
+    <Text marginT-5 style={{ fontSize: 16 }}>{`(Out of ${user?.numOfRates} ratings)`}</Text>
   </View>
 
   const BasicInfo =

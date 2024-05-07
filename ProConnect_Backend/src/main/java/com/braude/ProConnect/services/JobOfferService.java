@@ -18,6 +18,9 @@ public class JobOfferService {
     private JobOfferRepository jobOfferRepository;
 
     @Autowired
+    private JobService jobService;
+
+    @Autowired
     private UserService userService;
     public void save(JobOffer jobOffer) {
         jobOfferRepository.save(jobOffer);
@@ -29,5 +32,10 @@ public class JobOfferService {
         System.out.println(jobOffers.size());
         return  jobMatchingAlgorithm.chooseOffer(jobOffers);
 
+    }
+
+    public List<JobOffer> findByJob(Long id) {
+        Job job = jobService.findById(id);
+        return jobOfferRepository.findByJob(job);
     }
 }

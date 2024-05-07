@@ -5,15 +5,16 @@ export interface LoadingProps{
     small?: boolean,
     displayLoadingMessage?: boolean,
     loadingMessage?: string,
+    backgroundColor?: string
 }
 
 const ProLoading: React.FC<LoadingProps> = (props) => {
     const small = props.small || false;
     const displayMessage = props.displayLoadingMessage === undefined ? true : props.displayLoadingMessage;
     const message = props.loadingMessage || "Loading...";
+    const backgroundColor = { backgroundColor: props.backgroundColor }|| undefined;
 
-
-  return <View margin-30 style={{...styles.loading, width: 100}} bg>
+  return <View margin-30 style={[{...styles.loading, width: 100}, backgroundColor !== undefined ? backgroundColor : {}]} bg>
     <ActivityIndicator color={Colors.secondary} size={small ? "small" : "large"} />
     {displayMessage ? <Text marginT-20 style={styles.loading}>{message}</Text> : <></>}
     </View>;

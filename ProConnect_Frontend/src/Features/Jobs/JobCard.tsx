@@ -19,6 +19,7 @@ import ProButton from "../../Components/Controls/ProButton";
 import { setChat } from "../../Services/Redux/Slices/ChatSlice";
 import { auth } from "../../Services/Firebase/Firebase";
 import { getUserAccount } from "../../Services/Redux/Slices/AuthSlice";
+import ProfileImage from "../../Components/Layout/ProfileImage";
 
 interface JobCardProps {
   job: Job;
@@ -40,7 +41,7 @@ function generateCardContent(job: Job): CardSectionContent[] {
 
 const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
   const job = props.job;
-  const children = generateCardChildren(job);
+  const children = (job) ? generateCardChildren(job) : <></>;
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -71,9 +72,10 @@ const JobCard: React.FC<JobCardProps & CardProps> = (props) => {
     }}/>
     const CardHeader = <View flex-1 flexG>
       <ProHeader text={job.title} marginB-5 headerType={HeaderType.H3} />
-      {/* <TouchableOpacity onPress={()=>{dispatch}}> */}
-        <Text marginT-0 marginB-20>{`by ${job.owner?.name.firstName} ${job.owner?.name.lastName}`}</Text>
-      {/* </TouchableOpacity> */}
+      <View row invisible>
+        <ProfileImage user={job?.owner} imageStyle={{borderColor: 'black', borderWidth: 1, width: 40, height: 40, borderRadius: 40, marginRight: 10}}></ProfileImage>
+        <Text marginT-10 marginB-20>{`by ${job.owner?.name.firstName} ${job.owner?.name.lastName}`}</Text>
+      </View>
       <Text ellipsizeMode="tail" numberOfLines={3}>
         {job.description}
       </Text>

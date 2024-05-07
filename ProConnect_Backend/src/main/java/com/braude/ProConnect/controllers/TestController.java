@@ -5,6 +5,7 @@ import com.braude.ProConnect.models.entities.Role;
 import com.braude.ProConnect.models.entities.User;
 import com.braude.ProConnect.services.RoleService;
 import com.braude.ProConnect.services.UserService;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@Hidden
 public class TestController {
     private final RoleService roleService;
     private final UserService userService;

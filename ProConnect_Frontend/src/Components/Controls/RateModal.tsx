@@ -36,7 +36,7 @@ const RateModal: React.FC<RateModalProps> = ({ onClose, onRate, initialRating, i
                         defaultRating={initialRating || 0}
                         onFinishRating={handleRating}
                         />
-                        {isDisabled && <ProLoading small displayLoadingMessage loadingMessage='Saving rating...'/>}
+                        {isDisabled && <ProLoading backgroundColor='transparent' small displayLoadingMessage loadingMessage='Saving rating...'/>}
                 </View>
                         </TouchableOpacity>
             </View>

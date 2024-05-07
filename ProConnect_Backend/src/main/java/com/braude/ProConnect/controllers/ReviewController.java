@@ -1,5 +1,6 @@
 package com.braude.ProConnect.controllers;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,5 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin()
 @Validated
 @Tag(name = "Reviews")
+@Hidden
 public class ReviewController {
 }

@@ -15,6 +15,7 @@ import PostJobScreen from "../Features/Jobs/PostJobScreen";
 import PersonsChat from "../Screens/Chat/PersonsChat";
 import HomePage from "../Screens/HomePage/HomePage";
 import { getUserAccount } from "../Services/Redux/Slices/AuthSlice";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
 
@@ -22,11 +23,11 @@ export type MainTabParamList = {
   Home: undefined;
   Profile: undefined;
   Settings: undefined;
-  Search: {label : string , value : string}[];
+  Search: { label: string, value: string }[];
   Friends: undefined;
   Post: undefined;
-  Chat : undefined
-  Jobs : undefined
+  Chat: undefined
+  Jobs: undefined
 };
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
@@ -36,14 +37,14 @@ export const MainTabScreen: React.FC = () => {
   const user = useSelector(getUserAccount)
 
   const dispatch = useDispatch();
-
+  const role = user?.roles && user?.roles[0].code || undefined;
   // function renderSearchPage(){
   //   return (
-    
+
   //   )
   // }
   return (
-    
+
     <MainTab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -59,7 +60,7 @@ export const MainTabScreen: React.FC = () => {
             iconName = focused ? "share" : "share-outline";
           }
           else if (route.name == "Jobs") {
-            iconName = focused ? "share-social" : "share-social-outline";
+            return focused ? <MaterialCommunityIcons name={'clipboard-list'} size={size} color={Colors.$backgroundDarkElevated}/> : <MaterialCommunityIcons name={'clipboard-list-outline'} size={size} color={Colors.$backgroundDarkElevated}/>;
           }
 
           // You can customize the icon further if needed
@@ -85,67 +86,43 @@ export const MainTabScreen: React.FC = () => {
         component={HomePage}
         options={{ headerShown: false }}
       />
-       <MainTab.Screen
-      name="Chat"
-      component={PersonsChat}        
-      options={{ headerShown: false }} 
-
-    
-      
-      
-    
-    />
-
-    <MainTab.Screen 
-
-    name="Jobs"
-    component={JobsList}
-    options={{ headerShown: false }} 
-    />
-
-      {/* <MainTab.Screen
-        name="Friends"
-        options={{ headerShown: false }} listeners={{
-          tabPress: (e) => {
-            dispatch(setPersonsPage({ComponentType : "ProButton"}))
-          },
-        }}>
-          
-      {(props) => <PersonsPage   />}
-
-</MainTab.Screen> */}
-
-
       <MainTab.Screen
+        name="Chat"
+        component={PersonsChat}
+        options={{ headerShown: false }}
+      />
+      {role && role === "PRO" && <MainTab.Screen
+        name="Jobs"
+        component={JobsList}
+        options={{ headerShown: false }}
+      />}
+      {role && role === "HO" &&  <MainTab.Screen
         name="Post"
         component={PostJobScreen}
         options={{ headerShown: false }}
-      />
-    
+      />}
+
     </MainTab.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
 
-  CardContainer : {
-    backgroundColor:Colors.$backgroundDark,
+  CardContainer: {
+    backgroundColor: Colors.$backgroundDark,
     // borderColor:"green",
     // borderWidth:5,
-    width:180,
-    height:180,
-    alignItems:"center",
-    justifyContent:"center",
-    
+    width: 180,
+    height: 180,
+    alignItems: "center",
+    justifyContent: "center",
+
   },
-  photoStyle : {
+  photoStyle: {
     height: 100,
     width: 100,
-    borderRadius:70,
-    marginBottom:8,
-  },
-
-
-
+    borderRadius: 70,
+    marginBottom: 8,
+  }
 });
 

@@ -4,9 +4,11 @@ package com.braude.ProConnect.controllers;
 import com.braude.ProConnect.models.entities.Comment;
 import com.braude.ProConnect.models.entities.Job;
 import com.braude.ProConnect.models.entities.User;
+import com.braude.ProConnect.models.enums.JobStatus;
 import com.braude.ProConnect.models.page.JobPage;
 import com.braude.ProConnect.models.searchCriteria.JobSearchCriteria;
 import com.braude.ProConnect.requests.CreateJobRequest;
+import com.braude.ProConnect.requests.CreateJobsBulkRequest;
 import com.braude.ProConnect.services.JobService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nonnull;
@@ -41,6 +43,10 @@ public class JobController {
         return new ResponseEntity<>(returnedJob, HttpStatus.CREATED);
     }
 
+    @PutMapping("/update-job-status")
+    public ResponseEntity<Job> updateJobStatus(@RequestParam Long jobId, @RequestParam JobStatus jobStatus){
+        return new ResponseEntity<>(jobService.updateJobStatus(jobId, jobStatus), HttpStatus.OK);
+    }
 
     @GetMapping("/get-job-page")
     public ResponseEntity<Page<Job>> getJobs(JobPage jobPage, JobSearchCriteria jobSearchCriteria){
@@ -70,17 +76,6 @@ public class JobController {
         return new ResponseEntity<>(jobService.getJobsByProfessionAndWorkArea(), HttpStatus.OK);
     }
 
-
-//    @GetMapping("/getJobByUser")
-//    public ResponseEntity<List<Job>> findJobByOwner(@RequestBody User owner){
-//        System.out.println("Owner " + owner);
-//        List<Job> jobs = jobService.getUserJobs(owner);
-//        if(jobs.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(jobs,HttpStatus.OK);
-//    }
-
     @PutMapping("/like")
     public String likePost(@RequestParam @Nonnull Long jobId, @RequestParam @Nonnull String userId){
             return jobService.likePost(jobId,userId);
@@ -95,9 +90,10 @@ public class JobController {
     public Comment commentOnPost(@RequestBody Comment comment){
         return jobService.addComment(comment);
     }
-    /*@GetMapping("/user")
-    public List<Job> getJobsByUser(@RequestParam String userId){
-        return jobService.getJobByUserId(userId);
-    }*/
+
+    @PostMapping(value = "/bulk-post")
+    public ResponseEntity<List<Job>> bulkPost(@RequestBody List<CreateJobsBulkRequest> requests) {
+        return new ResponseEntity<>(jobService.bulkPost(requests), HttpStatus.CREATED);
+    }
 
 }

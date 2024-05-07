@@ -3,6 +3,7 @@ package com.braude.ProConnect.controllers;
 import com.braude.ProConnect.models.embeddables.Location;
 import com.braude.ProConnect.models.entities.Property;
 import com.braude.ProConnect.services.PropertyService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.List;
 @CrossOrigin()
 @Validated
 @Tag(name = "Properties")
+@Hidden
 public class PropertyController {
     private final PropertyService propertyService;
 

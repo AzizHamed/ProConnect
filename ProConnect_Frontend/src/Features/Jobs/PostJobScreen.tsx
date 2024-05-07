@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Image, Keyboard } from 'react-native';
 import { usePostJobsMutation, CreateJobRequest, useGetAllProfessionsQuery, Profession } from '../../Services/Redux/Api';
 import ProTextInput from '../../Components/Controls/ProTextInput';
 import { useForm } from 'react-hook-form';
@@ -10,7 +11,7 @@ import { uploadSelectedFiles } from '../../Services/Firebase/Firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount } from '../../Services/Redux/Slices/AuthSlice';
 import ProWizard from '../../Components/Controls/ProWizard';
-import { View, Text } from 'react-native-ui-lib';
+import { View, Text, Colors } from 'react-native-ui-lib';
 import { addJob, selectJob } from '../../Services/Redux/Slices/JobSlice';
 import { useNavigation } from '@react-navigation/native';
 import ProLoading from '../../Components/Layout/ProLoading';
@@ -124,10 +125,18 @@ const PostJobScreen: React.FC = () => {
                 keyboardType='numeric'
             />
             <ValidatedDropDown control={control} setIsValid={setIsDropdownValid} triggerValidation={triggerValidation}
-                setValue={setDropdownValue} selectedValue={undefined} values={professionsOptions} errorMessage='You must select a profession.'></ValidatedDropDown>
+                setValue={setDropdownValue} selectedValue={undefined} values={professionsOptions} errorMessage='You must select a profession.'
+                leftIcon={(
+                    selectedProfession?.iconUrl ? <Image resizeMode='contain'
+                        style={{ width: 25, height: 25, marginLeft: 10 }}
+
+                        source={{ uri: selectedProfession?.iconUrl}}
+                        tintColor={Colors.black}
+                      /> : <></>
+                )}></ValidatedDropDown>
         </View>,
 
-        <View key={1} style={{ alignItems: "center", width: "100%", }}>
+        <View key={1} style={{ alignItems: "center", width: "100%", }} onTouchStart={Keyboard.dismiss}>
             <ProTextInput
                 name="description"
                 control={control}

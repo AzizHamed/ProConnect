@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { View, Text } from "react-native-ui-lib";
-import { Job } from "../../Services/Redux/Api";
-import ProCard from "../../Components/Layout/ProCard";
+import { Job, useUpdateJobStatusMutation } from "../../Services/Redux/Api";
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedJob, selectJob } from "../../Services/Redux/Slices/JobSlice";
+import { getJobs, getSelectedJob, selectJob, setJobs } from "../../Services/Redux/Slices/JobSlice";
 import { useNavigation } from "@react-navigation/native";
 import ProHeader, { HeaderType } from "../../Components/Layout/ProHeader";
 import { formatDateString } from "../../Utility/Formatter";
 import BackgroundView from "../../Components/Layout/BackgroundView";
 import JobCard from "./JobCard";
-import ProButton from "../../Components/Controls/ProButton";
-import { setChat } from "../../Services/Redux/Slices/ChatSlice";
+import { getUserAccount } from "../../Services/Redux/Slices/AuthSlice";
 
 function generateCardChildren(job: Job | null) {
   if (job == null)
@@ -33,7 +31,10 @@ function generateCardChildren(job: Job | null) {
 
 const JobPage: React.FC = () => {
   const job = useSelector(getSelectedJob);
+  const allJobs = useSelector(getJobs);
+  const user = useSelector(getUserAccount);
   const navigation = useNavigation();
+  const [updateJobStatus] = useUpdateJobStatusMutation();
   const children = generateCardChildren(job);
   const defaultJob: Job = { title: "", description: "" };
   const dispatch = useDispatch();
@@ -42,11 +43,38 @@ const JobPage: React.FC = () => {
     navigation.addListener("beforeRemove", (e) => {
       dispatch(selectJob(null));
     }),
-      [navigation];
-
-      
+      [navigation];      
   });
 
+  useEffect(() => {
+    // Use `setOptions` to update the button that we previously specified
+    // Now the button includes an `onPress` handler to update the count
+    if (job && job?.owner && user?.id === job?.owner?.id) {
+      console.log('UseEffect', user?.id, job?.owner?.id);
+      navigation.setOptions({
+        headerRight: () => (
+
+          <TouchableOpacity onPress={() => {
+            if(job === undefined || job?.id == undefined) return;
+            updateJobStatus({jobId: job?.id, jobStatus: "FINISHED"}).unwrap()
+            .then((job) => {
+              dispatch(setJobs(allJobs.map((j) => j.id === job.id ? job : j)));
+              dispatch(selectJob(null));
+              navigation.goBack();
+            })
+            .catch((error) => {console.log(error); navigation.reset({index: 0, routes: [{name: "Main"}]});});
+          }}>
+            <Text marginR-20 color="black">Mark Job as Done</Text>
+          </TouchableOpacity>
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        headerRight: () => (<></>),
+      });
+
+    }
+  }, [navigation, job, user]);
 
   return (
     <BackgroundView children={(
