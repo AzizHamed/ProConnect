@@ -9,20 +9,14 @@ import com.braude.ProConnect.repositories.RoleRepository;
 import com.braude.ProConnect.repositories.UserProfessionsRepository;
 import com.braude.ProConnect.repositories.SearchesRepository;
 import com.braude.ProConnect.repositories.UserRepository;
-import com.braude.ProConnect.requests.CreateRatingsBulkRequest;
-import com.braude.ProConnect.requests.UpdatePersonalInfoRequest;
-import com.braude.ProConnect.requests.UpdateProfessionsRequest;
-import com.braude.ProConnect.requests.UpdateProfileRequest;
+import com.braude.ProConnect.requests.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -168,11 +162,6 @@ public class UserService {
         return userProfessionsRepository.findAllByUser(userRepository.findById(userId).get());
     }
 
-//    public void addProfession(String userId, String professionName) {
-//        User user = userRepository.findById(userId).get();
-//        user.getProfessions().add(professionService.getProfessionByName(professionName));
-//        userRepository.save(user);
-//    }
     public void rateUser(String userId, int rating) {
         User user = userRepository.findById(userId).get();
         user.addRating(rating);
@@ -269,5 +258,40 @@ public class UserService {
             User reviewedUser = userRepository.findById(rating.getReviewedId()).get();
             rate(rating.getReviewerId(), rating.getRating(), reviewer, reviewedUser);
         }
+    }
+
+    public void createBulkHomeowners(List<CreateBulkHomeownersRequest> requests) {
+        Role role = roleRepository.findById(2L).get();
+        List<User> users = new ArrayList<>();
+        for (CreateBulkHomeownersRequest request : requests) {
+             User user = User.builder().id(UUID.randomUUID().toString()).email(request.getEmail())
+                     .name(new Name(request.getFirstName(), request.getLastName()))
+                     .accountStatus(AccountStatus.ACTIVE)
+                     .phoneNumber(request.getPhoneNumber()).roles(Arrays.asList(role)).build();
+             users.add(user);
+        }
+        createUsers(users);
+    }
+
+    public void createBulkProfessionals(List<CreateBulkProfessionalsRequest> requests) {
+        Role role = roleRepository.findById(3L).get();
+        List<User> users = new ArrayList<>();
+        for (CreateBulkProfessionalsRequest request : requests) {
+            User user = User.builder().id(UUID.randomUUID().toString()).email(request.getEmail())
+                    .name(new Name(request.getFirstName(), request.getLastName()))
+                    .accountStatus(AccountStatus.ACTIVE)
+                    .phoneNumber(request.getPhoneNumber()).roles(Arrays.asList(role)).build();
+            Profession profession = professionService.getProfessionById(request.getProfessionId());
+            UserProfession userProfession = new UserProfession();
+            userProfession.setServices(request.getServices());
+            userProfession.setUser(user);
+            userProfession.setStartDate(request.getStartDate());
+            userProfession.setProfession(profession);
+            if (profession == null)
+                throw new ProConnectException("Profession not found.");
+            user.getUserProfessions().add(userProfession);
+            users.add(user);
+        }
+        createUsers(users);
     }
 }
