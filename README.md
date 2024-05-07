@@ -10,6 +10,8 @@ _In Progress_
 
 [Server URL - Heroku](https://proconnect-db6d58e90780.herokuapp.com/swagger-ui/index.html#/)
 
+[Maintenance Guide](https://github.com/hadiDanial/ProConnect/blob/main/Maintainer%20Guide.md)
+
 ## Phase A
 
 [Project Book](https://docs.google.com/document/d/e/2PACX-1vTw8gmbY5O7UTnwApPHqGgHrEaODn19NHAIfjJUaqGLbIf0lUPpZU_eH7TF3-wf84EBjkyuLS4HmNHl/pub)
