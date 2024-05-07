@@ -628,17 +628,7 @@ const Chat: React.FC<ChatProps> = (props) => {
 
 
   const RenderInputToolbar = (props: any) => (
-
-
-
-
-    <InputToolbar  {...props} renderAccessory={renderAccessory} renderActions={renderAction} renderSend={renderSend} accessoryStyle={{ height: showOptions ? 300 : 0, backgroundColor: "silver" }} />
-
-
-
-
-
-
+    <InputToolbar  {...props} renderAccessory={renderAccessory} renderActions={renderAction} renderSend={renderSend} accessoryStyle={{ height: showOptions ? 130 : 0, backgroundColor: "silver" }} />
   );
 
   async function chooseFile() {
@@ -745,12 +735,12 @@ const Chat: React.FC<ChatProps> = (props) => {
         </View>
         <Text>Camera</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.actionContainer} onPress={sendLocation}>
+      {/* <TouchableOpacity style={styles.actionContainer} onPress={sendLocation}>
         <View style={styles.actions}>
           <Ionicons name='location' size={40} color={Colors.$backgroundDarkElevated} />
         </View>
         <Text>Location</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.actionContainer} onPress={getContacts}>
         <View style={styles.actions}>
           <MaterialIcons name='contacts' size={40} color={Colors.$backgroundDarkElevated} />
