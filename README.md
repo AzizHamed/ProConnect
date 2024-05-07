@@ -4,6 +4,12 @@
 
 _In Progress_
 
+[Project Book]([https://docs.google.com/document/d/e/2PACX-1vTw8gmbY5O7UTnwApPHqGgHrEaODn19NHAIfjJUaqGLbIf0lUPpZU_eH7TF3-wf84EBjkyuLS4HmNHl/pub](https://docs.google.com/document/d/1Y82D-w8q6yK-BIgj84vHvKnMG5XkRoL2gLmNDG9DjWw/edit?usp=sharing))
+
+[Presentation](https://1drv.ms/p/s!AoLVRGF92BcTg-dnYPoIA4lQRiqkLg?e=ktySIR)
+
+[Server URL - Heroku](https://proconnect-db6d58e90780.herokuapp.com/swagger-ui/index.html#/)
+
 ## Phase A
 
 [Project Book](https://docs.google.com/document/d/e/2PACX-1vTw8gmbY5O7UTnwApPHqGgHrEaODn19NHAIfjJUaqGLbIf0lUPpZU_eH7TF3-wf84EBjkyuLS4HmNHl/pub)
