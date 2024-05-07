@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, ScrollView } from 'react-native'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAccount, setUserAccount } from '../../Services/Redux/Slices/AuthSlice';
@@ -175,7 +175,8 @@ const ProfileEditorScreen: React.FC = () => {
   if (isLoading) return <BackgroundView children={(<ProLoading />)} />
 
   return (
-    <BackgroundView hasScroll children={(
+    <BackgroundView children={(
+    <ScrollView>
       <View style={{ alignItems: "center", paddingTop: 20 }} onTouchStart={() => { Keyboard.dismiss(); }}>
         <ProExpandableView title='Personal Information' height={400 + (user?.accountStatus === 'SETUP' ? 75 : 0)} isInitiallyExpanded
           children={
@@ -183,7 +184,7 @@ const ProfileEditorScreen: React.FC = () => {
               <View style={{ alignItems: "center" }}>
 
                 <View style={{ alignItems: 'center', alignSelf: 'center', width: 150 }}>
-                  <ProfileImage user={user} size={125} navigateToProfileDisabled/>
+                  <ProfileImage user={user} overrideUrl={selectedProfilePictureUri} size={125} navigateToProfileDisabled/>
                   <ProIconButton displayBackground ionicon ioniconName="camera" showAddIcon onPress={() => { clear(); selectPictures('GALLERY'); }} style={{ position: 'absolute', right: 5, bottom: 0 }} />
                 </View>
                 <ProTextView text={`${user?.email}`} />
@@ -281,7 +282,7 @@ const ProfileEditorScreen: React.FC = () => {
           onPress={reset}
         />
       </View>
-
+    </ScrollView>
     )}
     />
   )

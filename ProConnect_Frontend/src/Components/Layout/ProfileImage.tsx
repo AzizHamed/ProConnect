@@ -9,13 +9,15 @@ interface ProfileImageProps {
     size?: number;
     imageStyle?: ImageStyle;
     user: User;
+    overrideUrl?: string;
     navigateToProfileDisabled?: boolean;
 }
 
 const ProfileImage: React.FC<ProfileImageProps> = (props) => {
     const user = props.user;
     const photoUrl = user.photoUrl;
-    const imageSource = { uri: (photoUrl !== undefined && photoUrl !== null && photoUrl !== '') ? photoUrl : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png' };
+    const imageSource = (props.overrideUrl && props.overrideUrl !== '') ? { uri: props.overrideUrl } :
+    { uri: (photoUrl !== undefined && photoUrl !== null && photoUrl !== '') ? photoUrl : 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png' };
     const size = props.size || 130;
     const style = props.imageStyle || { height: size, width: size, borderRadius: size / 2 }
     const navigation = useNavigation();
