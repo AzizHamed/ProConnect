@@ -289,6 +289,7 @@ public class UserService {
             userProfession.setProfession(profession);
             if (profession == null)
                 throw new ProConnectException("Profession not found.");
+            user.setUserProfessions(new ArrayList<>());
             user.getUserProfessions().add(userProfession);
             users.add(user);
         }
