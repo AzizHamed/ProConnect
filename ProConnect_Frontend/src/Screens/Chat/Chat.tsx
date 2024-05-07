@@ -40,6 +40,7 @@ import * as Contacts from 'expo-contacts';
 import ContactsModal from './ContactsModal';
 import { setPersonChat } from '../../Services/Redux/Slices/PersonChatSlice';
 import { selectUser } from '../../Services/Redux/Slices/UserSlice';
+import { IS_WEB } from '../../Constants/Values';
 
 
 
@@ -460,8 +461,9 @@ const Chat: React.FC<ChatProps> = (props) => {
     const renderBubble = (props: Readonly<BubbleProps<IMessage>>) => {
       
       if(props.currentMessage?.location === true){
-        return (
-          
+        if(IS_WEB())
+          return <></>;
+        return (          
           <View>
            
            <TouchableOpacity onPress={()=>{
