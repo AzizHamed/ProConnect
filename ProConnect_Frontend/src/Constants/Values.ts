@@ -45,20 +45,23 @@ interface PersonsPageProps {
 
 
 const CardContainer1 : StyleProp<ViewStyle> = {
-  backgroundColor:Colors.$backgroundDark,
+  backgroundColor: Colors.white,
   width:180,
   height:180,
   alignItems:"center",
   justifyContent:"center",
-  
+  // borderWidth: 2,
+  // borderColor: Colors.controlBackground,
 }
+
 const CardContainer2 : StyleProp<ViewStyle> = {
-  backgroundColor:Colors.$backgroundDark,
+  backgroundColor:Colors.white,
   width:190,
   height:220,
   alignItems:"center",
   justifyContent:"center",
-  
+  // borderWidth: 3,
+  // borderColor: Colors.primary,  
 }
 
 

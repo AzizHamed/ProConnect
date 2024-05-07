@@ -23,12 +23,10 @@ const PersonCard: React.FC<PersonCardProps> = (props) => {
   return (
 
     <View style={props?.containerStyle} key={props.user.id + "_personCard"}>
-      <View style={props.cardContainerStyle}>
-        {/* <Image
-          source={require('../../../gardner2.png')}
-          style={props.imageStyle}
-        /> */}
-        <ProfileImage size={65} user={props.user}/>
+      <View style={props.cardContainerStyle}>   
+      <View style={{marginBottom: 10}}>        
+        <ProfileImage size={100} user={props.user}/>
+        </View>
 
         {props.componentsUnderImage}
       </View>

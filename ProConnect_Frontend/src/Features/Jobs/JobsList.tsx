@@ -56,7 +56,7 @@ const JobsList: React.FC = () => {
                   {isSuccess && (
                     // <View style={styles.container} bg>
                     <View bg style={{ width: "100%" }}>
-                      {jobs && jobs[0] && jobs[0].neededProfessions && <Text center marginV-15 h5>{jobs.length} {jobs[0].neededProfessions[0].name} Jobs in {jobs[0].owner?.workAreas}</Text>}
+                      {/* {jobs && jobs[0] && jobs[0].neededProfessions && <Text center marginV-15 h5>{jobs.length} {jobs[0].neededProfessions[0].name} Jobs in {jobs[0].owner?.workAreas}</Text>} */}
                       {jobs.map((job) => {
                         if (job.owner?.email !== auth.currentUser?.email && job.jobStatus !== "Finished")
                           return (

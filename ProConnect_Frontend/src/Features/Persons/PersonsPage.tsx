@@ -16,7 +16,7 @@ import { Colors } from 'react-native-ui-lib';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedPersonsPage, getSelectedProfession } from '../../Services/Redux/Slices/PersonsPageSlice';
-import { PersonPage1, PersonPage2, sort } from '../../Constants/Values';
+import { IS_WEB, PersonPage1, PersonPage2, defaultWidthValues, sort } from '../../Constants/Values';
 import ProButton from '../../Components/Controls/ProButton';
 import { checkName } from '../../Constants/Functions/Functions';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -47,7 +47,7 @@ const PersonsPage = () => {
   const [experience, setexperience] = useState(0)
   const [location, setlocation] = useState("choose location")
 
-  const [sortby, setsort] = useState("0")
+  const [sortby, setsort] = useState("1")
   var textInput = "";
   const componentType = useSelector(getSelectedPersonsPage)
   let data1 = data
@@ -59,16 +59,16 @@ const PersonsPage = () => {
   let PersonPage = componentType == "Rating" ? PersonPage2 : PersonPage1
 
   const navigation = useNavigation();
-
-
-
+  const isWeb = IS_WEB();
+  const width = defaultWidthValues();
+  const adjustedWidth = typeof width === 'number' ? width + 200 : width;
   function renderComponent(rating: number) {
     return componentType == "Rating" ? [<AirbnbRating
       defaultRating={rating}
       count={5}
       size={25}
       isDisabled={true}
-      showRating={false} starContainerStyle={{ marginRight: 2 }} />] : [<ProButton text={"Chat"} mobileWidth={180} />]
+      showRating={false} starContainerStyle={{ marginTop: 5 }} />] : [<ProButton text={"Chat"} mobileWidth={180} />]
   }
 
   function CheckValidation(professional: User) {
@@ -82,11 +82,6 @@ const PersonsPage = () => {
       professional.experience = 0;
   }
 
-
-
-
-
-
   function onChangeText(text: string) {
     textInput = text;
     filterProfessionals()
@@ -98,7 +93,6 @@ const PersonsPage = () => {
 
 
   function filterProfessionals() {
-
     setProfessionals(data1?.filter((professional) => {
 
       if (professional.rating === undefined)
@@ -113,44 +107,39 @@ const PersonsPage = () => {
         professional.experience >= experience;
 
     }))
-
   }
 
-
-
-
   return (
-    <BackgroundView hasSafeAreaView children={
+    <BackgroundView children={
+      <ScrollView>
 
-      <View style={styles.container}>
-
+      <View style={[styles.container, {backgroundColor: Colors.backgroundSecondary}, isWeb ? {width: adjustedWidth} : {}]}>
         {PersonPage.setButtons && <View style={styles.filterAndSortContainer}>
-
           <View style={styles.sortOrFilter} >
-            <Text style={{ color: Colors.textPrimary, fontSize: 20 }}>Filters</Text>
-
+            <Text style={{ color: Colors.textPrimary, fontSize: 18 }}>Filters</Text>
             <TouchableOpacity style={styles.filterButton} onPress={() => {
-
               setModalVisible(true);
             }}>
               <Ionicons name='filter' size={45} color={"black"} />
             </TouchableOpacity>
           </View>
 
-
-          <View style={styles.sortOrFilter}>
-            <Text style={{ color: Colors.textPrimary, fontSize: 20 }}>Sort</Text>
-            <RNPickerSelect
+          <View style={[styles.sortOrFilter, {alignItems: 'center', alignContent: 'center'}]}>
+            <Text style={{ color: Colors.textPrimary, fontSize: 18 }}>Sort</Text>
+            <RNPickerSelect placeholder={{label: 'Sort By'}}
               style={{
                 inputIOS: {
                   backgroundColor: "white",
-
-
                 },
                 inputAndroid: {
                   backgroundColor: "white",
                   width: 200,
 
+                  height: 68,
+                },
+                inputWeb: {
+                  backgroundColor: "white",
+                  width: 200,
                   height: 68,
                 },
               }} items={sort} onValueChange={(value) => {
@@ -159,14 +148,10 @@ const PersonsPage = () => {
                 filterProfessionals();
               }} />
           </View>
-
-
-        </View>}
+        </View>
+        }
 
         <MyTextInput placeHolder={'Search Professional'} icon={<EvilIcons name='search' size={45} style={{ backgroundColor: "white" }} />} onChange={onChangeText} />
-
-
-
         <Modal
           animationType="slide"
           transparent={false}
@@ -175,20 +160,10 @@ const PersonsPage = () => {
             setModalVisible(!modalVisible);
           }}
         >
-
           <ModalDesigned visibleModal={setModalVisible} setRating={setrating} setExperience={setexperience} experience={experience} rating={rating} setLocation={setlocation} location={location} filterProfessionals={filterProfessionals} sortBy={sortby} setSort={setsort} />
         </Modal>
 
-
-
-        <ScrollView>
-
-
-
           <View style={styles.Professionalcontainer}>
-
-
-
             {isSuccess && Professionals?.slice().sort((a, b) => {
 
               if (sortBy === "0") {
@@ -227,19 +202,16 @@ const PersonsPage = () => {
                 Professional.rating = 0;
               }
               return (
-                <View>
+                <View key={Professional.id + "_V"} style={{alignContent: 'center', alignItems: 'center'}}>
                   <TouchableOpacity style={styles.touchableOpacityStyle} onPress={() => {
                     dispatch(setChat({ ReceiverEmail: Professional.email, openModal: false, receiverUserName: Professional.name.firstName + " " + Professional.name.lastName, receiverPhotoUrl: Professional.photoUrl, receiverUser : Professional }))
                     navigation.navigate("Chats")
                   }}>
-                    <PersonCard user={Professional} imageurl={'../../../gardner2.png'} imageStyle={PersonPage.imageStyle} componentsUnderImage={[<Text style={{ color: "white" }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
-
-                    <Text style={{ color: Colors.textPrimary }}>{Professional.profession?.name}</Text>,
-                    <Text style={{ color: Colors.textPrimary }}>{Professional.experience} years experience</Text>
-
-
-
-                    ]} additionalComponents={renderComponent(Professional.rating)} cardContainerStyle={PersonPage.CardContainerStyle} containerStyle={{ backgroundColor: Colors.$backgroundDark }} />
+                    <PersonCard user={Professional} imageStyle={PersonPage.imageStyle} componentsUnderImage={[
+                    <Text style={{ color: "black", marginTop: 5, fontSize:18, fontWeight: 'bold' }}> {Professional.name.firstName} {Professional.name.lastName}</Text>,
+                    <Text style={{ color: 'black', marginTop: 5, fontSize:16, fontWeight: 'bold' }}>{Professional.userProfessions[0]?.profession?.name}</Text>,
+                    <Text style={{ color: 'black', marginTop: 5, fontSize:14 }}>{Professional.experience} years experience</Text>
+                    ]} additionalComponents={renderComponent(Professional.rating)} cardContainerStyle={PersonPage.CardContainerStyle} containerStyle={{ backgroundColor: Colors.controlBackground, marginTop: 10, paddingBottom: 5, borderRadius:5 }} />
 
 
                   </TouchableOpacity>
@@ -248,19 +220,11 @@ const PersonsPage = () => {
               )
             })
             }
-
-
-
-
           </View>
-        </ScrollView>
-
       </View>
-
-
+      </ScrollView>
 
     } />
-
   )
 }
 
@@ -278,39 +242,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
 
   },
-
   imageStyle: {
     height: 120,
     width: 120,
     borderRadius: 70,
   },
-
   textInputStyle: {
     backgroundColor: "white",
     paddingLeft: 5,
     height: 50,
   },
-
   sortOrFilter: {
     display: "flex",
-    flexDirection: "column",
-    width: "50%",
+    flexDirection: "column",    
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
+    marginHorizontal: 15
   },
-
   filterAndSortContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
-    width: "40%",
-
+    justifyContent: "space-between",    
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
   },
   Professionalcontainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
     width: "100%",
     flexWrap: "wrap",
     marginBottom: 200,
-
   },
   touchableOpacityStyle: {
     alignItems: "center",
@@ -320,9 +286,10 @@ const styles = StyleSheet.create({
   container: {
     gap: 15,
     padding: 10,
-
+    alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
   },
-
   SortButton: {
     backgroundColor: 'white',
     padding: 10,
@@ -331,7 +298,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 68,
   },
-
   filterButton: {
     backgroundColor: 'white',
     padding: 10,
@@ -339,18 +305,11 @@ const styles = StyleSheet.create({
     width: 70,
     alignItems: "center"
   },
-
   filterButtonText: {
     color: 'white',
     fontSize: 16,
   },
-
   selector: {
     backgroundColor: "white",
-
   }
-
-
 });
-
-
