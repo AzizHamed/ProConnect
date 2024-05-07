@@ -11,5 +11,5 @@ public interface UserProfessionsRepository extends JpaRepository<UserProfession,
     List<UserProfession> findAllByUser(User user);
     List<UserProfession> findAllByProfession(Profession profession);
 
-    List<UserProfession> countUserProfessionByProfession(Profession profession);
+    Long countUserProfessionByProfession(Profession profession);
 }

@@ -10,10 +10,10 @@ import lombok.*;
 @Getter
 public class PopularProfessions implements Comparable<PopularProfessions> {
     private Profession profession;
-    private int count;
+    private long count;
 
     @Override
     public int compareTo(PopularProfessions o) {
-        return Integer.compare(this.count, o.count);
+        return Long.compare(this.count, o.count);
     }
 }

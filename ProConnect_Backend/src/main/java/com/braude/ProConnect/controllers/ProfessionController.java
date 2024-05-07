@@ -45,7 +45,7 @@ public class ProfessionController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/get-jobs-by-profession")
+    @GetMapping("/get-popular-professions")
     public ResponseEntity<List<PopularProfessions>> getPopularProfessions(){
         List<PopularProfessions> popularProfessions = professionService.getPopularProfessions();
         if(popularProfessions != null)

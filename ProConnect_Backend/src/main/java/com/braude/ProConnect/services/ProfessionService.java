@@ -53,7 +53,8 @@ public class ProfessionService {
         List<Profession> professions = getProfessions();
         List<PopularProfessions> popularProfessions = new ArrayList<>();
         for (Profession profession : professions) {
-            popularProfessions.add(new PopularProfessions(profession, userProfessionsRepository.countUserProfessionByProfession(profession).size()));
+            var count = userProfessionsRepository.countUserProfessionByProfession(profession);
+            popularProfessions.add(new PopularProfessions(profession, count));
         }
         Collections.sort(popularProfessions, Collections.reverseOrder());
         return popularProfessions;
