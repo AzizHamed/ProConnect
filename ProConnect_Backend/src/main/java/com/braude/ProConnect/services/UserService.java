@@ -269,6 +269,7 @@ public class UserService {
              User user = User.builder().id(UUID.randomUUID().toString()).email(request.getEmail())
                      .name(new Name(request.getFirstName(), request.getLastName()))
                      .accountStatus(AccountStatus.ACTIVE)
+                     .photoUrl(request.getPhotoUrl())
                      .phoneNumber(request.getPhoneNumber()).roles(Arrays.asList(role)).build();
              users.add(user);
         }
@@ -282,6 +283,7 @@ public class UserService {
             User user = User.builder().id(UUID.randomUUID().toString()).email(request.getEmail())
                     .name(new Name(request.getFirstName(), request.getLastName()))
                     .accountStatus(AccountStatus.ACTIVE)
+                    .photoUrl(request.getPhotoUrl())
                     .phoneNumber(request.getPhoneNumber()).roles(Arrays.asList(role)).build();
             Profession profession = professionService.getProfessionById(request.getProfessionId());
             UserProfession userProfession = new UserProfession();
