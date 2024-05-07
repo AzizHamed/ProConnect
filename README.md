@@ -2,13 +2,15 @@
 
 ## Phase B
 
-_In Progress_
+[APK Download](https://github.com/hadiDanial/ProConnect/blob/main/ProConnect.apk)
+
+[Server URL - Heroku](https://proconnect-db6d58e90780.herokuapp.com/swagger-ui/index.html#/)
+
+[Web App URL](https://proconnect-6173c.web.app)
 
 [Project Book](https://docs.google.com/document/d/1Y82D-w8q6yK-BIgj84vHvKnMG5XkRoL2gLmNDG9DjWw/edit?usp=sharing)
 
 [Presentation](https://1drv.ms/p/s!AoLVRGF92BcTg-dnYPoIA4lQRiqkLg?e=ktySIR)
-
-[Server URL - Heroku](https://proconnect-db6d58e90780.herokuapp.com/swagger-ui/index.html#/)
 
 [Maintenance Guide](https://github.com/hadiDanial/ProConnect/blob/main/Maintainer%20Guide.md)
 
