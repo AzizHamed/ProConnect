@@ -12,8 +12,7 @@ import ProRefreshControl from "../../Components/Controls/ProRefreshControl";
 import ProButton from "../../Components/Controls/ProButton";
 import { setChat } from "../../Services/Redux/Slices/ChatSlice";
 import { auth } from "../../Services/Firebase/Firebase";
-
-// TODO: Filter by budget, job status, JobDateSearch
+import { getUserAccount } from "../../Services/Redux/Slices/AuthSlice";
 
 const JobsList: React.FC = () => {
   const { data, isSuccess, isError, error, refetch } = useGetJobsQuery({});//useGetJobsByUserProfessionAndWorkAreaQuery();
@@ -21,17 +20,10 @@ const JobsList: React.FC = () => {
   const navigation = useNavigation();
   const jobs = useSelector(getJobs);
   const dispatch = useDispatch();
+  const user = useSelector(getUserAccount);
+  
 
-  // const bestOffer  = useGetBestOfferQuery(job)
-  // if(bestOffer !==undefined){
-
-  //   dispatch(setChat({ReceiverEmail : bestOffer.data?.senderUser?.email , openModal : false, receiverUserName : bestOffer.data?.senderUser?.name.firstName + " " + bestOffer.data?.senderUser?.name.lastName}))
-
-  //   navigation.navigate("Chats")
-  // }
-
-
-
+  const userProfession = user?.userProfessions ? user?.userProfessions[0].profession?.id : undefined; 
   const [bestOfferModalVisible, setbestOfferModalVisible] = useState(false)
 
   useEffect(() => {
@@ -58,7 +50,7 @@ const JobsList: React.FC = () => {
                     <View bg style={{ width: "100%" }}>
                       {/* {jobs && jobs[0] && jobs[0].neededProfessions && <Text center marginV-15 h5>{jobs.length} {jobs[0].neededProfessions[0].name} Jobs in {jobs[0].owner?.workAreas}</Text>} */}
                       {jobs.map((job) => {
-                        if (job.owner?.email !== auth.currentUser?.email && job.jobStatus !== "Finished")
+                        if (job.owner?.email !== auth.currentUser?.email && job.jobStatus !== "FINISHED" && (userProfession !== undefined && job?.neededProfessions[0].id === userProfession))
                           return (
                             <View bg key={job.id}>
                               <JobCard

@@ -178,7 +178,7 @@ const ProfileEditorScreen: React.FC = () => {
     <BackgroundView children={(
     <ScrollView>
       <View style={{ alignItems: "center", paddingTop: 20 }} onTouchStart={() => { Keyboard.dismiss(); }}>
-        <ProExpandableView title='Personal Information' height={400 + (user?.accountStatus === 'SETUP' ? 75 : 0)} isInitiallyExpanded
+        <ProExpandableView title='Personal Information' height={400 + (user?.accountStatus === 'SETUP' ? 110 : 0)} isInitiallyExpanded
           children={
             (
               <View style={{ alignItems: "center" }}>
