@@ -2,17 +2,21 @@
 
 ## Phase B
 
-[APK Download](https://github.com/hadiDanial/ProConnect/blob/main/ProConnect.apk)
+Android APK file: [APK Download](https://github.com/hadiDanial/ProConnect/blob/main/ProConnect.apk) 
 
-[Server URL - Heroku](https://proconnect-db6d58e90780.herokuapp.com/swagger-ui/index.html#/)
+React Native Web build hosted on Firebase: [Web App URL](https://proconnect-6173c.web.app) 
 
-[Web App URL](https://proconnect-6173c.web.app)
+Spring Boot server hosted on Heroku - link displays secured Swagger documentation of the REST API: [Server URL - Heroku](https://proconnect-db6d58e90780.herokuapp.com/swagger-ui/index.html#/)
 
 [Project Book](https://docs.google.com/document/d/1Y82D-w8q6yK-BIgj84vHvKnMG5XkRoL2gLmNDG9DjWw/edit?usp=sharing)
 
 [Presentation](https://docs.google.com/presentation/d/1jhikXxgtVKnaPmo63ElNCczZEMQBzgPK/edit#slide=id.p39)
 
-[Maintenance Guide](https://github.com/hadiDanial/ProConnect/blob/main/Maintainer%20Guide.md)
+The maintenance and user guides are in `.md` format, but are also available as a Word file in the PhaseB folder.
+
+[Maintenance Guide](https://github.com/hadiDanial/ProConnect/blob/main/PhaseB/Maintainer%20Guide.md) - [Word](https://github.com/hadiDanial/ProConnect/blob/main/PhaseB/Maintainer%20Guide.docx)
+
+[User Guide](https://github.com/hadiDanial/ProConnect/blob/main/PhaseB/User%20Guide.md) - [Word](https://github.com/hadiDanial/ProConnect/blob/main/PhaseB/User%20Guide.docx)
 
 ## Phase A
 
